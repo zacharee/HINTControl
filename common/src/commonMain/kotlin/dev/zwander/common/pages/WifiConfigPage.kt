@@ -11,7 +11,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.components.TextSwitch
@@ -33,19 +32,14 @@ fun WifiConfigPage(
     modifier: Modifier = Modifier,
 ) {
     val scope = rememberCoroutineScope()
-    var data by MainModel.currentWifiData.collectAsMutableState()
-
+    val data by MainModel.currentWifiData.collectAsState()
     val isLoading by GlobalModel.isLoading.collectAsState()
 
     var tempState by remember(data) {
         mutableStateOf(data)
     }
 
-    LaunchedEffect(null) {
-        data = HTTPClient.getWifiData()
-    }
-
-    val items = remember {
+    val items = remember(data) {
         listOf(
             ItemData(
                 title = MR.strings.band_mgmnt,

@@ -3,23 +3,28 @@ package dev.zwander.common
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.focusable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.focusTarget
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
 import dev.icerock.moko.resources.compose.stringResource
+import dev.zwander.common.components.pullrefresh.PullRefreshIndicator
+import dev.zwander.common.components.pullrefresh.pullRefresh
+import dev.zwander.common.components.pullrefresh.rememberPullRefreshState
 import dev.zwander.common.data.Page
 import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.UserModel
 import dev.zwander.common.ui.Theme
+import dev.zwander.resources.common.MR
+import kotlinx.coroutines.launch
 
 @Composable
 fun App(
@@ -27,6 +32,7 @@ fun App(
 ) {
     Theme {
         Surface {
+            val scope = rememberCoroutineScope()
             val token by UserModel.token.collectAsState()
             val isLoading by GlobalModel.isLoading.collectAsState()
 
@@ -40,6 +46,12 @@ fun App(
                 }
             }
 
+            LaunchedEffect(currentPage) {
+                if (currentPage.refreshAction != null && currentPage.needsRefresh?.invoke() == true) {
+                    currentPage.refreshAction?.invoke()
+                }
+            }
+
             BoxWithConstraints(
                 modifier = Modifier.fillMaxSize(),
             ) {
@@ -47,6 +59,15 @@ fun App(
                 val maxWidthDp = with(LocalDensity.current) { constraints.maxWidth.toDp() }
 
                 val sideRail = maxWidthDp >= 600.dp
+
+                val pullRefreshState = rememberPullRefreshState(
+                    refreshing = false,
+                    onRefresh = {
+                        scope.launch {
+                            currentPage.refreshAction?.invoke()
+                        }
+                    }
+                )
 
                 Column(
                     modifier = modifier.fillMaxSize(),
@@ -66,10 +87,28 @@ fun App(
                             )
                         }
 
-                        AppView(
-                            currentPage = currentPage,
-                            modifier = Modifier.weight(1f),
-                        )
+                        Box(
+                            modifier = Modifier.weight(1f).then(
+                                if (!sideRail && currentPage.refreshAction != null) {
+                                    Modifier.pullRefresh(
+                                        state = pullRefreshState
+                                    )
+                                } else {
+                                    Modifier
+                                }
+                            ),
+                        ) {
+                            AppView(
+                                currentPage = currentPage,
+                                modifier = Modifier.fillMaxSize(),
+                            )
+
+                            PullRefreshIndicator(
+                                refreshing = false,
+                                state = pullRefreshState,
+                                modifier = Modifier.align(Alignment.TopCenter),
+                            )
+                        }
                     }
 
                     AnimatedVisibility(
@@ -104,11 +143,15 @@ private fun AppView(
     currentPage: Page,
     modifier: Modifier = Modifier,
 ) {
-    Crossfade(
-        targetState = currentPage,
+    Box(
         modifier = modifier,
     ) {
-        it.render(Modifier.fillMaxSize())
+        Crossfade(
+            targetState = currentPage,
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            it.render(Modifier.fillMaxSize())
+        }
     }
 }
 
@@ -137,6 +180,7 @@ private fun NavBar(
     modifier: Modifier = Modifier,
     vertical: Boolean = true,
 ) {
+    val scope = rememberCoroutineScope()
     val pages = remember {
         listOf(
             Page.Main,
@@ -156,6 +200,19 @@ private fun NavBar(
                     onClick = { onPageChange(page) },
                     label = { Text(text = stringResource(page.titleRes)) },
                     icon = { Icon(imageVector = page.icon, contentDescription = null) },
+                )
+            }
+
+            if (currentPage.refreshAction != null) {
+                NavigationRailItem(
+                    selected = false,
+                    onClick = {
+                        scope.launch {
+                            currentPage.refreshAction.invoke()
+                        }
+                    },
+                    label = { Text(text = stringResource(MR.strings.refresh)) },
+                    icon = { Icon(imageVector = Icons.Default.Refresh, contentDescription = null) }
                 )
             }
         }

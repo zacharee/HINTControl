@@ -7,17 +7,18 @@ import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.components.FormatText
 import dev.zwander.common.model.MainModel
 import dev.zwander.common.model.adapters.BaseAdvancedData
 import dev.zwander.common.util.AdaptiveMod
-import dev.zwander.common.util.HTTPClient
 import dev.zwander.resources.common.MR
 
 private data class AdvancedItemData(
@@ -30,13 +31,8 @@ private data class AdvancedItemData(
 fun AdvancedPage(
     modifier: Modifier = Modifier,
 ) {
-    var cellData by MainModel.currentCellData.collectAsMutableState()
-    var simData by MainModel.currentSimData.collectAsMutableState()
-
-    LaunchedEffect(null) {
-        cellData = HTTPClient.getCellData()
-        simData = HTTPClient.getSimData()
-    }
+    val cellData by MainModel.currentCellData.collectAsState()
+    val simData by MainModel.currentSimData.collectAsState()
 
     val items = remember(cellData, simData) {
         listOf(

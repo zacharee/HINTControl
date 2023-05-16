@@ -8,18 +8,19 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.components.FormatText
 import dev.zwander.common.model.MainModel
 import dev.zwander.common.model.adapters.BaseClientData
 import dev.zwander.common.util.AdaptiveMod
-import dev.zwander.common.util.HTTPClient
 import dev.zwander.resources.common.MR
 
 private data class ClientListItem(
@@ -32,11 +33,7 @@ private data class ClientListItem(
 fun ClientListPage(
     modifier: Modifier = Modifier,
 ) {
-    var data by MainModel.currentClientData.collectAsMutableState()
-
-    LaunchedEffect(null) {
-        data = HTTPClient.getDeviceData()
-    }
+    val data by MainModel.currentClientData.collectAsState()
 
     val items = remember(data) {
         listOf(
