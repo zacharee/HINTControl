@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+    <string name="app_name">Arcadyan KVD21 Control</string>
+
+    <string name="log_in">Log In</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+
+    <string name="show_password">Show Password</string>
+    <string name="hide_password">Hide Password</string>
+
+    <string name="signals">Signals</string>
+    <string name="lte">LTE</string>
+    <string name="five_g">5G</string>
+    <string name="general">General</string>
+    <string name="bands">Bands</string>
+    <string name="strength">Strength</string>
+    <string name="cid">CID</string>
+    <string name="enbid">eNBID</string>
+    <string name="rsrp">RSRP</string>
+    <string name="rsrq">RSRQ</string>
+    <string name="rssi">RSSI</string>
+    <string name="sinr">SiNR</string>
+    <string name="apn">APN</string>
+    <string name="ipv6">IPv6</string>
+    <string name="registration">Registration</string>
+    <string name="roaming">Roaming</string>
+
+    <string name="main_data">Main</string>
+    <string name="client_data">Clients</string>
+    <string name="wifi_data">Wi-Fi</string>
+
+    <string name="refresh">Refresh</string>
+
+    <string name="connected">Connected</string>
+    <string name="ipv4">IPv4</string>
+    <string name="ipv6">IPv6</string>
+    <string name="mac">MAC</string>
+    <string name="name">Name</string>
+    <string name="twoGig">2.4GHz</string>
+    <string name="fiveGig">5GHz</string>
+    <string name="wired">Wired</string>
+</resources>
