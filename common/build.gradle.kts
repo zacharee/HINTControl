@@ -6,6 +6,8 @@ plugins {
     id("dev.icerock.mobile.multiplatform-resources")
 }
 
+version = rootProject.extra["app_version_code"].toString()
+
 kotlin {
     android()
     jvm("desktop") {

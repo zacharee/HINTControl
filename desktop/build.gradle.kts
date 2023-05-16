@@ -3,11 +3,11 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 plugins {
     kotlin("multiplatform")
     id("org.jetbrains.compose")
+    id("dev.hydraulic.conveyor") version "1.6"
 }
 
 group = "dev.zwander"
-version = "1.0-SNAPSHOT"
-
+version = rootProject.extra["app_version_code"].toString()
 
 kotlin {
     jvm {
@@ -32,5 +32,11 @@ compose.desktop {
             packageName = rootProject.extra["package_name"].toString()
             packageVersion = rootProject.extra["app_version_name"].toString()
         }
+    }
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
     }
 }
