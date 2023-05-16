@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.model.adapters.BaseCellData
@@ -44,40 +45,47 @@ fun CellDataLayout(
         ) {
             FormatText(
                 text = stringResource(MR.strings.bands),
-                textFormat = data?.bands?.joinToString(" • ").toString()
+                textFormat = data?.bands?.joinToString(" • ").toString(),
+                modifier = Modifier.padding(horizontal = 4.dp),
             )
 
             FormatText(
                 text = stringResource(MR.strings.rsrp),
-                textFormat = data?.rsrp.toString()
+                textFormat = data?.rsrp.toString(),
+                modifier = Modifier.padding(horizontal = 4.dp),
             )
 
             FormatText(
                 text = stringResource(MR.strings.rsrq),
-                textFormat = data?.rsrp.toString()
+                textFormat = data?.rsrp.toString(),
+                modifier = Modifier.padding(horizontal = 4.dp),
             )
 
             if (data is CellDataLTE) {
                 FormatText(
                     text = stringResource(MR.strings.rssi),
-                    textFormat = data.rssi.toString()
+                    textFormat = data.rssi.toString(),
+                    modifier = Modifier.padding(horizontal = 4.dp),
                 )
             }
 
             FormatText(
                 text = stringResource(MR.strings.sinr),
-                textFormat = data?.sinr.toString()
+                textFormat = data?.sinr.toString(),
+                modifier = Modifier.padding(horizontal = 4.dp),
             )
 
             if (data is CellDataLTE) {
                 FormatText(
                     text = stringResource(MR.strings.enbid),
-                    textFormat = data.eNBID.toString()
+                    textFormat = data.eNBID.toString(),
+                    modifier = Modifier.padding(horizontal = 4.dp),
                 )
 
                 FormatText(
                     text = stringResource(MR.strings.cid),
-                    textFormat = data.cid.toString()
+                    textFormat = data.cid.toString(),
+                    modifier = Modifier.padding(horizontal = 4.dp),
                 )
             }
         }

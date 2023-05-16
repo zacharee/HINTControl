@@ -47,4 +47,29 @@
     <string name="band_steering">Band Steering</string>
     <string name="save">Save</string>
     <string name="advanced">Advanced</string>
+
+    <string name="bandwidth">Bandwidth</string>
+    <string name="mcc">MCC</string>
+    <string name="mnc">MNC</string>
+    <string name="plmn">PLMN</string>
+    <string name="status">Status</string>
+    <string name="supportedBands">Supported Bands</string>
+    <string name="cqi">CQI</string>
+    <string name="earfcn">EARFCN</string>
+    <string name="ecgi">ECGI</string>
+    <string name="tac">TAC</string>
+    <string name="nci">NCI</string>
+    <string name="nrarfcn">NRARFCN</string>
+    <string name="pci">PCI</string>
+
+    <string name="sim">SIM</string>
+    <string name="iccid">ICCID</string>
+    <string name="imei">IMEI</string>
+    <string name="imsi">IMSI</string>
+    <string name="msisdn">MSISDN</string>
+
+    <string name="close">Close</string>
+    <string name="zoom">Zoom</string>
+    <string name="minimize">Minimize</string>
+    <string name="window">Window</string>
 </resources>

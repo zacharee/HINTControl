@@ -127,21 +127,25 @@ private fun ClientItem(
             FormatText(
                 text = stringResource(MR.strings.connected),
                 textFormat = data.connected.toString(),
+                modifier = Modifier.padding(horizontal = 4.dp),
             )
 
             FormatText(
                 text = stringResource(MR.strings.ipv4),
                 textFormat = data.ipv4.toString(),
+                modifier = Modifier.padding(horizontal = 4.dp),
             )
 
             FormatText(
                 text = stringResource(MR.strings.ipv6),
                 textFormat = data.ipv6?.joinToString("\n").toString(),
+                modifier = Modifier.padding(horizontal = 4.dp),
             )
 
             FormatText(
                 text = stringResource(MR.strings.mac),
                 textFormat = data.mac.toString(),
+                modifier = Modifier.padding(horizontal = 4.dp),
             )
         }
     }
