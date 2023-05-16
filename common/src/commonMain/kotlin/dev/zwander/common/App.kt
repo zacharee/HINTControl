@@ -107,49 +107,45 @@ fun App(
                             )
                         }
                     }
-                ) {
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
+                ) { padding ->
+                    Row(
+                        modifier = Modifier.fillMaxWidth().padding(padding),
                     ) {
-                        Row(
-                            modifier = Modifier.weight(1f).fillMaxWidth(),
+                        AnimatedVisibility(
+                            visible = token != null && sideRail,
+                            enter = fadeIn() + expandHorizontally(expandFrom = Alignment.Start),
+                            exit = fadeOut() + shrinkHorizontally(shrinkTowards = Alignment.Start),
                         ) {
-                            AnimatedVisibility(
-                                visible = token != null && sideRail,
-                                enter = fadeIn() + expandHorizontally(expandFrom = Alignment.Start),
-                                exit = fadeOut() + shrinkHorizontally(shrinkTowards = Alignment.Start),
-                            ) {
-                                NavBar(
-                                    currentPage = currentPage,
-                                    onPageChange = { currentPage = it },
-                                    vertical = true,
-                                )
-                            }
+                            NavBar(
+                                currentPage = currentPage,
+                                onPageChange = { currentPage = it },
+                                vertical = true,
+                            )
+                        }
 
-                            Box(
-                                modifier = Modifier.weight(1f).then(
-                                    if (!sideRail && currentPage.refreshAction != null) {
-                                        Modifier.pullRefresh(
-                                            state = pullRefreshState
-                                        )
-                                    } else {
-                                        Modifier
-                                    }
-                                ),
-                            ) {
-                                AppView(
-                                    currentPage = currentPage,
-                                    modifier = Modifier.widthIn(max = 1000.dp)
-                                        .fillMaxSize()
-                                        .align(Alignment.TopCenter),
-                                )
+                        Box(
+                            modifier = Modifier.weight(1f).then(
+                                if (!sideRail && currentPage.refreshAction != null) {
+                                    Modifier.pullRefresh(
+                                        state = pullRefreshState
+                                    )
+                                } else {
+                                    Modifier
+                                }
+                            ),
+                        ) {
+                            AppView(
+                                currentPage = currentPage,
+                                modifier = Modifier.widthIn(max = 1000.dp)
+                                    .fillMaxSize()
+                                    .align(Alignment.TopCenter),
+                            )
 
-                                PullRefreshIndicator(
-                                    refreshing = false,
-                                    state = pullRefreshState,
-                                    modifier = Modifier.align(Alignment.TopCenter),
-                                )
-                            }
+                            PullRefreshIndicator(
+                                refreshing = false,
+                                state = pullRefreshState,
+                                modifier = Modifier.align(Alignment.TopCenter),
+                            )
                         }
                     }
                 }
@@ -224,7 +220,7 @@ private fun NavBar(
 
     if (vertical) {
         NavigationRail(
-            modifier = modifier,
+            modifier = modifier.padding(vertical = 16.dp),
         ) {
             pages.forEach { page ->
                 NavigationRailItem(

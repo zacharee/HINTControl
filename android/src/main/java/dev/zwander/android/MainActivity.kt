@@ -25,8 +25,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             App(
-                modifier = Modifier.statusBarsPadding()
-                    .imePadding(),
+                modifier = Modifier.imePadding(),
             )
         }
     }
