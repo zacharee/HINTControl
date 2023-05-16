@@ -252,7 +252,12 @@ private fun NavBar(
                 NavigationBarItem(
                     selected = currentPage == page,
                     onClick = { onPageChange(page) },
-                    label = { Text(text = stringResource(page.titleRes)) },
+                    label = {
+                        Text(
+                            text = stringResource(page.titleRes),
+                            softWrap = false,
+                        )
+                    },
                     icon = { Icon(imageVector = page.icon, contentDescription = null) },
                 )
             }
@@ -265,7 +270,12 @@ private fun NavBar(
                             error = handleRefresh(currentPage)
                         }
                     },
-                    label = { Text(text = stringResource(MR.strings.refresh)) },
+                    label = {
+                        Text(
+                            text = stringResource(MR.strings.refresh),
+                            softWrap = false,
+                        )
+                    },
                     icon = { Icon(imageVector = Icons.Default.Refresh, contentDescription = null) }
                 )
             }
