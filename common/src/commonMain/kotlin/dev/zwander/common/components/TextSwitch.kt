@@ -27,7 +27,7 @@ fun TextSwitch(
     ) {
         Row(
             modifier = Modifier.fillMaxWidth()
-                .padding(4.dp),
+                .padding(horizontal = 8.dp, vertical = 4.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
