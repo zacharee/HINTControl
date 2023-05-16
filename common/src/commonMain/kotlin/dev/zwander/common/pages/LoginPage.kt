@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -19,6 +20,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.key.*
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
@@ -102,6 +104,9 @@ fun LoginPage(
                             }
                         }
                     },
+                keyboardOptions = KeyboardOptions(
+                    autoCorrect = false,
+                ),
             )
 
             OutlinedTextField(
@@ -149,6 +154,10 @@ fun LoginPage(
                             }
                         }
                     },
+                keyboardOptions = KeyboardOptions(
+                    autoCorrect = false,
+                    keyboardType = KeyboardType.Password,
+                ),
             )
 
             AnimatedVisibility(
