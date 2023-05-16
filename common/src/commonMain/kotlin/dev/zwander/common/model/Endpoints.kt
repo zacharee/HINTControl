@@ -1,8 +1,5 @@
 package dev.zwander.common.model
 
-import org.jetbrains.skiko.OS
-import org.jetbrains.skiko.hostOs
-
 object Endpoints {
     const val baseUrl = "http://192.168.12.1/TMI/v1/"
 
@@ -17,10 +14,6 @@ object Endpoints {
     const val resetURL = "auth/admin/reset"
 
     fun String.createFullUrl(): String {
-        return if (false && hostOs == OS.JS) {
-            "api/$this"
-        } else {
-            "$baseUrl$this"
-        }
+        return "$baseUrl$this"
     }
 }
