@@ -1,11 +1,17 @@
 package dev.zwander.common
 
 import androidx.compose.animation.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.focusable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusTarget
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
@@ -16,10 +22,13 @@ import dev.zwander.common.model.UserModel
 import dev.zwander.common.ui.Theme
 
 @Composable
-fun App() {
+fun App(
+    modifier: Modifier = Modifier,
+) {
     Theme {
         Surface {
             val token by UserModel.token.collectAsState()
+            val isLoading by GlobalModel.isLoading.collectAsState()
 
             var currentPage by GlobalModel.currentPage.collectAsMutableState()
 
@@ -40,7 +49,7 @@ fun App() {
                 val sideRail = maxWidthDp >= 600.dp
 
                 Column(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = modifier.fillMaxSize(),
                 ) {
                     Row(
                         modifier = Modifier.weight(1f).fillMaxWidth(),
@@ -75,6 +84,16 @@ fun App() {
                         )
                     }
                 }
+
+                AnimatedVisibility(
+                    visible = isLoading,
+                    enter = fadeIn(),
+                    exit = fadeOut(),
+                ) {
+                    LoadingScrim(
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                }
             }
         }
     }
@@ -94,6 +113,24 @@ private fun AppView(
 }
 
 @Composable
+private fun LoadingScrim(
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier
+            .background(Color.Black.copy(alpha = 0.7f))
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+                onClick = {},
+            ),
+        contentAlignment = Alignment.Center,
+    ) {
+        CircularProgressIndicator()
+    }
+}
+
+@Composable
 private fun NavBar(
     currentPage: Page,
     onPageChange: (Page) -> Unit,
@@ -109,8 +146,6 @@ private fun NavBar(
         )
     }
 
-    val isLoading by GlobalModel.isLoading.collectAsState()
-
     if (vertical) {
         NavigationRail(
             modifier = modifier,
@@ -121,18 +156,6 @@ private fun NavBar(
                     onClick = { onPageChange(page) },
                     label = { Text(text = stringResource(page.titleRes)) },
                     icon = { Icon(imageVector = page.icon, contentDescription = null) },
-                    enabled = !isLoading,
-                )
-            }
-
-            AnimatedVisibility(
-                visible = isLoading,
-                enter = fadeIn() + expandVertically(expandFrom = Alignment.CenterVertically) + expandHorizontally(expandFrom = Alignment.CenterHorizontally),
-                exit = fadeOut() + shrinkVertically(shrinkTowards = Alignment.CenterVertically) + shrinkHorizontally(shrinkTowards = Alignment.CenterHorizontally),
-                modifier = Modifier.padding(8.dp),
-            ) {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(24.dp),
                 )
             }
         }
@@ -146,18 +169,6 @@ private fun NavBar(
                     onClick = { onPageChange(page) },
                     label = { Text(text = stringResource(page.titleRes)) },
                     icon = { Icon(imageVector = page.icon, contentDescription = null) },
-                    enabled = !isLoading,
-                )
-            }
-
-            AnimatedVisibility(
-                visible = isLoading,
-                enter = fadeIn() + expandVertically(expandFrom = Alignment.CenterVertically) + expandHorizontally(expandFrom = Alignment.CenterHorizontally),
-                exit = fadeOut() + shrinkVertically(shrinkTowards = Alignment.CenterVertically) + shrinkHorizontally(shrinkTowards = Alignment.CenterHorizontally),
-                modifier = Modifier.align(Alignment.CenterVertically).padding(8.dp),
-            ) {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(24.dp),
                 )
             }
         }

@@ -8,6 +8,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
@@ -28,6 +31,9 @@ fun LoginPage(
     modifier: Modifier = Modifier,
 ) {
     val scope = rememberCoroutineScope()
+    val userFocusRequester = remember { FocusRequester() }
+    val passFocusRequester = remember { FocusRequester() }
+    val focusManager = LocalFocusManager.current
 
     var username by UserModel.username.collectAsMutableState()
     var password by UserModel.password.collectAsMutableState()
@@ -54,6 +60,7 @@ fun LoginPage(
                 value = username ?: "",
                 onValueChange = { username = it },
                 isError = error != null,
+                modifier = Modifier.focusRequester(userFocusRequester),
             )
 
             OutlinedTextField(
@@ -80,6 +87,7 @@ fun LoginPage(
                     }
                 },
                 isError = error != null,
+                modifier = Modifier.focusRequester(passFocusRequester),
             )
 
             AnimatedVisibility(
@@ -103,10 +111,13 @@ fun LoginPage(
             Button(
                 onClick = {
                     error = null
+                    focusManager.clearFocus()
                     scope.launch {
-                        isLoading = true
-                        error = HTTPClient.logIn(username ?: "", password ?: "")
-                        isLoading = false
+                        error = try {
+                            HTTPClient.logIn(username ?: "", password ?: "")
+                        } catch (e: Exception) {
+                            e.message
+                        }
                     }
                 },
                 enabled = !username.isNullOrBlank() && !password.isNullOrBlank(),

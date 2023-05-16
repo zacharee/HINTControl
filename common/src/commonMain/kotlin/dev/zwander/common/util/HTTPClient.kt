@@ -18,6 +18,8 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
 object HTTPClient {
+    val unauthedClient = HttpClient()
+
     val httpClient = HttpClient {
         install(Auth) {
             bearer {
@@ -47,19 +49,23 @@ object HTTPClient {
     }
 
     suspend fun logIn(username: String, password: String): String? {
-        val response = httpClient.post(Endpoints.authURL.createFullUrl()) {
-            setBody("{\"username\": \"${username}\", \"password\": \"${password}\"}")
-        }
+        return withLoader {
+            val response = unauthedClient.post(Endpoints.authURL.createFullUrl()) {
+                setBody("{\"username\": \"${username}\", \"password\": \"${password}\"}")
+            }
 
-        return if (response.status.isSuccess()) {
-            UserModel.username.value = username
-            UserModel.password.value = password
+            println(response.bodyAsText())
 
-            UserModel.token.value = json.decodeFromString<LoginResultData>(response.bodyAsText()).auth.token
+            if (response.status.isSuccess()) {
+                UserModel.username.value = username
+                UserModel.password.value = password
 
-            null
-        } else {
-            response.status.description
+                UserModel.token.value = json.decodeFromString<LoginResultData>(response.bodyAsText()).auth.token
+
+                null
+            } else {
+                response.status.description
+            }
         }
     }
 
