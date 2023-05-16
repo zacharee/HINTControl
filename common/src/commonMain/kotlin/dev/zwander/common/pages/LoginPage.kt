@@ -82,7 +82,7 @@ fun LoginPage(
         ) {
             OutlinedTextField(
                 value = username ?: "",
-                onValueChange = { username = it.trim() },
+                onValueChange = { it.trim().filterNot { it.isWhitespace() } },
                 isError = error != null,
                 modifier = Modifier.focusRequester(userFocusRequester)
                     .onKeyEvent {
@@ -111,7 +111,7 @@ fun LoginPage(
 
             OutlinedTextField(
                 value = password ?: "",
-                onValueChange = { password = it.trim() },
+                onValueChange = { password = it.trim().filterNot { it.isWhitespace() } },
                 visualTransformation = if (showingPassword) {
                     VisualTransformation.None
                 } else {
