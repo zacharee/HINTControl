@@ -29,6 +29,7 @@ kotlin {
                 api("dev.icerock.moko:mvvm-compose:0.16.1")
                 api("dev.icerock.moko:mvvm-flow-compose:0.16.1")
                 api("org.jetbrains.kotlin:kotlin-reflect:${rootProject.extra["kotlin.version"]}")
+                api("com.soywiz.korlibs.korio:korio:4.0.0")
             }
         }
         val androidMain by getting {

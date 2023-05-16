@@ -24,6 +24,8 @@ import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.UserModel
 import dev.zwander.common.ui.Theme
 import dev.zwander.resources.common.MR
+import io.ktor.util.*
+import korlibs.memory.Platform
 import kotlinx.coroutines.launch
 
 @Composable
@@ -100,7 +102,9 @@ fun App(
                         ) {
                             AppView(
                                 currentPage = currentPage,
-                                modifier = Modifier.fillMaxSize(),
+                                modifier = Modifier.widthIn(max = 1000.dp)
+                                    .fillMaxSize()
+                                    .align(Alignment.TopCenter),
                             )
 
                             PullRefreshIndicator(
@@ -226,6 +230,19 @@ private fun NavBar(
                     onClick = { onPageChange(page) },
                     label = { Text(text = stringResource(page.titleRes)) },
                     icon = { Icon(imageVector = page.icon, contentDescription = null) },
+                )
+            }
+
+            if (!Platform.isAndroid && currentPage.refreshAction != null) {
+                NavigationBarItem(
+                    selected = false,
+                    onClick = {
+                        scope.launch {
+                            currentPage.refreshAction.invoke()
+                        }
+                    },
+                    label = { Text(text = stringResource(MR.strings.refresh)) },
+                    icon = { Icon(imageVector = Icons.Default.Refresh, contentDescription = null) }
                 )
             }
         }
