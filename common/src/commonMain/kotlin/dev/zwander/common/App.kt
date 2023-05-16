@@ -24,7 +24,6 @@ import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.UserModel
 import dev.zwander.common.ui.Theme
 import dev.zwander.resources.common.MR
-import io.ktor.util.*
 import korlibs.memory.Platform
 import kotlinx.coroutines.launch
 
