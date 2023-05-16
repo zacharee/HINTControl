@@ -3,10 +3,7 @@ package dev.zwander.common.util
 import dev.zwander.common.model.Endpoints
 import dev.zwander.common.model.Endpoints.createFullUrl
 import dev.zwander.common.model.UserModel
-import dev.zwander.common.model.adapters.ClientDeviceData
-import dev.zwander.common.model.adapters.LoginResultData
-import dev.zwander.common.model.adapters.MainData
-import dev.zwander.common.model.adapters.WifiConfig
+import dev.zwander.common.model.adapters.*
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.plugins.*
@@ -87,6 +84,24 @@ object HTTPClient {
         return json.decodeFromString(
             httpClient
                 .get(Endpoints.getDevicesURL.createFullUrl())
+                .bodyAsText()
+        )
+    }
+
+    suspend fun getCellData(): CellDataRoot {
+        return json.decodeFromString(
+            httpClient
+                .get(Endpoints.getCellURL.createFullUrl())
+                .bodyAsText().also {
+                    println(it)
+                }
+        )
+    }
+
+    suspend fun getSimData(): SimDataRoot {
+        return json.decodeFromString(
+            httpClient
+                .get(Endpoints.getSimURL.createFullUrl())
                 .bodyAsText()
         )
     }

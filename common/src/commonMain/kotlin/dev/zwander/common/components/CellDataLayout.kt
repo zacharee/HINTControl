@@ -6,13 +6,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
-import dev.zwander.common.model.adapters.CellData
+import dev.zwander.common.model.adapters.BaseCellData
+import dev.zwander.common.model.adapters.CellDataLTE
 import dev.zwander.resources.common.MR
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun CellDataLayout(
-    data: CellData?,
+    data: BaseCellData?,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -56,25 +57,29 @@ fun CellDataLayout(
                 textFormat = data?.rsrp.toString()
             )
 
-            FormatText(
-                text = stringResource(MR.strings.rssi),
-                textFormat = data?.rssi.toString()
-            )
+            if (data is CellDataLTE) {
+                FormatText(
+                    text = stringResource(MR.strings.rssi),
+                    textFormat = data.rssi.toString()
+                )
+            }
 
             FormatText(
                 text = stringResource(MR.strings.sinr),
                 textFormat = data?.sinr.toString()
             )
 
-            FormatText(
-                text = stringResource(MR.strings.enbid),
-                textFormat = data?.eNBID.toString()
-            )
+            if (data is CellDataLTE) {
+                FormatText(
+                    text = stringResource(MR.strings.enbid),
+                    textFormat = data.eNBID.toString()
+                )
 
-            FormatText(
-                text = stringResource(MR.strings.cid),
-                textFormat = data?.cid.toString()
-            )
+                FormatText(
+                    text = stringResource(MR.strings.cid),
+                    textFormat = data.cid.toString()
+                )
+            }
         }
     }
 }

@@ -30,23 +30,40 @@ data class DeviceData(
 @Serializable
 data class SignalData(
     @SerialName("4g")
-    val fourG: CellData? = null,
+    val fourG: CellDataLTE? = null,
     @SerialName("5g")
-    val fiveG: CellData? = null,
+    val fiveG: CellData5G? = null,
     val generic: GenericData? = null,
 )
 
+interface BaseCellData {
+    val bands: List<String>
+    val bars: Double
+    val rsrp: Int
+    val rsrq: Int
+    val sinr: Int
+}
+
 @Serializable
-data class CellData(
-    val bands: List<String>,
-    val bars: Double,
+data class CellDataLTE(
     val cid: Long,
     val eNBID: Long,
-    val rsrp: Int,
-    val rsrq: Int,
     val rssi: Int,
-    val sinr: Int,
-)
+    override val bands: List<String>,
+    override val bars: Double,
+    override val rsrp: Int,
+    override val rsrq: Int,
+    override val sinr: Int,
+) : BaseCellData
+
+@Serializable
+data class CellData5G(
+    override val bands: List<String>,
+    override val bars: Double,
+    override val rsrp: Int,
+    override val rsrq: Int,
+    override val sinr: Int,
+) : BaseCellData
 
 @Serializable
 data class GenericData(

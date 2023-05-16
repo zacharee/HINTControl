@@ -105,6 +105,7 @@ private fun NavBar(
         listOf(
             Page.Main,
             Page.Clients,
+            Page.Advanced,
             Page.WifiConfig,
         )
     }

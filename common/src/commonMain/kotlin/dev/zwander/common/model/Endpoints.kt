@@ -10,6 +10,8 @@ object Endpoints {
     const val getWifiConfigURL = "network/configuration/v2?get=ap"
     const val setWifiConfigURL = "network/configuration/v2?set=ap"
     const val getDevicesURL = "network/telemetry/?get=clients"
+    const val getCellURL = "network/telemetry/?get=cell"
+    const val getSimURL = "network/telemetry/?get=sim"
     const val rebootURL = "gateway/reset?set=reboot"
     const val authURL = "auth/login"
     const val resetURL = "auth/admin/reset"

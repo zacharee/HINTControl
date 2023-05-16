@@ -46,4 +46,5 @@
     <string name="fiveGig_radio">5GHz Radio</string>
     <string name="band_steering">Band Steering</string>
     <string name="save">Save</string>
+    <string name="advanced">Advanced</string>
 </resources>
