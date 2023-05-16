@@ -54,8 +54,6 @@ object HTTPClient {
                 setBody("{\"username\": \"${username}\", \"password\": \"${password}\"}")
             }
 
-            println(response.bodyAsText())
-
             if (response.status.isSuccess()) {
                 UserModel.username.value = username
                 UserModel.password.value = password

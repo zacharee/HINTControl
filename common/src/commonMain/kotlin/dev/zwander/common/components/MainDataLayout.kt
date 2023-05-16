@@ -21,7 +21,7 @@ fun MainDataLayout(
         modifier = modifier,
     ) {
         FlowRow(
-            horizontalArrangement = Arrangement.SpaceBetween,
+            horizontalArrangement = Arrangement.SpaceEvenly,
             modifier = Modifier.fillMaxWidth(),
         ) {
             FormatText(

@@ -1,15 +1,22 @@
 package dev.zwander.common.pages
 
 import androidx.compose.animation.*
+import androidx.compose.foundation.interaction.Interaction
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.key.*
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.OffsetMapping
@@ -25,20 +32,23 @@ import dev.zwander.common.util.HTTPClient
 import dev.zwander.resources.common.MR
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun LoginPage(
     modifier: Modifier = Modifier,
 ) {
     val scope = rememberCoroutineScope()
+    val focusManager = LocalFocusManager.current
+
     val userFocusRequester = remember { FocusRequester() }
     val passFocusRequester = remember { FocusRequester() }
-    val focusManager = LocalFocusManager.current
+    val loginInteractionSource = remember { MutableInteractionSource() }
 
     var username by UserModel.username.collectAsMutableState()
     var password by UserModel.password.collectAsMutableState()
 
-    var isLoading by GlobalModel.isLoading.collectAsMutableState()
+    val isLoading by GlobalModel.isLoading.collectAsState()
+    val token by UserModel.token.collectAsState()
 
     var error by remember {
         mutableStateOf<String?>(null)
@@ -46,6 +56,18 @@ fun LoginPage(
 
     var showingPassword by remember {
         mutableStateOf(false)
+    }
+
+    fun performLogin() {
+        error = null
+        focusManager.clearFocus()
+        scope.launch {
+            error = try {
+                HTTPClient.logIn(username ?: "", password ?: "")
+            } catch (e: Exception) {
+                e.message
+            }
+        }
     }
 
     Box(
@@ -58,27 +80,47 @@ fun LoginPage(
         ) {
             OutlinedTextField(
                 value = username ?: "",
-                onValueChange = { username = it },
+                onValueChange = { username = it.trim() },
                 isError = error != null,
-                modifier = Modifier.focusRequester(userFocusRequester),
+                modifier = Modifier.focusRequester(userFocusRequester)
+                    .onKeyEvent {
+                        when (it.key) {
+                            Key.Enter -> {
+                                performLogin()
+                                true
+                            }
+                            Key.Tab -> {
+                                if (!it.isShiftPressed) {
+                                    passFocusRequester.requestFocus()
+                                    true
+                                } else {
+                                    false
+                                }
+                            }
+                            else -> {
+                                false
+                            }
+                        }
+                    },
             )
 
             OutlinedTextField(
                 value = password ?: "",
-                onValueChange = { password = it },
+                onValueChange = { password = it.trim() },
                 visualTransformation = if (showingPassword) {
                     VisualTransformation.None
                 } else {
                     VisualTransformation {
                         TransformedText(
-                            AnnotatedString("*".repeat(it.text.length)),
+                            AnnotatedString("•".repeat(it.text.length)),
                             OffsetMapping.Identity,
                         )
                     }
                 },
                 trailingIcon = {
                     IconButton(
-                        onClick = { showingPassword = !showingPassword }
+                        onClick = { showingPassword = !showingPassword },
+                        modifier = Modifier.size(24.dp),
                     ) {
                         Icon(
                             painter = painterResource(if (showingPassword) MR.images.eye_off else MR.images.eye),
@@ -87,7 +129,26 @@ fun LoginPage(
                     }
                 },
                 isError = error != null,
-                modifier = Modifier.focusRequester(passFocusRequester),
+                modifier = Modifier.focusRequester(passFocusRequester)
+                    .onKeyEvent {
+                        when (it.key) {
+                            Key.Enter -> {
+                                performLogin()
+                                true
+                            }
+                            Key.Tab -> {
+                                if (it.isShiftPressed) {
+                                    userFocusRequester.requestFocus()
+                                    true
+                                } else {
+                                    false
+                                }
+                            }
+                            else -> {
+                                false
+                            }
+                        }
+                    },
             )
 
             AnimatedVisibility(
@@ -110,17 +171,10 @@ fun LoginPage(
 
             Button(
                 onClick = {
-                    error = null
-                    focusManager.clearFocus()
-                    scope.launch {
-                        error = try {
-                            HTTPClient.logIn(username ?: "", password ?: "")
-                        } catch (e: Exception) {
-                            e.message
-                        }
-                    }
+                    performLogin()
                 },
-                enabled = !username.isNullOrBlank() && !password.isNullOrBlank(),
+                enabled = !username.isNullOrBlank() && !password.isNullOrBlank() && !isLoading && token == null,
+                interactionSource = loginInteractionSource,
             ) {
                 Text(
                     text = stringResource(MR.strings.log_in),
