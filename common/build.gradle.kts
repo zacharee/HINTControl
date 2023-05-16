@@ -34,6 +34,9 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 api("androidx.appcompat:appcompat:1.6.1")
+                api("com.google.android.material:material:1.9.0")
+                api("com.google.accompanist:accompanist-themeadapter-material3:0.31.2-alpha")
+
                 api("androidx.core:core-ktx:1.10.1")
                 api("io.ktor:ktor-client-cio:${ktorVersion}")
             }
@@ -42,6 +45,7 @@ kotlin {
             dependencies {
                 api(compose.preview)
                 api("io.ktor:ktor-client-cio:${ktorVersion}")
+                api("com.github.weisj:darklaf-core:3.0.2")
             }
         }
     }

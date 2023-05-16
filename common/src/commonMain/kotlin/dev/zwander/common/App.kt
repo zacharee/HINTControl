@@ -2,8 +2,6 @@ package dev.zwander.common
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -15,10 +13,11 @@ import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.data.Page
 import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.UserModel
+import dev.zwander.common.ui.Theme
 
 @Composable
 fun App() {
-    MaterialTheme {
+    Theme {
         Surface {
             val token by UserModel.token.collectAsState()
 
