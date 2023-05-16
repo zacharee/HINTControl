@@ -62,10 +62,10 @@ fun LoginPage(
         error = null
         focusManager.clearFocus()
         scope.launch {
-            error = try {
+            try {
                 HTTPClient.logIn(username ?: "", password ?: "")
             } catch (e: Exception) {
-                e.message
+                error = e.message
             }
         }
     }

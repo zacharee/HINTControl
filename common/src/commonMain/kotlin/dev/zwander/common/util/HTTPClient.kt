@@ -14,13 +14,15 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
+import io.ktor.utils.io.errors.*
+import kotlinx.coroutines.delay
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
 object HTTPClient {
-    val unauthedClient = HttpClient()
+    private val unauthedClient = HttpClient()
 
-    val httpClient = HttpClient {
+    private val httpClient = HttpClient {
         install(Auth) {
             bearer {
                 loadTokens {
@@ -43,12 +45,11 @@ object HTTPClient {
         }
     }
 
-    val json = Json {
+    private val json = Json {
         ignoreUnknownKeys = true
-//        isLenient = true
     }
 
-    suspend fun logIn(username: String, password: String): String? {
+    suspend fun logIn(username: String, password: String) {
         return withLoader {
             val response = unauthedClient.post(Endpoints.authURL.createFullUrl()) {
                 setBody("{\"username\": \"${username}\", \"password\": \"${password}\"}")
@@ -59,10 +60,8 @@ object HTTPClient {
                 UserModel.password.value = password
 
                 UserModel.token.value = json.decodeFromString<LoginResultData>(response.bodyAsText()).auth.token
-
-                null
             } else {
-                response.status.description
+                throw IOException(response.status.description)
             }
         }
     }
@@ -119,46 +118,61 @@ object HTTPClient {
         }
     }
 
-    suspend fun setWifiData(newData: WifiConfig): String? {
-        return withLoader {
+    suspend fun setWifiData(newData: WifiConfig) {
+        withLoader {
             try {
                 httpClient.post(Endpoints.setWifiConfigURL.createFullUrl()) {
                     contentType(ContentType.parse("application/json"))
                     setBody(newData)
-                    timeout {
-                        requestTimeoutMillis = 20000
-                        connectTimeoutMillis = 20000
-                        socketTimeoutMillis = 20000
-                    }
-                }.run {
-                    if (status.isSuccess()) null else status.description
                 }
             } catch (e: HttpRequestTimeoutException) {
-                HttpStatusCode.RequestTimeout.description
+                if (!waitForLive()) {
+                    GlobalModel.httpError.value = e.message
+                }
+                Unit
             }
         }
     }
 
-    suspend fun setLogin(newUsername: String, newPassword: String): String? {
-        return withLoader {
+    suspend fun setLogin(newUsername: String, newPassword: String) {
+        withLoader {
             httpClient.post(Endpoints.resetURL.createFullUrl()) {
                 setBody("{\"usernameNew\": \"${newUsername}\", \"passwordNew\": \"${newPassword}\"}")
-            }.run {
-                if (status.isSuccess()) null else status.description
+            }.apply {
+                if (!status.isSuccess()) {
+                    throw IOException(status.description)
+                }
             }
         }
     }
 
-    suspend fun reboot(): String? {
+    suspend fun reboot() {
         return withLoader {
             httpClient.post(Endpoints.rebootURL.createFullUrl())
-                .run {
-                    if (status.isSuccess()) null else status.description
+                .apply {
+                    if (!status.isSuccess()) {
+                        throw IOException(status.description)
+                    }
                 }
         }
     }
 
-    suspend fun <T> withLoader(block: suspend () -> T): T {
+    private suspend fun waitForLive(): Boolean {
+        for (i in 0 .. 100) {
+            val response = httpClient
+                .get(Endpoints.getWifiConfigURL.createFullUrl())
+
+            if (response.status.isSuccess()) {
+                return true
+            }
+
+            delay(1000L)
+        }
+
+        return false
+    }
+
+    private suspend fun <T> withLoader(block: suspend () -> T): T {
         return try {
             GlobalModel.isLoading.value = true
             block()

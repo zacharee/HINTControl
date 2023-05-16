@@ -27,6 +27,7 @@ import dev.zwander.resources.common.MR
 import korlibs.memory.Platform
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun App(
     modifier: Modifier = Modifier,
@@ -36,8 +37,19 @@ fun App(
             val scope = rememberCoroutineScope()
             val token by UserModel.token.collectAsState()
             val isLoading by GlobalModel.isLoading.collectAsState()
+            val snackbarHostState = remember { SnackbarHostState() }
 
             var currentPage by GlobalModel.currentPage.collectAsMutableState()
+            var error by GlobalModel.httpError.collectAsMutableState()
+
+            LaunchedEffect(error) {
+                if (error != null) {
+                    snackbarHostState.showSnackbar(
+                        message = error!!,
+                        withDismissAction = true,
+                    )
+                }
+            }
 
             LaunchedEffect(token) {
                 if (currentPage == Page.Login && token != null) {
@@ -49,7 +61,7 @@ fun App(
 
             LaunchedEffect(currentPage) {
                 if (currentPage.refreshAction != null && currentPage.needsRefresh?.invoke() == true) {
-                    currentPage.refreshAction?.invoke()
+                    error = handleRefresh(currentPage)
                 }
             }
 
@@ -65,65 +77,80 @@ fun App(
                     refreshing = false,
                     onRefresh = {
                         scope.launch {
-                            currentPage.refreshAction?.invoke()
+                            error = handleRefresh(currentPage)
                         }
                     }
                 )
 
-                Column(
+                Scaffold(
                     modifier = modifier.fillMaxSize(),
-                ) {
-                    Row(
-                        modifier = Modifier.weight(1f).fillMaxWidth(),
-                    ) {
+                    bottomBar = {
                         AnimatedVisibility(
-                            visible = token != null && sideRail,
-                            enter = fadeIn() + expandHorizontally(expandFrom = Alignment.Start),
-                            exit = fadeOut() + shrinkHorizontally(shrinkTowards = Alignment.Start),
+                            visible = token != null && !sideRail,
+                            enter = fadeIn() + expandVertically(expandFrom = Alignment.Bottom),
+                            exit = fadeOut() + shrinkVertically(shrinkTowards = Alignment.Bottom),
                         ) {
                             NavBar(
                                 currentPage = currentPage,
                                 onPageChange = { currentPage = it },
-                                vertical = true,
+                                vertical = false,
                             )
                         }
-
-                        Box(
-                            modifier = Modifier.weight(1f).then(
-                                if (!sideRail && currentPage.refreshAction != null) {
-                                    Modifier.pullRefresh(
-                                        state = pullRefreshState
-                                    )
-                                } else {
-                                    Modifier
-                                }
-                            ),
+                    },
+                    snackbarHost = {
+                        SnackbarHost(
+                            hostState = snackbarHostState,
                         ) {
-                            AppView(
-                                currentPage = currentPage,
-                                modifier = Modifier.widthIn(max = 1000.dp)
-                                    .fillMaxSize()
-                                    .align(Alignment.TopCenter),
-                            )
-
-                            PullRefreshIndicator(
-                                refreshing = false,
-                                state = pullRefreshState,
-                                modifier = Modifier.align(Alignment.TopCenter),
+                            Snackbar(
+                                snackbarData = it,
+                                modifier = Modifier.fillMaxWidth()
                             )
                         }
                     }
-
-                    AnimatedVisibility(
-                        visible = token != null && !sideRail,
-                        enter = fadeIn() + expandVertically(expandFrom = Alignment.Bottom),
-                        exit = fadeOut() + shrinkVertically(shrinkTowards = Alignment.Bottom),
+                ) {
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
                     ) {
-                        NavBar(
-                            currentPage = currentPage,
-                            onPageChange = { currentPage = it },
-                            vertical = false,
-                        )
+                        Row(
+                            modifier = Modifier.weight(1f).fillMaxWidth(),
+                        ) {
+                            AnimatedVisibility(
+                                visible = token != null && sideRail,
+                                enter = fadeIn() + expandHorizontally(expandFrom = Alignment.Start),
+                                exit = fadeOut() + shrinkHorizontally(shrinkTowards = Alignment.Start),
+                            ) {
+                                NavBar(
+                                    currentPage = currentPage,
+                                    onPageChange = { currentPage = it },
+                                    vertical = true,
+                                )
+                            }
+
+                            Box(
+                                modifier = Modifier.weight(1f).then(
+                                    if (!sideRail && currentPage.refreshAction != null) {
+                                        Modifier.pullRefresh(
+                                            state = pullRefreshState
+                                        )
+                                    } else {
+                                        Modifier
+                                    }
+                                ),
+                            ) {
+                                AppView(
+                                    currentPage = currentPage,
+                                    modifier = Modifier.widthIn(max = 1000.dp)
+                                        .fillMaxSize()
+                                        .align(Alignment.TopCenter),
+                                )
+
+                                PullRefreshIndicator(
+                                    refreshing = false,
+                                    state = pullRefreshState,
+                                    modifier = Modifier.align(Alignment.TopCenter),
+                                )
+                            }
+                        }
                     }
                 }
 
@@ -193,6 +220,8 @@ private fun NavBar(
         )
     }
 
+    var error by GlobalModel.httpError.collectAsMutableState()
+
     if (vertical) {
         NavigationRail(
             modifier = modifier,
@@ -211,7 +240,7 @@ private fun NavBar(
                     selected = false,
                     onClick = {
                         scope.launch {
-                            currentPage.refreshAction.invoke()
+                            error = handleRefresh(currentPage)
                         }
                     },
                     label = { Text(text = stringResource(MR.strings.refresh)) },
@@ -237,7 +266,7 @@ private fun NavBar(
                     selected = false,
                     onClick = {
                         scope.launch {
-                            currentPage.refreshAction.invoke()
+                            error = handleRefresh(currentPage)
                         }
                     },
                     label = { Text(text = stringResource(MR.strings.refresh)) },
@@ -245,5 +274,14 @@ private fun NavBar(
                 )
             }
         }
+    }
+}
+
+private suspend fun handleRefresh(page: Page): String? {
+    return try {
+        page.refreshAction?.invoke()
+        null
+    } catch (e: Exception) {
+        e.message
     }
 }
