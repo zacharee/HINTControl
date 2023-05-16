@@ -11,10 +11,6 @@ kotlin {
     jvm("desktop") {
         jvmToolchain(11)
     }
-    js(IR) {
-        browser()
-        binaries.executable()
-    }
     sourceSets {
         val ktorVersion = "2.3.0"
 
@@ -48,12 +44,6 @@ kotlin {
                 api("io.ktor:ktor-client-cio:${ktorVersion}")
             }
         }
-        val jsMain by getting {
-            dependencies {
-                api("io.ktor:ktor-client-js:${ktorVersion}")
-                api(npm("http-proxy-middleware", "2.0.6"))
-            }
-        }
     }
 }
 
@@ -68,10 +58,6 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-}
-
-compose.experimental {
-    web.application {}
 }
 
 multiplatformResources {

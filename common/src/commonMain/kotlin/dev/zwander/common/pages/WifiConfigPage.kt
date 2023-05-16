@@ -35,7 +35,7 @@ fun WifiConfigPage(
     val scope = rememberCoroutineScope()
     var data by MainModel.currentWifiData.collectAsMutableState()
 
-    var isLoading by GlobalModel.isLoading.collectAsMutableState()
+    val isLoading by GlobalModel.isLoading.collectAsState()
 
     var tempState by remember(data) {
         mutableStateOf(data)
@@ -129,12 +129,10 @@ fun WifiConfigPage(
         OutlinedButton(
             onClick = {
                 scope.launch {
-                    isLoading = true
                     tempState?.let {
                         HTTPClient.setWifiData(it)
                     }
                     MainModel.currentWifiData.value = HTTPClient.getWifiData()
-                    isLoading = false
                 }
             },
             enabled = tempState != data && !isLoading,

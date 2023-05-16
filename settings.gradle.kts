@@ -18,4 +18,4 @@ pluginManagement {
 
 rootProject.name = "ArcadyanKVD21Control"
 
-include(":android", ":desktop", ":common", ":browser")
+include(":android", ":desktop", ":common")

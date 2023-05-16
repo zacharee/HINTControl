@@ -17,7 +17,7 @@ object Endpoints {
     const val resetURL = "auth/admin/reset"
 
     fun String.createFullUrl(): String {
-        return if (hostOs == OS.JS) {
+        return if (false && hostOs == OS.JS) {
             "api/$this"
         } else {
             "$baseUrl$this"

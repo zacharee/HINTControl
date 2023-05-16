@@ -38,7 +38,7 @@ fun ClientListPage(
         data = HTTPClient.getDeviceData()
     }
 
-    val items = remember {
+    val items = remember(data) {
         listOf(
             ClientListItem(
                 title = MR.strings.twoGig,
@@ -136,7 +136,7 @@ private fun ClientItem(
 
             FormatText(
                 text = stringResource(MR.strings.ipv6),
-                textFormat = data.ipv6.toString(),
+                textFormat = data.ipv6?.joinToString("\n").toString(),
             )
 
             FormatText(
