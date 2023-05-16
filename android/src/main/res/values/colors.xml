@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="actual_icon_color_one">@color/icon_color_one</color>
+    <color name="actual_icon_color_two">@color/icon_color_two</color>
+    <color name="icon_foreground_color">@android:color/white</color>
+</resources>

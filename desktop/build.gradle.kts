@@ -27,10 +27,31 @@ kotlin {
 compose.desktop {
     application {
         mainClass = "MainKt"
+
+        val pkg = rootProject.extra["package_name"].toString()
+
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = rootProject.extra["package_name"].toString()
+            windows {
+                menu = true
+                iconFile.set(project.file("src/jvmMain/resources/icon.ico"))
+                targetFormats(TargetFormat.Exe, TargetFormat.AppImage)
+            }
+
+            macOS {
+                bundleID = pkg
+                iconFile.set(project.file("src/jvmMain/resources/icon.icns"))
+                targetFormats(TargetFormat.Dmg)
+            }
+
+            linux {
+                iconFile.set(project.file("src/jvmMain/resources/icon.png"))
+                targetFormats(TargetFormat.Deb, TargetFormat.AppImage)
+            }
+
+            packageName = pkg
             packageVersion = rootProject.extra["app_version_name"].toString()
+
+            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Exe)
         }
     }
 }
