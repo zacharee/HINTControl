@@ -9,4 +9,6 @@ object MainModel {
     val currentWifiData = MutableStateFlow<WifiConfig?>(null)
     val currentCellData = MutableStateFlow<CellDataRoot?>(null)
     val currentSimData = MutableStateFlow<SimDataRoot?>(null)
+
+    val tempWifiState = MutableStateFlow<WifiConfig?>(null)
 }

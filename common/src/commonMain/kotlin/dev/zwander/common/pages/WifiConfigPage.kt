@@ -11,9 +11,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.stringResource
-import dev.zwander.common.components.TextSwitch
+import dev.zwander.common.components.BandConfigLayout
 import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.MainModel
 import dev.zwander.common.util.AdaptiveMod
@@ -35,8 +36,10 @@ fun WifiConfigPage(
     val data by MainModel.currentWifiData.collectAsState()
     val isLoading by GlobalModel.isLoading.collectAsState()
 
-    var tempState by remember(data) {
-        mutableStateOf(data)
+    var tempState by MainModel.tempWifiState.collectAsMutableState()
+
+    LaunchedEffect(data) {
+        tempState = data
     }
 
     val items = remember(data) {
@@ -44,48 +47,7 @@ fun WifiConfigPage(
             ItemData(
                 title = MR.strings.band_mgmnt,
                 render = {
-                    Column(
-                        modifier = it,
-                    ) {
-                        TextSwitch(
-                            text = stringResource(MR.strings.twoGig_radio),
-                            checked = tempState?.twoGig?.isRadioEnabled ?: false,
-                            onCheckedChange = { checked ->
-                                tempState = tempState?.copy(
-                                    twoGig = tempState?.twoGig?.copy(
-                                        isRadioEnabled = checked
-                                    )
-                                )
-                            },
-                            enabled = !isLoading,
-                        )
-
-                        TextSwitch(
-                            text = stringResource(MR.strings.fiveGig_radio),
-                            checked = tempState?.fiveGig?.isRadioEnabled ?: false,
-                            onCheckedChange = { checked ->
-                                tempState = tempState?.copy(
-                                    fiveGig = tempState?.fiveGig?.copy(
-                                        isRadioEnabled = checked
-                                    )
-                                )
-                            },
-                            enabled = !isLoading,
-                        )
-
-                        TextSwitch(
-                            text = stringResource(MR.strings.band_steering),
-                            checked = tempState?.bandSteering?.isEnabled ?: false,
-                            onCheckedChange = { checked ->
-                                tempState = tempState?.copy(
-                                    bandSteering = tempState?.bandSteering?.copy(
-                                        isEnabled = checked
-                                    )
-                                )
-                            },
-                            enabled = !isLoading,
-                        )
-                    }
+                    BandConfigLayout(it)
                 }
             )
         )
