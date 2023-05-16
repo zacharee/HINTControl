@@ -11,6 +11,28 @@ import dev.zwander.common.model.adapters.BaseCellData
 import dev.zwander.common.model.adapters.CellDataLTE
 import dev.zwander.resources.common.MR
 
+@Composable
+fun CellBars(
+    bars: Int?,
+    modifier: Modifier = Modifier,
+) {
+    Icon(
+        painter = painterResource(
+            when (bars) {
+                0 -> MR.images.cell_0
+                1 -> MR.images.cell_1
+                2 -> MR.images.cell_2
+                3 -> MR.images.cell_3
+                4 -> MR.images.cell_4
+                5 -> MR.images.cell_5
+                else -> MR.images.cell_none
+            }
+        ),
+        contentDescription = stringResource(MR.strings.strength),
+        modifier = modifier,
+    )
+}
+
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun CellDataLayout(
@@ -20,25 +42,6 @@ fun CellDataLayout(
     Column(
         modifier = modifier,
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            Icon(
-                painter = painterResource(
-                    when (data?.bars?.toInt()) {
-                        0 -> MR.images.cell_0
-                        1 -> MR.images.cell_1
-                        2 -> MR.images.cell_2
-                        3 -> MR.images.cell_3
-                        4 -> MR.images.cell_4
-                        5 -> MR.images.cell_5
-                        else -> MR.images.cell_none
-                    }
-                ),
-                contentDescription = stringResource(MR.strings.strength),
-            )
-        }
-
         FlowRow(
             horizontalArrangement = Arrangement.SpaceEvenly,
             modifier = Modifier.fillMaxWidth(),
