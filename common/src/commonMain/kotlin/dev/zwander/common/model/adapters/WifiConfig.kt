@@ -15,15 +15,15 @@ data class WifiConfig(
 
 @Serializable
 data class BandConfig(
-    val airtimeFairness: Boolean,
-    val channel: String,
-    val channelBandwidth: String,
-    val isMUMIMOEnabled: Boolean,
-    val isRadioEnabled: Boolean,
-    val isWMMEnabled: Boolean,
-    val maxClients: Int,
-    val mode: String,
-    val transmissionPower: String,
+    val airtimeFairness: Boolean? = null,
+    val channel: String? = null,
+    val channelBandwidth: String? = null,
+    val isMUMIMOEnabled: Boolean? = null,
+    val isRadioEnabled: Boolean? = null,
+    val isWMMEnabled: Boolean? = null,
+    val maxClients: Int? = null,
+    val mode: String? = null,
+    val transmissionPower: String? = null,
 )
 
 @Serializable

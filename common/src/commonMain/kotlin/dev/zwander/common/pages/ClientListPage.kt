@@ -1,51 +1,81 @@
-package dev.zwander.common.components
+package dev.zwander.common.pages
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
+import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.stringResource
+import dev.zwander.common.components.FormatText
 import dev.zwander.common.model.MainModel
 import dev.zwander.common.model.adapters.BaseClientData
+import dev.zwander.common.util.AdaptiveMod
+import dev.zwander.common.util.HTTPClient
 import dev.zwander.resources.common.MR
 
+private data class ClientListItem(
+    val title: StringResource,
+    val datas: List<BaseClientData>?,
+)
+
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ClientDataLayout(
-    modifier: Modifier = Modifier
+fun ClientListPage(
+    modifier: Modifier = Modifier,
 ) {
-    val data by MainModel.currentClientData.collectAsState()
+    var data by MainModel.currentClientData.collectAsMutableState()
 
-    Column(
+    LaunchedEffect(null) {
+        data = HTTPClient.getDeviceData()
+    }
+
+    val items = remember {
+        listOf(
+            ClientListItem(
+                title = MR.strings.twoGig,
+                datas = data?.clients?.twoGig,
+            ),
+            ClientListItem(
+                title = MR.strings.fiveGig,
+                datas = data?.clients?.fiveGig,
+            ),
+            ClientListItem(
+                title = MR.strings.wired,
+                datas = data?.clients?.ethernet,
+            ),
+        )
+    }
+
+    LazyVerticalStaggeredGrid(
+        contentPadding = PaddingValues(8.dp),
+        columns = AdaptiveMod(300.dp, items.size),
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalItemSpacing = 8.dp,
     ) {
-        ClientList(
-            title = stringResource(MR.strings.twoGig),
-            datas = data?.clients?.twoGig,
-            modifier = Modifier.fillMaxWidth(),
-        )
-
-        Divider()
-
-        ClientList(
-            title = stringResource(MR.strings.fiveGig),
-            datas = data?.clients?.fiveGig,
-            modifier = Modifier.fillMaxWidth(),
-        )
-
-        Divider()
-
-        ClientList(
-            title = stringResource(MR.strings.wired),
-            datas = data?.clients?.ethernet,
-            modifier = Modifier.fillMaxWidth(),
-        )
+        items(items = items, key = { it.title }) {
+            OutlinedCard(
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxWidth().padding(8.dp)
+                ) {
+                    ClientList(
+                        title = stringResource(it.title),
+                        datas = it.datas,
+                    )
+                }
+            }
+        }
     }
 }
 

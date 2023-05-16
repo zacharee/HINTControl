@@ -9,6 +9,7 @@ import dev.zwander.common.model.adapters.MainData
 import dev.zwander.common.model.adapters.WifiConfig
 import io.ktor.client.*
 import io.ktor.client.call.*
+import io.ktor.client.plugins.*
 import io.ktor.client.plugins.auth.*
 import io.ktor.client.plugins.auth.providers.*
 import io.ktor.client.plugins.contentnegotiation.*
@@ -37,6 +38,11 @@ object HTTPClient {
         install(ContentNegotiation) {
             json()
         }
+        install(HttpTimeout) {
+            requestTimeoutMillis = 10000
+            connectTimeoutMillis = 10000
+            socketTimeoutMillis = 10000
+        }
     }
 
     val json = Json {
@@ -45,7 +51,6 @@ object HTTPClient {
     }
 
     suspend fun logIn(username: String, password: String): String? {
-        println(Endpoints.authURL.createFullUrl())
         val response = httpClient.post(Endpoints.authURL.createFullUrl()) {
             setBody("{\"username\": \"${username}\", \"password\": \"${password}\"}")
         }
@@ -58,7 +63,6 @@ object HTTPClient {
 
             null
         } else {
-            println(response.bodyAsText())
             response.status.description
         }
     }
@@ -83,23 +87,31 @@ object HTTPClient {
         return json.decodeFromString(
             httpClient
                 .get(Endpoints.getDevicesURL.createFullUrl())
-                .bodyAsText().also {
-                    println(it)
-                }
+                .bodyAsText()
         )
     }
 
     suspend fun setWifiData(newData: WifiConfig): String? {
-        return httpClient.post(Endpoints.setWifiConfigURL.createFullUrl()) {
-            setBody(newData)
-        }.run {
-            if (status.isSuccess()) null else status.description
+        return try {
+            httpClient.post(Endpoints.setWifiConfigURL.createFullUrl()) {
+                contentType(ContentType.parse("application/json"))
+                setBody(newData)
+                timeout {
+                    requestTimeoutMillis = 20000
+                    connectTimeoutMillis = 20000
+                    socketTimeoutMillis = 20000
+                }
+            }.run {
+                if (status.isSuccess()) null else status.description
+            }
+        } catch (e: HttpRequestTimeoutException) {
+            return HttpStatusCode.RequestTimeout.description
         }
     }
 
     suspend fun setLogin(newUsername: String, newPassword: String): String? {
         return httpClient.post(Endpoints.resetURL.createFullUrl()) {
-            setBody("{\"usernameNew\": \"${newUsername}\", \"passwordNew\": \"${newUsername}\"}")
+            setBody("{\"usernameNew\": \"${newUsername}\", \"passwordNew\": \"${newPassword}\"}")
         }.run {
             if (status.isSuccess()) null else status.description
         }
