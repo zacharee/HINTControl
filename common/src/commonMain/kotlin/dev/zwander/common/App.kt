@@ -1,10 +1,13 @@
 package dev.zwander.common
 
 import androidx.compose.animation.*
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.*
@@ -41,6 +44,15 @@ fun App(
 
             var currentPage by GlobalModel.currentPage.collectAsMutableState()
             var error by GlobalModel.httpError.collectAsMutableState()
+
+            val pages = remember {
+                listOf(
+                    Page.Main,
+                    Page.Clients,
+                    Page.Advanced,
+                    Page.WifiConfig,
+                )
+            }
 
             LaunchedEffect(error) {
                 if (error != null) {
@@ -92,6 +104,7 @@ fun App(
                         ) {
                             NavBar(
                                 currentPage = currentPage,
+                                pages = pages,
                                 onPageChange = { currentPage = it },
                                 vertical = false,
                             )
@@ -119,6 +132,7 @@ fun App(
                             NavBar(
                                 currentPage = currentPage,
                                 onPageChange = { currentPage = it },
+                                pages = pages,
                                 vertical = true,
                             )
                         }
@@ -136,6 +150,10 @@ fun App(
                         ) {
                             AppView(
                                 currentPage = currentPage,
+                                sideRail = sideRail,
+                                pageCount = pages.size,
+                                pages = pages,
+                                onPageChange = { currentPage = it },
                                 modifier = Modifier.widthIn(max = 1000.dp)
                                     .fillMaxSize()
                                     .align(Alignment.TopCenter),
@@ -164,19 +182,44 @@ fun App(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun AppView(
+    pages: List<Page>,
     currentPage: Page,
+    onPageChange: (Page) -> Unit,
+    sideRail: Boolean,
+    pageCount: Int,
     modifier: Modifier = Modifier,
 ) {
     Box(
         modifier = modifier,
     ) {
         Crossfade(
-            targetState = currentPage,
+            targetState = sideRail || currentPage == Page.Login || Platform.isJvm,
             modifier = Modifier.fillMaxSize(),
         ) {
-            it.render(Modifier.fillMaxSize())
+            if (it) {
+                Crossfade(
+                    targetState = currentPage,
+                    modifier = Modifier.fillMaxSize(),
+                ) { page ->
+                    page.render(Modifier.fillMaxSize())
+                }
+            } else {
+                val state = rememberPagerState()
+
+                LaunchedEffect(state.currentPage) {
+                    onPageChange(pages[state.currentPage])
+                }
+
+                HorizontalPager(
+                    pageCount = pageCount,
+                    state = state,
+                ) { page ->
+                    pages[page].render(Modifier.fillMaxSize())
+                }
+            }
         }
     }
 }
@@ -201,20 +244,13 @@ private fun LoadingScrim(
 
 @Composable
 private fun NavBar(
+    pages: List<Page>,
     currentPage: Page,
     onPageChange: (Page) -> Unit,
     modifier: Modifier = Modifier,
     vertical: Boolean = true,
 ) {
     val scope = rememberCoroutineScope()
-    val pages = remember {
-        listOf(
-            Page.Main,
-            Page.Clients,
-            Page.Advanced,
-            Page.WifiConfig,
-        )
-    }
 
     var error by GlobalModel.httpError.collectAsMutableState()
 
