@@ -1,5 +1,3 @@
-@file:JvmName("ThemeInfoJVM")
-
 package dev.zwander.common.ui
 
 import androidx.compose.material3.ColorScheme

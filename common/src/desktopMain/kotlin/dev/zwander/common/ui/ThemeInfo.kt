@@ -1,3 +1,5 @@
+@file:JvmName("ThemeInfoJVM")
+
 package dev.zwander.common.ui
 
 import androidx.compose.runtime.Composable

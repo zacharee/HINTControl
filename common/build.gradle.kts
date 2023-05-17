@@ -4,6 +4,7 @@ plugins {
     id("org.jetbrains.compose")
     id("com.android.library")
     id("dev.icerock.mobile.multiplatform-resources")
+    kotlin("native.cocoapods")
 }
 
 version = rootProject.extra["app_version_code"].toString()
@@ -13,6 +14,23 @@ kotlin {
     jvm("desktop") {
         jvmToolchain(11)
     }
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
+
+    cocoapods {
+        version = rootProject.extra["app_version_code"].toString()
+        summary = "KVD21 Control"
+        homepage = "https://zwander.dev"
+        ios.deploymentTarget = "14.1"
+        podfile = project.file("../iosApp/Podfile")
+        framework {
+            baseName = "common"
+            isStatic = true
+        }
+        extraSpecAttributes["resources"] = "['src/commonMain/resources/**', 'src/iosMain/resources/**']"
+    }
+
     sourceSets {
         val ktorVersion = "2.3.0"
 
@@ -43,12 +61,32 @@ kotlin {
                 api("io.ktor:ktor-client-cio:${ktorVersion}")
             }
         }
+        val skiaMain by creating {
+            dependsOn(commonMain)
+            dependencies {
+
+            }
+        }
         val desktopMain by getting {
+            dependsOn(skiaMain)
             dependencies {
                 api(compose.preview)
                 api("io.ktor:ktor-client-cio:${ktorVersion}")
                 api("com.github.weisj:darklaf-core:3.0.2")
                 api("com.github.weisj:darklaf-macos:3.0.2")
+            }
+        }
+
+        val iosX64Main by getting
+        val iosArm64Main by getting
+        val iosSimulatorArm64Main by getting
+        val iosMain by creating {
+            dependsOn(skiaMain)
+            iosX64Main.dependsOn(this)
+            iosArm64Main.dependsOn(this)
+            iosSimulatorArm64Main.dependsOn(this)
+            dependencies {
+
             }
         }
     }
