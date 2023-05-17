@@ -82,7 +82,7 @@ fun LoginPage(
         ) {
             OutlinedTextField(
                 value = username ?: "",
-                onValueChange = { it.trim().filterNot { it.isWhitespace() } },
+                onValueChange = { username = it.trim().filterNot { it.isWhitespace() } },
                 isError = error != null,
                 modifier = Modifier.focusRequester(userFocusRequester)
                     .onKeyEvent {
