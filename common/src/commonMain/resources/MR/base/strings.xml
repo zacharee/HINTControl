@@ -73,4 +73,15 @@
     <string name="zoom">Zoom</string>
     <string name="minimize">Minimize</string>
     <string name="window">Window</string>
+
+    <string name="ssids">SSIDs</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="new_ssid">New SSID</string>
+    <string name="add">Add</string>
+    <string name="cancel">Cancel</string>
+    <string name="ssid">SSID</string>
+    <string name="encryption">Encryption</string>
+    <string name="guest">Guest</string>
+    <string name="hidden">Hidden</string>
 </resources>

@@ -15,6 +15,7 @@ import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.components.BandConfigLayout
+import dev.zwander.common.components.SSIDListLayout
 import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.MainModel
 import dev.zwander.common.util.AdaptiveMod
@@ -48,8 +49,14 @@ fun WifiConfigPage(
                 title = MR.strings.band_mgmnt,
                 render = {
                     BandConfigLayout(it)
-                }
-            )
+                },
+            ),
+            ItemData(
+                title = MR.strings.ssids,
+                render = {
+                    SSIDListLayout(it)
+                },
+            ),
         )
     }
 

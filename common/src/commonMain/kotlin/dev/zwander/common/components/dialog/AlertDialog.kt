@@ -46,10 +46,10 @@ fun AlertDialogDef(
 
 @Composable
 fun AlertDialogContents(
-    buttons: @Composable() RowScope.() -> Unit,
+    buttons: @Composable RowScope.() -> Unit,
     modifier: Modifier = Modifier,
-    title: (@Composable() () -> Unit)?,
-    text: (@Composable() ColumnScope.() -> Unit)?,
+    title: (@Composable () -> Unit)?,
+    text: (@Composable ColumnScope.() -> Unit)?,
     shape: Shape = RoundedCornerShape(8.dp),
     backgroundColor: Color,
     contentColor: Color,
