@@ -213,6 +213,10 @@ private fun AppView(
                     onPageChange(pages[state.currentPage])
                 }
 
+                LaunchedEffect(currentPage) {
+                    state.scrollToPage(pages.indexOf(currentPage))
+                }
+
                 HorizontalPager(
                     pageCount = pageCount,
                     state = state,
