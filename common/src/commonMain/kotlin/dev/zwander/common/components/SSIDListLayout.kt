@@ -176,7 +176,7 @@ fun SSIDListLayout(
 
             TextSwitch(
                 text = stringResource(MR.strings.hidden),
-                checked = editingState?.isBroadcastEnabled != true,
+                checked = editingState?.isBroadcastEnabled == false,
                 onCheckedChange = {
                     editingState = editingState?.copy(
                         isBroadcastEnabled = !it,
