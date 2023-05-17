@@ -1,9 +1,6 @@
 package dev.zwander.common.components
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
@@ -156,6 +153,7 @@ fun SSIDListLayout(
                     )
                 },
                 modifier = Modifier.fillMaxWidth(),
+                isError = editingState?.ssidName.isNullOrBlank(),
             )
 
             OutlinedTextField(
@@ -171,7 +169,10 @@ fun SSIDListLayout(
                     )
                 },
                 modifier = Modifier.fillMaxWidth(),
+                isError = editingState?.wpaKey.isNullOrBlank(),
             )
+
+            Spacer(modifier = Modifier.size(8.dp))
 
             TextSwitch(
                 text = stringResource(MR.strings.hidden),
@@ -182,6 +183,8 @@ fun SSIDListLayout(
                     )
                 },
             )
+
+            Spacer(modifier = Modifier.size(8.dp))
 
             TextSwitch(
                 text = stringResource(MR.strings.guest),
@@ -214,6 +217,8 @@ fun SSIDListLayout(
 
                     editingConfig = null
                 },
+                enabled = !editingState?.ssidName.isNullOrBlank() &&
+                        !editingState?.wpaKey.isNullOrBlank(),
             ) {
                 Text(
                     text = stringResource(MR.strings.save),
