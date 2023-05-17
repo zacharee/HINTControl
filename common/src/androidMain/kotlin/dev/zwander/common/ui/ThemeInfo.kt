@@ -1,3 +1,5 @@
+@file:JvmName("ThemeInfoAndroid")
+
 package dev.zwander.common.ui
 
 import android.os.Build
