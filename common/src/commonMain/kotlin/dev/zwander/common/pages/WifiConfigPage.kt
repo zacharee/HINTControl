@@ -3,7 +3,6 @@ package dev.zwander.common.pages
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -63,12 +62,12 @@ fun WifiConfigPage(
         PageGrid(
             items = items,
             modifier = Modifier.fillMaxWidth().weight(1f),
-            renderItem = {
+            renderItemTitle = {
                 Text(
                     text = stringResource(it.title),
-                    style = MaterialTheme.typography.titleLarge,
                 )
-
+            },
+            renderItem = {
                 it.render(Modifier.fillMaxWidth())
             },
         )

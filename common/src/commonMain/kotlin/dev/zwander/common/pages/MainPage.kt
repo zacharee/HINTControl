@@ -1,7 +1,6 @@
 package dev.zwander.common.pages
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -83,20 +82,21 @@ fun MainPage(
             PageGrid(
                 items = items,
                 modifier = Modifier.fillMaxWidth().weight(1f),
-                renderItem = {
+                renderItemTitle = {
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth()
+                            .height(IntrinsicSize.Min),
                         verticalAlignment = Alignment.Bottom,
                     ) {
                         Text(
                             text = stringResource(it.title),
-                            style = MaterialTheme.typography.titleLarge,
                             modifier = Modifier.weight(1f),
                         )
 
-                        it.titleAccessory?.invoke(Modifier.size(24.dp))
+                        it.titleAccessory?.invoke(Modifier.fillMaxHeight().aspectRatio(1f))
                     }
-
+                },
+                renderItem = {
                     it.render(Modifier.fillMaxWidth())
                 }
             )

@@ -4,8 +4,11 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.zwander.common.util.AdaptiveMod
@@ -15,6 +18,7 @@ import dev.zwander.common.util.AdaptiveMod
 fun <T> PageGrid(
     items: List<T>,
     key: (T) -> Any = { it.hashCode() },
+    renderItemTitle: @Composable ColumnScope.(T) -> Unit,
     renderItem: @Composable ColumnScope.(T) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -33,6 +37,14 @@ fun <T> PageGrid(
                     modifier = Modifier.fillMaxWidth()
                         .padding(8.dp),
                 ) {
+                    CompositionLocalProvider(
+                        LocalTextStyle provides MaterialTheme.typography.titleLarge,
+                    ) {
+                        renderItemTitle(it)
+                    }
+
+                    Spacer(modifier = Modifier.size(8.dp))
+
                     renderItem(it)
                 }
             }

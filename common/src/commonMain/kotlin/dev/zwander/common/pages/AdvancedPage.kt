@@ -1,7 +1,6 @@
 package dev.zwander.common.pages
 
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -54,12 +53,12 @@ fun AdvancedPage(
     PageGrid(
         items = items,
         modifier = modifier,
-        renderItem = {
+        renderItemTitle = {
             Text(
                 text = stringResource(it.title),
-                style = MaterialTheme.typography.titleLarge,
             )
-
+        },
+        renderItem = {
             if (it.blocks.isNotEmpty()) {
                 InfoRow(
                     items = it.blocks,

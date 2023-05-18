@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Divider
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -52,9 +51,13 @@ fun ClientListPage(
     PageGrid(
         items = items,
         modifier = modifier,
+        renderItemTitle = {
+            Text(
+                text = stringResource(it.title),
+            )
+        },
         renderItem = {
             ClientList(
-                title = stringResource(it.title),
                 datas = it.datas,
             )
         },
@@ -63,18 +66,12 @@ fun ClientListPage(
 
 @Composable
 private fun ClientList(
-    title: String,
     datas: List<BaseClientData>?,
     modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier,
     ) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.titleLarge,
-        )
-
         if (!datas.isNullOrEmpty()) {
             datas.forEachIndexed { index, data ->
                 ClientItem(
