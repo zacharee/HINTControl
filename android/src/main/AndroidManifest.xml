@@ -24,7 +24,8 @@
                   |screenLayout
                   |screenSize
                   |smallestScreenSize
-                  |touchscreen|uiMode"
+                  |touchscreen
+                  |uiMode"
         >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
