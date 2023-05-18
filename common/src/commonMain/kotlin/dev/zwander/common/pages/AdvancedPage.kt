@@ -1,24 +1,19 @@
 package dev.zwander.common.pages
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
-import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.components.InfoRow
+import dev.zwander.common.components.PageGrid
 import dev.zwander.common.model.MainModel
 import dev.zwander.common.model.adapters.BaseAdvancedData
-import dev.zwander.common.util.AdaptiveMod
 import dev.zwander.resources.common.MR
 
 private data class AdvancedItemData(
@@ -26,7 +21,6 @@ private data class AdvancedItemData(
     val blocks: List<Pair<StringResource, Any?>>
 )
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AdvancedPage(
     modifier: Modifier = Modifier,
@@ -57,40 +51,27 @@ fun AdvancedPage(
         )
     }
 
-    LazyVerticalStaggeredGrid(
-        contentPadding = PaddingValues(8.dp),
-        columns = AdaptiveMod(300.dp, items.size),
+    PageGrid(
+        items = items,
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalItemSpacing = 8.dp,
-    ) {
-        items(items = items, key = { it.title }) {
-            OutlinedCard(
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                Column(
-                    modifier = Modifier.fillMaxWidth()
-                        .padding(8.dp),
-                ) {
-                    Text(
-                        text = stringResource(it.title),
-                        style = MaterialTheme.typography.titleLarge,
-                    )
+        renderItem = {
+            Text(
+                text = stringResource(it.title),
+                style = MaterialTheme.typography.titleLarge,
+            )
 
-                    if (it.blocks.isNotEmpty()) {
-                        InfoRow(
-                            items = it.blocks,
-                            modifier = Modifier.fillMaxWidth(),
-                        )
-                    } else {
-                        Text(
-                            text = stringResource(MR.strings.not_connected),
-                        )
-                    }
-                }
+            if (it.blocks.isNotEmpty()) {
+                InfoRow(
+                    items = it.blocks,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            } else {
+                Text(
+                    text = stringResource(MR.strings.not_connected),
+                )
             }
-        }
-    }
+        },
+    )
 }
 
 private fun generateBaseCellItems(data: BaseAdvancedData?): List<Pair<StringResource, Any?>> {

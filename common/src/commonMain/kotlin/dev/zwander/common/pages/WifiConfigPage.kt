@@ -1,12 +1,10 @@
 package dev.zwander.common.pages
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
-import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -15,10 +13,10 @@ import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.components.BandConfigLayout
+import dev.zwander.common.components.PageGrid
 import dev.zwander.common.components.SSIDListLayout
 import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.MainModel
-import dev.zwander.common.util.AdaptiveMod
 import dev.zwander.common.util.HTTPClient
 import dev.zwander.resources.common.MR
 import kotlinx.coroutines.launch
@@ -28,7 +26,6 @@ private data class ItemData(
     val render: @Composable (Modifier) -> Unit,
 )
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun WifiConfigPage(
     modifier: Modifier = Modifier,
@@ -63,31 +60,18 @@ fun WifiConfigPage(
     Column(
         modifier = modifier,
     ) {
-        LazyVerticalStaggeredGrid(
-            contentPadding = PaddingValues(8.dp),
-            columns = AdaptiveMod(300.dp, items.size),
+        PageGrid(
+            items = items,
             modifier = Modifier.fillMaxWidth().weight(1f),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalItemSpacing = 8.dp,
-        ) {
-            items(items = items, key = { it.title }) {
-                OutlinedCard(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Column(
-                        modifier = Modifier.fillMaxWidth()
-                            .padding(8.dp),
-                    ) {
-                        Text(
-                            text = stringResource(it.title),
-                            style = MaterialTheme.typography.titleLarge,
-                        )
+            renderItem = {
+                Text(
+                    text = stringResource(it.title),
+                    style = MaterialTheme.typography.titleLarge,
+                )
 
-                        it.render(Modifier.fillMaxWidth())
-                    }
-                }
-            }
-        }
+                it.render(Modifier.fillMaxWidth())
+            },
+        )
 
         OutlinedButton(
             onClick = {

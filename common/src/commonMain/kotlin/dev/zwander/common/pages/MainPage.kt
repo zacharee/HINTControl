@@ -1,12 +1,8 @@
 package dev.zwander.common.pages
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
-import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -17,13 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.stringResource
-import dev.zwander.common.components.CellBars
-import dev.zwander.common.components.CellDataLayout
-import dev.zwander.common.components.DeviceDataLayout
-import dev.zwander.common.components.MainDataLayout
+import dev.zwander.common.components.*
 import dev.zwander.common.model.MainModel
 import dev.zwander.common.model.UserModel
-import dev.zwander.common.util.AdaptiveMod
 import dev.zwander.common.util.SettingsManager
 import dev.zwander.resources.common.MR
 
@@ -33,7 +25,6 @@ private data class ItemInfo(
     val titleAccessory: (@Composable (Modifier) -> Unit)? = null,
 )
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MainPage(
     modifier: Modifier = Modifier,
@@ -89,42 +80,26 @@ fun MainPage(
         Column(
             modifier = Modifier.fillMaxSize(),
         ) {
-            LazyVerticalStaggeredGrid(
-                contentPadding = PaddingValues(8.dp),
-                columns = AdaptiveMod(300.dp, items.size),
+            PageGrid(
+                items = items,
                 modifier = Modifier.fillMaxWidth().weight(1f),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalItemSpacing = 8.dp,
-            ) {
-                items(
-                    items = items,
-                    key = { it.title },
-                ) {
-                    OutlinedCard(
+                renderItem = {
+                    Row(
                         modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.Bottom,
                     ) {
-                        Column(
-                            modifier = Modifier.fillMaxWidth()
-                                .padding(8.dp),
-                        ) {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                verticalAlignment = Alignment.Bottom,
-                            ) {
-                                Text(
-                                    text = stringResource(it.title),
-                                    style = MaterialTheme.typography.titleLarge,
-                                    modifier = Modifier.weight(1f),
-                                )
+                        Text(
+                            text = stringResource(it.title),
+                            style = MaterialTheme.typography.titleLarge,
+                            modifier = Modifier.weight(1f),
+                        )
 
-                                it.titleAccessory?.invoke(Modifier.size(24.dp))
-                            }
-
-                            it.render(Modifier.fillMaxWidth())
-                        }
+                        it.titleAccessory?.invoke(Modifier.size(24.dp))
                     }
+
+                    it.render(Modifier.fillMaxWidth())
                 }
-            }
+            )
 
             OutlinedButton(
                 onClick = {

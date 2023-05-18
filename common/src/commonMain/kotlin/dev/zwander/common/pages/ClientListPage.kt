@@ -1,12 +1,10 @@
 package dev.zwander.common.pages
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
-import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -18,9 +16,9 @@ import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.components.InfoRow
+import dev.zwander.common.components.PageGrid
 import dev.zwander.common.model.MainModel
 import dev.zwander.common.model.adapters.BaseClientData
-import dev.zwander.common.util.AdaptiveMod
 import dev.zwander.resources.common.MR
 
 private data class ClientListItem(
@@ -28,7 +26,6 @@ private data class ClientListItem(
     val datas: List<BaseClientData>?,
 )
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ClientListPage(
     modifier: Modifier = Modifier,
@@ -52,28 +49,16 @@ fun ClientListPage(
         )
     }
 
-    LazyVerticalStaggeredGrid(
-        contentPadding = PaddingValues(8.dp),
-        columns = AdaptiveMod(300.dp, items.size),
+    PageGrid(
+        items = items,
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalItemSpacing = 8.dp,
-    ) {
-        items(items = items, key = { it.title }) {
-            OutlinedCard(
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                Column(
-                    modifier = Modifier.fillMaxWidth().padding(8.dp)
-                ) {
-                    ClientList(
-                        title = stringResource(it.title),
-                        datas = it.datas,
-                    )
-                }
-            }
-        }
-    }
+        renderItem = {
+            ClientList(
+                title = stringResource(it.title),
+                datas = it.datas,
+            )
+        },
+    )
 }
 
 @Composable
