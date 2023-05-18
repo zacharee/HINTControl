@@ -60,7 +60,7 @@ fun CellDataLayout(
 
             FormatText(
                 text = stringResource(MR.strings.rsrq),
-                textFormat = data?.rsrp.toString(),
+                textFormat = data?.rsrq.toString(),
                 modifier = Modifier.padding(horizontal = 4.dp),
             )
 
