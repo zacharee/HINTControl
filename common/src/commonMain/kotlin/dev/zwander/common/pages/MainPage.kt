@@ -133,7 +133,7 @@ fun MainPage(
                     SettingsManager.password = null
                 },
                 modifier = Modifier.fillMaxWidth()
-                    .padding(horizontal = 8.dp),
+                    .padding(8.dp),
             ) {
                 Text(
                     text = stringResource(MR.strings.log_out),
