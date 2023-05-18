@@ -2,10 +2,7 @@ package dev.zwander.common.pages
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -28,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
+import dev.zwander.common.components.TextSwitch
 import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.UserModel
 import dev.zwander.common.util.HTTPClient
@@ -59,13 +57,16 @@ fun LoginPage(
     var showingPassword by remember {
         mutableStateOf(false)
     }
+    var rememberCredentials by remember {
+        mutableStateOf(true)
+    }
 
     fun performLogin() {
         error = null
         focusManager.clearFocus()
         scope.launch {
             try {
-                HTTPClient.logIn(username, password ?: "")
+                HTTPClient.logIn(username, password ?: "", rememberCredentials)
             } catch (e: Exception) {
                 error = e.message
             }
@@ -85,6 +86,7 @@ fun LoginPage(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.width(IntrinsicSize.Min),
         ) {
             OutlinedTextField(
                 value = username,
@@ -164,6 +166,12 @@ fun LoginPage(
                     autoCorrect = false,
                     keyboardType = KeyboardType.Password,
                 ),
+            )
+
+            TextSwitch(
+                text = stringResource(MR.strings.remember_credentials),
+                checked = rememberCredentials,
+                onCheckedChange = { rememberCredentials = it },
             )
 
             AnimatedVisibility(

@@ -29,7 +29,7 @@ object HTTPClient {
                     BearerTokens(UserModel.token.value ?: "", "")
                 }
                 this.refreshTokens {
-                    logIn(UserModel.username.value ?: "", UserModel.password.value ?: "")
+                    logIn(UserModel.username.value, UserModel.password.value ?: "", false)
 
                     BearerTokens(UserModel.token.value ?: "", "")
                 }
@@ -49,7 +49,7 @@ object HTTPClient {
         ignoreUnknownKeys = true
     }
 
-    suspend fun logIn(username: String, password: String) {
+    suspend fun logIn(username: String, password: String, rememberCredentials: Boolean) {
         return withLoader {
             val response = unauthedClient.post(Endpoints.authURL.createFullUrl()) {
                 setBody("{\"username\": \"${username}\", \"password\": \"${password}\"}")
@@ -59,8 +59,10 @@ object HTTPClient {
                 UserModel.username.value = username
                 UserModel.password.value = password
 
-                SettingsManager.username = username
-                SettingsManager.password = password
+                if (rememberCredentials) {
+                    SettingsManager.username = username
+                    SettingsManager.password = password
+                }
 
                 UserModel.token.value = json.decodeFromString<LoginResultData>(response.bodyAsText()).auth.token
             } else {

@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,7 +22,9 @@ import dev.zwander.common.components.CellBars
 import dev.zwander.common.components.CellDataLayout
 import dev.zwander.common.components.MainDataLayout
 import dev.zwander.common.model.MainModel
+import dev.zwander.common.model.UserModel
 import dev.zwander.common.util.AdaptiveMod
+import dev.zwander.common.util.SettingsManager
 import dev.zwander.resources.common.MR
 
 private data class ItemInfo(
@@ -79,41 +82,62 @@ fun MainPage(
     Box(
         modifier = modifier
     ) {
-        LazyVerticalStaggeredGrid(
-            contentPadding = PaddingValues(8.dp),
-            columns = AdaptiveMod(300.dp, items.size - 1),
+        Column(
             modifier = Modifier.fillMaxSize(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalItemSpacing = 8.dp,
         ) {
-            items(
-                items = items,
-                key = { it.title },
-                span = { if (it.title == MR.strings.general) StaggeredGridItemSpan.FullLine else StaggeredGridItemSpan.SingleLane }
+            LazyVerticalStaggeredGrid(
+                contentPadding = PaddingValues(8.dp),
+                columns = AdaptiveMod(300.dp, items.size - 1),
+                modifier = Modifier.fillMaxWidth().weight(1f),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalItemSpacing = 8.dp,
             ) {
-                OutlinedCard(
-                    modifier = Modifier.fillMaxWidth(),
+                items(
+                    items = items,
+                    key = { it.title },
+                    span = { if (it.title == MR.strings.general) StaggeredGridItemSpan.FullLine else StaggeredGridItemSpan.SingleLane }
                 ) {
-                    Column(
-                        modifier = Modifier.fillMaxWidth()
-                            .padding(8.dp),
+                    OutlinedCard(
+                        modifier = Modifier.fillMaxWidth(),
                     ) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.Bottom,
+                        Column(
+                            modifier = Modifier.fillMaxWidth()
+                                .padding(8.dp),
                         ) {
-                            Text(
-                                text = stringResource(it.title),
-                                style = MaterialTheme.typography.titleMedium,
-                                modifier = Modifier.weight(1f),
-                            )
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                verticalAlignment = Alignment.Bottom,
+                            ) {
+                                Text(
+                                    text = stringResource(it.title),
+                                    style = MaterialTheme.typography.titleMedium,
+                                    modifier = Modifier.weight(1f),
+                                )
 
-                            it.titleAccessory?.invoke(Modifier.size(24.dp))
+                                it.titleAccessory?.invoke(Modifier.size(24.dp))
+                            }
+
+                            it.render(Modifier.fillMaxWidth())
                         }
-
-                        it.render(Modifier.fillMaxWidth())
                     }
                 }
+            }
+
+            OutlinedButton(
+                onClick = {
+                    UserModel.token.value = null
+                    UserModel.username.value = "admin"
+                    UserModel.password.value = null
+
+                    SettingsManager.username = "admin"
+                    SettingsManager.password = null
+                },
+                modifier = Modifier.fillMaxWidth()
+                    .padding(horizontal = 8.dp),
+            ) {
+                Text(
+                    text = stringResource(MR.strings.log_out),
+                )
             }
         }
     }
