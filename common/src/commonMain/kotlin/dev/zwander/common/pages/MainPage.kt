@@ -3,7 +3,6 @@ package dev.zwander.common.pages
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
-import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -20,6 +19,7 @@ import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.components.CellBars
 import dev.zwander.common.components.CellDataLayout
+import dev.zwander.common.components.DeviceDataLayout
 import dev.zwander.common.components.MainDataLayout
 import dev.zwander.common.model.MainModel
 import dev.zwander.common.model.UserModel
@@ -45,6 +45,10 @@ fun MainPage(
             ItemInfo(
                 title = MR.strings.general,
                 render = { MainDataLayout(it) },
+            ),
+            ItemInfo(
+                title = MR.strings.device,
+                render = { DeviceDataLayout(it) }
             ),
             ItemInfo(
                 title = MR.strings.lte,
@@ -87,7 +91,7 @@ fun MainPage(
         ) {
             LazyVerticalStaggeredGrid(
                 contentPadding = PaddingValues(8.dp),
-                columns = AdaptiveMod(300.dp, items.size - 1),
+                columns = AdaptiveMod(300.dp, items.size),
                 modifier = Modifier.fillMaxWidth().weight(1f),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalItemSpacing = 8.dp,
@@ -95,7 +99,6 @@ fun MainPage(
                 items(
                     items = items,
                     key = { it.title },
-                    span = { if (it.title == MR.strings.general) StaggeredGridItemSpan.FullLine else StaggeredGridItemSpan.SingleLane }
                 ) {
                     OutlinedCard(
                         modifier = Modifier.fillMaxWidth(),

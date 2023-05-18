@@ -1,17 +1,15 @@
 package dev.zwander.common.components
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.model.MainModel
 import dev.zwander.resources.common.MR
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun MainDataLayout(
     modifier: Modifier = Modifier
@@ -30,17 +28,9 @@ fun MainDataLayout(
     Column(
         modifier = modifier,
     ) {
-        FlowRow(
-            horizontalArrangement = Arrangement.SpaceEvenly,
+        InfoRow(
+            items = items,
             modifier = Modifier.fillMaxWidth(),
-        ) {
-            items.forEach { (labelRes, value) ->
-                FormatText(
-                    text = stringResource(labelRes),
-                    textFormat = value.toString(),
-                    modifier = Modifier.padding(horizontal = 4.dp),
-                )
-            }
-        }
+        )
     }
 }

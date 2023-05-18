@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.stringResource
-import dev.zwander.common.components.FormatText
+import dev.zwander.common.components.InfoRow
 import dev.zwander.common.model.MainModel
 import dev.zwander.common.model.adapters.BaseAdvancedData
 import dev.zwander.common.util.AdaptiveMod
@@ -26,7 +26,7 @@ private data class AdvancedItemData(
     val blocks: List<Pair<StringResource, Any?>>
 )
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalLayoutApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AdvancedPage(
     modifier: Modifier = Modifier,
@@ -78,18 +78,10 @@ fun AdvancedPage(
                     )
 
                     if (it.blocks.isNotEmpty()) {
-                        FlowRow(
+                        InfoRow(
+                            items = it.blocks,
                             modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceEvenly
-                        ) {
-                            it.blocks.forEach { (name, data) ->
-                                FormatText(
-                                    text = stringResource(name),
-                                    textFormat = data.toString(),
-                                    modifier = Modifier.padding(horizontal = 4.dp),
-                                )
-                            }
-                        }
+                        )
                     } else {
                         Text(
                             text = stringResource(MR.strings.not_connected),

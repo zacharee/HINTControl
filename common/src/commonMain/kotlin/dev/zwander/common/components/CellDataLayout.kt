@@ -8,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.model.adapters.BaseCellData
@@ -38,7 +37,6 @@ fun CellBars(
     )
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun CellDataLayout(
     data: BaseCellData?,
@@ -71,19 +69,10 @@ fun CellDataLayout(
         modifier = modifier,
     ) {
         if (items.isNotEmpty()) {
-            FlowRow(
-                horizontalArrangement = Arrangement.SpaceEvenly,
+            InfoRow(
+                items = items,
                 modifier = Modifier.fillMaxWidth(),
-            ) {
-                items.forEach { (textRes, value) ->
-                    FormatText(
-                        text = stringResource(textRes),
-                        textFormat = value.toString(),
-                        modifier = Modifier.padding(horizontal = 4.dp),
-                    )
-                }
-
-            }
+            )
         } else {
             Text(
                 text = stringResource(MR.strings.not_connected),

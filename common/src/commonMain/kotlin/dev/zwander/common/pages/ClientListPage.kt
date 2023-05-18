@@ -17,7 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.stringResource
-import dev.zwander.common.components.FormatText
+import dev.zwander.common.components.InfoRow
 import dev.zwander.common.model.MainModel
 import dev.zwander.common.model.adapters.BaseClientData
 import dev.zwander.common.util.AdaptiveMod
@@ -111,45 +111,29 @@ private fun ClientList(
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun ClientItem(
     data: BaseClientData,
     modifier: Modifier = Modifier,
 ) {
+    val items = remember(data) {
+        listOf(
+            MR.strings.connected to data.connected,
+            MR.strings.ipv4 to data.ipv4,
+            MR.strings.ipv6 to data.ipv6,
+            MR.strings.mac to data.mac,
+        )
+    }
+
     Column(modifier = modifier) {
         Text(
             text = data.name?.takeIf { it.isNotBlank() } ?: data.mac.toString(),
             fontWeight = FontWeight.Bold,
         )
 
-        FlowRow(
-            modifier = modifier,
-            horizontalArrangement = Arrangement.SpaceEvenly,
-        ) {
-            FormatText(
-                text = stringResource(MR.strings.connected),
-                textFormat = data.connected.toString(),
-                modifier = Modifier.padding(horizontal = 4.dp),
-            )
-
-            FormatText(
-                text = stringResource(MR.strings.ipv4),
-                textFormat = data.ipv4.toString(),
-                modifier = Modifier.padding(horizontal = 4.dp),
-            )
-
-            FormatText(
-                text = stringResource(MR.strings.ipv6),
-                textFormat = data.ipv6?.joinToString("\n").toString(),
-                modifier = Modifier.padding(horizontal = 4.dp),
-            )
-
-            FormatText(
-                text = stringResource(MR.strings.mac),
-                textFormat = data.mac.toString(),
-                modifier = Modifier.padding(horizontal = 4.dp),
-            )
-        }
+        InfoRow(
+            items = items,
+            modifier = Modifier.fillMaxWidth(),
+        )
     }
 }

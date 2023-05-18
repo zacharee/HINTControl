@@ -15,6 +15,7 @@
     <string name="lte">LTE</string>
     <string name="five_g">5G</string>
     <string name="general">General</string>
+    <string name="device">Device</string>
     <string name="bands">Bands</string>
     <string name="strength">Strength</string>
     <string name="cid">CID</string>
@@ -90,4 +91,17 @@
     <string name="remember_credentials">Remember Credentials</string>
     <string name="no_clients">No Clients</string>
     <string name="not_connected">Not Connected</string>
+
+    <string name="name">Name</string>
+    <string name="hardware_version">Hardware Version</string>
+    <string name="enabled">Enabled</string>
+    <string name="mesh_supported">Mesh Supported</string>
+    <string name="manufacturer">Manufacturer</string>
+    <string name="model">Model</string>
+    <string name="friendly_name">Friendly Name</string>
+    <string name="role">Role</string>
+    <string name="serial">Serial</string>
+    <string name="softwareVersion">Software Version</string>
+    <string name="type">Type</string>
+    <string name="update_state">Update State</string>
 </resources>
