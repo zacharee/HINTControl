@@ -1,10 +1,12 @@
 package dev.zwander.common.components
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
 import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.model.MainModel
@@ -18,6 +20,7 @@ fun BandConfigLayout(
 
     Column(
         modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         TextSwitch(
             text = stringResource(MR.strings.twoGig_radio),
