@@ -216,12 +216,14 @@ private fun AppView(
             } else {
                 val state = rememberPagerState()
 
-                LaunchedEffect(state.currentPage) {
-                    onPageChange(pages[state.currentPage])
+                LaunchedEffect(state.currentPage, state.isScrollInProgress) {
+                    if (!state.isScrollInProgress) {
+                        onPageChange(pages[state.currentPage])
+                    }
                 }
 
                 LaunchedEffect(currentPage) {
-                    state.scrollToPage(pages.indexOf(currentPage))
+                    state.animateScrollToPage(pages.indexOf(currentPage))
                 }
 
                 HorizontalPager(
