@@ -42,13 +42,15 @@ interface BaseCellData {
     val rsrp: Int
     val rsrq: Int
     val sinr: Int
+    val cid: Long
+    val rssi: Int
 }
 
 @Serializable
 data class CellDataLTE(
-    val cid: Long,
+    override val cid: Long,
     val eNBID: Long,
-    val rssi: Int,
+    override val rssi: Int,
     override val bands: List<String>,
     override val bars: Double,
     override val rsrp: Int,
@@ -58,11 +60,14 @@ data class CellDataLTE(
 
 @Serializable
 data class CellData5G(
+    val gNBID: Int,
     override val bands: List<String>,
     override val bars: Double,
     override val rsrp: Int,
     override val rsrq: Int,
     override val sinr: Int,
+    override val rssi: Int,
+    override val cid: Long,
 ) : BaseCellData
 
 @Serializable

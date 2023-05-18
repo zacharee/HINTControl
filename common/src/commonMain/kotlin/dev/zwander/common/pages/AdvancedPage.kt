@@ -38,20 +38,11 @@ fun AdvancedPage(
         listOf(
             AdvancedItemData(
                 title = MR.strings.lte,
-                blocks = generateBaseCellItems(cellData?.cell?.fourG, listOf(
-                    MR.strings.cqi to cellData?.cell?.fourG?.cqi,
-                    MR.strings.earfcn to cellData?.cell?.fourG?.earfcn,
-                    MR.strings.ecgi to cellData?.cell?.fourG?.ecgi,
-                    MR.strings.pci to cellData?.cell?.fourG?.pci,
-                    MR.strings.tac to cellData?.cell?.fourG?.tac,
-                ))
+                blocks = generateBaseCellItems(cellData?.cell?.fourG)
             ),
             AdvancedItemData(
                 title = MR.strings.five_g,
-                blocks = generateBaseCellItems(cellData?.cell?.fiveG, listOf(
-                    MR.strings.nci to cellData?.cell?.fiveG?.nci,
-                    MR.strings.nrarfcn to cellData?.cell?.fiveG?.nrarfcn,
-                ))
+                blocks = generateBaseCellItems(cellData?.cell?.fiveG)
             ),
             AdvancedItemData(
                 title = MR.strings.sim,
@@ -104,14 +95,18 @@ fun AdvancedPage(
     }
 }
 
-private fun generateBaseCellItems(data: BaseAdvancedData?, custom: List<Pair<StringResource, Any?>>): List<Pair<StringResource, Any?>> {
+private fun generateBaseCellItems(data: BaseAdvancedData?): List<Pair<StringResource, Any?>> {
     return listOf(
         MR.strings.bandwidth to data?.bandwidth,
         MR.strings.mcc to data?.mcc,
         MR.strings.mnc to data?.mnc,
         MR.strings.plmn to data?.plmn,
         MR.strings.status to data?.status,
-    ) + custom + listOf(
+        MR.strings.cqi to data?.cqi,
+        MR.strings.earfcn to data?.earfcn,
+        MR.strings.ecgi to data?.ecgi,
+        MR.strings.pci to data?.pci,
+        MR.strings.tac to data?.tac,
         MR.strings.supportedBands to data?.supportedBands?.joinToString(" • ")
     )
 }

@@ -26,15 +26,20 @@ interface BaseAdvancedData {
     val status: Boolean
     val supportedBands: List<String>
     val sector: BaseCellData
+    val earfcn: String
+    val cqi: Int
+    val ecgi: String
+    val pci: String
+    val tac: String
 }
 
 @Serializable
 data class AdvancedDataLTE(
-    val cqi: Int,
-    val earfcn: String,
-    val ecgi: String,
-    val pci: String,
-    val tac: String,
+    override val cqi: Int,
+    override val earfcn: String,
+    override val ecgi: String,
+    override val pci: String,
+    override val tac: String,
     override val bandwidth: String,
     override val mcc: String,
     override val mnc: String,
@@ -46,8 +51,11 @@ data class AdvancedDataLTE(
 
 @Serializable
 data class AdvancedData5G(
-    val nci: Int,
-    val nrarfcn: String,
+    override val cqi: Int,
+    override val earfcn: String,
+    override val ecgi: String,
+    override val pci: String,
+    override val tac: String,
     override val bandwidth: String,
     override val mcc: String,
     override val mnc: String,

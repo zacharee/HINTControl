@@ -8,6 +8,7 @@ import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.model.adapters.BaseCellData
+import dev.zwander.common.model.adapters.CellData5G
 import dev.zwander.common.model.adapters.CellDataLTE
 import dev.zwander.resources.common.MR
 
@@ -64,17 +65,21 @@ fun CellDataLayout(
                 modifier = Modifier.padding(horizontal = 4.dp),
             )
 
-            if (data is CellDataLTE) {
-                FormatText(
-                    text = stringResource(MR.strings.rssi),
-                    textFormat = data.rssi.toString(),
-                    modifier = Modifier.padding(horizontal = 4.dp),
-                )
-            }
+            FormatText(
+                text = stringResource(MR.strings.rssi),
+                textFormat = data?.rssi.toString(),
+                modifier = Modifier.padding(horizontal = 4.dp),
+            )
 
             FormatText(
                 text = stringResource(MR.strings.sinr),
                 textFormat = data?.sinr.toString(),
+                modifier = Modifier.padding(horizontal = 4.dp),
+            )
+
+            FormatText(
+                text = stringResource(MR.strings.cid),
+                textFormat = data?.cid.toString(),
                 modifier = Modifier.padding(horizontal = 4.dp),
             )
 
@@ -84,10 +89,10 @@ fun CellDataLayout(
                     textFormat = data.eNBID.toString(),
                     modifier = Modifier.padding(horizontal = 4.dp),
                 )
-
+            } else if (data is CellData5G) {
                 FormatText(
-                    text = stringResource(MR.strings.cid),
-                    textFormat = data.cid.toString(),
+                    text = stringResource(MR.strings.gnbid),
+                    textFormat = data.gNBID.toString(),
                     modifier = Modifier.padding(horizontal = 4.dp),
                 )
             }

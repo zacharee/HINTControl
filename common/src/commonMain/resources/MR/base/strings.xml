@@ -18,6 +18,7 @@
     <string name="strength">Strength</string>
     <string name="cid">CID</string>
     <string name="enbid">eNBID</string>
+    <string name="gnbid">gNBID</string>
     <string name="rsrp">RSRP</string>
     <string name="rsrq">RSRQ</string>
     <string name="rssi">RSSI</string>
