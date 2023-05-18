@@ -54,11 +54,14 @@ fun App(
                 )
             }
 
+            val okString = stringResource(MR.strings.ok)
+
             LaunchedEffect(error) {
                 if (error != null) {
                     snackbarHostState.showSnackbar(
                         message = error!!,
-                        withDismissAction = true,
+                        duration = SnackbarDuration.Indefinite,
+                        actionLabel = okString,
                     )
                 }
             }
@@ -116,7 +119,11 @@ fun App(
                         ) {
                             Snackbar(
                                 snackbarData = it,
-                                modifier = Modifier.fillMaxWidth()
+                                modifier = Modifier.fillMaxWidth(),
+                                actionOnNewLine = true,
+                                containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                                contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                actionColor = MaterialTheme.colorScheme.primary,
                             )
                         }
                     }
