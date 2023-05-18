@@ -161,7 +161,7 @@ fun App(
                                 pageCount = pages.size,
                                 pages = pages,
                                 onPageChange = { currentPage = it },
-                                modifier = Modifier.widthIn(max = 1000.dp)
+                                modifier = Modifier.widthIn(max = 1200.dp)
                                     .fillMaxSize()
                                     .align(Alignment.TopCenter),
                             )
