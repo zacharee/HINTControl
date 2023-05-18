@@ -65,10 +65,16 @@ fun LoginPage(
         focusManager.clearFocus()
         scope.launch {
             try {
-                HTTPClient.logIn(username ?: "", password ?: "")
+                HTTPClient.logIn(username, password ?: "")
             } catch (e: Exception) {
                 error = e.message
             }
+        }
+    }
+
+    LaunchedEffect(null) {
+        if (username.isNotBlank() && !password.isNullOrBlank()) {
+            performLogin()
         }
     }
 
@@ -81,7 +87,7 @@ fun LoginPage(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             OutlinedTextField(
-                value = username ?: "",
+                value = username,
                 onValueChange = { username = it.trim().filterNot { it.isWhitespace() } },
                 isError = error != null,
                 modifier = Modifier.focusRequester(userFocusRequester)
@@ -182,7 +188,7 @@ fun LoginPage(
                 onClick = {
                     performLogin()
                 },
-                enabled = !username.isNullOrBlank() && !password.isNullOrBlank() && !isLoading && token == null,
+                enabled = username.isNotBlank() && !password.isNullOrBlank() && !isLoading && token == null,
                 interactionSource = loginInteractionSource,
             ) {
                 Text(

@@ -59,6 +59,9 @@ object HTTPClient {
                 UserModel.username.value = username
                 UserModel.password.value = password
 
+                SettingsManager.username = username
+                SettingsManager.password = password
+
                 UserModel.token.value = json.decodeFromString<LoginResultData>(response.bodyAsText()).auth.token
             } else {
                 throw IOException(response.status.description)

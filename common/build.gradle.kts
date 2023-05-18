@@ -50,6 +50,8 @@ kotlin {
                 api("dev.icerock.moko:mvvm-flow-compose:0.16.1")
                 api("org.jetbrains.kotlin:kotlin-reflect:${rootProject.extra["kotlin.version"]}")
                 api("com.soywiz.korlibs.korio:korio:4.0.0")
+                api("com.russhwolf:multiplatform-settings:1.0.0")
+                api("com.russhwolf:multiplatform-settings-no-arg:1.0.0")
             }
         }
         val androidMain by getting {
