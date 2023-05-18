@@ -106,9 +106,7 @@ object HTTPClient {
             json.decodeFromString(
                 httpClient
                     .get(Endpoints.getCellURL.createFullUrl())
-                    .bodyAsText().also {
-                        println(it)
-                    }
+                    .bodyAsText()
             )
         }
     }
