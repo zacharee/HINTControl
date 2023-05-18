@@ -105,7 +105,7 @@ private fun ClientItem(
         listOf(
             MR.strings.connected to data.connected,
             MR.strings.ipv4 to data.ipv4,
-            MR.strings.ipv6 to data.ipv6,
+            MR.strings.ipv6 to data.ipv6?.joinToString(" • "),
             MR.strings.mac to data.mac,
         )
     }
