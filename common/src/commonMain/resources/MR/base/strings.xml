@@ -88,4 +88,6 @@
     <string name="hidden">Hidden</string>
 
     <string name="remember_credentials">Remember Credentials</string>
+    <string name="no_clients">No Clients</string>
+    <string name="not_connected">Not Connected</string>
 </resources>

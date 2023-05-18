@@ -74,20 +74,26 @@ fun AdvancedPage(
                 ) {
                     Text(
                         text = stringResource(it.title),
-                        style = MaterialTheme.typography.titleMedium,
+                        style = MaterialTheme.typography.titleLarge,
                     )
 
-                    FlowRow(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceEvenly
-                    ) {
-                        it.blocks.forEach { (name, data) ->
-                            FormatText(
-                                text = stringResource(name),
-                                textFormat = data.toString(),
-                                modifier = Modifier.padding(horizontal = 4.dp),
-                            )
+                    if (it.blocks.isNotEmpty()) {
+                        FlowRow(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceEvenly
+                        ) {
+                            it.blocks.forEach { (name, data) ->
+                                FormatText(
+                                    text = stringResource(name),
+                                    textFormat = data.toString(),
+                                    modifier = Modifier.padding(horizontal = 4.dp),
+                                )
+                            }
                         }
+                    } else {
+                        Text(
+                            text = stringResource(MR.strings.not_connected),
+                        )
                     }
                 }
             }
@@ -96,7 +102,7 @@ fun AdvancedPage(
 }
 
 private fun generateBaseCellItems(data: BaseAdvancedData?): List<Pair<StringResource, Any?>> {
-    return listOf(
+    val allItems = listOf(
         MR.strings.bandwidth to data?.bandwidth,
         MR.strings.mcc to data?.mcc,
         MR.strings.mnc to data?.mnc,
@@ -109,4 +115,6 @@ private fun generateBaseCellItems(data: BaseAdvancedData?): List<Pair<StringReso
         MR.strings.tac to data?.tac,
         MR.strings.supportedBands to data?.supportedBands?.joinToString(" • ")
     )
+
+    return allItems.filter { it.second != null }
 }

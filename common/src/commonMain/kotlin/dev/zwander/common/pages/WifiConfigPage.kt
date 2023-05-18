@@ -80,7 +80,7 @@ fun WifiConfigPage(
                     ) {
                         Text(
                             text = stringResource(it.title),
-                            style = MaterialTheme.typography.titleMedium,
+                            style = MaterialTheme.typography.titleLarge,
                         )
 
                         it.render(Modifier.fillMaxWidth())

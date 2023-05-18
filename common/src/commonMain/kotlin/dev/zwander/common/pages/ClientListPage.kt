@@ -87,20 +87,26 @@ private fun ClientList(
     ) {
         Text(
             text = title,
-            style = MaterialTheme.typography.titleMedium,
+            style = MaterialTheme.typography.titleLarge,
         )
 
-        datas?.forEachIndexed { index, data ->
-            ClientItem(
-                data = data,
-                modifier = Modifier.fillMaxWidth(),
-            )
-
-            if (index < datas.lastIndex) {
-                Divider(
-                    modifier = Modifier.padding(horizontal = 8.dp)
+        if (!datas.isNullOrEmpty()) {
+            datas.forEachIndexed { index, data ->
+                ClientItem(
+                    data = data,
+                    modifier = Modifier.fillMaxWidth(),
                 )
+
+                if (index < datas.lastIndex) {
+                    Divider(
+                        modifier = Modifier.padding(horizontal = 8.dp)
+                    )
+                }
             }
+        } else {
+            Text(
+                text = stringResource(MR.strings.no_clients),
+            )
         }
     }
 }

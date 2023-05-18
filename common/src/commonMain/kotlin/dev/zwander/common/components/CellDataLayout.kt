@@ -2,8 +2,12 @@ package dev.zwander.common.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
@@ -40,62 +44,52 @@ fun CellDataLayout(
     data: BaseCellData?,
     modifier: Modifier = Modifier,
 ) {
+    val items = remember(data) {
+        val allItems = listOf(
+            MR.strings.bands to data?.bands?.joinToString(" • "),
+            MR.strings.rsrp to data?.rsrp,
+            MR.strings.rsrq to data?.rsrq,
+            MR.strings.rssi to data?.rssi,
+            MR.strings.sinr to data?.sinr,
+            MR.strings.cid to data?.cid,
+        ) + when (data) {
+            is CellDataLTE -> listOf(
+                MR.strings.enbid to data.eNBID
+            )
+
+            is CellData5G -> listOf(
+                MR.strings.gnbid to data.gNBID
+            )
+
+            else -> listOf()
+        }
+
+        allItems.filter { it.second != null }
+    }
+
     Column(
         modifier = modifier,
     ) {
-        FlowRow(
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            FormatText(
-                text = stringResource(MR.strings.bands),
-                textFormat = data?.bands?.joinToString(" • ").toString(),
-                modifier = Modifier.padding(horizontal = 4.dp),
-            )
+        if (items.isNotEmpty()) {
+            FlowRow(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                items.forEach { (textRes, value) ->
+                    FormatText(
+                        text = stringResource(textRes),
+                        textFormat = value.toString(),
+                        modifier = Modifier.padding(horizontal = 4.dp),
+                    )
+                }
 
-            FormatText(
-                text = stringResource(MR.strings.rsrp),
-                textFormat = data?.rsrp.toString(),
-                modifier = Modifier.padding(horizontal = 4.dp),
-            )
-
-            FormatText(
-                text = stringResource(MR.strings.rsrq),
-                textFormat = data?.rsrq.toString(),
-                modifier = Modifier.padding(horizontal = 4.dp),
-            )
-
-            FormatText(
-                text = stringResource(MR.strings.rssi),
-                textFormat = data?.rssi.toString(),
-                modifier = Modifier.padding(horizontal = 4.dp),
-            )
-
-            FormatText(
-                text = stringResource(MR.strings.sinr),
-                textFormat = data?.sinr.toString(),
-                modifier = Modifier.padding(horizontal = 4.dp),
-            )
-
-            FormatText(
-                text = stringResource(MR.strings.cid),
-                textFormat = data?.cid.toString(),
-                modifier = Modifier.padding(horizontal = 4.dp),
-            )
-
-            if (data is CellDataLTE) {
-                FormatText(
-                    text = stringResource(MR.strings.enbid),
-                    textFormat = data.eNBID.toString(),
-                    modifier = Modifier.padding(horizontal = 4.dp),
-                )
-            } else if (data is CellData5G) {
-                FormatText(
-                    text = stringResource(MR.strings.gnbid),
-                    textFormat = data.gNBID.toString(),
-                    modifier = Modifier.padding(horizontal = 4.dp),
-                )
             }
+        } else {
+            Text(
+                text = stringResource(MR.strings.not_connected),
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Normal,
+            )
         }
     }
 }

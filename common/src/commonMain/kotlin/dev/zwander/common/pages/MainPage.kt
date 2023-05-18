@@ -110,7 +110,7 @@ fun MainPage(
                             ) {
                                 Text(
                                     text = stringResource(it.title),
-                                    style = MaterialTheme.typography.titleMedium,
+                                    style = MaterialTheme.typography.titleLarge,
                                     modifier = Modifier.weight(1f),
                                 )
 
