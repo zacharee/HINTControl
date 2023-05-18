@@ -33,6 +33,7 @@ compose.desktop {
         nativeDistributions {
             windows {
                 menu = true
+//                console = true
                 iconFile.set(project.file("src/jvmMain/resources/icon.ico"))
                 targetFormats(TargetFormat.Exe, TargetFormat.AppImage)
             }
@@ -53,6 +54,22 @@ compose.desktop {
 
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Exe)
         }
+    }
+}
+
+dependencies {
+    // Use the configurations created by the Conveyor plugin to tell Gradle/Conveyor where to find the artifacts for each platform.
+    linuxAmd64(compose.desktop.linux_x64)
+    macAmd64(compose.desktop.macos_x64)
+    macAarch64(compose.desktop.macos_arm64)
+    windowsAmd64(compose.desktop.windows_x64)
+}
+
+// region Work around temporary Compose bugs.
+configurations.all {
+    attributes {
+        // https://github.com/JetBrains/compose-jb/issues/1404#issuecomment-1146894731
+        attribute(Attribute.of("ui", String::class.java), "awt")
     }
 }
 

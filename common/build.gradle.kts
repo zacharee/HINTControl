@@ -76,6 +76,7 @@ kotlin {
                 api("io.ktor:ktor-client-cio:${ktorVersion}")
                 api("com.github.weisj:darklaf-core:3.0.2")
                 api("com.github.weisj:darklaf-macos:3.0.2")
+                api("net.java.dev.jna:jna:5.13.0")
             }
         }
 

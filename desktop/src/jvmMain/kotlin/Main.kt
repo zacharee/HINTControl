@@ -3,7 +3,10 @@ import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyShortcut
 import androidx.compose.ui.window.*
 import dev.zwander.common.App
+import dev.zwander.common.ui.getThemeInfo
 import dev.zwander.resources.common.MR
+import io.github.mimoguz.custom_window.DwmAttribute
+import io.github.mimoguz.custom_window.StageOps
 import org.jetbrains.skiko.OS
 import org.jetbrains.skiko.hostOs
 
@@ -26,6 +29,27 @@ fun main() {
             title = MR.strings.app_name.localized(),
             state = windowState,
         ) {
+            if (hostOs == OS.Windows) {
+                val handle = StageOps.findWindowHandle(this.window)
+                StageOps.dwmSetBooleanValue(
+                    handle,
+                    DwmAttribute.DWMWA_USE_IMMERSIVE_DARK_MODE,
+                    false,
+                )
+                getThemeInfo().colors?.background?.let {
+                    StageOps.setCaptionColor(
+                        handle,
+                        it
+                    )
+                }
+                getThemeInfo().colors?.onBackground?.let {
+                    StageOps.setTextColor(
+                        handle,
+                        it
+                    )
+                }
+            }
+
             if (hostOs == OS.MacOS) {
                 MenuBar {
                     Menu(
