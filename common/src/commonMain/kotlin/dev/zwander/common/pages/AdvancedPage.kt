@@ -17,7 +17,8 @@ import dev.zwander.resources.common.MR
 
 private data class AdvancedItemData(
     val title: StringResource,
-    val blocks: List<Pair<StringResource, Any?>>
+    val blocks: List<Pair<StringResource, Any?>>,
+    val emptyMessage: StringResource,
 )
 
 @Composable
@@ -31,11 +32,13 @@ fun AdvancedPage(
         listOf(
             AdvancedItemData(
                 title = MR.strings.lte,
-                blocks = generateBaseCellItems(cellData?.cell?.fourG)
+                blocks = generateBaseCellItems(cellData?.cell?.fourG),
+                emptyMessage = MR.strings.not_connected,
             ),
             AdvancedItemData(
                 title = MR.strings.five_g,
-                blocks = generateBaseCellItems(cellData?.cell?.fiveG)
+                blocks = generateBaseCellItems(cellData?.cell?.fiveG),
+                emptyMessage = MR.strings.not_connected,
             ),
             AdvancedItemData(
                 title = MR.strings.sim,
@@ -45,7 +48,8 @@ fun AdvancedPage(
                     MR.strings.imsi to simData?.sim?.imsi,
                     MR.strings.msisdn to simData?.sim?.msisdn,
                     MR.strings.status to simData?.sim?.status,
-                )
+                ).filter { it.second != null },
+                emptyMessage = MR.strings.unavailable,
             )
         )
     }
@@ -66,7 +70,7 @@ fun AdvancedPage(
                 )
             } else {
                 Text(
-                    text = stringResource(MR.strings.not_connected),
+                    text = stringResource(it.emptyMessage),
                 )
             }
         },

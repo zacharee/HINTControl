@@ -91,6 +91,7 @@
     <string name="remember_credentials">Remember Credentials</string>
     <string name="no_clients">No Clients</string>
     <string name="not_connected">Not Connected</string>
+    <string name="unavailable">Unavailable</string>
 
     <string name="name">Name</string>
     <string name="hardware_version">Hardware Version</string>

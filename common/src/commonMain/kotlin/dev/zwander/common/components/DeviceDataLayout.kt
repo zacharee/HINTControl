@@ -2,11 +2,13 @@ package dev.zwander.common.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.model.MainModel
 import dev.zwander.resources.common.MR
 
@@ -32,15 +34,21 @@ fun DeviceDataLayout(
             MR.strings.type to deviceData?.type,
             MR.strings.manufacturer to deviceData?.manufacturer,
             MR.strings.model to deviceData?.model,
-        )
+        ).filter { it.second != null }
     }
 
     Column(
         modifier = modifier,
     ) {
-        InfoRow(
-            items = items,
-            modifier = Modifier.fillMaxWidth(),
-        )
+        if (items.isNotEmpty()) {
+            InfoRow(
+                items = items,
+                modifier = Modifier.fillMaxWidth(),
+            )
+        } else {
+            Text(
+                text = stringResource(MR.strings.unavailable),
+            )
+        }
     }
 }
