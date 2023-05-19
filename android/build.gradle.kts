@@ -10,6 +10,8 @@ dependencies {
 }
 
 android {
+    namespace = rootProject.extra["package_name"].toString()
+
     compileSdk = rootProject.extra["compile_sdk"].toString().toInt()
     defaultConfig {
         applicationId = rootProject.extra["package_name"].toString()

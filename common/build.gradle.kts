@@ -96,6 +96,8 @@ kotlin {
 }
 
 android {
+    namespace = "dev.zwander.common"
+
     compileSdk = rootProject.extra["compile_sdk"].toString().toInt()
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
