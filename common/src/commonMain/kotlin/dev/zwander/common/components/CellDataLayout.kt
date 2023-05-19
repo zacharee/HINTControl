@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalObjCRefinement::class)
+
 package dev.zwander.common.components
 
 import androidx.compose.foundation.layout.*
@@ -14,8 +16,11 @@ import dev.zwander.common.model.adapters.BaseCellData
 import dev.zwander.common.model.adapters.CellData5G
 import dev.zwander.common.model.adapters.CellDataLTE
 import dev.zwander.resources.common.MR
+import kotlin.experimental.ExperimentalObjCRefinement
+import kotlin.native.HiddenFromObjC
 
 @Composable
+@HiddenFromObjC
 fun CellBars(
     bars: Int?,
     modifier: Modifier = Modifier,
@@ -38,6 +43,7 @@ fun CellBars(
 }
 
 @Composable
+@HiddenFromObjC
 fun CellDataLayout(
     data: BaseCellData?,
     modifier: Modifier = Modifier,

@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalObjCRefinement::class)
+
 package dev.zwander.common.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -12,9 +14,12 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.zwander.common.util.AdaptiveMod
+import kotlin.experimental.ExperimentalObjCRefinement
+import kotlin.native.HiddenFromObjC
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
+@HiddenFromObjC
 fun <T> PageGrid(
     items: List<T>,
     key: (T) -> Any = { it.hashCode() },

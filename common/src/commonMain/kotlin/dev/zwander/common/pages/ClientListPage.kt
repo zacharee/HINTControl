@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalObjCRefinement::class)
+
 package dev.zwander.common.pages
 
 import androidx.compose.foundation.layout.Column
@@ -19,6 +21,8 @@ import dev.zwander.common.components.PageGrid
 import dev.zwander.common.model.MainModel
 import dev.zwander.common.model.adapters.BaseClientData
 import dev.zwander.resources.common.MR
+import kotlin.experimental.ExperimentalObjCRefinement
+import kotlin.native.HiddenFromObjC
 
 private data class ClientListItem(
     val title: StringResource,
@@ -26,6 +30,7 @@ private data class ClientListItem(
 )
 
 @Composable
+@HiddenFromObjC
 fun ClientListPage(
     modifier: Modifier = Modifier,
 ) {
@@ -65,6 +70,7 @@ fun ClientListPage(
 }
 
 @Composable
+@HiddenFromObjC
 private fun ClientList(
     datas: List<BaseClientData>?,
     modifier: Modifier = Modifier,
@@ -94,6 +100,7 @@ private fun ClientList(
 }
 
 @Composable
+@HiddenFromObjC
 private fun ClientItem(
     data: BaseClientData,
     modifier: Modifier = Modifier,

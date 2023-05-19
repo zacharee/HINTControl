@@ -1,5 +1,6 @@
 @file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE", "EXPOSED_PARAMETER_TYPE")
 @file:JvmName("AlertDialogSkia")
+@file:OptIn(ExperimentalObjCRefinement::class)
 
 package dev.zwander.common.components.dialog
 
@@ -31,10 +32,13 @@ import androidx.compose.ui.window.AlignmentOffsetPositionProvider
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.window.PopupPositionProvider
+import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.jvm.JvmName
+import kotlin.native.HiddenFromObjC
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
+@HiddenFromObjC
 actual fun CAlertDialog(
     showing: Boolean,
     onDismissRequest: () -> Unit,
@@ -89,6 +93,7 @@ actual fun CAlertDialog(
 }
 
 @Composable
+@HiddenFromObjC
 internal fun AbsolutePopup(
     alignment: Alignment = Alignment.TopStart,
     offset: IntOffset = IntOffset(0, 0),

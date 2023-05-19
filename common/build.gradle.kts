@@ -1,3 +1,6 @@
+import org.jetbrains.kotlin.gradle.plugin.mpp.Framework
+import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
+
 plugins {
     kotlin("multiplatform")
     kotlin("plugin.serialization")
@@ -14,15 +17,25 @@ kotlin {
     jvm("desktop") {
         jvmToolchain(11)
     }
-    iosX64()
-    iosArm64()
-    iosSimulatorArm64()
+
+    val iosArm64 = iosArm64()
+    val iosX64 = iosX64()
+    val iosSimulatorArm64 = iosSimulatorArm64()
+
+    val xcFramework = XCFramework("common")
+    configure(listOf(iosArm64, iosX64, iosSimulatorArm64)) {
+        binaries.withType(Framework::class.java) {
+            isStatic = true
+            baseName = "common"
+            xcFramework.add(this)
+        }
+    }
 
     cocoapods {
         version = rootProject.extra["app_version_code"].toString()
-        summary = "KVD21 Control"
+        summary = "KVD21Control"
         homepage = "https://zwander.dev"
-        ios.deploymentTarget = "14.1"
+        ios.deploymentTarget = "15.2"
         podfile = project.file("../iosApp/Podfile")
         framework {
             baseName = "common"
@@ -33,6 +46,7 @@ kotlin {
 
     sourceSets {
         val ktorVersion = "2.3.0"
+        val coroutinesVersion = "1.7.1"
 
         val commonMain by getting {
             dependencies {
@@ -52,6 +66,7 @@ kotlin {
                 api("com.soywiz.korlibs.korio:korio:4.0.0")
                 api("com.russhwolf:multiplatform-settings:1.0.0")
                 api("com.russhwolf:multiplatform-settings-no-arg:1.0.0")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutinesVersion}")
             }
         }
         val androidMain by getting {
@@ -61,6 +76,7 @@ kotlin {
 
                 api("androidx.core:core-ktx:1.10.1")
                 api("io.ktor:ktor-client-cio:${ktorVersion}")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-android:${coroutinesVersion}")
             }
         }
         val skiaMain by creating {
@@ -89,7 +105,7 @@ kotlin {
             iosArm64Main.dependsOn(this)
             iosSimulatorArm64Main.dependsOn(this)
             dependencies {
-
+                api("io.ktor:ktor-client-darwin:${ktorVersion}")
             }
         }
     }
@@ -105,9 +121,13 @@ android {
         targetSdk = rootProject.extra["target_sdk"].toString().toInt()
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
+}
+
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 }
 
 multiplatformResources {

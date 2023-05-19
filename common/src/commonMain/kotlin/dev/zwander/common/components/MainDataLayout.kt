@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalObjCRefinement::class)
+
 package dev.zwander.common.components
 
 import androidx.compose.foundation.layout.Column
@@ -11,8 +13,11 @@ import androidx.compose.ui.Modifier
 import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.model.MainModel
 import dev.zwander.resources.common.MR
+import kotlin.experimental.ExperimentalObjCRefinement
+import kotlin.native.HiddenFromObjC
 
 @Composable
+@HiddenFromObjC
 fun MainDataLayout(
     modifier: Modifier = Modifier
 ) {

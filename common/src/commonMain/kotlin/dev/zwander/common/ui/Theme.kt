@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalObjCRefinement::class)
+
 package dev.zwander.common.ui
 
 import androidx.compose.material3.ColorScheme
@@ -6,8 +8,11 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import kotlin.experimental.ExperimentalObjCRefinement
+import kotlin.native.HiddenFromObjC
 
 @Composable
+@HiddenFromObjC
 fun Theme(
     content: @Composable () -> Unit,
 ) {
@@ -26,6 +31,7 @@ fun Theme(
 }
 
 @Composable
+@HiddenFromObjC
 private fun ColorScheme.setColors(themeInfo: ThemeInfo): ColorScheme {
     val base = themeInfo.colors?.mergeWithColorScheme(this) ?: this
 

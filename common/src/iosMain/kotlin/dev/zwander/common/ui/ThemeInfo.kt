@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalObjCRefinement::class)
+
 package dev.zwander.common.ui
 
 import androidx.compose.runtime.Composable
@@ -11,8 +13,10 @@ import kotlinx.cinterop.get
 import platform.CoreGraphics.CGColorGetComponents
 import platform.UIKit.UIUserInterfaceStyle
 import platform.UIKit.tintColor
+import kotlin.experimental.ExperimentalObjCRefinement
 
 @Composable
+@HiddenFromObjC
 actual fun getThemeInfo(): ThemeInfo {
     val controller = LocalUIViewController.current
     val dark = controller.traitCollection.userInterfaceStyle == UIUserInterfaceStyle.UIUserInterfaceStyleDark

@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalObjCRefinement::class)
+
 package dev.zwander.common.components
 
 import androidx.compose.foundation.layout.Row
@@ -8,9 +10,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import kotlin.experimental.ExperimentalObjCRefinement
+import kotlin.native.HiddenFromObjC
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+@HiddenFromObjC
 fun TextSwitch(
     text: String,
     checked: Boolean,

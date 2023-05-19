@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalObjCRefinement::class)
+
 package dev.zwander.common.pages
 
 import androidx.compose.foundation.layout.*
@@ -17,6 +19,8 @@ import dev.zwander.common.model.MainModel
 import dev.zwander.common.model.UserModel
 import dev.zwander.common.util.SettingsManager
 import dev.zwander.resources.common.MR
+import kotlin.experimental.ExperimentalObjCRefinement
+import kotlin.native.HiddenFromObjC
 
 private data class ItemInfo(
     val title: StringResource,
@@ -25,6 +29,7 @@ private data class ItemInfo(
 )
 
 @Composable
+@HiddenFromObjC
 fun MainPage(
     modifier: Modifier = Modifier,
 ) {

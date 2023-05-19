@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalObjCRefinement::class)
+
 package dev.zwander.common
 
 import androidx.compose.animation.*
@@ -29,8 +31,11 @@ import dev.zwander.common.ui.Theme
 import dev.zwander.resources.common.MR
 import korlibs.memory.Platform
 import kotlinx.coroutines.launch
+import kotlin.experimental.ExperimentalObjCRefinement
+import kotlin.native.HiddenFromObjC
 
 @OptIn(ExperimentalMaterial3Api::class)
+@HiddenFromObjC
 @Composable
 fun App(
     modifier: Modifier = Modifier,
@@ -311,7 +316,7 @@ private fun NavBar(
                 )
             }
 
-            if (!Platform.isAndroid && currentPage.refreshAction != null) {
+            if (!Platform.isAndroid && !Platform.isIos && currentPage.refreshAction != null) {
                 NavigationBarItem(
                     selected = false,
                     onClick = {

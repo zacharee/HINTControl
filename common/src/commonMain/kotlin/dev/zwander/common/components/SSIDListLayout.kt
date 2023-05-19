@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalObjCRefinement::class)
+
 package dev.zwander.common.components
 
 import androidx.compose.foundation.layout.*
@@ -15,6 +17,8 @@ import dev.zwander.common.components.dialog.AlertDialogDef
 import dev.zwander.common.model.MainModel
 import dev.zwander.common.model.adapters.SSIDConfig
 import dev.zwander.resources.common.MR
+import kotlin.experimental.ExperimentalObjCRefinement
+import kotlin.native.HiddenFromObjC
 
 private data class SSIDItem(
     val name: String?,
@@ -23,6 +27,7 @@ private data class SSIDItem(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+@HiddenFromObjC
 fun SSIDListLayout(
     modifier: Modifier = Modifier,
 ) {

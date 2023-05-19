@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalObjCRefinement::class)
+
 package dev.zwander.common.components.pullrefresh
 
 import androidx.compose.animation.Crossfade
@@ -32,10 +34,12 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.pow
+import kotlin.native.HiddenFromObjC
 
 /**
  * The default indicator for Compose pull-to-refresh, based on Android's SwipeRefreshLayout.
@@ -50,6 +54,7 @@ import kotlin.math.pow
  * @param scale A boolean controlling whether the indicator's size scales with pull progress or not.
  */
 @Composable
+@HiddenFromObjC
 // TODO(b/244423199): Consider whether the state parameter should be replaced with lambdas to
 //  enable people to use this indicator with custom pull-to-refresh components.
 fun PullRefreshIndicator(
@@ -100,6 +105,7 @@ fun PullRefreshIndicator(
  * Modifier.size MUST be specified.
  */
 @Composable
+@HiddenFromObjC
 private fun CircularArrowIndicator(
     state: PullRefreshState,
     color: Color,

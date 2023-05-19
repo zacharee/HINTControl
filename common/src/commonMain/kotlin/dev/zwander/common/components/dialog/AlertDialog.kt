@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalObjCRefinement::class)
+
 package dev.zwander.common.components.dialog
 
 import androidx.compose.foundation.layout.*
@@ -10,8 +12,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
+import kotlin.experimental.ExperimentalObjCRefinement
+import kotlin.native.HiddenFromObjC
 
 @Composable
+@HiddenFromObjC
 expect fun CAlertDialog(
     showing: Boolean,
     onDismissRequest: () -> Unit,
@@ -26,6 +31,7 @@ expect fun CAlertDialog(
 )
 
 @Composable
+@HiddenFromObjC
 fun AlertDialogDef(
     showing: Boolean,
     onDismissRequest: () -> Unit,
@@ -45,6 +51,7 @@ fun AlertDialogDef(
 }
 
 @Composable
+@HiddenFromObjC
 fun AlertDialogContents(
     buttons: @Composable RowScope.() -> Unit,
     modifier: Modifier = Modifier,

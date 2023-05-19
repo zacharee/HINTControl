@@ -5,10 +5,10 @@ Pod::Spec.new do |spec|
     spec.source                   = { :http=> ''}
     spec.authors                  = ''
     spec.license                  = ''
-    spec.summary                  = 'KVD21 Control'
+    spec.summary                  = 'KVD21Control'
     spec.vendored_frameworks      = 'build/cocoapods/framework/common.framework'
     spec.libraries                = 'c++'
-    spec.ios.deployment_target = '14.1'
+    spec.ios.deployment_target = '15.2'
                 
                 
     spec.pod_target_xcconfig = {

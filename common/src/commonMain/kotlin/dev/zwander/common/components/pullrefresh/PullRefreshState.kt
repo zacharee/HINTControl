@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalObjCRefinement::class)
+
 package dev.zwander.common.components.pullrefresh
 
 import androidx.compose.animation.core.animate
@@ -17,8 +19,10 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.math.abs
 import kotlin.math.pow
+import kotlin.native.HiddenFromObjC
 
 /**
  * Creates a [PullRefreshState] that is remembered across compositions.
@@ -35,6 +39,7 @@ import kotlin.math.pow
  * offset corresponds to the position of the bottom of the indicator.
  */
 @Composable
+@HiddenFromObjC
 fun rememberPullRefreshState(
     refreshing: Boolean,
     onRefresh: () -> Unit,

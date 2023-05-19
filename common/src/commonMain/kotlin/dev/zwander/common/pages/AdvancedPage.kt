@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalObjCRefinement::class)
+
 package dev.zwander.common.pages
 
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,6 +16,8 @@ import dev.zwander.common.components.PageGrid
 import dev.zwander.common.model.MainModel
 import dev.zwander.common.model.adapters.BaseAdvancedData
 import dev.zwander.resources.common.MR
+import kotlin.experimental.ExperimentalObjCRefinement
+import kotlin.native.HiddenFromObjC
 
 private data class AdvancedItemData(
     val title: StringResource,
@@ -22,6 +26,7 @@ private data class AdvancedItemData(
 )
 
 @Composable
+@HiddenFromObjC
 fun AdvancedPage(
     modifier: Modifier = Modifier,
 ) {

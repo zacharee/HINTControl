@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalObjCRefinement::class)
+
 package dev.zwander.common.pages
 
 import androidx.compose.animation.*
@@ -31,9 +33,12 @@ import dev.zwander.common.model.UserModel
 import dev.zwander.common.util.HTTPClient
 import dev.zwander.resources.common.MR
 import kotlinx.coroutines.launch
+import kotlin.experimental.ExperimentalObjCRefinement
+import kotlin.native.HiddenFromObjC
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
+@HiddenFromObjC
 fun LoginPage(
     modifier: Modifier = Modifier,
 ) {

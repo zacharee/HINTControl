@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalObjCRefinement::class)
+
 package dev.zwander.common.pages
 
 import androidx.compose.foundation.layout.Column
@@ -19,6 +21,8 @@ import dev.zwander.common.model.MainModel
 import dev.zwander.common.util.HTTPClient
 import dev.zwander.resources.common.MR
 import kotlinx.coroutines.launch
+import kotlin.experimental.ExperimentalObjCRefinement
+import kotlin.native.HiddenFromObjC
 
 private data class ItemData(
     val title: StringResource,
@@ -26,6 +30,7 @@ private data class ItemData(
 )
 
 @Composable
+@HiddenFromObjC
 fun WifiConfigPage(
     modifier: Modifier = Modifier,
 ) {
