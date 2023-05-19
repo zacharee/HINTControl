@@ -33,12 +33,12 @@ fun MainPage(
     val items = remember(data) {
         listOf(
             ItemInfo(
-                title = MR.strings.general,
-                render = { MainDataLayout(it) },
-            ),
-            ItemInfo(
                 title = MR.strings.device,
                 render = { DeviceDataLayout(it) }
+            ),
+            ItemInfo(
+                title = MR.strings.general,
+                render = { MainDataLayout(it) },
             ),
             ItemInfo(
                 title = MR.strings.lte,
