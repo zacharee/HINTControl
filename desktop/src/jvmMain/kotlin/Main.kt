@@ -1,6 +1,9 @@
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyShortcut
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
 import dev.zwander.common.App
 import dev.zwander.common.ui.getThemeInfo
@@ -9,6 +12,9 @@ import io.github.mimoguz.custom_window.DwmAttribute
 import io.github.mimoguz.custom_window.StageOps
 import org.jetbrains.skiko.OS
 import org.jetbrains.skiko.hostOs
+import javax.swing.JInternalFrame
+import javax.swing.plaf.basic.BasicInternalFrameUI
+import javax.swing.plaf.metal.MetalRootPaneUI
 
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -17,8 +23,13 @@ fun main() {
     System.setProperty("apple.awt.application.appearance", "system")
     System.setProperty("apple.awt.application.name", MR.strings.app_name.localized())
 
-    if (hostOs == OS.Windows) {
-        System.setProperty("skiko.renderApi", "OPENGL")
+    when (hostOs) {
+        OS.Windows -> {
+            System.setProperty("skiko.renderApi", "OPENGL")
+        }
+        else -> {
+            /* no-op */
+        }
     }
 
     application {
@@ -29,98 +40,73 @@ fun main() {
             title = MR.strings.app_name.localized(),
             state = windowState,
         ) {
-            if (hostOs == OS.Windows) {
-                val handle = StageOps.findWindowHandle(this.window)
-                StageOps.dwmSetBooleanValue(
-                    handle,
-                    DwmAttribute.DWMWA_USE_IMMERSIVE_DARK_MODE,
-                    false,
-                )
-                getThemeInfo().colors?.background?.let {
-                    StageOps.setCaptionColor(
+            window.rootPane.putClientProperty("apple.awt.transparentTitleBar", true)
+            window.rootPane.putClientProperty("apple.awt.fullWindowContent", true)
+
+            // For some reason this returns the title bar height on macOS.
+            val menuBarHeight = if (hostOs == OS.MacOS) window.height.dp else 0.dp
+
+            when (hostOs) {
+                OS.Windows -> {
+                    val handle = StageOps.findWindowHandle(window)
+                    StageOps.dwmSetBooleanValue(
                         handle,
-                        it
+                        DwmAttribute.DWMWA_USE_IMMERSIVE_DARK_MODE,
+                        false,
                     )
-                }
-                getThemeInfo().colors?.onBackground?.let {
-                    StageOps.setTextColor(
-                        handle,
-                        it
-                    )
-                }
-            }
-
-            if (hostOs == OS.MacOS) {
-                MenuBar {
-                    Menu(
-                        text = MR.strings.window.localized(),
-                    ) {
-                        Item(
-                            text = MR.strings.minimize.localized(),
-                            onClick = {
-                                windowState.isMinimized = true
-                            },
-                            shortcut = KeyShortcut(Key.M, meta = true)
-                        )
-
-                        Item(
-                            text = MR.strings.zoom.localized(),
-                            onClick = {
-                                windowState.placement = WindowPlacement.Maximized
-                            }
-                        )
-
-                        Item(
-                            text = MR.strings.close.localized(),
-                            onClick = {
-                                exitApplication()
-                            },
-                            shortcut = KeyShortcut(Key.W, meta = true)
+                    getThemeInfo().colors?.background?.let {
+                        StageOps.setCaptionColor(
+                            handle,
+                            it
                         )
                     }
+                    getThemeInfo().colors?.onBackground?.let {
+                        StageOps.setTextColor(
+                            handle,
+                            it
+                        )
+                    }
+                }
+                OS.MacOS -> {
+                    MenuBar {
+                        Menu(
+                            text = MR.strings.window.localized(),
+                        ) {
+                            Item(
+                                text = MR.strings.minimize.localized(),
+                                onClick = {
+                                    windowState.isMinimized = true
+                                },
+                                shortcut = KeyShortcut(Key.M, meta = true)
+                            )
 
-//                Menu(
-//                    text = strings.help()
-//                ) {
-//                    Item(
-//                        text = strings.github(),
-//                        onClick = {
-//                            UrlHandler.launchUrl("https://github.com/zacharee/SamloaderKotlin")
-//                        }
-//                    )
-//
-//                    Item(
-//                        text = strings.mastodon(),
-//                        onClick = {
-//                            UrlHandler.launchUrl("https://androiddev.social/@wander1236")
-//                        }
-//                    )
-//
-//                    Item(
-//                        text = strings.twitter(),
-//                        onClick = {
-//                            UrlHandler.launchUrl("https://twitter.com/wander1236")
-//                        }
-//                    )
-//
-//                    Item(
-//                        text = strings.patreon(),
-//                        onClick = {
-//                            UrlHandler.launchUrl("https://patreon.com/zacharywander")
-//                        }
-//                    )
-//
-//                    Item(
-//                        text = strings.supporters(),
-//                        onClick = {
-//                            showingSupportersWindow = true
-//                        }
-//                    )
-//                }
+                            Item(
+                                text = MR.strings.zoom.localized(),
+                                onClick = {
+                                    windowState.placement = WindowPlacement.Maximized
+                                }
+                            )
+
+                            Item(
+                                text = MR.strings.close.localized(),
+                                onClick = {
+                                    exitApplication()
+                                },
+                                shortcut = KeyShortcut(Key.W, meta = true)
+                            )
+                        }
+                    }
+                }
+                else -> {
+                    /* no-op */
                 }
             }
 
-            App()
+            App(
+                windowInsets = PaddingValues(
+                    top = menuBarHeight,
+                )
+            )
         }
     }
 }
