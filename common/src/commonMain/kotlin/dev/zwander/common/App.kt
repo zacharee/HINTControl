@@ -294,7 +294,7 @@ private fun NavBar(
 
     if (vertical) {
         NavigationRail(
-            modifier = modifier.padding(vertical = 16.dp),
+            modifier = modifier.padding(vertical = 8.dp),
         ) {
             pages.forEach { page ->
                 NavigationRailItem(
