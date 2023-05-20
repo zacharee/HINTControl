@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
 import dev.icerock.moko.resources.compose.stringResource
@@ -39,7 +40,10 @@ import kotlin.native.HiddenFromObjC
 @Composable
 fun App(
     modifier: Modifier = Modifier,
+    windowInsets: PaddingValues = PaddingValues(0.dp),
 ) {
+    val layoutDirection = LocalLayoutDirection.current
+
     Theme {
         Surface {
             val scope = rememberCoroutineScope()
@@ -85,97 +89,112 @@ fun App(
                 }
             }
 
-            BoxWithConstraints(
+            Box(
                 modifier = Modifier.fillMaxSize(),
             ) {
-                val constraints = this.constraints
-                val maxWidthDp = with(LocalDensity.current) { constraints.maxWidth.toDp() }
+                BoxWithConstraints(
+                    modifier = Modifier.fillMaxSize()
+                        .absolutePadding(
+                            top = windowInsets.calculateTopPadding(),
+                            left = windowInsets.calculateLeftPadding(layoutDirection),
+                            right = windowInsets.calculateRightPadding(layoutDirection),
+                        ),
+                ) {
+                    val constraints = this.constraints
+                    val maxWidthDp = with(LocalDensity.current) { constraints.maxWidth.toDp() }
 
-                val sideRail = maxWidthDp >= 600.dp
+                    val sideRail = maxWidthDp >= 600.dp
+                    val showBottomBar = token != null && !sideRail
 
-                val pullRefreshState = rememberPullRefreshState(
-                    refreshing = false,
-                    onRefresh = {
-                        scope.launch {
-                            error = handleRefresh(currentPage)
+                    val pullRefreshState = rememberPullRefreshState(
+                        refreshing = false,
+                        onRefresh = {
+                            scope.launch {
+                                error = handleRefresh(currentPage)
+                            }
                         }
-                    }
-                )
+                    )
 
-                Scaffold(
-                    modifier = modifier.fillMaxSize(),
-                    bottomBar = {
-                        AnimatedVisibility(
-                            visible = token != null && !sideRail,
-                            enter = fadeIn() + expandVertically(expandFrom = Alignment.Bottom),
-                            exit = fadeOut() + shrinkVertically(shrinkTowards = Alignment.Bottom),
-                        ) {
-                            NavBar(
-                                currentPage = currentPage,
-                                pages = pages,
-                                onPageChange = { currentPage = it },
-                                vertical = false,
-                            )
-                        }
-                    },
-                    snackbarHost = {
-                        SnackbarHost(
-                            hostState = snackbarHostState,
-                        ) {
-                            Snackbar(
-                                snackbarData = it,
-                                modifier = Modifier.fillMaxWidth(),
-                                actionOnNewLine = true,
-                                containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                                contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                                actionColor = MaterialTheme.colorScheme.primary,
-                            )
-                        }
-                    }
-                ) { padding ->
-                    Row(
-                        modifier = Modifier.fillMaxWidth().padding(padding),
-                    ) {
-                        AnimatedVisibility(
-                            visible = token != null && sideRail,
-                            enter = fadeIn() + expandHorizontally(expandFrom = Alignment.Start),
-                            exit = fadeOut() + shrinkHorizontally(shrinkTowards = Alignment.Start),
-                        ) {
-                            NavBar(
-                                currentPage = currentPage,
-                                onPageChange = { currentPage = it },
-                                pages = pages,
-                                vertical = true,
-                            )
-                        }
-
-                        Box(
-                            modifier = Modifier.weight(1f).then(
-                                if (!sideRail && currentPage.refreshAction != null) {
-                                    Modifier.pullRefresh(
-                                        state = pullRefreshState
-                                    )
-                                } else {
-                                    Modifier
-                                }
+                    Scaffold(
+                        modifier = modifier.fillMaxSize()
+                            .padding(
+                                bottom = if (!showBottomBar) windowInsets.calculateBottomPadding() else 0.dp
                             ),
+                        bottomBar = {
+                            AnimatedVisibility(
+                                visible = showBottomBar,
+                                enter = fadeIn() + expandVertically(expandFrom = Alignment.Bottom),
+                                exit = fadeOut() + shrinkVertically(shrinkTowards = Alignment.Bottom),
+                            ) {
+                                NavBar(
+                                    currentPage = currentPage,
+                                    pages = pages,
+                                    onPageChange = { currentPage = it },
+                                    vertical = false,
+                                    windowInsets = WindowInsets(bottom = windowInsets.calculateBottomPadding()),
+                                )
+                            }
+                        },
+                        snackbarHost = {
+                            SnackbarHost(
+                                hostState = snackbarHostState,
+                            ) {
+                                Snackbar(
+                                    snackbarData = it,
+                                    modifier = Modifier.fillMaxWidth(),
+                                    actionOnNewLine = true,
+                                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    actionColor = MaterialTheme.colorScheme.primary,
+                                )
+                            }
+                        }
+                    ) { padding ->
+                        Row(
+                            modifier = Modifier.fillMaxWidth()
+                                .padding(padding),
                         ) {
-                            AppView(
-                                currentPage = currentPage,
-                                sideRail = sideRail,
-                                pageCount = pages.size,
-                                pages = pages,
-                                onPageChange = { currentPage = it },
-                                modifier = Modifier.widthIn(max = 1200.dp)
-                                    .fillMaxSize()
-                                    .align(Alignment.TopCenter),
-                            )
+                            AnimatedVisibility(
+                                visible = token != null && sideRail,
+                                enter = fadeIn() + expandHorizontally(expandFrom = Alignment.Start),
+                                exit = fadeOut() + shrinkHorizontally(shrinkTowards = Alignment.Start),
+                            ) {
+                                NavBar(
+                                    currentPage = currentPage,
+                                    onPageChange = { currentPage = it },
+                                    pages = pages,
+                                    vertical = true,
+                                )
+                            }
 
-                            PullRefreshIndicator(
-                                refreshing = false,
-                                state = pullRefreshState,
-                                modifier = Modifier.align(Alignment.TopCenter),
-                            )
+                            Box(
+                                modifier = Modifier.weight(1f).then(
+                                    if (!sideRail && currentPage.refreshAction != null) {
+                                        Modifier.pullRefresh(
+                                            state = pullRefreshState
+                                        )
+                                    } else {
+                                        Modifier
+                                    }
+                                ),
+                            ) {
+                                AppView(
+                                    currentPage = currentPage,
+                                    sideRail = sideRail,
+                                    pageCount = pages.size,
+                                    pages = pages,
+                                    onPageChange = { currentPage = it },
+                                    modifier = Modifier.widthIn(max = 1200.dp)
+                                        .fillMaxSize()
+                                        .align(Alignment.TopCenter),
+                                )
+
+                                PullRefreshIndicator(
+                                    refreshing = false,
+                                    state = pullRefreshState,
+                                    modifier = Modifier.align(Alignment.TopCenter),
+                                )
+                            }
                         }
                     }
                 }
@@ -267,6 +286,7 @@ private fun NavBar(
     onPageChange: (Page) -> Unit,
     modifier: Modifier = Modifier,
     vertical: Boolean = true,
+    windowInsets: WindowInsets = NavigationBarDefaults.windowInsets,
 ) {
     val scope = rememberCoroutineScope()
 
@@ -301,6 +321,7 @@ private fun NavBar(
     } else {
         NavigationBar(
             modifier = modifier,
+            windowInsets = windowInsets,
         ) {
             pages.forEach { page ->
                 NavigationBarItem(
