@@ -2,9 +2,12 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyShortcut
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.*
+import androidx.compose.ui.window.MenuBar
+import androidx.compose.ui.window.Window
+import androidx.compose.ui.window.WindowPlacement
+import androidx.compose.ui.window.application
+import androidx.compose.ui.window.rememberWindowState
 import dev.zwander.common.App
 import dev.zwander.common.ui.getThemeInfo
 import dev.zwander.resources.common.MR
@@ -12,9 +15,6 @@ import io.github.mimoguz.custom_window.DwmAttribute
 import io.github.mimoguz.custom_window.StageOps
 import org.jetbrains.skiko.OS
 import org.jetbrains.skiko.hostOs
-import javax.swing.JInternalFrame
-import javax.swing.plaf.basic.BasicInternalFrameUI
-import javax.swing.plaf.metal.MetalRootPaneUI
 
 
 @OptIn(ExperimentalComposeUiApi::class)
