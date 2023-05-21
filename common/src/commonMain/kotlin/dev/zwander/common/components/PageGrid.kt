@@ -2,6 +2,11 @@
 
 package dev.zwander.common.components
 
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.AnimationVector
+import androidx.compose.animation.core.FiniteAnimationSpec
+import androidx.compose.animation.core.TwoWayConverter
+import androidx.compose.animation.core.VectorizedFiniteAnimationSpec
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
@@ -12,8 +17,10 @@ import androidx.compose.material3.OutlinedCard
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import dev.zwander.common.util.AdaptiveMod
+import dev.zwander.common.util.animateContentHeight
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
 
@@ -36,7 +43,8 @@ fun <T> PageGrid(
     ) {
         items(items = items, key = key) {
             OutlinedCard(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth()
+                    .animateContentHeight(),
             ) {
                 Column(
                     modifier = Modifier.fillMaxWidth()
