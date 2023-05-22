@@ -39,7 +39,7 @@ fun <T> PageGrid(
 ) {
     LazyVerticalStaggeredGrid(
         contentPadding = PaddingValues(8.dp),
-        columns = AdaptiveMod(300.dp, items.size),
+        columns = AdaptiveMod(250.dp, items.size),
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalItemSpacing = 8.dp,
