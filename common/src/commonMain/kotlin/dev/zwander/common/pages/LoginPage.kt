@@ -66,15 +66,13 @@ fun LoginPage(
         mutableStateOf(true)
     }
 
-    fun performLogin() {
+    suspend fun performLogin() {
         error = null
         focusManager.clearFocus()
-        scope.launch {
-            try {
-                HTTPClient.logIn(username, password ?: "", rememberCredentials)
-            } catch (e: Exception) {
-                error = e.message
-            }
+        try {
+            HTTPClient.logIn(username, password ?: "", rememberCredentials)
+        } catch (e: Exception) {
+            error = e.message
         }
     }
 
@@ -95,13 +93,15 @@ fun LoginPage(
         ) {
             OutlinedTextField(
                 value = username,
-                onValueChange = { username = it.trim().filterNot { it.isWhitespace() } },
+                onValueChange = { username = it.filterNot(Char::isWhitespace) },
                 isError = error != null,
                 modifier = Modifier.focusRequester(userFocusRequester)
                     .onKeyEvent {
                         when (it.key) {
                             Key.Enter -> {
-                                performLogin()
+                                scope.launch {
+                                    performLogin()
+                                }
                                 true
                             }
                             Key.Tab -> {
@@ -124,7 +124,7 @@ fun LoginPage(
 
             OutlinedTextField(
                 value = password ?: "",
-                onValueChange = { password = it.trim().filterNot { it.isWhitespace() } },
+                onValueChange = { password = it.filterNot(Char::isWhitespace) },
                 visualTransformation = if (showingPassword) {
                     VisualTransformation.None
                 } else {
@@ -151,7 +151,9 @@ fun LoginPage(
                     .onKeyEvent {
                         when (it.key) {
                             Key.Enter -> {
-                                performLogin()
+                                scope.launch {
+                                    performLogin()
+                                }
                                 true
                             }
                             Key.Tab -> {
@@ -199,7 +201,9 @@ fun LoginPage(
 
             Button(
                 onClick = {
-                    performLogin()
+                    scope.launch {
+                        performLogin()
+                    }
                 },
                 enabled = username.isNotBlank() && !password.isNullOrBlank() && !isLoading && token == null,
                 interactionSource = loginInteractionSource,
