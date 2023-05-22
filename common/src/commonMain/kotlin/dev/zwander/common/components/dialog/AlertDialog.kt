@@ -44,10 +44,12 @@ fun AlertDialogDef(
     contentColor: Color = contentColorFor(backgroundColor),
     maxWidthPercent: Float = 0.9f,
 ) {
-    CAlertDialog(showing, onDismissRequest,
+    CAlertDialog(
+        showing, onDismissRequest,
         buttons, modifier.widthIn(max = 600.dp), title, text,
         shape, backgroundColor, contentColor,
-        maxWidthPercent)
+        maxWidthPercent
+    )
 }
 
 @Composable
