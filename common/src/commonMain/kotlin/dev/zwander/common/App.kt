@@ -168,15 +168,16 @@ fun App(
                             }
 
                             Box(
-                                modifier = Modifier.weight(1f).then(
-                                    if (!sideRail && currentPage.refreshAction != null) {
-                                        Modifier.pullRefresh(
-                                            state = pullRefreshState
-                                        )
-                                    } else {
-                                        Modifier
-                                    }
-                                ),
+                                modifier = Modifier.weight(1f)
+                                    .then(
+                                        if (!sideRail && currentPage.refreshAction != null) {
+                                            Modifier.pullRefresh(
+                                                state = pullRefreshState
+                                            )
+                                        } else {
+                                            Modifier
+                                        }
+                                    ),
                             ) {
                                 AppView(
                                     currentPage = currentPage,

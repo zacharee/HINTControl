@@ -22,6 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.zwander.common.util.AdaptiveMod
 import dev.zwander.common.util.animateContentHeight
+import dev.zwander.common.util.animateContentWidth
+import korlibs.memory.Platform
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
 
@@ -49,7 +51,12 @@ fun <T> PageGrid(
                 Column(
                     modifier = Modifier.fillMaxWidth()
                         .padding(8.dp)
-                        .animateContentHeight(),
+                        .animateContentHeight()
+                        .then(if (Platform.isAndroid || Platform.isIos) {
+                            Modifier.animateContentWidth()
+                        } else {
+                            Modifier
+                        }),
                 ) {
                     CompositionLocalProvider(
                         LocalTextStyle provides MaterialTheme.typography.titleLarge,
