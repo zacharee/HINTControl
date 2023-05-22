@@ -45,7 +45,7 @@ fun AlertDialogDef(
     maxWidthPercent: Float = 0.9f,
 ) {
     CAlertDialog(showing, onDismissRequest,
-        buttons, modifier, title, text,
+        buttons, modifier.widthIn(max = 600.dp), title, text,
         shape, backgroundColor, contentColor,
         maxWidthPercent)
 }
