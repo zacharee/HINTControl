@@ -3,10 +3,11 @@
 package dev.zwander.common.ui
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
+import dev.icerock.moko.resources.compose.colorResource
+import dev.zwander.common.monet.ColorScheme
+import dev.zwander.resources.common.MR
 import kotlinx.cinterop.useContents
-import platform.AppKit.NSColorList
-import platform.AppKit.NSColorSpace
 import platform.Foundation.NSProcessInfo
 import platform.Foundation.NSUserDefaults
 import kotlin.experimental.ExperimentalObjCRefinement
@@ -51,26 +52,11 @@ actual fun getThemeInfo(): ThemeInfo {
         }
     }
 
-    val selectionColor = run {
-        val color = NSColorList.colorListNamed("System")
-            ?.colorWithKey("selectedTextBackgroundColor")
-            ?.colorUsingColorSpace(NSColorSpace.sRGBColorSpace())
-
-        color?.let {
-            Color(
-                red = (255 * color.redComponent + 0.5).toInt(),
-                green = (255 * color.greenComponent + 0.5).toInt(),
-                blue = (255 * color.blueComponent + 0.5).toInt(),
-                alpha = (255 * color.alphaComponent + 0.5).toInt(),
-            )
-        }
-    }
-
     return ThemeInfo(
         isDarkMode = dark,
-        colors = NullableColorScheme(
-            primary = accent,
-            secondary = selectionColor,
-        ),
+        colors = ColorScheme(
+            seed = accent?.toArgb() ?: colorResource(MR.colors.icon_color_one).toArgb(),
+            darkTheme = dark,
+        ).toComposeColorScheme().toNullableColorScheme(),
     )
 }
