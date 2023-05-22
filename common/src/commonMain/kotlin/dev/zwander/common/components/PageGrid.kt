@@ -44,12 +44,12 @@ fun <T> PageGrid(
     ) {
         items(items = items, key = key) {
             OutlinedCard(
-                modifier = Modifier.fillMaxWidth()
-                    .animateContentHeight(),
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 Column(
                     modifier = Modifier.fillMaxWidth()
-                        .padding(8.dp),
+                        .padding(8.dp)
+                        .animateContentHeight(),
                 ) {
                     CompositionLocalProvider(
                         LocalTextStyle provides MaterialTheme.typography.titleLarge,
