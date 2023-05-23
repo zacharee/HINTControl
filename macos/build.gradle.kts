@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED_VARIABLE")
+
 import org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink
 import java.io.File
 import kotlin.reflect.full.declaredMemberProperties
@@ -133,7 +135,7 @@ tasks.withType<org.jetbrains.compose.experimental.uikit.tasks.ExperimentalPackCo
                 val destinationDir: Directory =
                     (destinationDirField.get(packTask) as DirectoryProperty).get()
                 val executablePath: String =
-                    (executablePathField.get(packTask) as Provider<String>).get()
+                    (executablePathField.get(packTask) as Provider<*>).get().toString()
 
                 val outputDir: File = File(destinationDir.asFile, executablePath).parentFile
 

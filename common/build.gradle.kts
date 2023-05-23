@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED_VARIABLE")
+
 import org.jetbrains.kotlin.gradle.plugin.mpp.Framework
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
@@ -15,7 +17,7 @@ version = rootProject.extra["app_version_code"].toString()
 kotlin {
     android()
     jvm("desktop") {
-        jvmToolchain(11)
+        jvmToolchain(rootProject.extra["java_version"].toString().toInt())
     }
     macosX64()
     macosArm64()
@@ -95,6 +97,8 @@ kotlin {
                 api("com.github.weisj:darklaf-core:3.0.2")
                 api("com.github.weisj:darklaf-macos:3.0.2")
                 api("net.java.dev.jna:jna:5.13.0")
+                api("org.slf4j:slf4j-api:2.0.7")
+                api("org.slf4j:slf4j-jdk14:2.0.7")
             }
         }
 
@@ -131,16 +135,15 @@ android {
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
         minSdk = rootProject.extra["min_sdk"].toString().toInt()
-        targetSdk = rootProject.extra["target_sdk"].toString().toInt()
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.toVersion(rootProject.extra["java_version"].toString())
+        targetCompatibility = sourceCompatibility
     }
 }
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(rootProject.extra["java_version"].toString()))
 }
 
 multiplatformResources {

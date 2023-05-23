@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED_VARIABLE")
+
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
@@ -11,7 +13,7 @@ version = rootProject.extra["app_version_code"].toString()
 
 kotlin {
     jvm {
-        jvmToolchain(11)
+        jvmToolchain(rootProject.extra["java_version"].toString().toInt())
         withJava()
     }
     sourceSets {
@@ -75,6 +77,6 @@ configurations.all {
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
+        languageVersion.set(JavaLanguageVersion.of(rootProject.extra["java_version"].toString()))
     }
 }

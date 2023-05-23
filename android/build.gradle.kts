@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 plugins {
     id("org.jetbrains.compose")
     id("com.android.application")
@@ -21,8 +23,8 @@ android {
         versionName = rootProject.extra["app_version_name"].toString()
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.toVersion(rootProject.extra["java_version"].toString())
+        targetCompatibility = sourceCompatibility
     }
     buildTypes {
         getByName("release") {
