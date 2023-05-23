@@ -53,8 +53,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.isCtrlPressed
+import androidx.compose.ui.input.key.isMetaPressed
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.dp
@@ -73,7 +79,7 @@ import kotlinx.coroutines.launch
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @HiddenFromObjC
 @Composable
 fun App(
@@ -81,15 +87,30 @@ fun App(
     windowInsets: PaddingValues = PaddingValues(0.dp),
 ) {
     val layoutDirection = LocalLayoutDirection.current
+    val scope = rememberCoroutineScope()
+    val isLoading by GlobalModel.isLoading.collectAsState()
+
+    var currentPage by GlobalModel.currentPage.collectAsMutableState()
 
     Theme {
-        Surface {
-            val scope = rememberCoroutineScope()
+        Surface(
+            modifier = Modifier.onPreviewKeyEvent {
+                if (it.key == Key.R && !isLoading) {
+                    if (((Platform.isMac || Platform.isIos) && it.isMetaPressed) ||
+                        (!(Platform.isMac || Platform.isIos) && it.isCtrlPressed)) {
+                        scope.launch {
+                            if (!isLoading) {
+                                currentPage.refreshAction?.invoke()
+                            }
+                        }
+                    }
+                }
+                false
+            }
+        ) {
             val token by UserModel.token.collectAsState()
-            val isLoading by GlobalModel.isLoading.collectAsState()
             val snackbarHostState = remember { SnackbarHostState() }
 
-            var currentPage by GlobalModel.currentPage.collectAsMutableState()
             var error by GlobalModel.httpError.collectAsMutableState()
 
             val pages = remember {
