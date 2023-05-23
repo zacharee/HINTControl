@@ -2,18 +2,56 @@
 
 package dev.zwander.common
 
-import androidx.compose.animation.*
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkHorizontally
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.absolutePadding
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.VerticalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarDefaults
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationRail
+import androidx.compose.material3.NavigationRailItem
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -168,7 +206,8 @@ fun App(
                             }
 
                             Box(
-                                modifier = Modifier.weight(1f)
+                                modifier = Modifier
+                                    .weight(1f)
                                     .then(
                                         if (!sideRail && currentPage.refreshAction != null) {
                                             Modifier.pullRefresh(
@@ -185,7 +224,8 @@ fun App(
                                     pageCount = pages.size,
                                     pages = pages,
                                     onPageChange = { currentPage = it },
-                                    modifier = Modifier.widthIn(max = 1200.dp)
+                                    modifier = Modifier
+                                        .widthIn(max = 1200.dp)
                                         .fillMaxSize()
                                         .align(Alignment.TopCenter),
                                 )
@@ -214,6 +254,13 @@ fun App(
     }
 }
 
+private enum class CrossfadeState {
+    LOGIN,
+    VERTICAL,
+    CROSSFADE,
+    HORIZONTAL,
+}
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun AppView(
@@ -228,19 +275,17 @@ private fun AppView(
         modifier = modifier,
     ) {
         Crossfade(
-            targetState = sideRail || currentPage == Page.Login || Platform.isJvm,
+            targetState = when {
+                currentPage == Page.Login -> CrossfadeState.LOGIN
+                sideRail && !Platform.isJvm -> CrossfadeState.VERTICAL
+                sideRail && Platform.isJvm -> CrossfadeState.CROSSFADE
+                else -> CrossfadeState.HORIZONTAL
+            },
             modifier = Modifier.fillMaxSize(),
         ) {
-            if (it) {
-                Crossfade(
-                    targetState = currentPage,
-                    modifier = Modifier.fillMaxSize(),
-                ) { page ->
-                    page.render(Modifier.fillMaxSize())
-                }
-            } else {
-                val state = rememberPagerState()
+            val state = rememberPagerState()
 
+            if (currentPage != Page.Login) {
                 LaunchedEffect(state.currentPage, state.isScrollInProgress) {
                     if (!state.isScrollInProgress) {
                         onPageChange(pages[state.currentPage])
@@ -250,12 +295,37 @@ private fun AppView(
                 LaunchedEffect(currentPage) {
                     state.animateScrollToPage(pages.indexOf(currentPage))
                 }
+            }
 
-                HorizontalPager(
-                    pageCount = pageCount,
-                    state = state,
-                ) { page ->
-                    pages[page].render(Modifier.fillMaxSize())
+            when (it) {
+                CrossfadeState.LOGIN -> {
+                    currentPage.render(Modifier.fillMaxSize())
+                }
+                CrossfadeState.VERTICAL -> {
+                    VerticalPager(
+                        pageCount = pageCount,
+                        state = state,
+                        userScrollEnabled = false,
+                        modifier = Modifier.fillMaxSize(),
+                    ) { page ->
+                        pages[page].render(Modifier.fillMaxSize())
+                    }
+                }
+                CrossfadeState.CROSSFADE -> {
+                    Crossfade(
+                        targetState = currentPage,
+                        modifier = Modifier.fillMaxSize(),
+                    ) { page ->
+                        page.render(Modifier.fillMaxSize())
+                    }
+                }
+                CrossfadeState.HORIZONTAL -> {
+                    HorizontalPager(
+                        pageCount = pageCount,
+                        state = state,
+                    ) { page ->
+                        pages[page].render(Modifier.fillMaxSize())
+                    }
                 }
             }
         }

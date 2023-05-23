@@ -64,8 +64,11 @@ object HTTPClient {
                     SettingsManager.password = password
                 }
 
-                UserModel.token.value = json.decodeFromString<LoginResultData>(response.bodyAsText()).auth.token
+                val text = response.bodyAsText()
+
+                UserModel.token.value = json.decodeFromString<LoginResultData>(text).auth.token
             } else {
+                println(response.status)
                 throw IOException(response.status.description)
             }
         }
