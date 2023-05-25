@@ -154,12 +154,19 @@ object HTTPClient {
 
     suspend fun reboot() {
         return withLoader {
-            httpClient.post(Endpoints.rebootURL.createFullUrl())
-                .apply {
-                    if (!status.isSuccess()) {
-                        throw IOException(status.description)
+            try {
+                httpClient.post(Endpoints.rebootURL.createFullUrl())
+                    .apply {
+                        if (!status.isSuccess()) {
+                            throw IOException(status.description)
+                        }
                     }
+            } catch (e: HttpRequestTimeoutException) {
+                if (!waitForLive()) {
+                    GlobalModel.httpError.value = e.message
                 }
+                Unit
+            }
         }
     }
 

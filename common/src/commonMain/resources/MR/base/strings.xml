@@ -7,6 +7,9 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="ok">OK</string>
+    <string name="reboot">Reboot</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
     <string name="show_password">Show Password</string>
     <string name="hide_password">Hide Password</string>
@@ -105,4 +108,6 @@
     <string name="softwareVersion">Software Version</string>
     <string name="type">Type</string>
     <string name="update_state">Update State</string>
+
+    <string name="reboot_confirmation">Are you sure you want to reboot the gateway?</string>
 </resources>
