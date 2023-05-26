@@ -42,3 +42,5 @@ bin/
 .DS_Store
 /output/
 /local.properties
+/iosApp/Pods/
+/iosApp/iosApp.xcworkspace/contents.xcworkspacedata
