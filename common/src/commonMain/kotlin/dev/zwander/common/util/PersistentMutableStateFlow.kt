@@ -69,6 +69,7 @@ class PersistentMutableStateFlow<T>(
                     typeOf<Float>() -> getFloatOrNull(key) ?: default
                     typeOf<String>() -> getStringOrNull(key) ?: default
                     typeOf<Boolean>() -> getBooleanOrNull(key) ?: default
+                    typeOf<Double>() -> getDoubleOrNull(key) ?: default
                     else -> throw IllegalStateException("Invalid type")
                 }
             )
@@ -86,6 +87,7 @@ class PersistentMutableStateFlow<T>(
                     typeOf<Float>() -> putFloat(key, value.toString().toFloat())
                     typeOf<String>() -> putString(key, value.toString())
                     typeOf<Boolean>() -> putBoolean(key, value.toString().toBoolean())
+                    typeOf<Double>() -> putDouble(key, value.toString().toDouble())
                     else -> throw IllegalStateException("Invalid type $typeClass")
                 }
             }
