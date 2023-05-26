@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <resources>
-    <string name="app_name">Arcadyan KVD21 Control</string>
+    <string name="app_name">HINT Control</string>
 
     <string name="log_in">Log In</string>
     <string name="log_out">Log Out</string>
