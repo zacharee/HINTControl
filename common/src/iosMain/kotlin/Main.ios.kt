@@ -11,17 +11,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.interop.LocalUIViewController
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.ComposeUIViewController
-import cocoapods.Bugsnag.Bugsnag
 import dev.zwander.common.App
 import kotlinx.cinterop.useContents
-import platform.Foundation.NSError
 import platform.UIKit.safeAreaInsets
 import platform.UIKit.window
 
 fun MainViewController() = ComposeUIViewController {
     val controller = LocalUIViewController.current
-
-    Bugsnag.notifyError(NSError(domain = "dev.zwander", code = 500, userInfo = null))
 
     BoxWithConstraints {
         var insets by remember {
