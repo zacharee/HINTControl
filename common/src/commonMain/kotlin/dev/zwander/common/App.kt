@@ -5,10 +5,12 @@ package dev.zwander.common
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.expandIn
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkHorizontally
+import androidx.compose.animation.shrinkOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -24,9 +26,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.VerticalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.CircularProgressIndicator
@@ -314,6 +319,7 @@ private fun AppView(
                 currentPage == Page.Login -> CrossfadeState.LOGIN
                 sideRail && !Platform.isJvm -> CrossfadeState.VERTICAL
                 sideRail && Platform.isJvm -> CrossfadeState.CROSSFADE
+                !sideRail && Platform.isJvm -> CrossfadeState.CROSSFADE
                 else -> CrossfadeState.HORIZONTAL
             },
             modifier = Modifier.fillMaxSize(),
@@ -400,7 +406,7 @@ private fun NavBar(
 
     if (vertical) {
         NavigationRail(
-            modifier = modifier.padding(vertical = 8.dp),
+            modifier = modifier.padding(vertical = 8.dp).verticalScroll(rememberScrollState()),
         ) {
             pages.forEach { page ->
                 NavigationRailItem(
@@ -411,7 +417,11 @@ private fun NavBar(
                 )
             }
 
-            if (currentPage.refreshAction != null) {
+            AnimatedVisibility(
+                currentPage.refreshAction != null,
+                enter = fadeIn() + expandIn(expandFrom = Alignment.Center),
+                exit = fadeOut() + shrinkOut(shrinkTowards = Alignment.Center),
+            ) {
                 NavigationRailItem(
                     selected = false,
                     onClick = {
@@ -440,11 +450,17 @@ private fun NavBar(
                         )
                     },
                     icon = { Icon(painter = page.icon(), contentDescription = null) },
+                    modifier = Modifier.wrapContentWidth(),
                 )
             }
 
-            if (!Platform.isAndroid && !Platform.isIos && currentPage.refreshAction != null) {
-                NavigationBarItem(
+            androidx.compose.animation.AnimatedVisibility(
+                visible = !Platform.isAndroid && !Platform.isIos && currentPage.refreshAction != null,
+                modifier = Modifier.align(Alignment.CenterVertically),
+                enter = fadeIn() + expandIn(expandFrom = Alignment.CenterEnd),
+                exit = fadeOut() + shrinkOut(shrinkTowards = Alignment.CenterEnd),
+            ) {
+                NavigationRailItem(
                     selected = false,
                     onClick = {
                         scope.launch {
@@ -457,7 +473,8 @@ private fun NavBar(
                             softWrap = false,
                         )
                     },
-                    icon = { Icon(imageVector = Icons.Default.Refresh, contentDescription = null) }
+                    icon = { Icon(imageVector = Icons.Default.Refresh, contentDescription = null) },
+                    modifier = Modifier.wrapContentWidth(),
                 )
             }
         }
