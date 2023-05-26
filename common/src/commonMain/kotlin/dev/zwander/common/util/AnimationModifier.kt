@@ -4,7 +4,6 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationEndReason
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.AnimationVector1D
-import androidx.compose.animation.core.AnimationVector2D
 import androidx.compose.animation.core.FiniteAnimationSpec
 import androidx.compose.animation.core.VectorConverter
 import androidx.compose.animation.core.spring
@@ -49,7 +48,6 @@ fun Modifier.animateContentSize(
         properties["finishedListener"] = finishedListener
     }
 ) {
-    // TODO: Listener could be a fun interface after 1.4
     val scope = rememberCoroutineScope()
     val animModifier = remember(scope) {
         SizeAnimationModifier(animationSpec, scope, which)
