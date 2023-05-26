@@ -112,7 +112,7 @@ fun SSIDListLayout(
             }
         }
 
-        OutlinedButton(
+        Button(
             onClick = {
                 editingConfig = null to SSIDConfig(
                     twoGigSsid = true,

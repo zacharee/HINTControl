@@ -5,7 +5,7 @@ package dev.zwander.common.pages
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -75,7 +75,7 @@ fun WifiConfigPage(
             },
         )
 
-        OutlinedButton(
+        Button(
             onClick = {
                 scope.launch {
                     tempState?.let {

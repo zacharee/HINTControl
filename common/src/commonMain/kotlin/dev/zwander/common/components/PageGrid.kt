@@ -13,9 +13,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedCard
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
@@ -45,7 +45,7 @@ fun <T> PageGrid(
         verticalItemSpacing = 8.dp,
     ) {
         items(items = items, key = key) {
-            OutlinedCard(
+            ElevatedCard(
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 Column(
