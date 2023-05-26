@@ -42,12 +42,14 @@ kotlin {
         summary = "KVD21Control"
         homepage = "https://zwander.dev"
         ios.deploymentTarget = "15.2"
+        osx.deploymentTarget = "10.13"
         podfile = project.file("../iosApp/Podfile")
         framework {
             baseName = "common"
             isStatic = true
         }
         extraSpecAttributes["resources"] = "['src/commonMain/resources/**', 'src/iosMain/resources/**']"
+        pod("Bugsnag")
     }
 
     sourceSets {
