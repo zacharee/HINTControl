@@ -45,3 +45,5 @@ bin/
 /iosApp/Pods/
 /iosApp/iosApp.xcworkspace/contents.xcworkspacedata
 /android/release/
+/iosApp/iosApp.xcworkspace/xcuserdata/zachary.xcuserdatad/UserInterfaceState.xcuserstate
+/iosApp/iosApp.xcodeproj/xcuserdata/zachary.xcuserdatad/xcschemes/xcschememanagement.plist
