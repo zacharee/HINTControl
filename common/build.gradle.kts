@@ -2,6 +2,7 @@
 
 import org.jetbrains.kotlin.gradle.plugin.mpp.Framework
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 
 plugins {
     kotlin("multiplatform")
@@ -10,6 +11,7 @@ plugins {
     id("com.android.library")
     id("dev.icerock.mobile.multiplatform-resources")
     kotlin("native.cocoapods")
+    id("com.codingfeline.buildkonfig")
 }
 
 version = rootProject.extra["app_version_code"].toString()
@@ -81,6 +83,7 @@ kotlin {
                 api("androidx.core:core-ktx:1.10.1")
                 api("io.ktor:ktor-client-cio:${ktorVersion}")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-android:${coroutinesVersion}")
+                api("com.bugsnag:bugsnag-android:5.30.0")
             }
         }
         val skiaMain by creating {
@@ -99,6 +102,7 @@ kotlin {
                 api("net.java.dev.jna:jna:5.13.0")
                 api("org.slf4j:slf4j-api:2.0.7")
                 api("org.slf4j:slf4j-jdk14:2.0.7")
+                api("com.bugsnag:bugsnag:3.6.4")
             }
         }
 
@@ -148,4 +152,16 @@ java {
 
 multiplatformResources {
     multiplatformResourcesPackage = "dev.zwander.resources.common"
+}
+
+buildkonfig {
+    packageName = "dev.zwander.common"
+    objectName = "GradleConfig"
+    exposeObjectWithName = objectName
+
+    defaultConfigs {
+        buildConfigField(STRING, "versionName", "${rootProject.extra["app_version_name"]}")
+        buildConfigField(STRING, "versionCode", "${rootProject.extra["app_version_code"]}")
+        buildConfigField(STRING, "appName", "${rootProject.extra["app_name"]}")
+    }
 }

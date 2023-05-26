@@ -8,7 +8,9 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
+import com.bugsnag.Bugsnag
 import dev.zwander.common.App
+import dev.zwander.common.GradleConfig
 import dev.zwander.common.ui.getThemeInfo
 import dev.zwander.resources.common.MR
 import io.github.mimoguz.custom_window.DwmAttribute
@@ -22,6 +24,13 @@ fun main() {
     System.setProperty("apple.laf.useScreenMenuBar", "true")
     System.setProperty("apple.awt.application.appearance", "system")
     System.setProperty("apple.awt.application.name", MR.strings.app_name.localized())
+
+    val bugsnag = Bugsnag("e709115241c5468fd88637578daa5cfa")
+    bugsnag.setAppVersion(GradleConfig.versionName)
+    bugsnag.addCallback {
+        it.addToTab("app", "version_code", GradleConfig.versionCode)
+        it.addToTab("app", "jdk_architecture", System.getProperty("sun.arch.data.model"))
+    }
 
     when (hostOs) {
         OS.Windows -> {
