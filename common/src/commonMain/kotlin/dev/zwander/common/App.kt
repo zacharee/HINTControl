@@ -4,11 +4,14 @@ package dev.zwander.common
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.expandIn
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.animation.shrinkOut
 import androidx.compose.animation.shrinkVertically
@@ -26,7 +29,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.VerticalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -36,6 +38,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -87,7 +90,9 @@ import kotlinx.coroutines.launch
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class,
+    ExperimentalAnimationApi::class
+)
 @HiddenFromObjC
 @Composable
 fun App(
@@ -193,6 +198,8 @@ fun App(
                         }
                     )
 
+                    val fabVisible = !sideRail && !Platform.isAndroid && !Platform.isIos && currentPage.refreshAction != null
+
                     Scaffold(
                         modifier = modifier.fillMaxSize()
                             .padding(
@@ -203,6 +210,7 @@ fun App(
                                 visible = showBottomBar,
                                 enter = fadeIn() + expandVertically(expandFrom = Alignment.Bottom),
                                 exit = fadeOut() + shrinkVertically(shrinkTowards = Alignment.Bottom),
+                                modifier = Modifier.fillMaxWidth(),
                             ) {
                                 NavBar(
                                     currentPage = currentPage,
@@ -226,7 +234,7 @@ fun App(
                                     actionColor = MaterialTheme.colorScheme.primary,
                                 )
                             }
-                        }
+                        },
                     ) { padding ->
                         Row(
                             modifier = Modifier.fillMaxWidth()
@@ -275,6 +283,26 @@ fun App(
                                     state = pullRefreshState,
                                     modifier = Modifier.align(Alignment.TopCenter),
                                 )
+
+                                androidx.compose.animation.AnimatedVisibility(
+                                    visible = fabVisible,
+                                    enter = fadeIn() + scaleIn(),
+                                    exit = fadeOut() + scaleOut(),
+                                    modifier = Modifier.align(Alignment.BottomEnd).padding(end = 16.dp, bottom = 16.dp),
+                                ) {
+                                    FloatingActionButton(
+                                        onClick = {
+                                            scope.launch {
+                                                error = handleRefresh(currentPage)
+                                            }
+                                        },
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Default.Refresh,
+                                            contentDescription = stringResource(MR.strings.refresh),
+                                        )
+                                    }
+                                }
                             }
                         }
                     }
@@ -406,7 +434,8 @@ private fun NavBar(
 
     if (vertical) {
         NavigationRail(
-            modifier = modifier.padding(vertical = 8.dp).verticalScroll(rememberScrollState()),
+            modifier = modifier.padding(vertical = 8.dp)
+                .verticalScroll(rememberScrollState()),
         ) {
             pages.forEach { page ->
                 NavigationRailItem(
@@ -450,31 +479,6 @@ private fun NavBar(
                         )
                     },
                     icon = { Icon(painter = page.icon(), contentDescription = null) },
-                    modifier = Modifier.wrapContentWidth(),
-                )
-            }
-
-            androidx.compose.animation.AnimatedVisibility(
-                visible = !Platform.isAndroid && !Platform.isIos && currentPage.refreshAction != null,
-                modifier = Modifier.align(Alignment.CenterVertically),
-                enter = fadeIn() + expandIn(expandFrom = Alignment.CenterEnd),
-                exit = fadeOut() + shrinkOut(shrinkTowards = Alignment.CenterEnd),
-            ) {
-                NavigationRailItem(
-                    selected = false,
-                    onClick = {
-                        scope.launch {
-                            error = handleRefresh(currentPage)
-                        }
-                    },
-                    label = {
-                        Text(
-                            text = stringResource(MR.strings.refresh),
-                            softWrap = false,
-                        )
-                    },
-                    icon = { Icon(imageVector = Icons.Default.Refresh, contentDescription = null) },
-                    modifier = Modifier.wrapContentWidth(),
                 )
             }
         }
