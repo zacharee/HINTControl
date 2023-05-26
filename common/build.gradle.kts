@@ -52,7 +52,7 @@ kotlin {
 
     sourceSets {
         val ktorVersion = "2.3.0"
-        val coroutinesVersion = "1.7.1"
+        val coroutinesVersion = "1.6.4"
 
         val commonMain by getting {
             dependencies {
@@ -72,7 +72,11 @@ kotlin {
                 api("com.soywiz.korlibs.korio:korio:4.0.0")
                 api("com.russhwolf:multiplatform-settings:1.0.0")
                 api("com.russhwolf:multiplatform-settings-no-arg:1.0.0")
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:${coroutinesVersion}")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core") {
+                    version {
+                        strictly(coroutinesVersion)
+                    }
+                }
             }
         }
         val androidMain by getting {
@@ -82,7 +86,11 @@ kotlin {
 
                 api("androidx.core:core-ktx:1.10.1")
                 api("io.ktor:ktor-client-cio:${ktorVersion}")
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-android:${coroutinesVersion}")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-android") {
+                    version {
+                        strictly(coroutinesVersion)
+                    }
+                }
                 api("com.bugsnag:bugsnag-android:5.30.0")
             }
         }

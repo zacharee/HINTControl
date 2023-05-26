@@ -1,9 +1,13 @@
+@file:OptIn(ExperimentalObjCRefinement::class)
+
 package dev.zwander.common.util
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlin.experimental.ExperimentalObjCRefinement
+import kotlin.native.HiddenFromObjC
 import kotlin.reflect.KType
 import kotlin.reflect.typeOf
 
@@ -12,6 +16,7 @@ class NullSymbol {
     inline fun <T> unbox(value: Any?): T = if (value === this) null as T else value as T
 }
 
+@HiddenFromObjC
 val NULL = NullSymbol()
 
 inline fun <reified T : Any> PersistentMutableStateFlow(

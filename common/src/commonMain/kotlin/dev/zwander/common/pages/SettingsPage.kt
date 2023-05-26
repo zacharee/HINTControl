@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalObjCRefinement::class)
+
 package dev.zwander.common.pages
 
 import androidx.compose.foundation.layout.Box
@@ -29,6 +31,8 @@ import dev.zwander.common.components.PageGrid
 import dev.zwander.common.components.TextSwitch
 import dev.zwander.common.model.SettingsModel
 import dev.zwander.resources.common.MR
+import kotlin.experimental.ExperimentalObjCRefinement
+import kotlin.native.HiddenFromObjC
 
 private data class SettingsItem(
     val title: StringResource,
@@ -37,6 +41,7 @@ private data class SettingsItem(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+@HiddenFromObjC
 fun SettingsPage(
     modifier: Modifier = Modifier,
 ) {

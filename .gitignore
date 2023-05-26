@@ -44,3 +44,4 @@ bin/
 /local.properties
 /iosApp/Pods/
 /iosApp/iosApp.xcworkspace/contents.xcworkspacedata
+/android/release/
