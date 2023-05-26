@@ -2,7 +2,6 @@
 
 package dev.zwander.common.components
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -42,18 +41,19 @@ fun DeviceDataLayout(
         ).filter { it.second != null }
     }
 
-    Column(
-        modifier = modifier,
-    ) {
-        if (items.isNotEmpty()) {
+    EmptyableContent(
+        content = {
             InfoRow(
                 items = items,
                 modifier = Modifier.fillMaxWidth(),
             )
-        } else {
+        },
+        emptyContent = {
             Text(
                 text = stringResource(MR.strings.unavailable),
             )
-        }
-    }
+        },
+        isEmpty = items.isEmpty(),
+        modifier = modifier,
+    )
 }

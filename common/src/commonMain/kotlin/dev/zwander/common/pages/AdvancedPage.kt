@@ -11,6 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.stringResource
+import dev.zwander.common.components.EmptyableContent
 import dev.zwander.common.components.InfoRow
 import dev.zwander.common.components.PageGrid
 import dev.zwander.common.model.MainModel
@@ -68,16 +69,20 @@ fun AdvancedPage(
             )
         },
         renderItem = {
-            if (it.blocks.isNotEmpty()) {
-                InfoRow(
-                    items = it.blocks,
-                    modifier = Modifier.fillMaxWidth(),
-                )
-            } else {
-                Text(
-                    text = stringResource(it.emptyMessage),
-                )
-            }
+            EmptyableContent(
+                content = {
+                    InfoRow(
+                        items = it.blocks,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                },
+                emptyContent = {
+                    Text(
+                        text = stringResource(it.emptyMessage),
+                    )
+                },
+                isEmpty = it.blocks.isEmpty(),
+            )
         },
     )
 }

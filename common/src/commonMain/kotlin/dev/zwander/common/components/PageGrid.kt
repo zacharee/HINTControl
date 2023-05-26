@@ -49,14 +49,15 @@ fun <T> PageGrid(
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 Column(
-                    modifier = Modifier.fillMaxWidth()
-                        .padding(8.dp)
+                    modifier = Modifier
                         .animateContentHeight()
                         .then(if (Platform.isAndroid || Platform.isIos) {
                             Modifier.animateContentWidth()
                         } else {
                             Modifier
-                        }),
+                        })
+                        .fillMaxWidth()
+                        .padding(8.dp),
                 ) {
                     CompositionLocalProvider(
                         LocalTextStyle provides MaterialTheme.typography.titleLarge,

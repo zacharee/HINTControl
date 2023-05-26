@@ -2,7 +2,7 @@
 
 package dev.zwander.common.components
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -71,20 +71,21 @@ fun CellDataLayout(
         allItems.filter { it.second != null }
     }
 
-    Column(
-        modifier = modifier,
-    ) {
-        if (items.isNotEmpty()) {
+    EmptyableContent(
+        content = {
             InfoRow(
                 items = items,
                 modifier = Modifier.fillMaxWidth(),
             )
-        } else {
+        },
+        emptyContent = {
             Text(
                 text = stringResource(MR.strings.not_connected),
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Normal,
             )
-        }
-    }
+        },
+        isEmpty = items.isEmpty(),
+        modifier = modifier,
+    )
 }
