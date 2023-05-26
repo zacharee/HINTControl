@@ -6,9 +6,11 @@ object SettingsManager {
     object Keys {
         const val USERNAME = "login_username"
         const val PASSWORD = "login_password"
+        const val AUTO_REFRESH = "auto_refresh_enabled"
+        const val AUTO_REFRESH_PERIOD_MS = "auto_refresh_period_ms"
     }
 
-    private val settings = Settings()
+    val settings = Settings()
 
     var username: String
         get() = settings.getString(Keys.USERNAME, "admin")

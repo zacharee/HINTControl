@@ -36,6 +36,7 @@
     <string name="main_data">Main</string>
     <string name="client_data">Clients</string>
     <string name="wifi_data">Wi-Fi</string>
+    <string name="settings">Settings</string>
 
     <string name="refresh">Refresh</string>
 
@@ -110,4 +111,7 @@
     <string name="update_state">Update State</string>
 
     <string name="reboot_confirmation">Are you sure you want to reboot the gateway?</string>
+
+    <string name="auto_refresh">Auto Refresh</string>
+    <string name="period_ms">Period (ms)</string>
 </resources>

@@ -71,10 +71,12 @@ import dev.zwander.common.components.pullrefresh.pullRefresh
 import dev.zwander.common.components.pullrefresh.rememberPullRefreshState
 import dev.zwander.common.data.Page
 import dev.zwander.common.model.GlobalModel
+import dev.zwander.common.model.SettingsModel
 import dev.zwander.common.model.UserModel
 import dev.zwander.common.ui.Theme
 import dev.zwander.resources.common.MR
 import korlibs.memory.Platform
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
@@ -88,9 +90,20 @@ fun App(
 ) {
     val layoutDirection = LocalLayoutDirection.current
     val scope = rememberCoroutineScope()
+
     val isLoading by GlobalModel.isLoading.collectAsState()
+    val autoRefresh by SettingsModel.enableAutoRefresh.collectAsState()
+    val autoRefreshMs by SettingsModel.autoRefreshMs.collectAsState()
 
     var currentPage by GlobalModel.currentPage.collectAsMutableState()
+    var error by GlobalModel.httpError.collectAsMutableState()
+
+    LaunchedEffect(autoRefresh, currentPage) {
+        while (autoRefresh && currentPage.refreshAction != null) {
+            delay(autoRefreshMs)
+            error = handleRefresh(currentPage)
+        }
+    }
 
     Theme {
         Surface(
@@ -111,14 +124,13 @@ fun App(
             val token by UserModel.token.collectAsState()
             val snackbarHostState = remember { SnackbarHostState() }
 
-            var error by GlobalModel.httpError.collectAsMutableState()
-
             val pages = remember {
                 listOf(
                     Page.Main,
                     Page.Clients,
                     Page.Advanced,
                     Page.WifiConfig,
+                    Page.SettingsPage,
                 )
             }
 
@@ -143,7 +155,7 @@ fun App(
             }
 
             LaunchedEffect(currentPage) {
-                if (currentPage.refreshAction != null && currentPage.needsRefresh?.invoke() == true) {
+                if (currentPage.refreshAction != null && (currentPage.needsRefresh?.invoke() == true || autoRefresh)) {
                     error = handleRefresh(currentPage)
                 }
             }
@@ -393,7 +405,7 @@ private fun NavBar(
                     selected = currentPage == page,
                     onClick = { onPageChange(page) },
                     label = { Text(text = stringResource(page.titleRes)) },
-                    icon = { Icon(imageVector = page.icon, contentDescription = null) },
+                    icon = { Icon(painter = page.icon(), contentDescription = null) },
                 )
             }
 
@@ -425,7 +437,7 @@ private fun NavBar(
                             softWrap = false,
                         )
                     },
-                    icon = { Icon(imageVector = page.icon, contentDescription = null) },
+                    icon = { Icon(painter = page.icon(), contentDescription = null) },
                 )
             }
 
