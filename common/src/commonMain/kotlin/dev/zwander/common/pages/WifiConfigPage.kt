@@ -16,7 +16,6 @@ import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.components.BandConfigLayout
 import dev.zwander.common.components.PageGrid
 import dev.zwander.common.components.SSIDListLayout
-import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.MainModel
 import dev.zwander.common.util.HTTPClient
 import dev.zwander.resources.common.MR
@@ -36,7 +35,6 @@ fun WifiConfigPage(
 ) {
     val scope = rememberCoroutineScope()
     val data by MainModel.currentWifiData.collectAsState()
-    val isLoading by GlobalModel.isLoading.collectAsState()
 
     var tempState by MainModel.tempWifiState.collectAsMutableState()
 
@@ -86,7 +84,7 @@ fun WifiConfigPage(
                     MainModel.currentWifiData.value = HTTPClient.getWifiData()
                 }
             },
-            enabled = tempState != data && !isLoading,
+            enabled = tempState != data,
             modifier = Modifier.fillMaxWidth().padding(8.dp),
         ) {
             Text(

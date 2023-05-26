@@ -50,7 +50,7 @@ object HTTPClient {
     }
 
     suspend fun logIn(username: String, password: String, rememberCredentials: Boolean) {
-        return withLoader {
+        return withLoader(true) {
             val response = unauthedClient.post(Endpoints.authURL.createFullUrl()) {
                 setBody("{\"username\": \"${username}\", \"password\": \"${password}\"}")
             }
@@ -125,7 +125,7 @@ object HTTPClient {
     }
 
     suspend fun setWifiData(newData: WifiConfig) {
-        withLoader {
+        withLoader(true) {
             try {
                 httpClient.post(Endpoints.setWifiConfigURL.createFullUrl()) {
                     contentType(ContentType.parse("application/json"))
@@ -141,7 +141,7 @@ object HTTPClient {
     }
 
     suspend fun setLogin(newUsername: String, newPassword: String) {
-        withLoader {
+        withLoader(true) {
             httpClient.post(Endpoints.resetURL.createFullUrl()) {
                 setBody("{\"usernameNew\": \"${newUsername}\", \"passwordNew\": \"${newPassword}\"}")
             }.apply {
@@ -153,7 +153,7 @@ object HTTPClient {
     }
 
     suspend fun reboot() {
-        return withLoader {
+        return withLoader(true) {
             try {
                 httpClient.post(Endpoints.rebootURL.createFullUrl())
                     .apply {
@@ -185,12 +185,20 @@ object HTTPClient {
         return false
     }
 
-    private suspend fun <T> withLoader(block: suspend () -> T): T {
+    private suspend fun <T> withLoader(blocking: Boolean = false, block: suspend () -> T): T {
         return try {
-            GlobalModel.isLoading.value = true
+            if (blocking) {
+                GlobalModel.isBlocking.value = true
+            } else {
+                GlobalModel.isLoading.value = true
+            }
             block()
         } finally {
-            GlobalModel.isLoading.value = false
+            if (blocking) {
+                GlobalModel.isBlocking.value = false
+            } else {
+                GlobalModel.isLoading.value = false
+            }
         }
     }
 }

@@ -52,7 +52,7 @@ fun LoginPage(
     var username by UserModel.username.collectAsMutableState()
     var password by UserModel.password.collectAsMutableState()
 
-    val isLoading by GlobalModel.isLoading.collectAsState()
+    val isBlocking by GlobalModel.isBlocking.collectAsState()
     val token by UserModel.token.collectAsState()
 
     var error by remember {
@@ -205,7 +205,7 @@ fun LoginPage(
                         performLogin()
                     }
                 },
-                enabled = username.isNotBlank() && !password.isNullOrBlank() && !isLoading && token == null,
+                enabled = username.isNotBlank() && !password.isNullOrBlank() && !isBlocking && token == null,
                 interactionSource = loginInteractionSource,
             ) {
                 Text(

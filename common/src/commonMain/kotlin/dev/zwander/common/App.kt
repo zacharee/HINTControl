@@ -76,6 +76,7 @@ import dev.zwander.common.model.UserModel
 import dev.zwander.common.ui.Theme
 import dev.zwander.resources.common.MR
 import korlibs.memory.Platform
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.experimental.ExperimentalObjCRefinement
@@ -91,6 +92,7 @@ fun App(
     val layoutDirection = LocalLayoutDirection.current
     val scope = rememberCoroutineScope()
 
+    val isBlocking by GlobalModel.isBlocking.collectAsState()
     val isLoading by GlobalModel.isLoading.collectAsState()
     val autoRefresh by SettingsModel.enableAutoRefresh.collectAsState()
     val autoRefreshMs by SettingsModel.autoRefreshMs.collectAsState()
@@ -108,11 +110,11 @@ fun App(
     Theme {
         Surface(
             modifier = Modifier.onPreviewKeyEvent {
-                if (it.key == Key.R && !isLoading) {
+                if (it.key == Key.R && !isBlocking) {
                     if (((Platform.isMac || Platform.isIos) && it.isMetaPressed) ||
                         (!(Platform.isMac || Platform.isIos) && it.isCtrlPressed)) {
                         scope.launch {
-                            if (!isLoading) {
+                            if (!isBlocking) {
                                 currentPage.refreshAction?.invoke()
                             }
                         }
@@ -178,7 +180,7 @@ fun App(
                     val showBottomBar = token != null && !sideRail
 
                     val pullRefreshState = rememberPullRefreshState(
-                        refreshing = false,
+                        refreshing = isLoading,
                         onRefresh = {
                             scope.launch {
                                 error = handleRefresh(currentPage)
@@ -264,7 +266,7 @@ fun App(
                                 )
 
                                 PullRefreshIndicator(
-                                    refreshing = false,
+                                    refreshing = isLoading,
                                     state = pullRefreshState,
                                     modifier = Modifier.align(Alignment.TopCenter),
                                 )
@@ -274,7 +276,7 @@ fun App(
                 }
 
                 AnimatedVisibility(
-                    visible = isLoading,
+                    visible = isBlocking,
                     enter = fadeIn(),
                     exit = fadeOut(),
                 ) {
@@ -465,6 +467,8 @@ private fun NavBar(
 private suspend fun handleRefresh(page: Page): String? {
     return try {
         page.refreshAction?.invoke()
+        null
+    } catch (e: CancellationException) {
         null
     } catch (e: Exception) {
         e.message
