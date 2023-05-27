@@ -114,4 +114,11 @@
 
     <string name="auto_refresh">Auto Refresh</string>
     <string name="period_ms">Period (ms)</string>
+
+    <string name="about">About</string>
+    <string name="mastodon">Mastodon</string>
+    <string name="github">GitHub</string>
+    <string name="patreon">Patreon</string>
+    <string name="website">Website</string>
+    <string name="supporters">Supporters</string>
 </resources>
