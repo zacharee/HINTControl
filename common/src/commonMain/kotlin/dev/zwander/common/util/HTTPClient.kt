@@ -4,17 +4,28 @@ import dev.zwander.common.model.Endpoints
 import dev.zwander.common.model.Endpoints.createFullUrl
 import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.UserModel
-import dev.zwander.common.model.adapters.*
-import io.ktor.client.*
-import io.ktor.client.plugins.*
-import io.ktor.client.plugins.auth.*
-import io.ktor.client.plugins.auth.providers.*
-import io.ktor.client.plugins.contentnegotiation.*
-import io.ktor.client.request.*
-import io.ktor.client.statement.*
-import io.ktor.http.*
-import io.ktor.serialization.kotlinx.json.*
-import io.ktor.utils.io.errors.*
+import dev.zwander.common.model.adapters.CellDataRoot
+import dev.zwander.common.model.adapters.ClientDeviceData
+import dev.zwander.common.model.adapters.LoginResultData
+import dev.zwander.common.model.adapters.MainData
+import dev.zwander.common.model.adapters.SimDataRoot
+import dev.zwander.common.model.adapters.WifiConfig
+import io.ktor.client.HttpClient
+import io.ktor.client.plugins.HttpRequestTimeoutException
+import io.ktor.client.plugins.HttpTimeout
+import io.ktor.client.plugins.auth.Auth
+import io.ktor.client.plugins.auth.providers.BearerTokens
+import io.ktor.client.plugins.auth.providers.bearer
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.request.get
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
+import io.ktor.client.statement.bodyAsText
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
+import io.ktor.http.isSuccess
+import io.ktor.serialization.kotlinx.json.json
+import io.ktor.utils.io.errors.IOException
 import kotlinx.coroutines.delay
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
@@ -172,12 +183,14 @@ object HTTPClient {
 
     private suspend fun waitForLive(): Boolean {
         for (i in 0 .. 100) {
-            val response = httpClient
-                .get(Endpoints.getWifiConfigURL.createFullUrl())
+            try {
+                val response = httpClient
+                    .get(Endpoints.getWifiConfigURL.createFullUrl())
 
-            if (response.status.isSuccess()) {
-                return true
-            }
+                if (response.status.isSuccess()) {
+                    return true
+                }
+            } catch (_: Exception) {}
 
             delay(1000L)
         }
