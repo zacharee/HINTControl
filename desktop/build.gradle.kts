@@ -33,6 +33,8 @@ compose.desktop {
         val pkg = rootProject.extra["package_name"].toString()
 
         nativeDistributions {
+            includeAllModules = true
+
             windows {
                 menu = true
 //                console = true
