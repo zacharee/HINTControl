@@ -9,6 +9,7 @@ import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import com.bugsnag.Bugsnag
+import dev.icerock.moko.resources.compose.painterResource
 import dev.zwander.common.App
 import dev.zwander.common.GradleConfig
 import dev.zwander.common.ui.getThemeInfo
@@ -48,6 +49,7 @@ fun main() {
             onCloseRequest = ::exitApplication,
             title = MR.strings.app_name.localized(),
             state = windowState,
+            icon = painterResource(MR.images.icon),
         ) {
             window.rootPane.putClientProperty("apple.awt.transparentTitleBar", true)
             window.rootPane.putClientProperty("apple.awt.fullWindowContent", true)
