@@ -40,7 +40,11 @@ import io.ktor.client.plugins.auth.providers.BearerTokens
 import io.ktor.client.plugins.auth.providers.bearer
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.cookies.HttpCookies
+import io.ktor.client.plugins.defaultRequest
+import io.ktor.client.request.forms.FormDataContent
 import io.ktor.client.request.forms.formData
+import io.ktor.client.request.forms.submitForm
+import io.ktor.client.request.forms.submitFormWithBinaryData
 import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.post
@@ -49,12 +53,15 @@ import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
+import io.ktor.http.Parameters
 import io.ktor.http.contentType
 import io.ktor.http.fullPath
 import io.ktor.http.headersOf
 import io.ktor.http.isSuccess
+import io.ktor.http.parameters
 import io.ktor.http.setCookie
 import io.ktor.serialization.kotlinx.json.json
+import io.ktor.util.appendIfNameAbsent
 import io.ktor.utils.io.ByteReadChannel
 import io.ktor.utils.io.errors.IOException
 import kotlinx.coroutines.delay
@@ -359,7 +366,7 @@ private object ASClients {
 }
 
 private object NokiaClients {
-    val cookieStorage = ClearableAcceptAllCookiesStorage()
+    val cookieStorage = GlobalCookiesStorage()
 
     val httpClient = HttpClient {
         install(HttpCookies) {
@@ -389,6 +396,9 @@ private object NokiaClients {
             requestTimeoutMillis = 10000
             connectTimeoutMillis = 10000
             socketTimeoutMillis = 10000
+        }
+        defaultRequest {
+            headers.appendIfNameAbsent(HttpHeaders.Cookie, UserModel.cookie.value ?: "")
         }
         install(HttpRequestRetry) {
             this.modifyRequest {
@@ -483,14 +493,13 @@ private object NokiaClient : HTTPClient {
 
     override suspend fun logIn(username: String, password: String, rememberCredentials: Boolean) {
         withLoader(true) {
-            val response = unauthedClient.post(Endpoints.nokiaLogin.createNokiaUrl()) {
-                contentType(ContentType.parse("application/x-www-form-urlencoded"))
-                header(HttpHeaders.Host, "192.168.12.1")
-                formData {
+            val response = unauthedClient.submitForm(
+                url = Endpoints.nokiaLogin.createNokiaUrl(),
+                formParameters = parameters {
                     append("name", UserModel.username.value)
                     append("pswd", UserModel.password.value ?: "")
                 }
-            }
+            )
 
             if (response.status.isSuccess()) {
                 UserModel.username.value = username
@@ -501,7 +510,7 @@ private object NokiaClient : HTTPClient {
                     SettingsManager.password = password
                 }
 
-                UserModel.cookie.value = response.setCookie().joinToString(";")
+                UserModel.cookie.value = response.headers.getAll(HttpHeaders.SetCookie)?.joinToString(";")
             } else {
                 println(response.status)
                 println(response.bodyAsText())
