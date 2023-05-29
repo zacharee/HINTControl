@@ -12,7 +12,6 @@ import dev.zwander.common.model.adapters.MainData
 import dev.zwander.common.model.adapters.SimDataRoot
 import dev.zwander.common.model.adapters.WifiConfig
 import io.ktor.client.HttpClient
-import io.ktor.client.call.body
 import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.respond
 import io.ktor.client.plugins.HttpRequestTimeoutException
