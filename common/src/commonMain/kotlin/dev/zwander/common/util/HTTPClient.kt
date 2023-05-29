@@ -53,6 +53,7 @@ import io.ktor.http.contentType
 import io.ktor.http.fullPath
 import io.ktor.http.headersOf
 import io.ktor.http.isSuccess
+import io.ktor.http.setCookie
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.utils.io.ByteReadChannel
 import io.ktor.utils.io.errors.IOException
@@ -358,8 +359,12 @@ private object ASClients {
 }
 
 private object NokiaClients {
+    val cookieStorage = ClearableAcceptAllCookiesStorage()
+
     val httpClient = HttpClient {
-        install(HttpCookies)
+        install(HttpCookies) {
+            storage = cookieStorage
+        }
 
 //        install(Auth) {
 //            cookies {
@@ -425,6 +430,8 @@ interface HTTPClient {
     suspend fun reboot()
 
     suspend fun exists(): Boolean
+
+    suspend fun logOut() {}
 
     suspend fun <T> withLoader(blocking: Boolean = false, block: suspend () -> T): T {
         return try {
@@ -493,12 +500,18 @@ private object NokiaClient : HTTPClient {
                     SettingsManager.username = username
                     SettingsManager.password = password
                 }
+
+                UserModel.cookie.value = response.setCookie().joinToString(";")
             } else {
                 println(response.status)
                 println(response.bodyAsText())
                 throw IOException(response.status.description)
             }
         }
+    }
+
+    override suspend fun logOut() {
+        NokiaClients.cookieStorage.clear()
     }
 
     override suspend fun getMainData(): MainData {

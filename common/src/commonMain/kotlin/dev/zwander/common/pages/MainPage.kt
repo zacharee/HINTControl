@@ -128,7 +128,9 @@ fun MainPage(
             ) {
                 Button(
                     onClick = {
-                        UserModel.logOut()
+                        scope.launch {
+                            UserModel.logOut()
+                        }
                     },
                     modifier = Modifier.weight(1f),
                 ) {

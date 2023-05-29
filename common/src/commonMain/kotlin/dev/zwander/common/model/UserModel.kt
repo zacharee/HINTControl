@@ -1,6 +1,9 @@
+@file:OptIn(DelicateCoroutinesApi::class)
+
 package dev.zwander.common.model
 
 import dev.zwander.common.util.SettingsManager
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -30,7 +33,7 @@ object UserModel {
         !token.isNullOrBlank() || !cookie.isNullOrBlank()
     }
 
-    fun logOut() {
+    suspend fun logOut() {
         token.value = null
         cookie.value = null
 
@@ -39,5 +42,7 @@ object UserModel {
 
         SettingsManager.username = "admin"
         SettingsManager.password = null
+
+        GlobalModel.httpClient.value?.logOut()
     }
 }
