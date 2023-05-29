@@ -23,6 +23,15 @@ jobs:
           myToken: ${{ secrets.GITHUB_TOKEN }}
           view_top: 1
 
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build with Gradle
+        id: gradle-build
+        run: |
+          ./gradlew :desktop:build
+          ./gradlew --stop
+
       - name: Run Conveyor
         uses: hydraulic-software/conveyor/actions/build@v1
         with:
