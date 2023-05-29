@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -32,13 +32,20 @@ jobs:
           ./gradlew :desktop:build
           ./gradlew --stop
 
+      - name: Download Conveyor
+        shell: bash
+        run: |
+          wget https://downloads.hydraulic.dev/conveyor/conveyor-9.1-mac-amd64.zip
+          unzip conveyor-9.1-mac-amd64.zip    
+
       - name: Run Conveyor
-        uses: hydraulic-software/conveyor/actions/build@v1
-        with:
-          command: make site
-          signing_key: ${{ secrets.SIGNING_KEY }}
-          agree_to_license: 1
-          conveyor_version: '9.1'
+        shell: bash
+        env:
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+          CONVEYOR_AGREE_TO_LICENSE: 1
+        run: |
+          PATH="$PATH:./Conveyor.app/Contents/MacOS"
+          conveyor "-Kapp.signing-key=$SIGNING_KEY" make site
 
       - name: Upload Release Files
         uses: ncipollo/release-action@v1
