@@ -68,6 +68,7 @@ kotlin {
                 api("io.ktor:ktor-client-auth:${ktorVersion}")
                 api("io.ktor:ktor-client-content-negotiation:${ktorVersion}")
                 api("io.ktor:ktor-serialization-kotlinx-json:${ktorVersion}")
+                api("io.ktor:ktor-client-mock:${ktorVersion}")
                 api("dev.icerock.moko:mvvm-compose:0.16.1")
                 api("dev.icerock.moko:mvvm-flow-compose:0.16.1")
                 api("org.jetbrains.kotlin:kotlin-reflect:${rootProject.extra["kotlin.version"]}")
