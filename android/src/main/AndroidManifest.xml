@@ -8,6 +8,7 @@
             android:label="@string/app_name"
             android:icon="@mipmap/ic_launcher"
             android:roundIcon="@mipmap/ic_launcher_round"
+            android:usesCleartextTraffic="true"
             android:name="dev.zwander.common.App">
         <activity android:name="dev.zwander.android.MainActivity" android:exported="true"
                   android:configChanges="colorMode

@@ -87,7 +87,7 @@ kotlin {
                 api("com.google.android.material:material:1.9.0")
 
                 api("androidx.core:core-ktx:1.10.1")
-                api("io.ktor:ktor-client-cio:${ktorVersion}")
+                api("io.ktor:ktor-client-okhttp:${ktorVersion}")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-android") {
                     version {
                         strictly(coroutinesVersion)

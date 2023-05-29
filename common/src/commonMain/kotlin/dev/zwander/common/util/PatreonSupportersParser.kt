@@ -48,6 +48,12 @@ class PatreonSupportersParser private constructor() {
             }
         }
 
-        return Json.decodeFromString(ListSerializer(SupporterInfo.serializer()), supportersString.toString())
+        return try {
+            Json.decodeFromString(ListSerializer(SupporterInfo.serializer()), supportersString.toString())
+        } catch (e: Exception) {
+            println(supportersString)
+            e.printStackTrace()
+            listOf()
+        }
     }
 }
