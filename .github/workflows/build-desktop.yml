@@ -29,7 +29,7 @@ jobs:
           command: make site
           signing_key: ${{ secrets.SIGNING_KEY }}
           agree_to_license: 1
-          conveyor_version: '8.2'
+          conveyor_version: '9.1'
 
       - name: Upload Release Files
         uses: ncipollo/release-action@v1
