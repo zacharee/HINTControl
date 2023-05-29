@@ -16,6 +16,7 @@ import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.components.BandConfigLayout
 import dev.zwander.common.components.PageGrid
 import dev.zwander.common.components.SSIDListLayout
+import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.MainModel
 import dev.zwander.common.util.HTTPClient
 import dev.zwander.resources.common.MR
@@ -79,9 +80,19 @@ fun WifiConfigPage(
             onClick = {
                 scope.launch {
                     tempState?.let {
-                        HTTPClient.setWifiData(it)
+                        try {
+                            HTTPClient.setWifiData(it)
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            GlobalModel.httpError.value = e.message
+                        }
                     }
-                    MainModel.currentWifiData.value = HTTPClient.getWifiData()
+                    try {
+                        MainModel.currentWifiData.value = HTTPClient.getWifiData()
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        GlobalModel.httpError.value = e.message
+                    }
                 }
             },
             enabled = tempState != data,

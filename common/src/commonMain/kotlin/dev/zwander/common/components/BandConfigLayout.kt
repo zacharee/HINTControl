@@ -29,11 +29,11 @@ fun BandConfigLayout(
     ) {
         TextSwitch(
             text = stringResource(MR.strings.twoGig_radio),
-            checked = tempState?.twoGig?.isRadioEnabled ?: false,
+            checked = (tempState?.twoGig?.isRadioEnabled ?: false),
             onCheckedChange = { checked ->
                 tempState = tempState?.copy(
                     twoGig = tempState?.twoGig?.copy(
-                        isRadioEnabled = checked
+                        isRadioEnabled = checked,
                     )
                 )
             },
@@ -41,11 +41,11 @@ fun BandConfigLayout(
 
         TextSwitch(
             text = stringResource(MR.strings.fiveGig_radio),
-            checked = tempState?.fiveGig?.isRadioEnabled ?: false,
+            checked = (tempState?.fiveGig?.isRadioEnabled ?: false),
             onCheckedChange = { checked ->
                 tempState = tempState?.copy(
                     fiveGig = tempState?.fiveGig?.copy(
-                        isRadioEnabled = checked
+                        isRadioEnabled = checked,
                     )
                 )
             },
