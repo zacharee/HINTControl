@@ -8,9 +8,9 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.painterResource
+import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.MainModel
 import dev.zwander.common.pages.*
-import dev.zwander.common.util.HTTPClient
 import dev.zwander.resources.common.MR
 
 sealed class Page(
@@ -31,7 +31,7 @@ sealed class Page(
         MR.strings.main_data,
         { rememberVectorPainter(Icons.Default.Home) },
         {
-            MainModel.currentMainData.value = HTTPClient.getMainData()
+            MainModel.currentMainData.value = GlobalModel.httpClient.value?.getMainData()
         },
         { MainModel.currentMainData.value == null },
         { MainPage(it) }
@@ -40,7 +40,7 @@ sealed class Page(
         MR.strings.client_data,
         { rememberVectorPainter(Icons.Default.List) },
         {
-            MainModel.currentClientData.value = HTTPClient.getDeviceData()
+            MainModel.currentClientData.value = GlobalModel.httpClient.value?.getDeviceData()
         },
         { MainModel.currentClientData.value == null },
         { ClientListPage((it)) }
@@ -49,8 +49,8 @@ sealed class Page(
         MR.strings.advanced,
         { rememberVectorPainter(Icons.Default.Warning) },
         {
-            MainModel.currentCellData.value = HTTPClient.getCellData()
-            MainModel.currentSimData.value = HTTPClient.getSimData()
+            MainModel.currentCellData.value = GlobalModel.httpClient.value?.getCellData()
+            MainModel.currentSimData.value = GlobalModel.httpClient.value?.getSimData()
         },
         {
             MainModel.currentCellData.value == null ||
@@ -62,7 +62,7 @@ sealed class Page(
         MR.strings.wifi_data,
         { painterResource(MR.images.wifi) },
         {
-            MainModel.currentWifiData.value = HTTPClient.getWifiData()
+            MainModel.currentWifiData.value = GlobalModel.httpClient.value?.getWifiData()
         },
         { MainModel.currentWifiData.value == null },
         { WifiConfigPage(it) }

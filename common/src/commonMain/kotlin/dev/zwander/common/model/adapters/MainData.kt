@@ -12,19 +12,19 @@ data class MainData(
 
 @Serializable
 data class DeviceData(
-    val friendlyName: String,
-    val hardwareVersion: String,
-    val isEnabled: Boolean,
-    val isMeshSupported: Boolean,
-    val macId: String,
-    val manufacturer: String,
-    val model: String,
-    val name: String,
-    val role: String,
-    val serial: String,
-    val softwareVersion: String,
-    val type: String,
-    val updateState: String,
+    val friendlyName: String? = null,
+    val hardwareVersion: String? = null,
+    val isEnabled: Boolean? = null,
+    val isMeshSupported: Boolean? = null,
+    val macId: String? = null,
+    val manufacturer: String? = null,
+    val model: String? = null,
+    val name: String? = null,
+    val role: String? = null,
+    val serial: String? = null,
+    val softwareVersion: String? = null,
+    val type: String? = null,
+    val updateState: String? = null,
 )
 
 @Serializable
@@ -37,53 +37,53 @@ data class SignalData(
 )
 
 interface BaseCellData {
-    val bands: List<String>
-    val bars: Double
-    val rsrp: Int
-    val rsrq: Int
-    val sinr: Int
-    val cid: Long
-    val rssi: Int
+    val bands: List<String>?
+    val bars: Double?
+    val rsrp: Int?
+    val rsrq: Int?
+    val sinr: Int?
+    val cid: Long?
+    val rssi: Int?
 }
 
 @Serializable
 data class CellDataLTE(
-    override val cid: Long,
+    override val cid: Long? = null,
     val eNBID: Long? = null,
-    override val rssi: Int,
-    override val bands: List<String>,
-    override val bars: Double,
-    override val rsrp: Int,
-    override val rsrq: Int,
-    override val sinr: Int,
+    override val rssi: Int? = null,
+    override val bands: List<String>? = null,
+    override val bars: Double? = null,
+    override val rsrp: Int? = null,
+    override val rsrq: Int? = null,
+    override val sinr: Int? = null,
 ) : BaseCellData
 
 @Serializable
 data class CellData5G(
-    val gNBID: Int? = null,
-    override val bands: List<String>,
-    override val bars: Double,
-    override val rsrp: Int,
-    override val rsrq: Int,
-    override val sinr: Int,
-    override val rssi: Int,
-    override val cid: Long,
+    val gNBID: Long? = null,
+    override val bands: List<String>? = null,
+    override val bars: Double? = null,
+    override val rsrp: Int? = null,
+    override val rsrq: Int? = null,
+    override val sinr: Int? = null,
+    override val rssi: Int? = null,
+    override val cid: Long? = null,
 ) : BaseCellData
 
 @Serializable
 data class GenericData(
-    val apn: String,
-    val hasIPv6: Boolean,
-    val registration: String,
-    val roaming: Boolean,
+    val apn: String? = null,
+    val hasIPv6: Boolean? = null,
+    val registration: String? = null,
+    val roaming: Boolean? = null,
 )
 
 @Serializable
 data class TimeData(
-    val daylightSavings: DaylightSavingsData?,
-    val localTime: Long?,
-    val localTimeZone: String?,
-    val upTime: Long?,
+    val daylightSavings: DaylightSavingsData? = null,
+    val localTime: Long? = null,
+    val localTimeZone: String? = null,
+    val upTime: Long? = null,
 )
 
 @Serializable

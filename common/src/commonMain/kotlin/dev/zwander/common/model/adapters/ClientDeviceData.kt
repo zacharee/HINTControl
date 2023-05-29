@@ -15,6 +15,7 @@ data class ClientsData(
     @SerialName("5.0ghz")
     val fiveGig: List<WirelessClientData>? = null,
     val ethernet: List<WiredClientData>? = null,
+    val wireless: List<WirelessClientData>? = null,
 )
 
 interface BaseClientData {

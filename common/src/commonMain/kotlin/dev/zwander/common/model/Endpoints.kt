@@ -1,7 +1,8 @@
 package dev.zwander.common.model
 
 object Endpoints {
-    const val baseUrl = "http://192.168.12.1/TMI/v1/"
+    const val baseIp = "http://192.168.12.1"
+    const val baseUrl = "$baseIp/TMI/v1/"
 
     const val gateWayURL = "gateway/?get=all"
     const val getWifiConfigURL = "network/configuration/v2?get=ap"
@@ -13,7 +14,18 @@ object Endpoints {
     const val authURL = "auth/login"
     const val resetURL = "auth/admin/reset"
 
+    const val nokiaDeviceStatus = "dashboard_device_status_web_app.cgi"
+    const val nokiaRadioStatus = "fastmile_radio_status_web_app.cgi"
+    const val nokiaDeviceInfoStatus = "dashboard_device_info_status_web_app.cgi"
+    const val nokiaStatisticsStatus = "fastmile_statistics_status_web_app.cgi"
+    const val nokiaCellStatus = "cell_status_app.cgi"
+    const val nokiaLogin = "login_app.cgi"
+
     fun String.createFullUrl(): String {
         return "$baseUrl$this"
+    }
+
+    fun String.createNokiaUrl(): String {
+        return "$baseIp/$this"
     }
 }

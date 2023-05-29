@@ -75,6 +75,7 @@ kotlin {
                 api("com.soywiz.korlibs.korio:korio:4.0.0")
                 api("com.russhwolf:multiplatform-settings:1.0.0")
                 api("com.russhwolf:multiplatform-settings-no-arg:1.0.0")
+                api("org.jetbrains.kotlinx:atomicfu:0.20.2")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core") {
                     version {
                         strictly(coroutinesVersion)

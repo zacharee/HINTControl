@@ -48,6 +48,7 @@
     <string name="twoGig">2.4GHz</string>
     <string name="fiveGig">5GHz</string>
     <string name="wired">Wired</string>
+    <string name="wireless">Wireless</string>
 
     <string name="band_mgmnt">Band Management</string>
     <string name="twoGig_radio">2.4GHz Radio</string>

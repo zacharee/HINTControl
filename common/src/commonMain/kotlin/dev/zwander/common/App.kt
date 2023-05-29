@@ -82,6 +82,7 @@ import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.SettingsModel
 import dev.zwander.common.model.UserModel
 import dev.zwander.common.ui.Theme
+import dev.zwander.common.util.ClientUtils
 import dev.zwander.resources.common.MR
 import korlibs.memory.Platform
 import kotlinx.coroutines.CancellationException
@@ -106,6 +107,7 @@ fun App(
     val isLoading by GlobalModel.isLoading.collectAsState()
     val autoRefresh by SettingsModel.enableAutoRefresh.collectAsState()
     val autoRefreshMs by SettingsModel.autoRefreshMs.collectAsState()
+    val isLoggedIn by UserModel.isLoggedIn.collectAsState(false)
 
     var currentPage by GlobalModel.currentPage.collectAsMutableState()
     var error by GlobalModel.httpError.collectAsMutableState()
@@ -115,6 +117,10 @@ fun App(
             delay(autoRefreshMs)
             error = handleRefresh(currentPage)
         }
+    }
+
+    LaunchedEffect(null) {
+        GlobalModel.httpClient.value = ClientUtils.chooseClient(UserModel.isTest.value)
     }
 
     Theme {
@@ -133,7 +139,6 @@ fun App(
                 false
             }
         ) {
-            val token by UserModel.token.collectAsState()
             val snackbarHostState = remember { SnackbarHostState() }
 
             val pages = remember {
@@ -158,10 +163,10 @@ fun App(
                 }
             }
 
-            LaunchedEffect(token) {
-                if (currentPage == Page.Login && token != null) {
+            LaunchedEffect(isLoggedIn) {
+                if (currentPage == Page.Login && isLoggedIn) {
                     currentPage = Page.Main
-                } else if (token == null) {
+                } else if (!isLoggedIn) {
                     currentPage = Page.Login
                 }
             }
@@ -187,7 +192,7 @@ fun App(
                     val maxWidthDp = with(LocalDensity.current) { constraints.maxWidth.toDp() }
 
                     val sideRail = maxWidthDp >= 600.dp
-                    val showBottomBar = token != null && !sideRail
+                    val showBottomBar = isLoggedIn && !sideRail
 
                     val pullRefreshState = rememberPullRefreshState(
                         refreshing = isLoading,
@@ -241,7 +246,7 @@ fun App(
                                 .padding(padding),
                         ) {
                             AnimatedVisibility(
-                                visible = token != null && sideRail,
+                                visible = isLoggedIn && sideRail,
                                 enter = fadeIn() + expandHorizontally(expandFrom = Alignment.Start),
                                 exit = fadeOut() + shrinkHorizontally(shrinkTowards = Alignment.Start),
                             ) {

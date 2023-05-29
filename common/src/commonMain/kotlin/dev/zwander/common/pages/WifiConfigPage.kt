@@ -18,7 +18,6 @@ import dev.zwander.common.components.PageGrid
 import dev.zwander.common.components.SSIDListLayout
 import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.MainModel
-import dev.zwander.common.util.HTTPClient
 import dev.zwander.resources.common.MR
 import kotlinx.coroutines.launch
 import kotlin.experimental.ExperimentalObjCRefinement
@@ -81,14 +80,14 @@ fun WifiConfigPage(
                 scope.launch {
                     tempState?.let {
                         try {
-                            HTTPClient.setWifiData(it)
+                            GlobalModel.httpClient.value?.setWifiData(it)
                         } catch (e: Exception) {
                             e.printStackTrace()
                             GlobalModel.httpError.value = e.message
                         }
                     }
                     try {
-                        MainModel.currentWifiData.value = HTTPClient.getWifiData()
+                        MainModel.currentWifiData.value = GlobalModel.httpClient.value?.getWifiData()
                     } catch (e: Exception) {
                         e.printStackTrace()
                         GlobalModel.httpError.value = e.message

@@ -19,50 +19,50 @@ data class AdvancedCellData(
 )
 
 interface BaseAdvancedData {
-    val bandwidth: String
-    val mcc: String
-    val mnc: String
-    val plmn: String
-    val status: Boolean
-    val supportedBands: List<String>
-    val sector: BaseCellData
-    val earfcn: String
-    val cqi: Int
-    val ecgi: String
-    val pci: String
-    val tac: String
+    val bandwidth: String?
+    val mcc: String?
+    val mnc: String?
+    val plmn: String?
+    val status: Boolean?
+    val supportedBands: List<String>?
+    val sector: BaseCellData?
+    val earfcn: String?
+    val cqi: Int?
+    val ecgi: String?
+    val pci: String?
+    val tac: String?
 }
 
 @Serializable
 data class AdvancedDataLTE(
-    override val cqi: Int,
-    override val earfcn: String,
-    override val ecgi: String,
-    override val pci: String,
-    override val tac: String,
-    override val bandwidth: String,
-    override val mcc: String,
-    override val mnc: String,
-    override val plmn: String,
-    override val status: Boolean,
-    override val supportedBands: List<String>,
-    override val sector: CellDataLTE,
+    override val cqi: Int? = null,
+    override val earfcn: String? = null,
+    override val ecgi: String? = null,
+    override val pci: String? = null,
+    override val tac: String? = null,
+    override val bandwidth: String? = null,
+    override val mcc: String? = null,
+    override val mnc: String? = null,
+    override val plmn: String? = null,
+    override val status: Boolean? = null,
+    override val supportedBands: List<String>? = null,
+    override val sector: CellDataLTE? = null,
 ) : BaseAdvancedData
 
 @Serializable
 data class AdvancedData5G(
-    override val cqi: Int,
-    override val earfcn: String,
-    override val ecgi: String,
-    override val pci: String,
-    override val tac: String,
-    override val bandwidth: String,
-    override val mcc: String,
-    override val mnc: String,
-    override val plmn: String,
-    override val status: Boolean,
-    override val supportedBands: List<String>,
-    override val sector: CellData5G,
+    override val cqi: Int? = null,
+    override val earfcn: String? = null,
+    override val ecgi: String? = null,
+    override val pci: String? = null,
+    override val tac: String? = null,
+    override val bandwidth: String? = null,
+    override val mcc: String? = null,
+    override val mnc: String? = null,
+    override val plmn: String? = null,
+    override val status: Boolean? = null,
+    override val supportedBands: List<String>? = null,
+    override val sector: CellData5G? = null,
 ) : BaseAdvancedData
 
 @Serializable

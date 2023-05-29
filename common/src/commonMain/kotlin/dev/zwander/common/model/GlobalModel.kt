@@ -1,6 +1,7 @@
 package dev.zwander.common.model
 
 import dev.zwander.common.data.Page
+import dev.zwander.common.util.HTTPClient
 import kotlinx.coroutines.flow.MutableStateFlow
 
 object GlobalModel {
@@ -8,4 +9,6 @@ object GlobalModel {
     val isLoading = MutableStateFlow(false)
     val currentPage = MutableStateFlow<Page>(Page.Login)
     val httpError = MutableStateFlow<String?>(null)
+
+    val httpClient = MutableStateFlow<HTTPClient?>(null)
 }

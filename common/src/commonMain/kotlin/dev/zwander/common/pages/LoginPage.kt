@@ -30,7 +30,6 @@ import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.components.TextSwitch
 import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.UserModel
-import dev.zwander.common.util.HTTPClient
 import dev.zwander.resources.common.MR
 import kotlinx.coroutines.launch
 import kotlin.experimental.ExperimentalObjCRefinement
@@ -53,7 +52,8 @@ fun LoginPage(
     var password by UserModel.password.collectAsMutableState()
 
     val isBlocking by GlobalModel.isBlocking.collectAsState()
-    val token by UserModel.token.collectAsState()
+    val client by GlobalModel.httpClient.collectAsState()
+    val isLoggedIn by UserModel.isLoggedIn.collectAsState(false)
 
     var error by remember {
         mutableStateOf<String?>(null)
@@ -70,14 +70,14 @@ fun LoginPage(
         error = null
         focusManager.clearFocus()
         try {
-            HTTPClient.logIn(username, password ?: "", rememberCredentials)
+            client?.logIn(username, password ?: "", rememberCredentials)
         } catch (e: Exception) {
             error = e.message
         }
     }
 
-    LaunchedEffect(null) {
-        if (username.isNotBlank() && !password.isNullOrBlank()) {
+    LaunchedEffect(client) {
+        if (username.isNotBlank() && !password.isNullOrBlank() && client != null) {
             performLogin()
         }
     }
@@ -205,7 +205,7 @@ fun LoginPage(
                         performLogin()
                     }
                 },
-                enabled = username.isNotBlank() && !password.isNullOrBlank() && !isBlocking && token == null,
+                enabled = username.isNotBlank() && !password.isNullOrBlank() && !isBlocking && !isLoggedIn,
                 interactionSource = loginInteractionSource,
             ) {
                 Text(

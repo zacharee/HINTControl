@@ -23,10 +23,9 @@ import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.components.*
 import dev.zwander.common.components.dialog.AlertDialogDef
+import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.MainModel
 import dev.zwander.common.model.UserModel
-import dev.zwander.common.util.HTTPClient
-import dev.zwander.common.util.SettingsManager
 import dev.zwander.resources.common.MR
 import kotlinx.coroutines.launch
 import kotlin.experimental.ExperimentalObjCRefinement
@@ -44,6 +43,7 @@ fun MainPage(
     modifier: Modifier = Modifier,
 ) {
     val data by MainModel.currentMainData.collectAsState()
+    val httpClient by GlobalModel.httpClient.collectAsState()
     val scope = rememberCoroutineScope()
 
     val items = remember(data) {
@@ -128,12 +128,7 @@ fun MainPage(
             ) {
                 Button(
                     onClick = {
-                        UserModel.token.value = null
-                        UserModel.username.value = "admin"
-                        UserModel.password.value = null
-
-                        SettingsManager.username = "admin"
-                        SettingsManager.password = null
+                        UserModel.logOut()
                     },
                     modifier = Modifier.weight(1f),
                 ) {
@@ -189,7 +184,7 @@ fun MainPage(
                     showingRebootConfirmation = false
 
                     scope.launch {
-                        HTTPClient.reboot()
+                        httpClient?.reboot()
                     }
                 },
                 colors = ButtonDefaults.textButtonColors(

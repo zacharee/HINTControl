@@ -2,25 +2,47 @@ package dev.zwander.common.util
 
 import dev.zwander.common.model.Endpoints
 import dev.zwander.common.model.Endpoints.createFullUrl
+import dev.zwander.common.model.Endpoints.createNokiaUrl
 import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.TEST_TOKEN
 import dev.zwander.common.model.UserModel
+import dev.zwander.common.model.adapters.AdvancedCellData
+import dev.zwander.common.model.adapters.AdvancedData5G
+import dev.zwander.common.model.adapters.AdvancedDataLTE
+import dev.zwander.common.model.adapters.CellData5G
+import dev.zwander.common.model.adapters.CellDataLTE
 import dev.zwander.common.model.adapters.CellDataRoot
 import dev.zwander.common.model.adapters.ClientDeviceData
+import dev.zwander.common.model.adapters.ClientsData
+import dev.zwander.common.model.adapters.DeviceData
+import dev.zwander.common.model.adapters.GenericData
 import dev.zwander.common.model.adapters.LoginResultData
 import dev.zwander.common.model.adapters.MainData
+import dev.zwander.common.model.adapters.SignalData
+import dev.zwander.common.model.adapters.SimData
 import dev.zwander.common.model.adapters.SimDataRoot
+import dev.zwander.common.model.adapters.TimeData
 import dev.zwander.common.model.adapters.WifiConfig
+import dev.zwander.common.model.adapters.WiredClientData
+import dev.zwander.common.model.adapters.WirelessClientData
+import dev.zwander.common.model.adapters.nokia.CellStatus
+import dev.zwander.common.model.adapters.nokia.ConnectionStatus
+import dev.zwander.common.model.adapters.nokia.DeviceInfoStatus
+import dev.zwander.common.model.adapters.nokia.StatisticsInfo
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.respond
+import io.ktor.client.plugins.HttpRequestRetry
 import io.ktor.client.plugins.HttpRequestTimeoutException
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BearerTokens
 import io.ktor.client.plugins.auth.providers.bearer
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.cookies.HttpCookies
+import io.ktor.client.request.forms.formData
 import io.ktor.client.request.get
+import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.bodyAsText
@@ -35,10 +57,19 @@ import io.ktor.serialization.kotlinx.json.json
 import io.ktor.utils.io.ByteReadChannel
 import io.ktor.utils.io.errors.IOException
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
-private object Clients {
+private object CommonClients {
+    val unauthedClient = HttpClient {
+        install(ContentNegotiation) {
+            json()
+        }
+    }
+}
+
+private object ASClients {
     val mockEngine = MockEngine { request ->
         respond(
             content = ByteReadChannel(
@@ -298,7 +329,6 @@ private object Clients {
         }
     }
 
-    val unauthedClient = HttpClient()
     val httpClient = HttpClient {
         install(Auth) {
             bearer {
@@ -306,7 +336,7 @@ private object Clients {
                     BearerTokens(UserModel.token.value ?: "", "")
                 }
                 this.refreshTokens {
-                    HTTPClient.logIn(
+                    ArcadyanSagemcomClient.logIn(
                         UserModel.username.value,
                         UserModel.password.value ?: "",
                         false
@@ -327,18 +357,345 @@ private object Clients {
     }
 }
 
-object HTTPClient {
-    private val unauthedClient: HttpClient
-        get() = if (UserModel.isTest.value) Clients.mockClient else Clients.unauthedClient
+private object NokiaClients {
+    val httpClient = HttpClient {
+        install(HttpCookies)
 
-    private val httpClient: HttpClient
-        get() = if (UserModel.isTest.value) Clients.mockClient else Clients.httpClient
+//        install(Auth) {
+//            cookies {
+//                loadCookies {
+//                    UserModel.cookie.value
+//                }
+//                refreshCookies {
+//                    NokiaClient.logIn(
+//                        UserModel.username.value,
+//                        UserModel.password.value ?: "",
+//                        false,
+//                    )
+//
+//                    UserModel.cookie.value
+//                }
+//            }
+//        }
+        install(ContentNegotiation) {
+            json()
+        }
+        install(HttpTimeout) {
+            requestTimeoutMillis = 10000
+            connectTimeoutMillis = 10000
+            socketTimeoutMillis = 10000
+        }
+        install(HttpRequestRetry) {
+            this.modifyRequest {
+                runBlocking {
+                    NokiaClient.logIn(
+                        UserModel.username.value,
+                        UserModel.password.value ?: "",
+                        false,
+                    )
+                }
+            }
+        }
+    }
+}
+
+object ClientUtils {
+    suspend fun chooseClient(test: Boolean): HTTPClient {
+        return if (test || ArcadyanSagemcomClient.exists()) {
+            ArcadyanSagemcomClient
+        } else {
+            NokiaClient
+        }
+    }
+}
+
+interface HTTPClient {
+    val testUrl: String
+    val httpClient: HttpClient
+    val unauthedClient: HttpClient
+
+    suspend fun logIn(username: String, password: String, rememberCredentials: Boolean)
+    suspend fun getMainData(): MainData
+    suspend fun getWifiData(): WifiConfig
+    suspend fun getDeviceData(): ClientDeviceData
+    suspend fun getCellData(): CellDataRoot
+    suspend fun getSimData(): SimDataRoot
+    suspend fun setWifiData(newData: WifiConfig)
+    suspend fun setLogin(newUsername: String, newPassword: String)
+    suspend fun reboot()
+
+    suspend fun exists(): Boolean
+
+    suspend fun <T> withLoader(blocking: Boolean = false, block: suspend () -> T): T {
+        return try {
+            if (blocking) {
+                GlobalModel.isBlocking.value = true
+            } else {
+                GlobalModel.isLoading.value = true
+            }
+            block()
+        } finally {
+            if (blocking) {
+                GlobalModel.isBlocking.value = false
+            } else {
+                GlobalModel.isLoading.value = false
+            }
+        }
+    }
+
+    suspend fun waitForLive(): Boolean {
+        for (i in 0..100) {
+            try {
+                val response = httpClient.get(testUrl)
+
+                if (response.status.isSuccess()) {
+                    return true
+                }
+            } catch (_: Exception) {
+            }
+
+            delay(1000L)
+        }
+
+        return false
+    }
+}
+
+private object NokiaClient : HTTPClient {
+    override val testUrl: String = Endpoints.nokiaDeviceStatus.createNokiaUrl()
+
+    override val httpClient: HttpClient
+        get() = NokiaClients.httpClient
+
+    override val unauthedClient: HttpClient
+        get() = CommonClients.unauthedClient
 
     private val json = Json {
         ignoreUnknownKeys = true
     }
 
-    suspend fun logIn(username: String, password: String, rememberCredentials: Boolean) {
+    override suspend fun logIn(username: String, password: String, rememberCredentials: Boolean) {
+        withLoader(true) {
+            val response = unauthedClient.post(Endpoints.nokiaLogin.createNokiaUrl()) {
+                contentType(ContentType.parse("application/x-www-form-urlencoded"))
+                header(HttpHeaders.Host, "192.168.12.1")
+                formData {
+                    append("name", UserModel.username.value)
+                    append("pswd", UserModel.password.value ?: "")
+                }
+            }
+
+            if (response.status.isSuccess()) {
+                UserModel.username.value = username
+                UserModel.password.value = password
+
+                if (rememberCredentials) {
+                    SettingsManager.username = username
+                    SettingsManager.password = password
+                }
+            } else {
+                println(response.status)
+                println(response.bodyAsText())
+                throw IOException(response.status.description)
+            }
+        }
+    }
+
+    override suspend fun getMainData(): MainData {
+        return withLoader {
+            val nokiaDeviceData = json.decodeFromString<DeviceInfoStatus>(
+                httpClient.get(Endpoints.nokiaDeviceInfoStatus.createNokiaUrl())
+                    .bodyAsText()
+            )
+            val cellStatus = json.decodeFromString<CellStatus>(
+                httpClient.get(Endpoints.nokiaCellStatus.createNokiaUrl())
+                    .bodyAsText()
+            )
+            val connectionStatus = json.decodeFromString<ConnectionStatus>(
+                httpClient.get(Endpoints.nokiaRadioStatus.createNokiaUrl())
+                    .bodyAsText()
+            )
+
+            MainData(
+                device = DeviceData(
+                    name = nokiaDeviceData.deviceAppStatus?.firstOrNull()?.description,
+                    manufacturer = nokiaDeviceData.deviceAppStatus?.firstOrNull()?.manufacturer,
+                    type = nokiaDeviceData.deviceAppStatus?.firstOrNull()?.productClass,
+                    hardwareVersion = nokiaDeviceData.deviceAppStatus?.firstOrNull()?.hardwareVersion,
+                    softwareVersion = nokiaDeviceData.deviceAppStatus?.firstOrNull()?.softwareVersion,
+                    isEnabled = nokiaDeviceData.deviceConfig?.firstOrNull()?.active?.let { it == 1 },
+                    isMeshSupported = true,
+                    macId = nokiaDeviceData.deviceConfig?.firstOrNull()?.macAddress,
+                    serial = nokiaDeviceData.deviceAppStatus?.firstOrNull()?.serialNumber,
+                ),
+                signal = SignalData(
+                    fourG = CellDataLTE(
+                        eNBID = cellStatus.cellStatLte?.firstOrNull()?.enbid?.toLong(),
+                        rssi = cellStatus.cellStatLte?.firstOrNull()?.rssi,
+                        bands = cellStatus.cellStatLte?.firstOrNull()?.band?.let { listOf(it) },
+                        bars = cellStatus.cellStatLte?.firstOrNull()?.rsrpStrengthIndex?.toDouble(),
+                        rsrp = cellStatus.cellStatLte?.firstOrNull()?.rsrp,
+                        rsrq = cellStatus.cellStatLte?.firstOrNull()?.rsrq,
+                        sinr = cellStatus.cellStatLte?.firstOrNull()?.snr,
+                    ),
+                    fiveG = CellData5G(
+                        gNBID = cellStatus.cellStat5G?.firstOrNull()?.enbid?.toLong(),
+                        rssi = cellStatus.cellStat5G?.firstOrNull()?.rssi,
+                        bands = cellStatus.cellStat5G?.firstOrNull()?.band?.let { listOf(it) },
+                        bars = cellStatus.cellStat5G?.firstOrNull()?.rsrpStrengthIndex?.toDouble(),
+                        rsrp = cellStatus.cellStat5G?.firstOrNull()?.rsrp,
+                        rsrq = cellStatus.cellStat5G?.firstOrNull()?.rsrq,
+                        sinr = cellStatus.cellStat5G?.firstOrNull()?.snr,
+                    ),
+                    generic = GenericData(
+                        apn = connectionStatus.apnConfigs?.firstOrNull()?.apn,
+                        hasIPv6 = connectionStatus.apnConfigs?.firstOrNull()?.ipv6 != null,
+                        roaming = cellStatus.cellStatGeneric?.firstOrNull()?.roamingStatus?.lowercase()?.let { it != "home" },
+                    ),
+                ),
+                time = TimeData(
+                    upTime = nokiaDeviceData.deviceAppStatus?.firstOrNull()?.upTime,
+                ),
+            )
+        }
+    }
+
+    override suspend fun getWifiData(): WifiConfig {
+        // Not current supported.
+        return WifiConfig()
+    }
+
+    override suspend fun getDeviceData(): ClientDeviceData {
+        return withLoader {
+            val deviceInfo = json.decodeFromString<DeviceInfoStatus>(
+                httpClient.get(Endpoints.nokiaDeviceInfoStatus.createNokiaUrl())
+                    .bodyAsText()
+            )
+
+            val wiredClients = deviceInfo.deviceConfig?.filter { it.interfaceType == "Ethernet" }
+            val wirelessClients = deviceInfo.deviceConfig?.filter { it.interfaceType == "802.11" }
+
+            ClientDeviceData(
+                clients = ClientsData(
+                    ethernet = wiredClients?.map {
+                         WiredClientData(
+                             connected = it.active == 1,
+                             ipv4 = it.ipAddress,
+                             mac = it.macAddress,
+                             name = it.hostName,
+                         )
+                    },
+                    wireless = wirelessClients?.map {
+                        WirelessClientData(
+                            connected = it.active == 1,
+                            ipv4 = it.ipAddress,
+                            mac = it.macAddress,
+                            name = it.hostName,
+                        )
+                    },
+                ),
+            )
+        }
+    }
+
+    override suspend fun getCellData(): CellDataRoot {
+        return withLoader {
+            val connectionStatus = json.decodeFromString<ConnectionStatus>(
+                httpClient.get(Endpoints.nokiaRadioStatus.createNokiaUrl())
+                    .bodyAsText()
+            )
+            val cellStatus = json.decodeFromString<CellStatus>(
+                httpClient.get(Endpoints.nokiaCellStatus.createNokiaUrl())
+                    .bodyAsText()
+            )
+
+            CellDataRoot(
+                cell = AdvancedCellData(
+                    fourG = AdvancedDataLTE(
+                        cqi = cellStatus.cellStatLte?.firstOrNull()?.cqi?.toInt(),
+                        earfcn = connectionStatus.fourGStats?.firstOrNull()?.stat?.earfcn?.toString(),
+                        ecgi = cellStatus.cellStatLte?.firstOrNull()?.ecgi,
+                        pci = connectionStatus.fourGStats?.firstOrNull()?.stat?.pci,
+                        tac = cellStatus.cellStatGeneric?.firstOrNull()?.tac,
+                        bandwidth = cellStatus.cellStatLte?.firstOrNull()?.bandwidth,
+                        mcc = cellStatus.cellStatLte?.firstOrNull()?.mcc,
+                        mnc = cellStatus.cellStatLte?.firstOrNull()?.mnc,
+                        plmn = cellStatus.cellStatLte?.firstOrNull()?.plmnName,
+                    ),
+                    fiveG = AdvancedData5G(
+                        cqi = cellStatus.cellStat5G?.firstOrNull()?.cqi?.toInt(),
+                        earfcn = connectionStatus.fiveGStats?.firstOrNull()?.stat?.nrarfcn?.toString(),
+                        ecgi = cellStatus.cellStat5G?.firstOrNull()?.ecgi,
+                        pci = connectionStatus.fiveGStats?.firstOrNull()?.stat?.pci,
+                        bandwidth = cellStatus.cellStat5G?.firstOrNull()?.bandwidth,
+                        mcc = cellStatus.cellStat5G?.firstOrNull()?.mcc,
+                        mnc = cellStatus.cellStat5G?.firstOrNull()?.mnc,
+                        plmn = cellStatus.cellStat5G?.firstOrNull()?.plmnName,
+                    ),
+                    generic = GenericData(
+                        apn = connectionStatus.apnConfigs?.firstOrNull()?.apn,
+                        hasIPv6 = !connectionStatus.apnConfigs?.firstOrNull()?.ipv6.isNullOrBlank(),
+                        roaming = cellStatus.cellStatGeneric?.firstOrNull()?.roamingStatus?.lowercase()?.let { it != "home" }
+                    ),
+                ),
+            )
+        }
+    }
+
+    override suspend fun getSimData(): SimDataRoot {
+        return withLoader {
+            val statistics = json.decodeFromString<StatisticsInfo>(
+                httpClient.get(Endpoints.nokiaStatisticsStatus.createNokiaUrl())
+                    .bodyAsText()
+            )
+
+            SimDataRoot(
+                sim = SimData(
+                    iccId = statistics.simConfig?.firstOrNull()?.iccid,
+                    imei = statistics.networkConfig?.firstOrNull()?.imei,
+                    imsi = statistics.simConfig?.firstOrNull()?.imsi,
+                    msisdn = statistics.simConfig?.firstOrNull()?.msisdn,
+                    status = statistics.simConfig?.firstOrNull()?.status?.lowercase()?.let { it == "Valid" },
+                ),
+            )
+        }
+    }
+
+    override suspend fun setWifiData(newData: WifiConfig) {
+        // Not implemented.
+    }
+
+    override suspend fun setLogin(newUsername: String, newPassword: String) {
+        // Not implemented.
+    }
+
+    override suspend fun reboot() {
+        // Not implemented.
+    }
+
+    override suspend fun exists(): Boolean {
+        return try {
+            unauthedClient.get(Endpoints.nokiaDeviceStatus).status.isSuccess()
+        } catch (e: Exception) {
+            false
+        }
+    }
+}
+
+private object ArcadyanSagemcomClient : HTTPClient {
+    override val unauthedClient: HttpClient
+        get() = if (UserModel.isTest.value) ASClients.mockClient else CommonClients.unauthedClient
+
+    override val httpClient: HttpClient
+        get() = if (UserModel.isTest.value) ASClients.mockClient else ASClients.httpClient
+
+    override val testUrl = Endpoints.getWifiConfigURL.createFullUrl()
+
+    private val json = Json {
+        ignoreUnknownKeys = true
+    }
+
+    override suspend fun logIn(username: String, password: String, rememberCredentials: Boolean) {
         return withLoader(true) {
             val response = unauthedClient.post(Endpoints.authURL.createFullUrl()) {
                 setBody("{\"username\": \"${username}\", \"password\": \"${password}\"}")
@@ -363,7 +720,7 @@ object HTTPClient {
         }
     }
 
-    suspend fun getMainData(): MainData {
+    override suspend fun getMainData(): MainData {
         return withLoader {
             json.decodeFromString(
                 httpClient
@@ -373,7 +730,7 @@ object HTTPClient {
         }
     }
 
-    suspend fun getWifiData(): WifiConfig {
+    override suspend fun getWifiData(): WifiConfig {
         return withLoader {
             json.decodeFromString(
                 httpClient
@@ -383,7 +740,7 @@ object HTTPClient {
         }
     }
 
-    suspend fun getDeviceData(): ClientDeviceData {
+    override suspend fun getDeviceData(): ClientDeviceData {
         return withLoader {
             json.decodeFromString(
                 httpClient
@@ -393,7 +750,7 @@ object HTTPClient {
         }
     }
 
-    suspend fun getCellData(): CellDataRoot {
+    override suspend fun getCellData(): CellDataRoot {
         return withLoader {
             json.decodeFromString(
                 httpClient
@@ -403,7 +760,7 @@ object HTTPClient {
         }
     }
 
-    suspend fun getSimData(): SimDataRoot {
+    override suspend fun getSimData(): SimDataRoot {
         return withLoader {
             json.decodeFromString(
                 httpClient
@@ -413,7 +770,7 @@ object HTTPClient {
         }
     }
 
-    suspend fun setWifiData(newData: WifiConfig) {
+    override suspend fun setWifiData(newData: WifiConfig) {
         withLoader(true) {
             try {
                 val response = httpClient.post(Endpoints.setWifiConfigURL.createFullUrl()) {
@@ -433,7 +790,7 @@ object HTTPClient {
         }
     }
 
-    suspend fun setLogin(newUsername: String, newPassword: String) {
+    override suspend fun setLogin(newUsername: String, newPassword: String) {
         withLoader(true) {
             httpClient.post(Endpoints.resetURL.createFullUrl()) {
                 setBody("{\"usernameNew\": \"${newUsername}\", \"passwordNew\": \"${newPassword}\"}")
@@ -445,7 +802,7 @@ object HTTPClient {
         }
     }
 
-    suspend fun reboot() {
+    override suspend fun reboot() {
         return withLoader(true) {
             try {
                 httpClient.post(Endpoints.rebootURL.createFullUrl())
@@ -463,38 +820,13 @@ object HTTPClient {
         }
     }
 
-    private suspend fun waitForLive(): Boolean {
-        for (i in 0..100) {
-            try {
-                val response = httpClient
-                    .get(Endpoints.getWifiConfigURL.createFullUrl())
-
-                if (response.status.isSuccess()) {
-                    return true
-                }
-            } catch (_: Exception) {
-            }
-
-            delay(1000L)
-        }
-
-        return false
-    }
-
-    private suspend fun <T> withLoader(blocking: Boolean = false, block: suspend () -> T): T {
+    override suspend fun exists(): Boolean {
         return try {
-            if (blocking) {
-                GlobalModel.isBlocking.value = true
-            } else {
-                GlobalModel.isLoading.value = true
-            }
-            block()
-        } finally {
-            if (blocking) {
-                GlobalModel.isBlocking.value = false
-            } else {
-                GlobalModel.isLoading.value = false
-            }
+            val response = httpClient.get(Endpoints.gateWayURL.createFullUrl())
+
+            response.status.value != 404
+        } catch (e: Exception) {
+            false
         }
     }
 }
