@@ -47,3 +47,4 @@ bin/
 /android/release/
 /iosApp/iosApp.xcworkspace/xcuserdata/zachary.xcuserdatad/UserInterfaceState.xcuserstate
 /iosApp/iosApp.xcodeproj/xcuserdata/zachary.xcuserdatad/xcschemes/xcschememanagement.plist
+/.idea/artifacts/
