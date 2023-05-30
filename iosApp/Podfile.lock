@@ -1,6 +1,6 @@
 PODS:
   - Bugsnag (6.27.0)
-  - common (8):
+  - common (9):
     - Bugsnag
 
 DEPENDENCIES:
@@ -16,7 +16,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Bugsnag: db2df549eacd3b23e6fbef81a38b30c250be0304
-  common: 520c0ca9b6d881c6f721f0286b96793ebabbb404
+  common: 798cccfdd6e2d01e52358ba84b6e57ec59bbd2d3
 
 PODFILE CHECKSUM: f4a1830d6a902fe554af2f59e20c883cab967e6b
 
