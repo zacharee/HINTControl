@@ -21,9 +21,13 @@ object Endpoints {
     const val nokiaStatisticsStatus = "fastmile_statistics_status_web_app.cgi"
     const val nokiaCellStatus = "cell_status_app.cgi"
     const val nokiaWifiListing = "wlan_list_app.cgi"
+    // POST: action="Reboot" or action="WLANConfig"
     const val nokiaServiceFunction = "service_function_app.cgi"
+    // GET
     const val nokiaSntpStatus = "sntp_status_app.cgi"
+    // POST
     const val nokiaLoginPasswordReset = "login_password_reset_app.cgi"
+    // GET
     const val nokiaSimStatus = "sim_status_app.cgi"
 
     fun String.createFullUrl(): String {

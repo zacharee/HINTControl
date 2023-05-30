@@ -18,6 +18,7 @@ import dev.zwander.common.model.adapters.DeviceData
 import dev.zwander.common.model.adapters.GenericData
 import dev.zwander.common.model.adapters.LoginResultData
 import dev.zwander.common.model.adapters.MainData
+import dev.zwander.common.model.adapters.SSIDConfig
 import dev.zwander.common.model.adapters.SignalData
 import dev.zwander.common.model.adapters.SimData
 import dev.zwander.common.model.adapters.SimDataRoot
@@ -28,6 +29,8 @@ import dev.zwander.common.model.adapters.WirelessClientData
 import dev.zwander.common.model.adapters.nokia.CellStatus
 import dev.zwander.common.model.adapters.nokia.ConnectionStatus
 import dev.zwander.common.model.adapters.nokia.DeviceInfoStatus
+import dev.zwander.common.model.adapters.nokia.SetSSIDConfig
+import dev.zwander.common.model.adapters.nokia.SetWifiConfig
 import dev.zwander.common.model.adapters.nokia.StatisticsInfo
 import dev.zwander.common.model.adapters.nokia.WifiListing
 import io.ktor.client.HttpClient
@@ -533,8 +536,6 @@ private object NokiaClient : HTTPClient {
                     .bodyAsText()
             )
 
-
-
             MainData(
                 device = DeviceData(
                     name = nokiaDeviceData.deviceAppStatus?.firstOrNull()?.description,
@@ -587,7 +588,22 @@ private object NokiaClient : HTTPClient {
             )
 
             WifiConfig(
-
+                ssids = wifiListing.wlanList?.map { wlan ->
+                    SSIDConfig(
+                        canEditFrequencyAndGuest = false,
+                        twoGigSsid = wlan.type == "2.4G",
+                        fiveGigSsid = wlan.type == "5G",
+                        encryptionMode = if (wlan.wpaEncryptionModes?.startsWith("AES") == true) "AES" else "TKIP",
+                        encryptionVersion = NokiaConverter.convertNokiaEncryptionVersionToArcadyan(wlan.beaconType),
+                        guest = wlan.isGuestSsid == 1,
+                        isBroadcastEnabled = wlan.ssidAdvertisementEnabled == 1,
+                        ssidName = wlan.ssid,
+                        ssidId = wlan.oid,
+                        wpaKey = wlan.preSharedKey,
+                        enabled = wlan.enable == 1,
+                    )
+                },
+                canAddAndRemove = false,
             )
         }
     }
@@ -689,7 +705,37 @@ private object NokiaClient : HTTPClient {
     }
 
     override suspend fun setWifiData(newData: WifiConfig) {
-        // Not implemented.
+        withLoader(true) {
+            val nokiaConfig = SetWifiConfig(
+                paralist = newData.ssids?.map { ssid ->
+                    SetSSIDConfig(
+                        beaconType = NokiaConverter.convertArcadyanEncryptionVersionToNokia(ssid.encryptionVersion),
+                        enable = ssid.enabled,
+                        id = ssid.ssidId?.let { listOf(it.toString()) },
+                        preSharedKey = ssid.wpaKey,
+                        ssid = ssid.ssidName,
+                        ssidAdvertisementEnabled = ssid.isBroadcastEnabled,
+                        wpaEncryptionModes = "${ssid.encryptionMode}Encryption"
+                    )
+                }
+            )
+
+            try {
+                val response = httpClient.post(Endpoints.nokiaServiceFunction.createNokiaUrl()) {
+                    contentType(ContentType.parse("application/json"))
+                    setBody(newData)
+                }
+
+                if (!response.status.isSuccess()) {
+                    throw Exception(response.bodyAsText())
+                }
+            } catch (e: HttpRequestTimeoutException) {
+                if (!waitForLive()) {
+                    GlobalModel.httpError.value = e.message
+                }
+                Unit
+            }
+        }
     }
 
     override suspend fun setLogin(newUsername: String, newPassword: String) {
@@ -697,7 +743,23 @@ private object NokiaClient : HTTPClient {
     }
 
     override suspend fun reboot() {
-        // Not implemented.
+        withLoader(true) {
+            try {
+                val response = httpClient.post(Endpoints.nokiaServiceFunction.createNokiaUrl()) {
+                    contentType(ContentType.parse("application/json"))
+                    setBody("{\"action\": \"Reboot\"}")
+                }
+
+                if (!response.status.isSuccess()) {
+                    throw IOException(response.status.description)
+                }
+            } catch (e: HttpRequestTimeoutException) {
+                if (!waitForLive()) {
+                    GlobalModel.httpError.value = e.message
+                }
+                Unit
+            }
+        }
     }
 
     override suspend fun exists(): Boolean {
@@ -830,7 +892,7 @@ private object ArcadyanSagemcomClient : HTTPClient {
     }
 
     override suspend fun reboot() {
-        return withLoader(true) {
+        withLoader(true) {
             try {
                 httpClient.post(Endpoints.rebootURL.createFullUrl())
                     .apply {

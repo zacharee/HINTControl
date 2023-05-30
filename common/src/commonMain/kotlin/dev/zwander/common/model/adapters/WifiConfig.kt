@@ -11,6 +11,7 @@ data class WifiConfig(
     val fiveGig: BandConfig? = null,
     val bandSteering: BandSteeringConfig? = null,
     val ssids: List<SSIDConfig>? = null,
+    val canAddAndRemove: Boolean = true,
 )
 
 @Serializable
@@ -34,13 +35,16 @@ data class BandSteeringConfig(
 @Serializable
 data class SSIDConfig(
     @SerialName("2.4ghzSsid")
-    val twoGigSsid: Boolean,
+    val twoGigSsid: Boolean? = null,
     @SerialName("5.0ghzSsid")
-    val fiveGigSsid: Boolean,
-    val encryptionMode: String,
-    val encryptionVersion: String,
-    val guest: Boolean,
-    val isBroadcastEnabled: Boolean,
-    val ssidName: String?,
-    val wpaKey: String?,
+    val fiveGigSsid: Boolean? = null,
+    val encryptionMode: String? = null,
+    val encryptionVersion: String? = null,
+    val guest: Boolean? = null,
+    val isBroadcastEnabled: Boolean? = null,
+    val ssidName: String? = null,
+    val wpaKey: String? = null,
+    val canEditFrequencyAndGuest: Boolean = true,
+    val ssidId: Int? = null,
+    val enabled: Boolean? = null,
 )

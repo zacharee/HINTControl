@@ -33,6 +33,12 @@ fun SSIDListLayout(
 ) {
     var data by MainModel.tempWifiState.collectAsMutableState()
 
+    val canAddAndRemove by remember {
+        derivedStateOf {
+            data?.canAddAndRemove
+        }
+    }
+
     val items by remember {
         derivedStateOf {
             data?.ssids?.map {
@@ -91,7 +97,7 @@ fun SSIDListLayout(
                     onClick = {
                         updateSsidConfig(item.data, null)
                     },
-                    enabled = index > 0,
+                    enabled = index > 0 && canAddAndRemove == true,
                 ) {
                     Icon(
                         imageVector = Icons.Default.Delete,
@@ -112,24 +118,26 @@ fun SSIDListLayout(
             }
         }
 
-        Button(
-            onClick = {
-                editingConfig = null to SSIDConfig(
-                    twoGigSsid = true,
-                    fiveGigSsid = true,
-                    encryptionMode = "AES",
-                    encryptionVersion = "WPA2/WPA3",
-                    guest = false,
-                    isBroadcastEnabled = true,
-                    ssidName = null,
-                    wpaKey = null,
+        if (canAddAndRemove == true) {
+            Button(
+                onClick = {
+                    editingConfig = null to SSIDConfig(
+                        twoGigSsid = true,
+                        fiveGigSsid = true,
+                        encryptionMode = "AES",
+                        encryptionVersion = "WPA2/WPA3",
+                        guest = false,
+                        isBroadcastEnabled = true,
+                        ssidName = null,
+                        wpaKey = null,
+                    )
+                },
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text(
+                    text = stringResource(MR.strings.add)
                 )
-            },
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            Text(
-                text = stringResource(MR.strings.add)
-            )
+            }
         }
     }
 
@@ -179,6 +187,18 @@ fun SSIDListLayout(
 
             Spacer(modifier = Modifier.size(8.dp))
 
+            if (editingConfig?.first?.enabled != null) {
+                TextSwitch(
+                    text = stringResource(MR.strings.enabled),
+                    checked = editingState?.enabled == true,
+                    onCheckedChange = {
+                        editingState = editingState?.copy(
+                            enabled = it,
+                        )
+                    },
+                )
+            }
+
             TextSwitch(
                 text = stringResource(MR.strings.hidden),
                 checked = editingState?.isBroadcastEnabled == false,
@@ -191,15 +211,17 @@ fun SSIDListLayout(
 
             Spacer(modifier = Modifier.size(8.dp))
 
-            TextSwitch(
-                text = stringResource(MR.strings.guest),
-                checked = editingState?.guest == true,
-                onCheckedChange = {
-                    editingState = editingState?.copy(
-                        guest = it,
-                    )
-                },
-            )
+            if (editingConfig?.first?.canEditFrequencyAndGuest == true) {
+                TextSwitch(
+                    text = stringResource(MR.strings.guest),
+                    checked = editingState?.guest == true,
+                    onCheckedChange = {
+                        editingState = editingState?.copy(
+                            guest = it,
+                        )
+                    },
+                )
+            }
         },
         onDismissRequest = { editingConfig = null },
         buttons = {
