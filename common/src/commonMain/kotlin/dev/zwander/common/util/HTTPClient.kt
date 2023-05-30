@@ -717,7 +717,7 @@ private object NokiaClient : HTTPClient {
                         ssidAdvertisementEnabled = ssid.isBroadcastEnabled,
                         wpaEncryptionModes = "${ssid.encryptionMode}Encryption"
                     )
-                }
+                },
             )
 
             try {
@@ -730,7 +730,7 @@ private object NokiaClient : HTTPClient {
                     throw Exception(response.bodyAsText())
                 }
 
-                delay(2000L)
+                delay(10000L)
 
                 waitForLive()
             } catch (e: HttpRequestTimeoutException) {

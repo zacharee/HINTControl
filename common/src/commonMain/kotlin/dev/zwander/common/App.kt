@@ -130,9 +130,7 @@ fun App(
                     if (((Platform.isMac || Platform.isIos) && it.isMetaPressed) ||
                         (!(Platform.isMac || Platform.isIos) && it.isCtrlPressed)) {
                         scope.launch {
-                            if (!isBlocking) {
-                                currentPage.refreshAction?.invoke()
-                            }
+                            error = handleRefresh(currentPage, isBlocking)
                         }
                     }
                 }
@@ -171,7 +169,7 @@ fun App(
                 }
             }
 
-            LaunchedEffect(currentPage) {
+            LaunchedEffect(currentPage, isBlocking) {
                 if (currentPage.refreshAction != null && (currentPage.needsRefresh?.invoke() == true || autoRefresh)) {
                     error = handleRefresh(currentPage, isBlocking)
                 }
