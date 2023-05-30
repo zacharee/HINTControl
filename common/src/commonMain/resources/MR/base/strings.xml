@@ -123,5 +123,6 @@
     <string name="website">Website</string>
     <string name="supporters">Supporters</string>
 
-    <string name="login_hint">The password for your gateway's admin console can be found on the label attached to the back. This is NOT the same as your T-Mobile ID.</string>
+    <string name="help">Help</string>
+    <string name="login_hint">Use the password you set for logging into the T-Mobile Internet app. If you didn't set a password, check the label on the back of your device for the default admin credentials.\nNote: This is NOT asking for your T-Mobile ID.</string>
 </resources>

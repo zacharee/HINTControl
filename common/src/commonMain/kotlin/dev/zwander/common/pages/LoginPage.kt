@@ -24,11 +24,11 @@ import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.components.TextSwitch
+import dev.zwander.common.components.dialog.AlertDialogDef
 import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.UserModel
 import dev.zwander.resources.common.MR
@@ -36,7 +36,9 @@ import kotlinx.coroutines.launch
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class,
+    ExperimentalLayoutApi::class
+)
 @Composable
 @HiddenFromObjC
 fun LoginPage(
@@ -65,6 +67,9 @@ fun LoginPage(
     }
     var rememberCredentials by remember {
         mutableStateOf(true)
+    }
+    var showingHelpDialog by remember {
+        mutableStateOf(false)
     }
 
     suspend fun performLogin() {
@@ -182,12 +187,6 @@ fun LoginPage(
                 onCheckedChange = { rememberCredentials = it },
             )
 
-            Text(
-                text = stringResource(MR.strings.login_hint),
-                fontSize = 12.sp,
-                lineHeight = 12.sp,
-            )
-
             AnimatedVisibility(
                 visible = error != null,
                 enter = fadeIn() + expandVertically(),
@@ -206,19 +205,58 @@ fun LoginPage(
                 Text(text = error ?: "")
             }
 
-            Button(
-                onClick = {
-                    scope.launch {
-                        performLogin()
-                    }
-                },
-                enabled = username.isNotBlank() && !password.isNullOrBlank() && !isBlocking && !isLoggedIn,
-                interactionSource = loginInteractionSource,
+            FlowRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                Text(
-                    text = stringResource(MR.strings.log_in),
-                )
+                Button(
+                    onClick = {
+                        showingHelpDialog = true
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.tertiary,
+                        contentColor = MaterialTheme.colorScheme.contentColorFor(MaterialTheme.colorScheme.tertiary),
+                    )
+                ) {
+                    Text(
+                        text = stringResource(MR.strings.help),
+                    )
+                }
+
+                Button(
+                    onClick = {
+                        scope.launch {
+                            performLogin()
+                        }
+                    },
+                    enabled = username.isNotBlank() && !password.isNullOrBlank() && !isBlocking && !isLoggedIn,
+                    interactionSource = loginInteractionSource,
+                ) {
+                    Text(
+                        text = stringResource(MR.strings.log_in),
+                    )
+                }
             }
         }
     }
+
+    AlertDialogDef(
+        showing = showingHelpDialog,
+        onDismissRequest = { showingHelpDialog = false },
+        title = {
+            Text(text = stringResource(MR.strings.help))
+        },
+        text = {
+            Text(text = stringResource(MR.strings.login_hint))
+        },
+        buttons = {
+            TextButton(
+                onClick = {
+                    showingHelpDialog = false
+                },
+            ) {
+                Text(text = stringResource(MR.strings.ok))
+            }
+        }
+    )
 }
