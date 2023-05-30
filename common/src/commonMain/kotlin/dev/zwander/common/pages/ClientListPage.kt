@@ -129,7 +129,7 @@ private fun ClientItem(
             MR.strings.ipv4 to data.ipv4,
             MR.strings.ipv6 to data.ipv6?.joinToString(" • "),
             MR.strings.mac to data.mac,
-        )
+        ).filter { it.second != null }
     }
 
     Column(modifier = modifier) {
