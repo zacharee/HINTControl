@@ -6,7 +6,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -16,6 +19,7 @@ import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.components.BandConfigLayout
 import dev.zwander.common.components.PageGrid
 import dev.zwander.common.components.SSIDListLayout
+import dev.zwander.common.components.dialog.AlertDialogDef
 import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.MainModel
 import dev.zwander.resources.common.MR
@@ -37,6 +41,18 @@ fun WifiConfigPage(
     val data by MainModel.currentWifiData.collectAsState()
 
     var tempState by MainModel.tempWifiState.collectAsMutableState()
+    var showingRadioWarning by remember {
+        mutableStateOf(false)
+    }
+
+    fun save() {
+        scope.launch {
+            tempState?.let {
+                GlobalModel.httpClient.value?.setWifiData(it)
+            }
+            MainModel.currentWifiData.value = GlobalModel.httpClient.value?.getWifiData()
+        }
+    }
 
     LaunchedEffect(data) {
         tempState = data
@@ -86,11 +102,12 @@ fun WifiConfigPage(
 
         Button(
             onClick = {
-                scope.launch {
-                    tempState?.let {
-                        GlobalModel.httpClient.value?.setWifiData(it)
-                    }
-                    MainModel.currentWifiData.value = GlobalModel.httpClient.value?.getWifiData()
+                if ((tempState?.twoGig?.isRadioEnabled == false && tempState?.twoGig?.isRadioEnabled != data?.twoGig?.isRadioEnabled) ||
+                    (tempState?.fiveGig?.isRadioEnabled == false && tempState?.fiveGig?.isRadioEnabled != data?.fiveGig?.isRadioEnabled)
+                ) {
+                    showingRadioWarning = true
+                } else {
+                    save()
                 }
             },
             enabled = tempState != data,
@@ -101,4 +118,36 @@ fun WifiConfigPage(
             )
         }
     }
+
+    AlertDialogDef(
+        showing = showingRadioWarning,
+        title = {
+            Text(text = stringResource(MR.strings.save))
+        },
+        text = {
+            Text(text = stringResource(MR.strings.radio_disable_confirm))
+        },
+        onDismissRequest = { showingRadioWarning = false },
+        buttons = {
+            TextButton(
+                onClick = {
+                    showingRadioWarning = false
+                },
+            ) {
+                Text(text = stringResource(MR.strings.no))
+            }
+
+            TextButton(
+                onClick = {
+                    showingRadioWarning = false
+                    save()
+                },
+                colors = ButtonDefaults.textButtonColors(
+                    contentColor = MaterialTheme.colorScheme.error,
+                ),
+            ) {
+                Text(text = stringResource(MR.strings.yes))
+            }
+        },
+    )
 }

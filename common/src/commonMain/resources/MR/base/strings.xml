@@ -125,4 +125,7 @@
 
     <string name="help">Help</string>
     <string name="login_hint">Use the password you set for logging into the T-Mobile Internet app. If you didn\'t set a password, check the label on the back of your device for the default admin credentials.\nNote: This is NOT asking for your T-Mobile ID.</string>
+
+    <string name="radio_warning">Disabling the 2.4GHz and 5GHz radios means your gateway will not broadcast Wi-Fi! Only turn these off if you have a wired connection to your gateway. Otherwise, you won\'t be able to access it without a manual factory reset.</string>
+    <string name="radio_disable_confirm">Are you sure you want to disable the Wi-Fi radios? You won\'t be able to connect to the gateway without a wired connection!</string>
 </resources>

@@ -4,11 +4,14 @@ package dev.zwander.common.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
 import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.model.MainModel
@@ -27,6 +30,13 @@ fun BandConfigLayout(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
+        Text(
+            text = stringResource(MR.strings.radio_warning),
+            color = MaterialTheme.colorScheme.error,
+            fontSize = 12.sp,
+            lineHeight = 12.sp,
+        )
+
         TextSwitch(
             text = stringResource(MR.strings.twoGig_radio),
             checked = (tempState?.twoGig?.isRadioEnabled ?: false),
