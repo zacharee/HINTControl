@@ -29,6 +29,7 @@ import dev.zwander.common.model.adapters.nokia.CellStatus
 import dev.zwander.common.model.adapters.nokia.ConnectionStatus
 import dev.zwander.common.model.adapters.nokia.DeviceInfoStatus
 import dev.zwander.common.model.adapters.nokia.StatisticsInfo
+import dev.zwander.common.model.adapters.nokia.WifiListing
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.respond
@@ -532,6 +533,8 @@ private object NokiaClient : HTTPClient {
                     .bodyAsText()
             )
 
+
+
             MainData(
                 device = DeviceData(
                     name = nokiaDeviceData.deviceAppStatus?.firstOrNull()?.description,
@@ -577,8 +580,16 @@ private object NokiaClient : HTTPClient {
     }
 
     override suspend fun getWifiData(): WifiConfig {
-        // Not current supported.
-        return WifiConfig()
+        return withLoader {
+            val wifiListing = json.decodeFromString<WifiListing>(
+                httpClient.get(Endpoints.nokiaWifiListing.createNokiaUrl())
+                    .bodyAsText()
+            )
+
+            WifiConfig(
+
+            )
+        }
     }
 
     override suspend fun getDeviceData(): ClientDeviceData {
