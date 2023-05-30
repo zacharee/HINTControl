@@ -21,11 +21,13 @@ class AdaptiveMod(private val minSize: Dp, private val itemCount: Int) : Stagger
     }
 
     override fun hashCode(): Int {
-        return minSize.hashCode()
+        return korlibs.datastructure.hashCode(minSize, itemCount)
     }
 
     override fun equals(other: Any?): Boolean {
-        return other is AdaptiveMod && minSize == other.minSize
+        return other is AdaptiveMod
+                && minSize == other.minSize
+                && itemCount == other.itemCount
     }
 }
 
