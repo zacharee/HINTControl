@@ -729,6 +729,10 @@ private object NokiaClient : HTTPClient {
                 if (!response.status.isSuccess()) {
                     throw Exception(response.bodyAsText())
                 }
+
+                delay(2000L)
+
+                waitForLive()
             } catch (e: HttpRequestTimeoutException) {
                 if (!waitForLive()) {
                     GlobalModel.httpError.value = e.message

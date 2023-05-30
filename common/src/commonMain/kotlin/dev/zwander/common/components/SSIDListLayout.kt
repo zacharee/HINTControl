@@ -10,8 +10,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
+import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.components.dialog.AlertDialogDef
 import dev.zwander.common.model.MainModel
@@ -93,17 +97,27 @@ fun SSIDListLayout(
                     modifier = Modifier.weight(1f),
                 )
 
-                if (item.data?.canEditFrequencyAndGuest == false) {
-                    Text(
-                        text = stringResource(
-                            if (item.data.twoGigSsid == true) {
-                                MR.strings.twoGig
-                            } else {
-                                MR.strings.fiveGig
-                            }
-                        )
-                    )
+                val freqs = remember(item) {
+                    val list = mutableListOf<StringResource>()
+
+                    if (item.data?.twoGigSsid == true) {
+                        list.add(MR.strings.twoGig)
+                    }
+
+                    if (item.data?.fiveGigSsid == true) {
+                        list.add(MR.strings.fiveGig)
+                    }
+
+                    list
                 }
+
+                @Suppress("SimplifiableCallChain")
+                Text(
+                    text = freqs.map { stringResource(it) }.joinToString("\n"),
+                    fontSize = 10.sp,
+                    textAlign = TextAlign.Center,
+                    lineHeight = 10.sp,
+                )
 
                 if (canAddAndRemove == true) {
                     IconButton(

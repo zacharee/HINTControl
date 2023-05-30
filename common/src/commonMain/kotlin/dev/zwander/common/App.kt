@@ -112,10 +112,10 @@ fun App(
     var currentPage by GlobalModel.currentPage.collectAsMutableState()
     var error by GlobalModel.httpError.collectAsMutableState()
 
-    LaunchedEffect(autoRefresh, currentPage) {
-        while (autoRefresh && currentPage.refreshAction != null) {
+    LaunchedEffect(autoRefresh, currentPage, isBlocking) {
+        while (autoRefresh && currentPage.refreshAction != null && !isBlocking) {
             delay(autoRefreshMs)
-            error = handleRefresh(currentPage)
+            error = handleRefresh(currentPage, isBlocking)
         }
     }
 
@@ -173,7 +173,7 @@ fun App(
 
             LaunchedEffect(currentPage) {
                 if (currentPage.refreshAction != null && (currentPage.needsRefresh?.invoke() == true || autoRefresh)) {
-                    error = handleRefresh(currentPage)
+                    error = handleRefresh(currentPage, isBlocking)
                 }
             }
 
@@ -198,7 +198,7 @@ fun App(
                         refreshing = isLoading,
                         onRefresh = {
                             scope.launch {
-                                error = handleRefresh(currentPage)
+                                error = handleRefresh(currentPage, isBlocking)
                             }
                         }
                     )
@@ -298,7 +298,7 @@ fun App(
                                     FloatingActionButton(
                                         onClick = {
                                             scope.launch {
-                                                error = handleRefresh(currentPage)
+                                                error = handleRefresh(currentPage, isBlocking)
                                             }
                                         },
                                     ) {
@@ -434,6 +434,7 @@ private fun NavBar(
     windowInsets: WindowInsets = NavigationBarDefaults.windowInsets,
 ) {
     val scope = rememberCoroutineScope()
+    val isBlocking by GlobalModel.isBlocking.collectAsState()
 
     var error by GlobalModel.httpError.collectAsMutableState()
 
@@ -460,7 +461,7 @@ private fun NavBar(
                     selected = false,
                     onClick = {
                         scope.launch {
-                            error = handleRefresh(currentPage)
+                            error = handleRefresh(currentPage, isBlocking)
                         }
                     },
                     label = { Text(text = stringResource(MR.strings.refresh)) },
@@ -490,9 +491,11 @@ private fun NavBar(
     }
 }
 
-private suspend fun handleRefresh(page: Page): String? {
+private suspend fun handleRefresh(page: Page, isBlocking: Boolean): String? {
     return try {
-        page.refreshAction?.invoke()
+        if (!isBlocking) {
+            page.refreshAction?.invoke()
+        }
         null
     } catch (e: CancellationException) {
         null
