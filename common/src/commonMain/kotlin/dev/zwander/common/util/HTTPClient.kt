@@ -92,6 +92,7 @@ private object ASClients {
                                 }
                             """.trimIndent()
                     }
+
                     Endpoints.gateWayURL -> {
                         """
                             {
@@ -154,6 +155,7 @@ private object ASClients {
                             }
                         """.trimIndent()
                     }
+
                     Endpoints.getWifiConfigURL -> {
                         """
                             {
@@ -197,6 +199,7 @@ private object ASClients {
                             }
                         """.trimIndent()
                     }
+
                     Endpoints.getDevicesURL -> {
                         """
                             {
@@ -218,6 +221,7 @@ private object ASClients {
                             }
                         """.trimIndent()
                     }
+
                     Endpoints.getCellURL -> {
                         """
                             {
@@ -300,6 +304,7 @@ private object ASClients {
                             }
                         """.trimIndent()
                     }
+
                     Endpoints.getSimURL -> {
                         """
                             {
@@ -313,15 +318,19 @@ private object ASClients {
                             }
                         """.trimIndent()
                     }
+
                     Endpoints.setWifiConfigURL -> {
                         ""
                     }
+
                     Endpoints.resetURL -> {
                         ""
                     }
+
                     Endpoints.rebootURL -> {
                         ""
                     }
+
                     else -> "Unsupported!"
                 }
             ),
@@ -471,7 +480,8 @@ interface HTTPClient {
                 } else if (condition()) {
                     return true
                 }
-            } catch (_: Exception) {}
+            } catch (_: Exception) {
+            }
 
             delay(1000L)
         }
@@ -512,7 +522,8 @@ private object NokiaClient : HTTPClient {
                     SettingsManager.password = password
                 }
 
-                UserModel.cookie.value = response.headers.getAll(HttpHeaders.SetCookie)?.joinToString(";")
+                UserModel.cookie.value =
+                    response.headers.getAll(HttpHeaders.SetCookie)?.joinToString(";")
             } else {
                 println(response.status)
                 println(response.bodyAsText())
@@ -540,6 +551,11 @@ private object NokiaClient : HTTPClient {
                     .bodyAsText()
             )
 
+            val lteConnected =
+                connectionStatus.fourGStats?.firstOrNull()?.stat?.earfcn != UInt.MAX_VALUE.toLong()
+            val fiveGConnected =
+                connectionStatus.fiveGStats?.firstOrNull()?.stat?.nrarfcn != UInt.MAX_VALUE.toLong()
+
             MainData(
                 device = DeviceData(
                     name = nokiaDeviceData.deviceAppStatus?.firstOrNull()?.description,
@@ -553,28 +569,37 @@ private object NokiaClient : HTTPClient {
                     serial = nokiaDeviceData.deviceAppStatus?.firstOrNull()?.serialNumber,
                 ),
                 signal = SignalData(
-                    fourG = CellDataLTE(
-                        eNBID = cellStatus.cellStatLte?.firstOrNull()?.enbid?.toLong(),
-                        rssi = cellStatus.cellStatLte?.firstOrNull()?.rssi,
-                        bands = cellStatus.cellStatLte?.firstOrNull()?.band?.let { listOf(it) },
-                        bars = cellStatus.cellStatLte?.firstOrNull()?.rsrpStrengthIndex?.toDouble(),
-                        rsrp = cellStatus.cellStatLte?.firstOrNull()?.rsrp,
-                        rsrq = cellStatus.cellStatLte?.firstOrNull()?.rsrq,
-                        sinr = cellStatus.cellStatLte?.firstOrNull()?.snr,
-                    ),
-                    fiveG = CellData5G(
-                        gNBID = cellStatus.cellStat5G?.firstOrNull()?.enbid?.toLong(),
-                        rssi = cellStatus.cellStat5G?.firstOrNull()?.rssi,
-                        bands = cellStatus.cellStat5G?.firstOrNull()?.band?.let { listOf(it) },
-                        bars = cellStatus.cellStat5G?.firstOrNull()?.rsrpStrengthIndex?.toDouble(),
-                        rsrp = cellStatus.cellStat5G?.firstOrNull()?.rsrp,
-                        rsrq = cellStatus.cellStat5G?.firstOrNull()?.rsrq,
-                        sinr = cellStatus.cellStat5G?.firstOrNull()?.snr,
-                    ),
+                    fourG = if (lteConnected) {
+                        CellDataLTE(
+                            eNBID = cellStatus.cellStatLte?.firstOrNull()?.enbid?.toLong(),
+                            rssi = cellStatus.cellStatLte?.firstOrNull()?.rssi,
+                            bands = cellStatus.cellStatLte?.firstOrNull()?.band?.let { listOf(it) },
+                            bars = cellStatus.cellStatLte?.firstOrNull()?.rsrpStrengthIndex?.toDouble(),
+                            rsrp = cellStatus.cellStatLte?.firstOrNull()?.rsrp,
+                            rsrq = cellStatus.cellStatLte?.firstOrNull()?.rsrq,
+                            sinr = cellStatus.cellStatLte?.firstOrNull()?.snr,
+                        )
+                    } else {
+                        null
+                    },
+                    fiveG = if (fiveGConnected) {
+                        CellData5G(
+                            gNBID = cellStatus.cellStat5G?.firstOrNull()?.enbid?.toLong(),
+                            rssi = cellStatus.cellStat5G?.firstOrNull()?.rssi,
+                            bands = cellStatus.cellStat5G?.firstOrNull()?.band?.let { listOf(it) },
+                            bars = cellStatus.cellStat5G?.firstOrNull()?.rsrpStrengthIndex?.toDouble(),
+                            rsrp = cellStatus.cellStat5G?.firstOrNull()?.rsrp,
+                            rsrq = cellStatus.cellStat5G?.firstOrNull()?.rsrq,
+                            sinr = cellStatus.cellStat5G?.firstOrNull()?.snr,
+                        )
+                    } else {
+                        null
+                    },
                     generic = GenericData(
                         apn = connectionStatus.apnConfigs?.firstOrNull()?.apn,
                         hasIPv6 = connectionStatus.apnConfigs?.firstOrNull()?.ipv6 != null,
-                        roaming = cellStatus.cellStatGeneric?.firstOrNull()?.roamingStatus?.lowercase()?.let { it != "home" },
+                        roaming = cellStatus.cellStatGeneric?.firstOrNull()?.roamingStatus?.lowercase()
+                            ?.let { it != "home" },
                     ),
                 ),
                 time = TimeData(
@@ -598,7 +623,9 @@ private object NokiaClient : HTTPClient {
                         twoGigSsid = wlan.type == "2.4G",
                         fiveGigSsid = wlan.type == "5G",
                         encryptionMode = if (wlan.wpaEncryptionModes?.startsWith("AES") == true) "AES" else "TKIP",
-                        encryptionVersion = NokiaConverter.convertNokiaEncryptionVersionToArcadyan(wlan.beaconType),
+                        encryptionVersion = NokiaConverter.convertNokiaEncryptionVersionToArcadyan(
+                            wlan.beaconType
+                        ),
                         guest = wlan.isGuestSsid == 1,
                         isBroadcastEnabled = wlan.ssidAdvertisementEnabled == 1,
                         ssidName = wlan.ssid,
@@ -625,12 +652,12 @@ private object NokiaClient : HTTPClient {
             ClientDeviceData(
                 clients = ClientsData(
                     ethernet = wiredClients?.map {
-                         WiredClientData(
-                             connected = it.active == 1,
-                             ipv4 = it.ipAddress,
-                             mac = it.macAddress,
-                             name = it.hostName,
-                         )
+                        WiredClientData(
+                            connected = it.active == 1,
+                            ipv4 = it.ipAddress,
+                            mac = it.macAddress,
+                            name = it.hostName,
+                        )
                     },
                     wireless = wirelessClients?.map {
                         WirelessClientData(
@@ -656,33 +683,47 @@ private object NokiaClient : HTTPClient {
                     .bodyAsText()
             )
 
+            val lteConnected =
+                connectionStatus.fourGStats?.firstOrNull()?.stat?.earfcn != UInt.MAX_VALUE.toLong()
+            val fiveGConnected =
+                connectionStatus.fiveGStats?.firstOrNull()?.stat?.nrarfcn != UInt.MAX_VALUE.toLong()
+
             CellDataRoot(
                 cell = AdvancedCellData(
-                    fourG = AdvancedDataLTE(
-                        cqi = cellStatus.cellStatLte?.firstOrNull()?.cqi?.toInt(),
-                        earfcn = connectionStatus.fourGStats?.firstOrNull()?.stat?.earfcn?.toString(),
-                        ecgi = cellStatus.cellStatLte?.firstOrNull()?.ecgi,
-                        pci = connectionStatus.fourGStats?.firstOrNull()?.stat?.pci,
-                        tac = cellStatus.cellStatGeneric?.firstOrNull()?.tac,
-                        bandwidth = cellStatus.cellStatLte?.firstOrNull()?.bandwidth,
-                        mcc = cellStatus.cellStatLte?.firstOrNull()?.mcc,
-                        mnc = cellStatus.cellStatLte?.firstOrNull()?.mnc,
-                        plmn = cellStatus.cellStatLte?.firstOrNull()?.plmnName,
-                    ),
-                    fiveG = AdvancedData5G(
-                        cqi = cellStatus.cellStat5G?.firstOrNull()?.cqi?.toInt(),
-                        earfcn = connectionStatus.fiveGStats?.firstOrNull()?.stat?.nrarfcn?.toString(),
-                        ecgi = cellStatus.cellStat5G?.firstOrNull()?.ecgi,
-                        pci = connectionStatus.fiveGStats?.firstOrNull()?.stat?.pci,
-                        bandwidth = cellStatus.cellStat5G?.firstOrNull()?.bandwidth,
-                        mcc = cellStatus.cellStat5G?.firstOrNull()?.mcc,
-                        mnc = cellStatus.cellStat5G?.firstOrNull()?.mnc,
-                        plmn = cellStatus.cellStat5G?.firstOrNull()?.plmnName,
-                    ),
+                    fourG = if (lteConnected) {
+                        AdvancedDataLTE(
+                            cqi = cellStatus.cellStatLte?.firstOrNull()?.cqi?.toInt(),
+                            earfcn = connectionStatus.fourGStats?.firstOrNull()?.stat?.earfcn?.toString(),
+                            ecgi = cellStatus.cellStatLte?.firstOrNull()?.ecgi,
+                            pci = connectionStatus.fourGStats?.firstOrNull()?.stat?.pci,
+                            tac = cellStatus.cellStatGeneric?.firstOrNull()?.tac,
+                            bandwidth = cellStatus.cellStatLte?.firstOrNull()?.bandwidth,
+                            mcc = cellStatus.cellStatLte?.firstOrNull()?.mcc,
+                            mnc = cellStatus.cellStatLte?.firstOrNull()?.mnc,
+                            plmn = cellStatus.cellStatLte?.firstOrNull()?.plmnName,
+                        )
+                    } else {
+                        null
+                    },
+                    fiveG = if (fiveGConnected) {
+                        AdvancedData5G(
+                            cqi = cellStatus.cellStat5G?.firstOrNull()?.cqi?.toInt(),
+                            earfcn = connectionStatus.fiveGStats?.firstOrNull()?.stat?.nrarfcn?.toString(),
+                            ecgi = cellStatus.cellStat5G?.firstOrNull()?.ecgi,
+                            pci = connectionStatus.fiveGStats?.firstOrNull()?.stat?.pci,
+                            bandwidth = cellStatus.cellStat5G?.firstOrNull()?.bandwidth,
+                            mcc = cellStatus.cellStat5G?.firstOrNull()?.mcc,
+                            mnc = cellStatus.cellStat5G?.firstOrNull()?.mnc,
+                            plmn = cellStatus.cellStat5G?.firstOrNull()?.plmnName,
+                        )
+                    } else {
+                        null
+                    },
                     generic = GenericData(
                         apn = connectionStatus.apnConfigs?.firstOrNull()?.apn,
                         hasIPv6 = !connectionStatus.apnConfigs?.firstOrNull()?.ipv6.isNullOrBlank(),
-                        roaming = cellStatus.cellStatGeneric?.firstOrNull()?.roamingStatus?.lowercase()?.let { it != "home" }
+                        roaming = cellStatus.cellStatGeneric?.firstOrNull()?.roamingStatus?.lowercase()
+                            ?.let { it != "home" }
                     ),
                 ),
             )
@@ -702,7 +743,8 @@ private object NokiaClient : HTTPClient {
                     imei = statistics.networkConfig?.firstOrNull()?.imei,
                     imsi = statistics.simConfig?.firstOrNull()?.imsi,
                     msisdn = statistics.simConfig?.firstOrNull()?.msisdn,
-                    status = statistics.simConfig?.firstOrNull()?.status?.lowercase()?.let { it == "Valid" },
+                    status = statistics.simConfig?.firstOrNull()?.status?.lowercase()
+                        ?.let { it == "Valid" },
                 ),
             )
         }
