@@ -458,16 +458,19 @@ interface HTTPClient {
         }
     }
 
-    suspend fun waitForLive(): Boolean {
+    suspend fun waitForLive(condition: (suspend () -> Boolean)? = null): Boolean {
         for (i in 0..100) {
             try {
-                val response = httpClient.get(testUrl)
+                if (condition == null) {
+                    val response = httpClient.get(testUrl)
 
-                if (response.status.isSuccess()) {
+                    if (response.status.isSuccess()) {
+                        return true
+                    }
+                } else if (condition()) {
                     return true
                 }
-            } catch (_: Exception) {
-            }
+            } catch (_: Exception) {}
 
             delay(1000L)
         }
@@ -732,7 +735,10 @@ private object NokiaClient : HTTPClient {
 
                 delay(10000L)
 
-                waitForLive()
+                waitForLive {
+                    httpClient.get(Endpoints.nokiaWifiListing.createNokiaUrl())
+                    true
+                }
             } catch (e: HttpRequestTimeoutException) {
                 if (!waitForLive()) {
                     GlobalModel.httpError.value = e.message
