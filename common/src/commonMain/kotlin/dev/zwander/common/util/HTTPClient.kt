@@ -723,7 +723,7 @@ private object NokiaClient : HTTPClient {
             try {
                 val response = httpClient.post(Endpoints.nokiaServiceFunction.createNokiaUrl()) {
                     contentType(ContentType.parse("application/json"))
-                    setBody(newData)
+                    setBody(nokiaConfig)
                 }
 
                 if (!response.status.isSuccess()) {

@@ -93,15 +93,41 @@ fun SSIDListLayout(
                     modifier = Modifier.weight(1f),
                 )
 
-                IconButton(
-                    onClick = {
-                        updateSsidConfig(item.data, null)
-                    },
-                    enabled = index > 0 && canAddAndRemove == true,
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Delete,
-                        contentDescription = stringResource(MR.strings.delete),
+                if (item.data?.canEditFrequencyAndGuest == false) {
+                    Text(
+                        text = stringResource(
+                            if (item.data.twoGigSsid == true) {
+                                MR.strings.twoGig
+                            } else {
+                                MR.strings.fiveGig
+                            }
+                        )
+                    )
+                }
+
+                if (canAddAndRemove == true) {
+                    IconButton(
+                        onClick = {
+                            updateSsidConfig(item.data, null)
+                        },
+                        enabled = index > 0,
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = stringResource(MR.strings.delete),
+                        )
+                    }
+                } else if (item.data?.enabled != null) {
+                    Checkbox(
+                        checked = item.data.enabled == true,
+                        onCheckedChange = {
+                            updateSsidConfig(
+                                item.data,
+                                item.data.copy(
+                                    enabled = it,
+                                )
+                            )
+                        },
                     )
                 }
 
