@@ -22,6 +22,8 @@ Extract the downloaded ZIP, then right-click the .app file and choose "Open". Th
  - On Debian-based systems, download the `.deb` file.
  - On other Linux distros, download the `.tar.gz` file.
 
+Native ARM64 binaries for Linux aren't currently available.
+
 ## iOS
 Download `Hint.Control.ipa`.
 
