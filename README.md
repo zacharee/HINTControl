@@ -37,12 +37,12 @@ Conveyor can build for Windows and Linux from any host OS, but macOS is required
 
 1. To build, first download and install Conveyor from the link above.
 2. Next, open a terminal to the project's root directory.
-3. Run the following command based on your target system.
-  3.1. Windows: `conveyor make windows-zip`.
-  3.2. Debian: `conveyor make debian-package`.
-  3.3. Linux: `conveyor make linux-tarball`.
-  3.4. Intel Macs: `conveyor -Kapp.machines=mac.amd64 make unnotarized-mac-zip`.
-  3.5. Apple Silicon Macs: `conveyor -Kapp.machines=mac.arm64 make unnotarized-mac-zip`.
+3. Run the following command based on your target system.  
+  3.1. Windows: `conveyor make windows-zip`.  
+  3.2. Debian: `conveyor make debian-package`.  
+  3.3. Linux: `conveyor make linux-tarball`.  
+  3.4. Intel Macs: `conveyor -Kapp.machines=mac.amd64 make unnotarized-mac-zip`.  
+  3.5. Apple Silicon Macs: `conveyor -Kapp.machines=mac.arm64 make unnotarized-mac-zip`.  
 4. Check the `output` folder in the root of the project for the binary.
 
 ## Android
