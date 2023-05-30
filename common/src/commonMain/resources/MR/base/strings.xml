@@ -122,4 +122,6 @@
     <string name="patreon">Patreon</string>
     <string name="website">Website</string>
     <string name="supporters">Supporters</string>
+
+    <string name="login_hint">The password for your gateway's admin console can be found on the label attached to the back. This is NOT the same as your T-Mobile ID.</string>
 </resources>

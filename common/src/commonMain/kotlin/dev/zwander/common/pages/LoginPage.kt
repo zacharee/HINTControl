@@ -24,6 +24,7 @@ import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
@@ -179,6 +180,12 @@ fun LoginPage(
                 text = stringResource(MR.strings.remember_credentials),
                 checked = rememberCredentials,
                 onCheckedChange = { rememberCredentials = it },
+            )
+
+            Text(
+                text = stringResource(MR.strings.login_hint),
+                fontSize = 12.sp,
+                lineHeight = 12.sp,
             )
 
             AnimatedVisibility(
