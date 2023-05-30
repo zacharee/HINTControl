@@ -69,6 +69,6 @@ Conveyor can build for Windows and Linux from any host OS, but macOS is required
 3. Press the "Play" button to the left.
 
 # Error Reporting
-Bifrost uses Bugsnag for error reporting.
+HINT Control uses Bugsnag for error reporting.
 
 <a href="https://www.bugsnag.com"><img src="https://assets-global.website-files.com/607f4f6df411bd01527dc7d5/63bc40cd9d502eda8ea74ce7_Bugsnag%20Full%20Color.svg" width="200"></a>
