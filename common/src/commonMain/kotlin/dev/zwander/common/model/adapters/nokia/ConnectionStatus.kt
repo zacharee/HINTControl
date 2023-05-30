@@ -100,7 +100,7 @@ data class CellStatsLte(
     @SerialName("Band")
     override val band: String? = null,
     @SerialName("DownlinkEarfcn")
-    val earfcn: Int? = null,
+    val earfcn: Long? = null,
 ) : CellStats
 
 @Serializable
@@ -127,7 +127,7 @@ data class CellStats5G(
     @SerialName("Band")
     override val band: String? = null,
     @SerialName("Downlink_NR_ARFCN")
-    val nrarfcn: Int? = null,
+    val nrarfcn: Long? = null,
 ) : CellStats
 
 interface CellStats {
