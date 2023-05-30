@@ -88,19 +88,9 @@ fun WifiConfigPage(
             onClick = {
                 scope.launch {
                     tempState?.let {
-                        try {
-                            GlobalModel.httpClient.value?.setWifiData(it)
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                            GlobalModel.httpError.value = e.message
-                        }
+                        GlobalModel.httpClient.value?.setWifiData(it)
                     }
-                    try {
-                        MainModel.currentWifiData.value = GlobalModel.httpClient.value?.getWifiData()
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                        GlobalModel.httpError.value = e.message
-                    }
+                    MainModel.currentWifiData.value = GlobalModel.httpClient.value?.getWifiData()
                 }
             },
             enabled = tempState != data,

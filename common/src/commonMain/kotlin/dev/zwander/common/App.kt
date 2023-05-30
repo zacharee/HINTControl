@@ -110,12 +110,12 @@ fun App(
     val isLoggedIn by UserModel.isLoggedIn.collectAsState(false)
 
     var currentPage by GlobalModel.currentPage.collectAsMutableState()
-    var error by GlobalModel.httpError.collectAsMutableState()
+    val error by GlobalModel.httpError.collectAsState()
 
     LaunchedEffect(autoRefresh, currentPage) {
         while (autoRefresh && currentPage.refreshAction != null) {
             delay(autoRefreshMs)
-            error = handleRefresh(currentPage)
+            handleRefresh(currentPage)
         }
     }
 
@@ -130,7 +130,7 @@ fun App(
                     if (((Platform.isMac || Platform.isIos) && it.isMetaPressed) ||
                         (!(Platform.isMac || Platform.isIos) && it.isCtrlPressed)) {
                         scope.launch {
-                            error = handleRefresh(currentPage)
+                            handleRefresh(currentPage)
                         }
                     }
                 }
@@ -171,7 +171,7 @@ fun App(
 
             LaunchedEffect(currentPage) {
                 if (currentPage.refreshAction != null && (currentPage.needsRefresh?.invoke() == true || autoRefresh)) {
-                    error = handleRefresh(currentPage)
+                    handleRefresh(currentPage)
                 }
             }
 
@@ -196,7 +196,7 @@ fun App(
                         refreshing = isLoading,
                         onRefresh = {
                             scope.launch {
-                                error = handleRefresh(currentPage)
+                                handleRefresh(currentPage)
                             }
                         }
                     )
@@ -296,7 +296,7 @@ fun App(
                                     FloatingActionButton(
                                         onClick = {
                                             scope.launch {
-                                                error = handleRefresh(currentPage)
+                                                handleRefresh(currentPage)
                                             }
                                         },
                                     ) {
@@ -433,8 +433,6 @@ private fun NavBar(
 ) {
     val scope = rememberCoroutineScope()
 
-    var error by GlobalModel.httpError.collectAsMutableState()
-
     if (vertical) {
         NavigationRail(
             modifier = modifier.padding(vertical = 8.dp)
@@ -458,7 +456,7 @@ private fun NavBar(
                     selected = false,
                     onClick = {
                         scope.launch {
-                            error = handleRefresh(currentPage)
+                            handleRefresh(currentPage)
                         }
                     },
                     label = { Text(text = stringResource(MR.strings.refresh)) },
@@ -488,18 +486,11 @@ private fun NavBar(
     }
 }
 
-private suspend fun handleRefresh(page: Page): String? {
-    return try {
-        val isBlocking = GlobalModel.isBlocking.value
-        val isRefreshing = GlobalModel.isLoading.value
+private suspend fun handleRefresh(page: Page) {
+    val isBlocking = GlobalModel.isBlocking.value
+    val isRefreshing = GlobalModel.isLoading.value
 
-        if (!isBlocking && !isRefreshing) {
-            page.refreshAction?.invoke()
-        }
-        null
-    } catch (e: CancellationException) {
-        null
-    } catch (e: Exception) {
-        e.message
+    if (!isBlocking && !isRefreshing) {
+        page.refreshAction?.invoke()
     }
 }

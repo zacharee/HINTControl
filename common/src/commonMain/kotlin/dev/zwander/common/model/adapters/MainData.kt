@@ -5,9 +5,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MainData(
-    val device: DeviceData,
-    val signal: SignalData,
-    val time: TimeData,
+    val device: DeviceData? = null,
+    val signal: SignalData? = null,
+    val time: TimeData? = null,
 )
 
 @Serializable

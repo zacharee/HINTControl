@@ -49,6 +49,7 @@ import io.ktor.client.request.forms.submitForm
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
+import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
@@ -61,7 +62,7 @@ import io.ktor.http.parameters
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.util.appendIfNameAbsent
 import io.ktor.utils.io.ByteReadChannel
-import io.ktor.utils.io.errors.IOException
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.decodeFromString
@@ -480,13 +481,57 @@ interface HTTPClient {
                 } else if (condition()) {
                     return true
                 }
-            } catch (_: Exception) {
-            }
+            } catch (_: Exception) {}
 
             delay(1000L)
         }
 
         return false
+    }
+
+    suspend fun HttpClient.handleCatch(
+        showError: Boolean = true,
+        methodBlock: suspend HttpClient.() -> HttpResponse,
+    ): HttpResponse? {
+        try {
+            return methodBlock().also { if (showError) it.setError() }
+        } catch (e: CancellationException) {
+            Exception(e).printStackTrace()
+        } catch (e: HttpRequestTimeoutException) {
+            Exception(e).printStackTrace()
+            if (!waitForLive()) {
+                if (showError) {
+                    GlobalModel.httpError.value = null
+                    GlobalModel.httpError.value = e.message
+                }
+            }
+        } catch (e: Exception) {
+            Exception(e).printStackTrace()
+            if (showError) {
+                GlobalModel.httpError.value = null
+                GlobalModel.httpError.value = e.message
+            }
+        }
+
+        return null
+    }
+
+    suspend fun HttpResponse.setError(): Boolean {
+        return if (!status.isSuccess()) {
+            val items = mutableListOf(status.description)
+
+            val body = bodyAsText()
+
+            if (body.isNotBlank()) {
+                items.add(body)
+            }
+
+            GlobalModel.httpError.value = null
+            GlobalModel.httpError.value = items.joinToString("\n")
+            true
+        } else {
+            false
+        }
     }
 }
 
@@ -505,15 +550,17 @@ private object NokiaClient : HTTPClient {
 
     override suspend fun logIn(username: String, password: String, rememberCredentials: Boolean) {
         withLoader(true) {
-            val response = unauthedClient.submitForm(
-                url = Endpoints.nokiaLogin.createNokiaUrl(),
-                formParameters = parameters {
-                    append("name", UserModel.username.value)
-                    append("pswd", UserModel.password.value ?: "")
-                }
-            )
+            val response = unauthedClient.handleCatch {
+                submitForm(
+                    url = Endpoints.nokiaLogin.createNokiaUrl(),
+                    formParameters = parameters {
+                        append("name", UserModel.username.value)
+                        append("pswd", UserModel.password.value ?: "")
+                    }
+                )
+            }
 
-            if (response.status.isSuccess()) {
+            if (response?.status?.isSuccess() == true) {
                 UserModel.username.value = username
                 UserModel.password.value = password
 
@@ -524,10 +571,6 @@ private object NokiaClient : HTTPClient {
 
                 UserModel.cookie.value =
                     response.headers.getAll(HttpHeaders.SetCookie)?.joinToString(";")
-            } else {
-                println(response.status)
-                println(response.bodyAsText())
-                throw IOException(response.status.description)
             }
         }
     }
@@ -539,16 +582,19 @@ private object NokiaClient : HTTPClient {
     override suspend fun getMainData(): MainData {
         return withLoader {
             val nokiaDeviceData = json.decodeFromString<DeviceInfoStatus>(
-                httpClient.get(Endpoints.nokiaDeviceInfoStatus.createNokiaUrl())
-                    .bodyAsText()
+                httpClient.handleCatch {
+                    get(Endpoints.nokiaDeviceInfoStatus.createNokiaUrl())
+                }?.bodyAsText() ?: "{}"
             )
             val cellStatus = json.decodeFromString<CellStatus>(
-                httpClient.get(Endpoints.nokiaCellStatus.createNokiaUrl())
-                    .bodyAsText()
+                httpClient.handleCatch {
+                    get(Endpoints.nokiaCellStatus.createNokiaUrl())
+                }?.bodyAsText() ?: "{}"
             )
             val connectionStatus = json.decodeFromString<ConnectionStatus>(
-                httpClient.get(Endpoints.nokiaRadioStatus.createNokiaUrl())
-                    .bodyAsText()
+                httpClient.handleCatch {
+                    get(Endpoints.nokiaRadioStatus.createNokiaUrl())
+                }?.bodyAsText() ?: "{}"
             )
 
             val lteConnected =
@@ -612,8 +658,9 @@ private object NokiaClient : HTTPClient {
     override suspend fun getWifiData(): WifiConfig {
         return withLoader {
             val wifiListing = json.decodeFromString<WifiListing>(
-                httpClient.get(Endpoints.nokiaWifiListing.createNokiaUrl())
-                    .bodyAsText()
+                httpClient.handleCatch {
+                    get(Endpoints.nokiaWifiListing.createNokiaUrl())
+                }?.bodyAsText() ?: "{}"
             )
 
             WifiConfig(
@@ -642,8 +689,9 @@ private object NokiaClient : HTTPClient {
     override suspend fun getDeviceData(): ClientDeviceData {
         return withLoader {
             val deviceInfo = json.decodeFromString<DeviceInfoStatus>(
-                httpClient.get(Endpoints.nokiaDeviceInfoStatus.createNokiaUrl())
-                    .bodyAsText()
+                httpClient.handleCatch {
+                    get(Endpoints.nokiaDeviceInfoStatus.createNokiaUrl())
+                }?.bodyAsText() ?: "{}"
             )
 
             val wiredClients = deviceInfo.deviceConfig?.filter { it.interfaceType == "Ethernet" }
@@ -675,12 +723,14 @@ private object NokiaClient : HTTPClient {
     override suspend fun getCellData(): CellDataRoot {
         return withLoader {
             val connectionStatus = json.decodeFromString<ConnectionStatus>(
-                httpClient.get(Endpoints.nokiaRadioStatus.createNokiaUrl())
-                    .bodyAsText()
+                httpClient.handleCatch {
+                    get(Endpoints.nokiaRadioStatus.createNokiaUrl())
+                }?.bodyAsText() ?: "{}"
             )
             val cellStatus = json.decodeFromString<CellStatus>(
-                httpClient.get(Endpoints.nokiaCellStatus.createNokiaUrl())
-                    .bodyAsText()
+                httpClient.handleCatch {
+                    get(Endpoints.nokiaCellStatus.createNokiaUrl())
+                }?.bodyAsText() ?: "{}"
             )
 
             val lteConnected =
@@ -733,8 +783,9 @@ private object NokiaClient : HTTPClient {
     override suspend fun getSimData(): SimDataRoot {
         return withLoader {
             val statistics = json.decodeFromString<StatisticsInfo>(
-                httpClient.get(Endpoints.nokiaStatisticsStatus.createNokiaUrl())
-                    .bodyAsText()
+                httpClient.handleCatch {
+                    get(Endpoints.nokiaStatisticsStatus.createNokiaUrl())
+                }?.bodyAsText() ?: "{}"
             )
 
             SimDataRoot(
@@ -766,27 +817,20 @@ private object NokiaClient : HTTPClient {
                 },
             )
 
-            try {
-                val response = httpClient.post(Endpoints.nokiaServiceFunction.createNokiaUrl()) {
+            val response = httpClient.handleCatch {
+                post(Endpoints.nokiaServiceFunction.createNokiaUrl()) {
                     contentType(ContentType.parse("application/json"))
                     setBody(nokiaConfig)
                 }
+            }
 
-                if (!response.status.isSuccess()) {
-                    throw Exception(response.bodyAsText())
-                }
-
+            if (response?.status?.isSuccess() == true) {
                 delay(10000L)
 
                 waitForLive {
                     httpClient.get(Endpoints.nokiaWifiListing.createNokiaUrl())
                     true
                 }
-            } catch (e: HttpRequestTimeoutException) {
-                if (!waitForLive()) {
-                    GlobalModel.httpError.value = e.message
-                }
-                Unit
             }
         }
     }
@@ -797,20 +841,11 @@ private object NokiaClient : HTTPClient {
 
     override suspend fun reboot() {
         withLoader(true) {
-            try {
-                val response = httpClient.post(Endpoints.nokiaServiceFunction.createNokiaUrl()) {
+            httpClient.handleCatch {
+                post(Endpoints.nokiaServiceFunction.createNokiaUrl()) {
                     contentType(ContentType.parse("application/json"))
                     setBody("{\"action\": \"Reboot\"}")
                 }
-
-                if (!response.status.isSuccess()) {
-                    throw IOException(response.status.description)
-                }
-            } catch (e: HttpRequestTimeoutException) {
-                if (!waitForLive()) {
-                    GlobalModel.httpError.value = e.message
-                }
-                Unit
             }
         }
     }
@@ -839,11 +874,13 @@ private object ArcadyanSagemcomClient : HTTPClient {
 
     override suspend fun logIn(username: String, password: String, rememberCredentials: Boolean) {
         return withLoader(true) {
-            val response = unauthedClient.post(Endpoints.authURL.createFullUrl()) {
-                setBody("{\"username\": \"${username}\", \"password\": \"${password}\"}")
+            val response = unauthedClient.handleCatch {
+                post(Endpoints.authURL.createFullUrl()) {
+                    setBody("{\"username\": \"${username}\", \"password\": \"${password}\"}")
+                }
             }
 
-            if (response.status.isSuccess()) {
+            if (response?.status?.isSuccess() == true) {
                 UserModel.username.value = username
                 UserModel.password.value = password
 
@@ -855,9 +892,6 @@ private object ArcadyanSagemcomClient : HTTPClient {
                 val text = response.bodyAsText()
 
                 UserModel.token.value = json.decodeFromString<LoginResultData>(text).auth.token
-            } else {
-                println(response.status)
-                throw IOException(response.status.description)
             }
         }
     }
@@ -865,9 +899,9 @@ private object ArcadyanSagemcomClient : HTTPClient {
     override suspend fun getMainData(): MainData {
         return withLoader {
             json.decodeFromString(
-                httpClient
-                    .get(Endpoints.gateWayURL.createFullUrl())
-                    .bodyAsText()
+                httpClient.handleCatch {
+                    get(Endpoints.gateWayURL.createFullUrl())
+                }?.bodyAsText() ?: "{}"
             )
         }
     }
@@ -875,9 +909,9 @@ private object ArcadyanSagemcomClient : HTTPClient {
     override suspend fun getWifiData(): WifiConfig {
         return withLoader {
             json.decodeFromString(
-                httpClient
-                    .get(Endpoints.getWifiConfigURL.createFullUrl())
-                    .bodyAsText()
+                httpClient.handleCatch {
+                    get(Endpoints.getWifiConfigURL.createFullUrl())
+                }?.bodyAsText() ?: "{}"
             )
         }
     }
@@ -885,9 +919,9 @@ private object ArcadyanSagemcomClient : HTTPClient {
     override suspend fun getDeviceData(): ClientDeviceData {
         return withLoader {
             json.decodeFromString(
-                httpClient
-                    .get(Endpoints.getDevicesURL.createFullUrl())
-                    .bodyAsText()
+                httpClient.handleCatch {
+                    get(Endpoints.getDevicesURL.createFullUrl())
+                }?.bodyAsText() ?: "{}"
             )
         }
     }
@@ -895,9 +929,9 @@ private object ArcadyanSagemcomClient : HTTPClient {
     override suspend fun getCellData(): CellDataRoot {
         return withLoader {
             json.decodeFromString(
-                httpClient
-                    .get(Endpoints.getCellURL.createFullUrl())
-                    .bodyAsText()
+                httpClient.handleCatch {
+                    get(Endpoints.getCellURL.createFullUrl())
+                }?.bodyAsText() ?: "{}"
             )
         }
     }
@@ -905,40 +939,29 @@ private object ArcadyanSagemcomClient : HTTPClient {
     override suspend fun getSimData(): SimDataRoot {
         return withLoader {
             json.decodeFromString(
-                httpClient
-                    .get(Endpoints.getSimURL.createFullUrl())
-                    .bodyAsText()
+                httpClient.handleCatch {
+                    get(Endpoints.getSimURL.createFullUrl())
+                }?.bodyAsText() ?: "{}"
             )
         }
     }
 
     override suspend fun setWifiData(newData: WifiConfig) {
         withLoader(true) {
-            try {
-                val response = httpClient.post(Endpoints.setWifiConfigURL.createFullUrl()) {
+            httpClient.handleCatch {
+                post(Endpoints.setWifiConfigURL.createFullUrl()) {
                     contentType(ContentType.parse("application/json"))
                     setBody(newData)
                 }
-
-                if (!response.status.isSuccess()) {
-                    throw Exception(response.bodyAsText())
-                }
-            } catch (e: HttpRequestTimeoutException) {
-                if (!waitForLive()) {
-                    GlobalModel.httpError.value = e.message
-                }
-                Unit
             }
         }
     }
 
     override suspend fun setLogin(newUsername: String, newPassword: String) {
         withLoader(true) {
-            httpClient.post(Endpoints.resetURL.createFullUrl()) {
-                setBody("{\"usernameNew\": \"${newUsername}\", \"passwordNew\": \"${newPassword}\"}")
-            }.apply {
-                if (!status.isSuccess()) {
-                    throw IOException(status.description)
+            httpClient.handleCatch {
+                post(Endpoints.resetURL.createFullUrl()) {
+                    setBody("{\"usernameNew\": \"${newUsername}\", \"passwordNew\": \"${newPassword}\"}")
                 }
             }
         }
@@ -946,18 +969,8 @@ private object ArcadyanSagemcomClient : HTTPClient {
 
     override suspend fun reboot() {
         withLoader(true) {
-            try {
-                httpClient.post(Endpoints.rebootURL.createFullUrl())
-                    .apply {
-                        if (!status.isSuccess()) {
-                            throw IOException(status.description)
-                        }
-                    }
-            } catch (e: HttpRequestTimeoutException) {
-                if (!waitForLive()) {
-                    GlobalModel.httpError.value = e.message
-                }
-                Unit
+            httpClient.handleCatch {
+                post(Endpoints.rebootURL.createFullUrl())
             }
         }
     }

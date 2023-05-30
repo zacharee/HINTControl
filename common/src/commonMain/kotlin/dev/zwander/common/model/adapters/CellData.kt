@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CellDataRoot(
-    val cell: AdvancedCellData,
+    val cell: AdvancedCellData? = null,
 )
 
 @Serializable

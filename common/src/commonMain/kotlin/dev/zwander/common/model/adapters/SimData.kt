@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class SimDataRoot(
-    val sim: SimData,
+    val sim: SimData? = null,
 )
 
 @Serializable

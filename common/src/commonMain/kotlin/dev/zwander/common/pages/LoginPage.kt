@@ -2,7 +2,6 @@
 
 package dev.zwander.common.pages
 
-import androidx.compose.animation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -30,7 +29,9 @@ import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.components.TextSwitch
 import dev.zwander.common.components.dialog.AlertDialogDef
 import dev.zwander.common.model.GlobalModel
+import dev.zwander.common.model.MainModel
 import dev.zwander.common.model.UserModel
+import dev.zwander.common.util.ClientUtils
 import dev.zwander.resources.common.MR
 import kotlinx.coroutines.launch
 import kotlin.experimental.ExperimentalObjCRefinement
@@ -55,12 +56,10 @@ fun LoginPage(
     var password by UserModel.password.collectAsMutableState()
 
     val isBlocking by GlobalModel.isBlocking.collectAsState()
-    val client by GlobalModel.httpClient.collectAsState()
+    var client by GlobalModel.httpClient.collectAsMutableState()
     val isLoggedIn by UserModel.isLoggedIn.collectAsState(false)
 
-    var error by remember {
-        mutableStateOf<String?>(null)
-    }
+    var error by GlobalModel.httpError.collectAsMutableState()
 
     var showingPassword by remember {
         mutableStateOf(false)
@@ -73,13 +72,12 @@ fun LoginPage(
     }
 
     suspend fun performLogin() {
+        if (client == null) {
+            client = ClientUtils.chooseClient(UserModel.isTest.value)
+        }
         error = null
         focusManager.clearFocus()
-        try {
-            client?.logIn(username, password ?: "", rememberCredentials)
-        } catch (e: Exception) {
-            error = e.message
-        }
+        client?.logIn(username, password ?: "", rememberCredentials)
     }
 
     LaunchedEffect(client) {
@@ -186,24 +184,6 @@ fun LoginPage(
                 checked = rememberCredentials,
                 onCheckedChange = { rememberCredentials = it },
             )
-
-            AnimatedVisibility(
-                visible = error != null,
-                enter = fadeIn() + expandVertically(),
-                exit = fadeOut() + shrinkVertically(),
-            ) {
-                var localState by remember {
-                    mutableStateOf<String?>(null)
-                }
-
-                LaunchedEffect(error) {
-                    if (error != null) {
-                        localState = error
-                    }
-                }
-
-                Text(text = error ?: "")
-            }
 
             FlowRow(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
