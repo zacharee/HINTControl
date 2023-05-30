@@ -341,7 +341,7 @@ private object ASClients {
                 loadTokens {
                     BearerTokens(UserModel.token.value ?: "", "")
                 }
-                this.refreshTokens {
+                refreshTokens {
                     ArcadyanSagemcomClient.logIn(
                         UserModel.username.value,
                         UserModel.password.value ?: "",
@@ -360,6 +360,7 @@ private object ASClients {
             connectTimeoutMillis = 10000
             socketTimeoutMillis = 10000
         }
+        this.developmentMode = true
     }
 }
 
