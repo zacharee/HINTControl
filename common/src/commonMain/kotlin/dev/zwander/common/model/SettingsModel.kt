@@ -5,5 +5,5 @@ import dev.zwander.common.util.SettingsManager
 
 object SettingsModel {
     val enableAutoRefresh = PersistentMutableStateFlow(SettingsManager.Keys.AUTO_REFRESH, false)
-    val autoRefreshMs = PersistentMutableStateFlow(SettingsManager.Keys.AUTO_REFRESH_PERIOD_MS, 1000L)
+    val autoRefreshMs = PersistentMutableStateFlow(SettingsManager.Keys.AUTO_REFRESH_PERIOD_MS, 5000L)
 }
