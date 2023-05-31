@@ -19,16 +19,19 @@ import dev.zwander.common.model.adapters.GenericData
 import dev.zwander.common.model.adapters.LoginResultData
 import dev.zwander.common.model.adapters.MainData
 import dev.zwander.common.model.adapters.SSIDConfig
+import dev.zwander.common.model.adapters.SetLoginAction
 import dev.zwander.common.model.adapters.SignalData
 import dev.zwander.common.model.adapters.SimData
 import dev.zwander.common.model.adapters.SimDataRoot
 import dev.zwander.common.model.adapters.TimeData
+import dev.zwander.common.model.adapters.UsernamePassword
 import dev.zwander.common.model.adapters.WifiConfig
 import dev.zwander.common.model.adapters.WiredClientData
 import dev.zwander.common.model.adapters.WirelessClientData
 import dev.zwander.common.model.adapters.nokia.CellStatus
 import dev.zwander.common.model.adapters.nokia.ConnectionStatus
 import dev.zwander.common.model.adapters.nokia.DeviceInfoStatus
+import dev.zwander.common.model.adapters.nokia.RebootAction
 import dev.zwander.common.model.adapters.nokia.SetSSIDConfig
 import dev.zwander.common.model.adapters.nokia.SetWifiConfig
 import dev.zwander.common.model.adapters.nokia.StatisticsInfo
@@ -381,23 +384,6 @@ private object NokiaClients {
         install(HttpCookies) {
             storage = cookieStorage
         }
-
-//        install(Auth) {
-//            cookies {
-//                loadCookies {
-//                    UserModel.cookie.value
-//                }
-//                refreshCookies {
-//                    NokiaClient.logIn(
-//                        UserModel.username.value,
-//                        UserModel.password.value ?: "",
-//                        false,
-//                    )
-//
-//                    UserModel.cookie.value
-//                }
-//            }
-//        }
         install(ContentNegotiation) {
             json()
         }
@@ -844,7 +830,7 @@ private object NokiaClient : HTTPClient {
             httpClient.handleCatch {
                 post(Endpoints.nokiaServiceFunction.createNokiaUrl()) {
                     contentType(ContentType.parse("application/json"))
-                    setBody("{\"action\": \"Reboot\"}")
+                    setBody(RebootAction)
                 }
             }
         }
@@ -876,7 +862,8 @@ private object ArcadyanSagemcomClient : HTTPClient {
         return withLoader(true) {
             val response = unauthedClient.handleCatch {
                 post(Endpoints.authURL.createFullUrl()) {
-                    setBody("{\"username\": \"${username}\", \"password\": \"${password}\"}")
+                    contentType(ContentType.parse("application/json"))
+                    setBody(UsernamePassword(username, password))
                 }
             }
 
@@ -961,7 +948,8 @@ private object ArcadyanSagemcomClient : HTTPClient {
         withLoader(true) {
             httpClient.handleCatch {
                 post(Endpoints.resetURL.createFullUrl()) {
-                    setBody("{\"usernameNew\": \"${newUsername}\", \"passwordNew\": \"${newPassword}\"}")
+                    contentType(ContentType.parse("application/json"))
+                    setBody(SetLoginAction(newUsername, newPassword))
                 }
             }
         }
