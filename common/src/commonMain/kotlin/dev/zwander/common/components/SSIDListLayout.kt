@@ -11,7 +11,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
@@ -19,7 +18,9 @@ import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.components.dialog.AlertDialogDef
 import dev.zwander.common.model.MainModel
+import dev.zwander.common.model.adapters.EncryptionVersions
 import dev.zwander.common.model.adapters.SSIDConfig
+import dev.zwander.common.util.animateContentWidth
 import dev.zwander.resources.common.MR
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
@@ -165,11 +166,13 @@ fun SSIDListLayout(
                         twoGigSsid = true,
                         fiveGigSsid = true,
                         encryptionMode = "AES",
-                        encryptionVersion = "WPA2/WPA3",
+                        encryptionVersion = EncryptionVersions.wpa2Wpa3,
                         guest = false,
                         isBroadcastEnabled = true,
                         ssidName = null,
                         wpaKey = null,
+                        enabled = null,
+                        canEditFrequencyAndGuest = true,
                     )
                 },
                 modifier = Modifier.fillMaxWidth(),
@@ -227,7 +230,71 @@ fun SSIDListLayout(
 
             Spacer(modifier = Modifier.size(8.dp))
 
-            if (editingConfig?.first?.enabled != null) {
+            var expanded by remember {
+                mutableStateOf(false)
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                Text(
+                    text = stringResource(MR.strings.encryption),
+                    modifier = Modifier.weight(1f).padding(start = 8.dp),
+                )
+
+                Card(
+                    onClick = {
+                        expanded = !expanded
+                    },
+                    enabled = !expanded,
+                ) {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .heightIn(min = 48.dp)
+                            .padding(8.dp)
+                            .animateContentWidth(),
+                    ) {
+                        Text(
+                            text = editingState?.encryptionVersion ?: EncryptionVersions.wpa2Wpa3,
+                        )
+
+                        DropdownMenu(
+                            expanded = expanded,
+                            onDismissRequest = { expanded = false },
+                            modifier = Modifier.align(Alignment.CenterEnd),
+                        ) {
+                            val versions = remember {
+                                listOf(
+                                    EncryptionVersions.wpaWpa2,
+                                    EncryptionVersions.wpa2,
+                                    EncryptionVersions.wpa2Wpa3,
+                                )
+                            }
+
+                            versions.forEach { version ->
+                                DropdownMenuItem(
+                                    text = {
+                                        Text(text = version)
+                                    },
+                                    onClick = {
+                                        editingState = editingState?.copy(
+                                            encryptionVersion = version,
+                                        )
+                                        expanded = false
+                                    },
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.size(8.dp))
+
+            if (editingConfig?.second?.enabled != null) {
                 TextSwitch(
                     text = stringResource(MR.strings.enabled),
                     checked = editingState?.enabled == true,
@@ -251,7 +318,7 @@ fun SSIDListLayout(
 
             Spacer(modifier = Modifier.size(8.dp))
 
-            if (editingConfig?.first?.canEditFrequencyAndGuest == true) {
+            if (editingConfig?.second?.canEditFrequencyAndGuest == true) {
                 TextSwitch(
                     text = stringResource(MR.strings.guest),
                     checked = editingState?.guest == true,

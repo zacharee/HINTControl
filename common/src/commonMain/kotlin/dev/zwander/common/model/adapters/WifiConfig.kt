@@ -48,3 +48,9 @@ data class SSIDConfig(
     val ssidId: Int? = null,
     val enabled: Boolean? = null,
 )
+
+object EncryptionVersions {
+    const val wpaWpa2 = "WPA/WPA2"
+    const val wpa2 = "WPA2"
+    const val wpa2Wpa3 = "WPA2/WPA3"
+}

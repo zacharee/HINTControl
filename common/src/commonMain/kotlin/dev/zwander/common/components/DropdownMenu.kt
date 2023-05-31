@@ -1,0 +1,96 @@
+@file:OptIn(ExperimentalObjCRefinement::class)
+
+package dev.zwander.common.components
+
+import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material3.MenuDefaults
+import androidx.compose.material3.MenuItemColors
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.DpOffset
+import kotlin.experimental.ExperimentalObjCRefinement
+import kotlin.native.HiddenFromObjC
+
+@Composable
+@HiddenFromObjC
+fun DropdownMenu(
+    expanded: Boolean,
+    onDismissRequest: () -> Unit,
+    modifier: Modifier = Modifier,
+    offset: DpOffset = DpOffset.Zero,
+    scrollState: ScrollState = rememberScrollState(),
+    properties: PopupProperties = PopupProperties(focusable = true),
+    content: @Composable ColumnScope.() -> Unit,
+) {
+    DropdownMenuActual(
+        expanded, onDismissRequest, modifier,
+        offset, scrollState, properties, content
+    )
+}
+
+@Composable
+@HiddenFromObjC
+expect fun DropdownMenuActual(
+    expanded: Boolean,
+    onDismissRequest: () -> Unit,
+    modifier: Modifier,
+    offset: DpOffset,
+    scrollState: ScrollState,
+    properties: PopupProperties,
+    content: @Composable ColumnScope.() -> Unit,
+)
+
+@Composable
+@HiddenFromObjC
+fun DropdownMenuItem(
+    text: @Composable () -> Unit,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    contentPadding: PaddingValues = MenuDefaults.DropdownMenuItemContentPadding,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    colors: MenuItemColors = MenuDefaults.itemColors(),
+    leadingIcon: (@Composable () -> Unit)? = null,
+    trailingIcon: (@Composable () -> Unit)? = null,
+) {
+    DropdownMenuItemActual(
+        text, onClick, modifier, enabled,
+        contentPadding, interactionSource, colors,
+        leadingIcon, trailingIcon
+    )
+}
+
+@Composable
+@HiddenFromObjC
+expect fun DropdownMenuItemActual(
+    text: @Composable () -> Unit,
+    onClick: () -> Unit,
+    modifier: Modifier,
+    enabled: Boolean,
+    contentPadding: PaddingValues,
+    interactionSource: MutableInteractionSource,
+    colors: MenuItemColors,
+    leadingIcon: (@Composable () -> Unit)?,
+    trailingIcon: (@Composable () -> Unit)?,
+)
+
+data class PopupProperties(
+    val focusable: Boolean = false,
+    val dismissOnBackPress: Boolean = true,
+    val dismissOnClickOutside: Boolean = true,
+    val securePolicy: SecureFlagPolicy = SecureFlagPolicy.Inherit,
+    val excludeFromSystemGesture: Boolean = true,
+    val clippingEnabled: Boolean = true,
+    val usePlatformDefaultWidth: Boolean = false
+)
+
+enum class SecureFlagPolicy {
+    Inherit,
+    SecureOn,
+    SecureOff
+}
