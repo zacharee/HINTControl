@@ -425,11 +425,11 @@ interface HTTPClient {
     val unauthedClient: HttpClient
 
     suspend fun logIn(username: String, password: String, rememberCredentials: Boolean)
-    suspend fun getMainData(): MainData
-    suspend fun getWifiData(): WifiConfig
-    suspend fun getDeviceData(): ClientDeviceData
-    suspend fun getCellData(): CellDataRoot
-    suspend fun getSimData(): SimDataRoot
+    suspend fun getMainData(): MainData?
+    suspend fun getWifiData(): WifiConfig?
+    suspend fun getDeviceData(): ClientDeviceData?
+    suspend fun getCellData(): CellDataRoot?
+    suspend fun getSimData(): SimDataRoot?
     suspend fun setWifiData(newData: WifiConfig)
     suspend fun setLogin(newUsername: String, newPassword: String)
     suspend fun reboot()
@@ -445,7 +445,7 @@ interface HTTPClient {
         return httpClient.handleCatch(showError = showError, methodBlock = methodBlock)
     }
 
-    suspend fun <T> withLoader(blocking: Boolean = false, block: suspend () -> T): T {
+    suspend fun <T> withLoader(blocking: Boolean = false, block: suspend () -> T): T? {
         return try {
             if (blocking) {
                 GlobalModel.isBlocking.value = true
@@ -453,6 +453,13 @@ interface HTTPClient {
                 GlobalModel.isLoading.value = true
             }
             block()
+        } catch (e: CancellationException) {
+            e.printStackTrace()
+            null
+        } catch (e: Throwable) {
+            GlobalModel.httpError.value = null
+            GlobalModel.httpError.value = e.message
+            null
         } finally {
             if (blocking) {
                 GlobalModel.isBlocking.value = false
@@ -572,7 +579,7 @@ private object NokiaClient : HTTPClient {
         NokiaClients.cookieStorage.clear()
     }
 
-    override suspend fun getMainData(): MainData {
+    override suspend fun getMainData(): MainData? {
         return withLoader {
             val nokiaDeviceData = json.decodeFromString<DeviceInfoStatus>(
                 httpClient.handleCatch {
@@ -648,7 +655,7 @@ private object NokiaClient : HTTPClient {
         }
     }
 
-    override suspend fun getWifiData(): WifiConfig {
+    override suspend fun getWifiData(): WifiConfig? {
         return withLoader {
             val wifiListing = json.decodeFromString<WifiListing>(
                 httpClient.handleCatch {
@@ -679,7 +686,7 @@ private object NokiaClient : HTTPClient {
         }
     }
 
-    override suspend fun getDeviceData(): ClientDeviceData {
+    override suspend fun getDeviceData(): ClientDeviceData? {
         return withLoader {
             val deviceInfo = json.decodeFromString<DeviceInfoStatus>(
                 httpClient.handleCatch {
@@ -713,7 +720,7 @@ private object NokiaClient : HTTPClient {
         }
     }
 
-    override suspend fun getCellData(): CellDataRoot {
+    override suspend fun getCellData(): CellDataRoot? {
         return withLoader {
             val connectionStatus = json.decodeFromString<ConnectionStatus>(
                 httpClient.handleCatch {
@@ -773,7 +780,7 @@ private object NokiaClient : HTTPClient {
         }
     }
 
-    override suspend fun getSimData(): SimDataRoot {
+    override suspend fun getSimData(): SimDataRoot? {
         return withLoader {
             val statistics = json.decodeFromString<StatisticsInfo>(
                 httpClient.handleCatch {
@@ -866,7 +873,7 @@ private object ArcadyanSagemcomClient : HTTPClient {
     }
 
     override suspend fun logIn(username: String, password: String, rememberCredentials: Boolean) {
-        return withLoader(true) {
+        withLoader(true) {
             val response = unauthedClient.handleCatch {
                 post(Endpoints.authURL.createFullUrl()) {
                     contentType(ContentType.parse("application/json"))
@@ -896,7 +903,7 @@ private object ArcadyanSagemcomClient : HTTPClient {
         }
     }
 
-    override suspend fun getMainData(): MainData {
+    override suspend fun getMainData(): MainData? {
         return withLoader {
             json.decodeFromString(
                 httpClient.handleCatch {
@@ -906,7 +913,7 @@ private object ArcadyanSagemcomClient : HTTPClient {
         }
     }
 
-    override suspend fun getWifiData(): WifiConfig {
+    override suspend fun getWifiData(): WifiConfig? {
         return withLoader {
             json.decodeFromString(
                 httpClient.handleCatch {
@@ -916,7 +923,7 @@ private object ArcadyanSagemcomClient : HTTPClient {
         }
     }
 
-    override suspend fun getDeviceData(): ClientDeviceData {
+    override suspend fun getDeviceData(): ClientDeviceData? {
         return withLoader {
             json.decodeFromString(
                 httpClient.handleCatch {
@@ -926,7 +933,7 @@ private object ArcadyanSagemcomClient : HTTPClient {
         }
     }
 
-    override suspend fun getCellData(): CellDataRoot {
+    override suspend fun getCellData(): CellDataRoot? {
         return withLoader {
             json.decodeFromString(
                 httpClient.handleCatch {
@@ -936,7 +943,7 @@ private object ArcadyanSagemcomClient : HTTPClient {
         }
     }
 
-    override suspend fun getSimData(): SimDataRoot {
+    override suspend fun getSimData(): SimDataRoot? {
         return withLoader {
             json.decodeFromString(
                 httpClient.handleCatch {
