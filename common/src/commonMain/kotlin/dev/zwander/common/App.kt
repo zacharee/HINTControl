@@ -85,7 +85,6 @@ import dev.zwander.common.ui.Theme
 import dev.zwander.common.util.ClientUtils
 import dev.zwander.resources.common.MR
 import korlibs.memory.Platform
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.experimental.ExperimentalObjCRefinement
@@ -146,6 +145,7 @@ fun App(
                     Page.Advanced,
                     Page.WifiConfig,
                     Page.SettingsPage,
+//                    Page.FuzzerPage,
                 )
             }
 

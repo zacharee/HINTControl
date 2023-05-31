@@ -438,6 +438,13 @@ interface HTTPClient {
 
     suspend fun logOut() {}
 
+    suspend fun genericRequest(
+        showError: Boolean = true,
+        methodBlock: suspend HttpClient.() -> HttpResponse
+    ): HttpResponse? {
+        return httpClient.handleCatch(showError = showError, methodBlock = methodBlock)
+    }
+
     suspend fun <T> withLoader(blocking: Boolean = false, block: suspend () -> T): T {
         return try {
             if (blocking) {

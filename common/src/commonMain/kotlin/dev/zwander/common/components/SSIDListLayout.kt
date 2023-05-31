@@ -20,7 +20,6 @@ import dev.zwander.common.components.dialog.AlertDialogDef
 import dev.zwander.common.model.MainModel
 import dev.zwander.common.model.adapters.EncryptionVersions
 import dev.zwander.common.model.adapters.SSIDConfig
-import dev.zwander.common.util.animateContentWidth
 import dev.zwander.resources.common.MR
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
@@ -234,61 +233,33 @@ fun SSIDListLayout(
                 mutableStateOf(false)
             }
 
-            Row(
+            LabeledDropdown(
+                label = stringResource(MR.strings.encryption),
+                expanded = expanded,
+                onExpandChange = { expanded = it },
                 modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                selectedValue = editingState?.encryptionVersion ?: "",
             ) {
-                Text(
-                    text = stringResource(MR.strings.encryption),
-                    modifier = Modifier.weight(1f).padding(start = 8.dp),
-                )
+                val versions = remember {
+                    listOf(
+                        EncryptionVersions.wpaWpa2,
+                        EncryptionVersions.wpa2,
+                        EncryptionVersions.wpa2Wpa3,
+                    )
+                }
 
-                Card(
-                    onClick = {
-                        expanded = !expanded
-                    },
-                    enabled = !expanded,
-                ) {
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier
-                            .heightIn(min = 48.dp)
-                            .padding(8.dp)
-                            .animateContentWidth(),
-                    ) {
-                        Text(
-                            text = editingState?.encryptionVersion ?: EncryptionVersions.wpa2Wpa3,
-                        )
-
-                        DropdownMenu(
-                            expanded = expanded,
-                            onDismissRequest = { expanded = false },
-                            modifier = Modifier.align(Alignment.CenterEnd),
-                        ) {
-                            val versions = remember {
-                                listOf(
-                                    EncryptionVersions.wpaWpa2,
-                                    EncryptionVersions.wpa2,
-                                    EncryptionVersions.wpa2Wpa3,
-                                )
-                            }
-
-                            versions.forEach { version ->
-                                DropdownMenuItem(
-                                    text = {
-                                        Text(text = version)
-                                    },
-                                    onClick = {
-                                        editingState = editingState?.copy(
-                                            encryptionVersion = version,
-                                        )
-                                        expanded = false
-                                    },
-                                )
-                            }
-                        }
-                    }
+                versions.forEach { version ->
+                    DropdownMenuItem(
+                        text = {
+                            Text(text = version)
+                        },
+                        onClick = {
+                            editingState = editingState?.copy(
+                                encryptionVersion = version,
+                            )
+                            expanded = false
+                        },
+                    )
                 }
             }
 

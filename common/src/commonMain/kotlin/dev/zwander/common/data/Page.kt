@@ -75,4 +75,12 @@ sealed class Page(
         null,
         { SettingsPage(it) },
     )
+
+    object FuzzerPage : Page(
+        MR.strings.fuzzer,
+        { rememberVectorPainter(Icons.Default.Lock) },
+        null,
+        null,
+        { FuzzerPage(it) }
+    )
 }
