@@ -29,7 +29,6 @@ import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.components.TextSwitch
 import dev.zwander.common.components.dialog.AlertDialogDef
 import dev.zwander.common.model.GlobalModel
-import dev.zwander.common.model.MainModel
 import dev.zwander.common.model.UserModel
 import dev.zwander.common.util.ClientUtils
 import dev.zwander.resources.common.MR
@@ -37,9 +36,7 @@ import kotlinx.coroutines.launch
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class,
-    ExperimentalLayoutApi::class
-)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 @HiddenFromObjC
 fun LoginPage(
@@ -124,6 +121,9 @@ fun LoginPage(
                 keyboardOptions = KeyboardOptions(
                     autoCorrect = false,
                 ),
+                label = {
+                    Text(text = stringResource(MR.strings.gateway_username))
+                },
             )
 
             OutlinedTextField(
@@ -177,7 +177,18 @@ fun LoginPage(
                     autoCorrect = false,
                     keyboardType = KeyboardType.Password,
                 ),
+                label = {
+                    Text(text = stringResource(MR.strings.gateway_password))
+                },
             )
+
+            TextButton(
+                onClick = {
+                    showingHelpDialog = true
+                },
+            ) {
+                Text(text = stringResource(MR.strings.where_password))
+            }
 
             TextSwitch(
                 text = stringResource(MR.strings.remember_credentials),
@@ -185,37 +196,18 @@ fun LoginPage(
                 onCheckedChange = { rememberCredentials = it },
             )
 
-            FlowRow(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically,
+            Button(
+                onClick = {
+                    scope.launch {
+                        performLogin()
+                    }
+                },
+                enabled = username.isNotBlank() && !password.isNullOrBlank() && !isBlocking && !isLoggedIn,
+                interactionSource = loginInteractionSource,
             ) {
-                Button(
-                    onClick = {
-                        showingHelpDialog = true
-                    },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.tertiary,
-                        contentColor = MaterialTheme.colorScheme.contentColorFor(MaterialTheme.colorScheme.tertiary),
-                    )
-                ) {
-                    Text(
-                        text = stringResource(MR.strings.help),
-                    )
-                }
-
-                Button(
-                    onClick = {
-                        scope.launch {
-                            performLogin()
-                        }
-                    },
-                    enabled = username.isNotBlank() && !password.isNullOrBlank() && !isBlocking && !isLoggedIn,
-                    interactionSource = loginInteractionSource,
-                ) {
-                    Text(
-                        text = stringResource(MR.strings.log_in),
-                    )
-                }
+                Text(
+                    text = stringResource(MR.strings.log_in),
+                )
             }
         }
     }
@@ -224,7 +216,7 @@ fun LoginPage(
         showing = showingHelpDialog,
         onDismissRequest = { showingHelpDialog = false },
         title = {
-            Text(text = stringResource(MR.strings.help))
+            Text(text = stringResource(MR.strings.where_password))
         },
         text = {
             Text(text = stringResource(MR.strings.login_hint))
