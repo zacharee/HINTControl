@@ -877,8 +877,14 @@ private object ArcadyanSagemcomClient : HTTPClient {
                 }
 
                 val text = response.bodyAsText()
+                val token = json.decodeFromString<LoginResultData>(text).auth?.token
 
-                UserModel.token.value = json.decodeFromString<LoginResultData>(text).auth.token
+                UserModel.token.value = token
+
+                if (token == null) {
+                    GlobalModel.httpError.value = null
+                    GlobalModel.httpError.value = text
+                }
             }
         }
     }

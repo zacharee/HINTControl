@@ -4,10 +4,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class LoginResultData(
-    val auth: AuthResultData
+    val auth: AuthResultData? = null,
 )
 
 @Serializable
 data class AuthResultData(
-    val token: String,
+    val token: String? = null,
 )
