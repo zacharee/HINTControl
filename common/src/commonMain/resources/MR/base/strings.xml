@@ -114,6 +114,7 @@
     <string name="reboot_confirmation">Are you sure you want to reboot the gateway?</string>
 
     <string name="auto_refresh">Auto Refresh</string>
+    <string name="auto_refresh_desc">When enabled, HINT Control will automatically pull new data from the gateway at a set period. The default is 5000 milliseconds.</string>
     <string name="period_ms">Period (ms)</string>
 
     <string name="about">About</string>

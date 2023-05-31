@@ -35,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
 import dev.icerock.moko.resources.ImageResource
 import dev.icerock.moko.resources.StringResource
@@ -82,6 +83,14 @@ fun SettingsPage(
                         mutableStateOf(periodMs.toString())
                     }
 
+                    Text(
+                        text = stringResource(MR.strings.auto_refresh_desc),
+                        fontSize = 12.sp,
+                        lineHeight = 12.sp,
+                    )
+
+                    Spacer(modifier = Modifier.size(8.dp))
+
                     TextSwitch(
                         text = stringResource(MR.strings.enabled),
                         checked = enabled,
@@ -122,7 +131,7 @@ fun SettingsPage(
                 title = MR.strings.about,
                 render = {
                     val socialIcons = remember {
-                        listOf<SocialIconData>(
+                        listOf(
                             SocialIconData(
                                 img = MR.images.github,
                                 link = "https://github.com/zacharee/ArcadyanKVD21Control",
