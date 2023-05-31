@@ -1,3 +1,5 @@
+@file:JvmName("DropdownMenuAndroid")
+
 package dev.zwander.common.components
 
 import androidx.compose.foundation.ScrollState
