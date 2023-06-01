@@ -136,7 +136,7 @@ fun App(
                     }
                 }
                 false
-            }
+            },
         ) {
             val snackbarHostState = remember { SnackbarHostState() }
 
