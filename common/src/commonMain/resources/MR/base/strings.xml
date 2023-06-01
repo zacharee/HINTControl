@@ -133,4 +133,10 @@
 
     <string name="radio_warning">Disabling the 2.4GHz and 5GHz radios means your gateway will not broadcast Wi-Fi! Only turn these off if you have a wired connection to your gateway. Otherwise, you won\'t be able to access it without a manual factory reset.</string>
     <string name="radio_disable_confirm">Are you sure you want to disable the Wi-Fi radios? You won\'t be able to connect to the gateway without a wired connection!</string>
+
+    <string name="get">GET</string>
+    <string name="post">POST</string>
+    <string name="run">Run</string>
+    <string name="url">Url</string>
+    <string name="body">Body</string>
 </resources>

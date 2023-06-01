@@ -2,6 +2,11 @@
 
 package dev.zwander.common.pages
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
@@ -12,10 +17,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import dev.icerock.moko.resources.StringResource
+import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.components.PageGrid
 import dev.zwander.common.model.Endpoints
 import dev.zwander.common.model.GlobalModel
+import dev.zwander.resources.common.MR
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
@@ -28,7 +38,7 @@ import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
 
 private data class FuzzerItem(
-    val title: String,
+    val title: StringResource,
     val runMethod: suspend (url: String, body: String) -> HttpResponse?,
 )
 
@@ -42,7 +52,7 @@ fun FuzzerPage(
     val items = remember {
         listOf(
             FuzzerItem(
-                title = "GET",
+                title = MR.strings.get,
                 runMethod = { url, body ->
                     GlobalModel.httpClient.value?.genericRequest(false) {
                         get(url) {
@@ -53,7 +63,7 @@ fun FuzzerPage(
                 },
             ),
             FuzzerItem(
-                title = "POST",
+                title = MR.strings.post,
                 runMethod = { url, body ->
                     GlobalModel.httpClient.value?.genericRequest(false) {
                         post(url) {
@@ -69,7 +79,7 @@ fun FuzzerPage(
     PageGrid(
         items = items,
         modifier = modifier,
-        renderItemTitle = { Text(text = it.title) },
+        renderItemTitle = { Text(text = stringResource(it.title)) },
         renderItem = {
             var response by remember {
                 mutableStateOf<String?>(null)
@@ -85,12 +95,22 @@ fun FuzzerPage(
             OutlinedTextField(
                 value = url,
                 onValueChange = { url = it },
+                label = {
+                    Text(text = stringResource(MR.strings.url))
+                },
+                modifier = Modifier.fillMaxWidth(),
             )
 
             OutlinedTextField(
                 value = body,
-                onValueChange = { body = it }
+                onValueChange = { body = it },
+                label = {
+                    Text(text = stringResource(MR.strings.body))
+                },
+                modifier = Modifier.fillMaxWidth(),
             )
+
+            Spacer(modifier = Modifier.size(8.dp))
 
             Button(
                 onClick = {
@@ -101,13 +121,21 @@ fun FuzzerPage(
                         )?.bodyAsText()
                     }
                 },
+                modifier = Modifier.align(Alignment.CenterHorizontally),
             ) {
-                Text(text = "RUN")
+                Text(text = stringResource(MR.strings.run))
             }
 
-            Text(
-                text = response ?: "",
-            )
+            AnimatedVisibility(
+                visible = response != null,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                SelectionContainer {
+                    Text(
+                        text = response ?: "",
+                    )
+                }
+            }
         }
     )
 }

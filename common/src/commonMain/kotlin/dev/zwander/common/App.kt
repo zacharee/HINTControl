@@ -111,6 +111,8 @@ fun App(
     var currentPage by GlobalModel.currentPage.collectAsMutableState()
     val error by GlobalModel.httpError.collectAsState()
 
+    val fuzzerEnabled by SettingsModel.fuzzerEnabled.collectAsState()
+
     LaunchedEffect(autoRefresh, currentPage) {
         while (autoRefresh && currentPage.refreshAction != null) {
             delay(autoRefreshMs)
@@ -138,15 +140,18 @@ fun App(
         ) {
             val snackbarHostState = remember { SnackbarHostState() }
 
-            val pages = remember {
+            val pages = remember(fuzzerEnabled) {
                 listOf(
                     Page.Main,
                     Page.Clients,
                     Page.Advanced,
                     Page.WifiConfig,
                     Page.SettingsPage,
-//                    Page.FuzzerPage,
-                )
+                ) + if (fuzzerEnabled) {
+                    listOf(Page.FuzzerPage)
+                } else {
+                    listOf()
+                }
             }
 
             val okString = stringResource(MR.strings.ok)
@@ -480,6 +485,7 @@ private fun NavBar(
                         )
                     },
                     icon = { Icon(painter = page.icon(), contentDescription = null) },
+                    alwaysShowLabel = pages.size < 6,
                 )
             }
         }

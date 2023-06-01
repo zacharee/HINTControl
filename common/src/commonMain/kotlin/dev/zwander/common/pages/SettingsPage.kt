@@ -2,6 +2,8 @@
 
 package dev.zwander.common.pages
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ColumnScope
@@ -174,9 +176,28 @@ fun SettingsPage(
                     }
                 },
                 titleAddon = {
+                    var clickCount by remember {
+                        mutableStateOf(0)
+                    }
+
+                    LaunchedEffect(clickCount) {
+                        if (clickCount >= 10) {
+                            clickCount = 0
+                            SettingsModel.fuzzerEnabled.value = !SettingsModel.fuzzerEnabled.value
+                        }
+                    }
+
                     Text(
                         text = GradleConfig.versionName,
                         style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.clickable(
+                            enabled = true,
+                            indication = null,
+                            interactionSource = remember { MutableInteractionSource() },
+                            onClick = {
+                                clickCount++
+                            },
+                        )
                     )
                 },
             ),
