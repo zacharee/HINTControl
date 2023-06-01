@@ -31,3 +31,39 @@ plugins {
 }
 
 apply(plugin = "kotlinx-atomicfu")
+
+tasks.register("buildIPA") {
+    doFirst {
+        mkdir("iosApp/output")
+        mkdir("iosApp/output/Payload/HINT Control.app")
+    }
+
+    doLast {
+        exec {
+            commandLine(
+                "xcodebuild",
+                "archive",
+                "-workspace", "iosApp/iosApp.xcworkspace",
+                "-sdk", "iphoneos",
+                "-scheme", "iosApp",
+                "-archivePath", "iosApp/output/iosApp.xcarchive",
+                "-destination", "generic/platform=iOS",
+            )
+        }
+        exec {
+            commandLine(
+                "mv", "iosApp/output/iosApp.xcarchive/Products/Applications/HINT Control.app",
+                "iosApp/output/Payload",
+            )
+        }
+        exec {
+            setWorkingDir("iosApp/output")
+            commandLine(
+                "zip",
+                "-r",
+                "HINT Control.ipa",
+                "Payload",
+            )
+        }
+    }
+}
