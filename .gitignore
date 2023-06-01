@@ -49,3 +49,4 @@ bin/
 /iosApp/iosApp.xcodeproj/xcuserdata/zachary.xcuserdatad/xcschemes/xcschememanagement.plist
 /.idea/artifacts/
 /iosApp/output/
+/.idea/deploymentTargetDropDown.xml
