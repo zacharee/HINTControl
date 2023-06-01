@@ -118,7 +118,7 @@ fun SettingsPage(
                                         periodMs = it
                                     }
                                 },
-                                enabled = tempPeriod.toLongOrNull() != null,
+                                enabled = tempPeriod.toLongOrNull().run { this != null && this != periodMs },
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.Check,
