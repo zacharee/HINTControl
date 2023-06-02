@@ -28,8 +28,6 @@ actual fun getThemeInfo(): ThemeInfo {
         GenericLinuxThemeDetector()
     }
 
-    println(isSupported)
-
     var dark by remember {
         mutableStateOf(
             when {
@@ -42,7 +40,6 @@ actual fun getThemeInfo(): ThemeInfo {
 
     DisposableEffect(osThemeDetector, isSupported, genericDetector) {
         val listener = { darkMode: Boolean ->
-            println(darkMode)
             dark = darkMode
         }
 
