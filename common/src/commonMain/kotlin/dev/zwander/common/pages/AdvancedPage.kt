@@ -15,6 +15,7 @@ import dev.zwander.common.components.EmptyableContent
 import dev.zwander.common.components.InfoRow
 import dev.zwander.common.components.PageGrid
 import dev.zwander.common.model.MainModel
+import dev.zwander.common.model.adapters.AdvancedDataLTE
 import dev.zwander.common.model.adapters.BaseAdvancedData
 import dev.zwander.resources.common.MR
 import kotlin.experimental.ExperimentalObjCRefinement
@@ -95,7 +96,7 @@ private fun generateBaseCellItems(data: BaseAdvancedData?): List<Pair<StringReso
         MR.strings.plmn to data?.plmn,
         MR.strings.status to data?.status,
         MR.strings.cqi to data?.cqi,
-        MR.strings.earfcn to data?.earfcn,
+        (if (data is AdvancedDataLTE?) MR.strings.earfcn else MR.strings.nrarfcn) to data?.earfcn,
         MR.strings.ecgi to data?.ecgi,
         MR.strings.pci to data?.pci,
         MR.strings.tac to data?.tac,
