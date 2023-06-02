@@ -116,6 +116,7 @@ kotlin {
                 api("org.slf4j:slf4j-jdk14:2.0.7")
                 api("com.bugsnag:bugsnag:3.6.4")
                 api("com.github.Dansoftowner:jSystemThemeDetector:3.6")
+                api("com.github.oshi:oshi-core:6.4.2")
             }
         }
 
