@@ -38,7 +38,7 @@ fun AdvancedPage(
     val basicData by MainModel.currentMainData.collectAsState()
     val simData by MainModel.currentSimData.collectAsState()
 
-    val items = remember(cellData, simData) {
+    val items = remember(cellData, simData, basicData) {
         listOf(
             AdvancedItemData(
                 title = MR.strings.lte,

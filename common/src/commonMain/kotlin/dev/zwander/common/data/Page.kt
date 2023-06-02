@@ -79,10 +79,12 @@ sealed class Page(
         {
             MainModel.currentCellData.value = GlobalModel.httpClient.value?.getCellData()
             MainModel.currentSimData.value = GlobalModel.httpClient.value?.getSimData()
+            MainModel.currentMainData.value = GlobalModel.httpClient.value?.getMainData()
         },
         {
             MainModel.currentCellData.value == null ||
-                    MainModel.currentSimData.value == null
+                    MainModel.currentSimData.value == null ||
+                    MainModel.currentMainData.value == null
         },
         { AdvancedPage(it) }
     )
