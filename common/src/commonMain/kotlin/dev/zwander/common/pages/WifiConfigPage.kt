@@ -110,7 +110,7 @@ fun WifiConfigPage(
                     save()
                 }
             },
-            enabled = tempState != data,
+            enabled = tempState != data && tempState != null,
             modifier = Modifier.fillMaxWidth().padding(8.dp),
         ) {
             Text(
