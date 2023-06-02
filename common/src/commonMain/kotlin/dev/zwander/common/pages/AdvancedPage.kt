@@ -14,9 +14,11 @@ import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.components.EmptyableContent
 import dev.zwander.common.components.InfoRow
 import dev.zwander.common.components.PageGrid
+import dev.zwander.common.components.generateBasicCellItems
 import dev.zwander.common.model.MainModel
 import dev.zwander.common.model.adapters.AdvancedDataLTE
 import dev.zwander.common.model.adapters.BaseAdvancedData
+import dev.zwander.common.model.adapters.BaseCellData
 import dev.zwander.resources.common.MR
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
@@ -33,18 +35,25 @@ fun AdvancedPage(
     modifier: Modifier = Modifier,
 ) {
     val cellData by MainModel.currentCellData.collectAsState()
+    val basicData by MainModel.currentMainData.collectAsState()
     val simData by MainModel.currentSimData.collectAsState()
 
     val items = remember(cellData, simData) {
         listOf(
             AdvancedItemData(
                 title = MR.strings.lte,
-                blocks = generateBaseCellItems(cellData?.cell?.fourG),
+                blocks = generateBaseCellItems(
+                    cellData?.cell?.fourG,
+                    basicData?.signal?.fourG,
+                ),
                 emptyMessage = MR.strings.not_connected,
             ),
             AdvancedItemData(
                 title = MR.strings.five_g,
-                blocks = generateBaseCellItems(cellData?.cell?.fiveG),
+                blocks = generateBaseCellItems(
+                    cellData?.cell?.fiveG,
+                    basicData?.signal?.fiveG,
+                ),
                 emptyMessage = MR.strings.not_connected,
             ),
             AdvancedItemData(
@@ -88,7 +97,9 @@ fun AdvancedPage(
     )
 }
 
-private fun generateBaseCellItems(data: BaseAdvancedData?): List<Pair<StringResource, Any?>> {
+private fun generateBaseCellItems(data: BaseAdvancedData?, basicData: BaseCellData?): List<Pair<StringResource, Any?>> {
+    val basicItems = generateBasicCellItems(basicData)
+
     val allItems = listOf(
         MR.strings.bandwidth to data?.bandwidth,
         MR.strings.mcc to data?.mcc,
@@ -103,5 +114,5 @@ private fun generateBaseCellItems(data: BaseAdvancedData?): List<Pair<StringReso
         MR.strings.supportedBands to data?.supportedBands?.joinToString(" • ")
     )
 
-    return allItems.filter { it.second != null }
+    return basicItems + allItems.filter { it.second != null }
 }
