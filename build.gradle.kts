@@ -35,6 +35,7 @@ apply(plugin = "kotlinx-atomicfu")
 
 tasks.register("buildIPA") {
     doFirst {
+        delete("iosApp/output")
         mkdir("iosApp/output")
         mkdir("iosApp/output/Payload/HINT Control.app")
     }
