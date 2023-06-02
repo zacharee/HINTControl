@@ -52,33 +52,34 @@ fun <T> LabeledDropdown(
             modifier = Modifier.weight(1f).padding(start = 8.dp),
         )
 
-        Card(
-            onClick = {
-                onExpandChange(!expanded)
-            },
-            enabled = !expanded,
-        ) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .heightIn(min = 48.dp)
-                    .padding(8.dp)
-                    .animateContentWidth(),
+        Box {
+            Card(
+                onClick = {
+                    onExpandChange(!expanded)
+                },
+                enabled = !expanded,
             ) {
-                Text(
-                    text = valueToString(selectedValue),
-                )
-
-                DropdownMenu(
-                    expanded = expanded,
-                    onDismissRequest = { onExpandChange(false) },
-                    modifier = Modifier.align(Alignment.CenterEnd),
-                    content = content,
-                    offset = offset,
-                    properties = properties,
-                    scrollState = scrollState,
-                )
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .heightIn(min = 48.dp)
+                        .padding(8.dp)
+                        .animateContentWidth(),
+                ) {
+                    Text(
+                        text = valueToString(selectedValue),
+                    )
+                }
             }
+
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { onExpandChange(false) },
+                content = content,
+                offset = offset,
+                properties = properties,
+                scrollState = scrollState,
+            )
         }
     }
 }
