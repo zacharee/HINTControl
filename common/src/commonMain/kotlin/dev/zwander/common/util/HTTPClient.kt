@@ -453,7 +453,7 @@ interface HTTPClient {
                 GlobalModel.isLoading.value = true
             }
             block()
-        } catch (e: CancellationException) {
+        } catch (_: CancellationException) {
             null
         } catch (e: Throwable) {
             GlobalModel.httpError.value = null
