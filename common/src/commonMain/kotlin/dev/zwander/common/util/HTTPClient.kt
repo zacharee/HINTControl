@@ -456,8 +456,7 @@ interface HTTPClient {
         } catch (_: CancellationException) {
             null
         } catch (e: Throwable) {
-            GlobalModel.httpError.value = null
-            GlobalModel.httpError.value = e.message
+            GlobalModel.updateHttpError(e.message)
             null
         } finally {
             if (blocking) {
@@ -499,15 +498,13 @@ interface HTTPClient {
             Exception(e).printStackTrace()
             if (!waitForLive()) {
                 if (showError) {
-                    GlobalModel.httpError.value = null
-                    GlobalModel.httpError.value = e.message
+                    GlobalModel.updateHttpError(e.message)
                 }
             }
         } catch (e: Exception) {
             Exception(e).printStackTrace()
             if (showError) {
-                GlobalModel.httpError.value = null
-                GlobalModel.httpError.value = e.message
+                GlobalModel.updateHttpError(e.message)
             }
         }
 
@@ -524,8 +521,7 @@ interface HTTPClient {
                 items.add(body)
             }
 
-            GlobalModel.httpError.value = null
-            GlobalModel.httpError.value = items.joinToString("\n")
+            GlobalModel.updateHttpError(items.joinToString("\n"))
             true
         } else {
             false
@@ -894,8 +890,7 @@ private object ArcadyanSagemcomClient : HTTPClient {
                 UserModel.token.value = token
 
                 if (token == null) {
-                    GlobalModel.httpError.value = null
-                    GlobalModel.httpError.value = text
+                    GlobalModel.updateHttpError(text)
                 }
             }
         }

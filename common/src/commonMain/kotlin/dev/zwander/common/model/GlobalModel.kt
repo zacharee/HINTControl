@@ -11,4 +11,9 @@ object GlobalModel {
     val httpError = MutableStateFlow<String?>(null)
 
     val httpClient = MutableStateFlow<HTTPClient?>(null)
+
+    fun updateHttpError(error: String?) {
+        httpError.value = null
+        httpError.value = error
+    }
 }
