@@ -12,7 +12,7 @@ import kotlin.reflect.KType
 import kotlin.reflect.typeOf
 
 class NullSymbol {
-    @Suppress("UNCHECKED_CAST")
+    @Suppress("UNCHECKED_CAST", "NOTHING_TO_INLINE", "KotlinRedundantDiagnosticSuppress")
     inline fun <T> unbox(value: Any?): T = if (value === this) null as T else value as T
 }
 

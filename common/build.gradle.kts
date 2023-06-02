@@ -96,6 +96,7 @@ kotlin {
                     }
                 }
                 api("com.bugsnag:bugsnag-android:5.30.0")
+                api("androidx.activity:activity-compose:1.7.2")
             }
         }
         val skiaMain by creating {
@@ -108,6 +109,7 @@ kotlin {
             dependsOn(skiaMain)
             dependencies {
                 api(compose.preview)
+                api(compose.desktop.currentOs)
                 api("io.ktor:ktor-client-okhttp:${ktorVersion}")
                 api("com.github.weisj:darklaf-core:3.0.2")
                 api("com.github.weisj:darklaf-macos:3.0.2")

@@ -5,7 +5,7 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 plugins {
     kotlin("multiplatform")
     id("org.jetbrains.compose")
-    id("dev.hydraulic.conveyor") version "1.6"
+    id("dev.hydraulic.conveyor")
 }
 
 group = "dev.zwander"
@@ -20,7 +20,6 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation(project(":common"))
-                implementation(compose.desktop.currentOs)
             }
         }
     }

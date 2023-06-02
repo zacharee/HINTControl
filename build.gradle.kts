@@ -20,6 +20,7 @@ buildscript {
         classpath("com.bugsnag:bugsnag-android-gradle-plugin:7.4.0")
         classpath("com.codingfeline.buildkonfig:buildkonfig-gradle-plugin:0.13.3")
         classpath("org.jetbrains.kotlinx:atomicfu-gradle-plugin:0.20.2")
+        classpath("dev.hydraulic:gradle-plugin:1.6")
     }
 }
 
