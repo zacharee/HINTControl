@@ -56,6 +56,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -82,7 +83,6 @@ import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.SettingsModel
 import dev.zwander.common.model.UserModel
 import dev.zwander.common.ui.Theme
-import dev.zwander.common.util.ClientUtils
 import dev.zwander.resources.common.MR
 import korlibs.memory.Platform
 import kotlinx.coroutines.delay
@@ -102,7 +102,9 @@ fun App(
     val layoutDirection = LocalLayoutDirection.current
     val scope = rememberCoroutineScope()
 
-    val isBlocking by GlobalModel.isBlocking.collectAsState()
+    val isBlockingState by GlobalModel.isBlocking.collectAsState()
+    val httpClient by GlobalModel.httpClient.collectAsState()
+    val httpError by GlobalModel.httpError.collectAsState()
     val isLoading by GlobalModel.isLoading.collectAsState()
     val autoRefresh by SettingsModel.enableAutoRefresh.collectAsState()
     val autoRefreshMs by SettingsModel.autoRefreshMs.collectAsState()
@@ -113,6 +115,12 @@ fun App(
 
     val fuzzerEnabled by SettingsModel.fuzzerEnabled.collectAsState()
 
+    val isBlocking by remember {
+        derivedStateOf {
+            isBlockingState || (httpClient == null && httpError == null)
+        }
+    }
+
     LaunchedEffect(autoRefresh, currentPage) {
         while (autoRefresh && currentPage.refreshAction != null) {
             delay(autoRefreshMs)
@@ -121,7 +129,7 @@ fun App(
     }
 
     LaunchedEffect(null) {
-        GlobalModel.httpClient.value = ClientUtils.chooseClient(UserModel.isTest.value)
+        GlobalModel.updateClient()
     }
 
     Theme {

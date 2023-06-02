@@ -1,6 +1,7 @@
 package dev.zwander.common.model
 
 import dev.zwander.common.data.Page
+import dev.zwander.common.util.ClientUtils
 import dev.zwander.common.util.HTTPClient
 import kotlinx.coroutines.flow.MutableStateFlow
 
@@ -15,5 +16,10 @@ object GlobalModel {
     fun updateHttpError(error: String?) {
         httpError.value = null
         httpError.value = error
+    }
+
+    suspend fun updateClient(): HTTPClient? {
+        httpClient.value = ClientUtils.chooseClient(UserModel.isTest.value)
+        return httpClient.value
     }
 }

@@ -30,7 +30,6 @@ import dev.zwander.common.components.TextSwitch
 import dev.zwander.common.components.dialog.AlertDialogDef
 import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.UserModel
-import dev.zwander.common.util.ClientUtils
 import dev.zwander.resources.common.MR
 import kotlinx.coroutines.launch
 import kotlin.experimental.ExperimentalObjCRefinement
@@ -53,7 +52,7 @@ fun LoginPage(
     var password by UserModel.password.collectAsMutableState()
 
     val isBlocking by GlobalModel.isBlocking.collectAsState()
-    var client by GlobalModel.httpClient.collectAsMutableState()
+    val client by GlobalModel.httpClient.collectAsMutableState()
     val isLoggedIn by UserModel.isLoggedIn.collectAsState(false)
 
     var error by GlobalModel.httpError.collectAsMutableState()
@@ -69,12 +68,14 @@ fun LoginPage(
     }
 
     suspend fun performLogin() {
-        if (client == null) {
-            client = ClientUtils.chooseClient(UserModel.isTest.value)
+        var actualClient = client
+
+        if (actualClient == null) {
+            actualClient = GlobalModel.updateClient()
         }
         error = null
         focusManager.clearFocus()
-        client?.logIn(username, password ?: "", rememberCredentials)
+        actualClient?.logIn(username, password ?: "", rememberCredentials)
     }
 
     LaunchedEffect(client) {
