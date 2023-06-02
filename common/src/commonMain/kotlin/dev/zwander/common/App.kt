@@ -176,7 +176,7 @@ fun App(
 
             LaunchedEffect(isLoggedIn) {
                 if (currentPage == Page.Login && isLoggedIn) {
-                    currentPage = Page.Main
+                    currentPage = SettingsModel.defaultPage.value
                 } else if (!isLoggedIn) {
                     currentPage = Page.Login
                 }
@@ -368,17 +368,19 @@ private fun AppView(
             },
             modifier = Modifier.fillMaxSize(),
         ) {
-            val state = rememberPagerState()
+            val state = rememberPagerState(
+                pages.indexOf(SettingsModel.defaultPage.value)
+            )
 
             if (currentPage != Page.Login) {
-                LaunchedEffect(state.currentPage, state.isScrollInProgress) {
-                    if (!state.isScrollInProgress) {
-                        onPageChange(pages[state.currentPage])
-                    }
-                }
-
                 LaunchedEffect(currentPage) {
                     state.animateScrollToPage(pages.indexOf(currentPage))
+                }
+
+                LaunchedEffect(state.currentPage, state.isScrollInProgress) {
+                    if (!state.isScrollInProgress && currentPage != pages[state.currentPage]) {
+                        onPageChange(pages[state.currentPage])
+                    }
                 }
             }
 

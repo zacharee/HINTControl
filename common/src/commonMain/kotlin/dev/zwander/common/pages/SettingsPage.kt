@@ -44,8 +44,11 @@ import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.GradleConfig
+import dev.zwander.common.components.DropdownMenuItem
+import dev.zwander.common.components.LabeledDropdown
 import dev.zwander.common.components.PageGrid
 import dev.zwander.common.components.TextSwitch
+import dev.zwander.common.data.Page
 import dev.zwander.common.model.SettingsModel
 import dev.zwander.common.util.PatreonSupportersParser
 import dev.zwander.common.util.SupporterInfo
@@ -131,6 +134,45 @@ fun SettingsPage(
                         },
                     )
                 }
+            ),
+            SettingsItem(
+                title = MR.strings.default_page,
+                render = {
+                    val validOptions = remember {
+                        listOf(
+                            Page.Main,
+                            Page.Clients,
+                            Page.Advanced,
+                            Page.WifiConfig,
+                        )
+                    }
+
+                    var selectedOption by SettingsModel.defaultPage.collectAsMutableState()
+                    var menuExpanded by remember(validOptions) {
+                        mutableStateOf(false)
+                    }
+
+                    LabeledDropdown(
+                        label = stringResource(MR.strings.default_page),
+                        expanded = menuExpanded,
+                        onExpandChange = { menuExpanded = it },
+                        modifier = Modifier.fillMaxWidth(),
+                        selectedValue = selectedOption,
+                        valueToString = { stringResource(selectedOption.titleRes) }
+                    ) {
+                        validOptions.forEach { option ->
+                            DropdownMenuItem(
+                                text = {
+                                    Text(text = stringResource(option.titleRes))
+                                },
+                                onClick = {
+                                    selectedOption = option
+                                    menuExpanded = false
+                                },
+                            )
+                        }
+                    }
+                },
             ),
             SettingsItem(
                 title = MR.strings.about,

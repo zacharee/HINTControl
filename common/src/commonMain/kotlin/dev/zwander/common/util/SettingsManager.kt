@@ -9,6 +9,7 @@ object SettingsManager {
         const val AUTO_REFRESH = "auto_refresh_enabled"
         const val AUTO_REFRESH_PERIOD_MS = "auto_refresh_period_ms"
         const val FUZZER_ENABLED = "fuzzer_enabled"
+        const val DEFAULT_PAGE = "default_page"
     }
 
     val settings = Settings()

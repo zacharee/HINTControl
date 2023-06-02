@@ -15,13 +15,38 @@ import dev.zwander.resources.common.MR
 
 sealed class Page(
     val titleRes: StringResource,
+    val key: String,
     val icon: @Composable () -> Painter,
     val refreshAction: (suspend () -> Unit)?,
     val needsRefresh: (() -> Boolean)?,
     val render: @Composable (modifier: Modifier) -> Unit
 ) {
+    companion object {
+        const val LOG_IN_PAGE_KEY = "log_in_page"
+        const val MAIN_PAGE_KEY = "main_page"
+        const val CLIENTS_PAGE_KEY = "clients_page"
+        const val ADVANCED_PAGE_KEY = "advanced_page"
+        const val WIFI_PAGE_KEY = "wifi_page"
+        const val SETTINGS_PAGE_KEY = "settings_page"
+        const val FUZZER_PAGE_KEY = "fuzzer_page"
+
+        fun pageFromKey(key: String): Page {
+            return when (key) {
+                LOG_IN_PAGE_KEY -> Login
+                MAIN_PAGE_KEY -> Main
+                CLIENTS_PAGE_KEY -> Clients
+                ADVANCED_PAGE_KEY -> Advanced
+                WIFI_PAGE_KEY -> WifiConfig
+                SETTINGS_PAGE_KEY -> SettingsPage
+                FUZZER_PAGE_KEY -> FuzzerPage
+                else -> throw IllegalArgumentException("Unknown key $key")
+            }
+        }
+    }
+
     object Login : Page(
         MR.strings.log_in,
+        LOG_IN_PAGE_KEY,
         { rememberVectorPainter(Icons.Default.Lock) },
         null,
         { false },
@@ -29,6 +54,7 @@ sealed class Page(
     )
     object Main : Page(
         MR.strings.main_data,
+        MAIN_PAGE_KEY,
         { rememberVectorPainter(Icons.Default.Home) },
         {
             MainModel.currentMainData.value = GlobalModel.httpClient.value?.getMainData()
@@ -38,6 +64,7 @@ sealed class Page(
     )
     object Clients : Page(
         MR.strings.client_data,
+        CLIENTS_PAGE_KEY,
         { rememberVectorPainter(Icons.Default.List) },
         {
             MainModel.currentClientData.value = GlobalModel.httpClient.value?.getDeviceData()
@@ -47,6 +74,7 @@ sealed class Page(
     )
     object Advanced : Page(
         MR.strings.advanced,
+        ADVANCED_PAGE_KEY,
         { rememberVectorPainter(Icons.Default.Warning) },
         {
             MainModel.currentCellData.value = GlobalModel.httpClient.value?.getCellData()
@@ -60,6 +88,7 @@ sealed class Page(
     )
     object WifiConfig : Page(
         MR.strings.wifi_data,
+        WIFI_PAGE_KEY,
         { painterResource(MR.images.wifi) },
         {
             MainModel.currentWifiData.value = GlobalModel.httpClient.value?.getWifiData()
@@ -70,6 +99,7 @@ sealed class Page(
 
     object SettingsPage : Page(
         MR.strings.settings,
+        SETTINGS_PAGE_KEY,
         { rememberVectorPainter(Icons.Default.Settings) },
         null,
         null,
@@ -78,6 +108,7 @@ sealed class Page(
 
     object FuzzerPage : Page(
         MR.strings.fuzzer,
+        FUZZER_PAGE_KEY,
         { rememberVectorPainter(Icons.Default.Lock) },
         null,
         null,

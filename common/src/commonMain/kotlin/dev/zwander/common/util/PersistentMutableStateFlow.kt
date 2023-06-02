@@ -2,6 +2,7 @@
 
 package dev.zwander.common.util
 
+import dev.zwander.common.data.Page
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -63,18 +64,22 @@ class PersistentMutableStateFlow<T>(
         wrapped.emit(value)
     }
 
+    @Suppress("UNCHECKED_CAST")
     private var persistedValue: T
         get() = with (SettingsManager.settings) {
             if (default == NULL) return NULL.unbox(default)
 
+            val castedDefault = default as? T
+
             NULL.unbox(
-                when (typeClass) {
-                    typeOf<Int>() -> getIntOrNull(key) ?: default
-                    typeOf<Long>() -> getLongOrNull(key) ?: default
-                    typeOf<Float>() -> getFloatOrNull(key) ?: default
-                    typeOf<String>() -> getStringOrNull(key) ?: default
-                    typeOf<Boolean>() -> getBooleanOrNull(key) ?: default
-                    typeOf<Double>() -> getDoubleOrNull(key) ?: default
+                when (castedDefault) {
+                    is Int -> getIntOrNull(key) ?: castedDefault
+                    is Long -> getLongOrNull(key) ?: castedDefault
+                    is Float -> getFloatOrNull(key) ?: castedDefault
+                    is String -> getStringOrNull(key) ?: castedDefault
+                    is Boolean -> getBooleanOrNull(key) ?: castedDefault
+                    is Double -> getDoubleOrNull(key) ?: castedDefault
+                    is Page -> Page.pageFromKey(getStringOrNull(key) ?: castedDefault.key)
                     else -> throw IllegalStateException("Invalid type")
                 }
             )
@@ -86,13 +91,14 @@ class PersistentMutableStateFlow<T>(
                     return@with
                 }
 
-                when(typeClass) {
-                    typeOf<Int>() -> putInt(key, value.toString().toInt())
-                    typeOf<Long>() -> putLong(key, value.toString().toLong())
-                    typeOf<Float>() -> putFloat(key, value.toString().toFloat())
-                    typeOf<String>() -> putString(key, value.toString())
-                    typeOf<Boolean>() -> putBoolean(key, value.toString().toBoolean())
-                    typeOf<Double>() -> putDouble(key, value.toString().toDouble())
+                when (val castedValue = value as? T) {
+                    is Int -> putInt(key, castedValue)
+                    is Long -> putLong(key, castedValue)
+                    is Float -> putFloat(key, castedValue)
+                    is String -> putString(key, castedValue)
+                    is Boolean -> putBoolean(key, castedValue)
+                    is Double -> putDouble(key, castedValue)
+                    is Page -> putString(key, castedValue.key)
                     else -> throw IllegalStateException("Invalid type $typeClass")
                 }
             }

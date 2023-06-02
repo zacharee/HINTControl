@@ -139,4 +139,6 @@
     <string name="run">Run</string>
     <string name="url">Url</string>
     <string name="body">Body</string>
+
+    <string name="default_page">Default Page</string>
 </resources>

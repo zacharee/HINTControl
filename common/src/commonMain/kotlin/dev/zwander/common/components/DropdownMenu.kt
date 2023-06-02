@@ -30,15 +30,16 @@ import kotlin.native.HiddenFromObjC
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @HiddenFromObjC
-fun LabeledDropdown(
+fun <T> LabeledDropdown(
     label: String,
     expanded: Boolean,
-    selectedValue: String,
+    selectedValue: T,
     onExpandChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     offset: DpOffset = DpOffset.Zero,
     scrollState: ScrollState = rememberScrollState(),
     properties: PopupProperties = PopupProperties(focusable = true),
+    valueToString: @Composable (T) -> String = { it.toString() },
     content: @Composable ColumnScope.() -> Unit,
 ) {
     Row(
@@ -65,7 +66,7 @@ fun LabeledDropdown(
                     .animateContentWidth(),
             ) {
                 Text(
-                    text = selectedValue,
+                    text = valueToString(selectedValue),
                 )
 
                 DropdownMenu(
