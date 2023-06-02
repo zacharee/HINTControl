@@ -29,15 +29,14 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
 import dev.icerock.moko.resources.ImageResource
 import dev.icerock.moko.resources.StringResource
@@ -62,6 +61,7 @@ private data class SettingsItem(
     val title: StringResource,
     val render: @Composable ColumnScope.() -> Unit,
     val titleAddon: (@Composable () -> Unit)? = null,
+    val description: (@Composable () -> Unit)? = null,
 )
 
 private data class SocialIconData(
@@ -87,14 +87,6 @@ fun SettingsPage(
                     var tempPeriod by remember(periodMs) {
                         mutableStateOf(periodMs.toString())
                     }
-
-                    Text(
-                        text = stringResource(MR.strings.auto_refresh_desc),
-                        fontSize = 12.sp,
-                        lineHeight = 12.sp,
-                    )
-
-                    Spacer(modifier = Modifier.size(8.dp))
 
                     TextSwitch(
                         text = stringResource(MR.strings.enabled),
@@ -133,7 +125,12 @@ fun SettingsPage(
                             Text(text = stringResource(MR.strings.period_ms))
                         },
                     )
-                }
+                },
+                description = {
+                    Text(
+                        text = stringResource(MR.strings.auto_refresh_desc),
+                    )
+                },
             ),
             SettingsItem(
                 title = MR.strings.default_page,
@@ -172,6 +169,11 @@ fun SettingsPage(
                             )
                         }
                     }
+                },
+                description = {
+                    Text(
+                        text = stringResource(MR.strings.default_page_desc),
+                    )
                 },
             ),
             SettingsItem(
@@ -309,6 +311,9 @@ fun SettingsPage(
                 it.render(this)
             },
             modifier = Modifier.fillMaxSize(),
+            renderItemDescription = {
+                it.description?.invoke()
+            }
         )
     }
 }

@@ -10,7 +10,14 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
@@ -30,6 +37,7 @@ import kotlin.native.HiddenFromObjC
 private data class ItemData(
     val title: StringResource,
     val render: @Composable (Modifier) -> Unit,
+    val description: (@Composable () -> Unit)? = null,
 )
 
 @Composable
@@ -68,6 +76,12 @@ fun WifiConfigPage(
                     render = {
                         BandConfigLayout(it)
                     },
+                    description = {
+                        Text(
+                            text = stringResource(MR.strings.radio_warning),
+                            color = MaterialTheme.colorScheme.error,
+                        )
+                    },
                 )
             )
         }
@@ -97,6 +111,9 @@ fun WifiConfigPage(
             },
             renderItem = {
                 it.render(Modifier.fillMaxWidth())
+            },
+            renderItemDescription = {
+                it.description?.invoke()
             },
         )
 

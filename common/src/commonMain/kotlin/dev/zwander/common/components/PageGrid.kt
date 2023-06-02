@@ -34,6 +34,7 @@ fun <T> PageGrid(
     items: List<T>,
     key: (T) -> Any = { it.hashCode() },
     renderItemTitle: @Composable ColumnScope.(T) -> Unit,
+    renderItemDescription: @Composable ColumnScope.(T) -> Unit = {},
     renderItem: @Composable ColumnScope.(T) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -63,6 +64,12 @@ fun <T> PageGrid(
                         LocalTextStyle provides MaterialTheme.typography.titleLarge,
                     ) {
                         renderItemTitle(it)
+                    }
+
+                    CompositionLocalProvider(
+                        LocalTextStyle provides MaterialTheme.typography.bodyMedium,
+                    ) {
+                        renderItemDescription(it)
                     }
 
                     Spacer(modifier = Modifier.size(8.dp))
