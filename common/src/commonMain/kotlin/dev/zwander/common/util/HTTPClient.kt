@@ -578,17 +578,17 @@ private object NokiaClient : HTTPClient {
             val nokiaDeviceData = json.decodeFromString<DeviceInfoStatus>(
                 httpClient.handleCatch {
                     get(Endpoints.nokiaDeviceInfoStatus.createNokiaUrl())
-                }?.bodyAsText() ?: "{}"
+                }?.bodyAsText()
             )
             val cellStatus = json.decodeFromString<CellStatus>(
                 httpClient.handleCatch {
                     get(Endpoints.nokiaCellStatus.createNokiaUrl())
-                }?.bodyAsText() ?: "{}"
+                }?.bodyAsText()
             )
             val connectionStatus = json.decodeFromString<ConnectionStatus>(
                 httpClient.handleCatch {
                     get(Endpoints.nokiaRadioStatus.createNokiaUrl())
-                }?.bodyAsText() ?: "{}"
+                }?.bodyAsText()
             )
 
             val lteConnected =
@@ -654,7 +654,7 @@ private object NokiaClient : HTTPClient {
             val wifiListing = json.decodeFromString<WifiListing>(
                 httpClient.handleCatch {
                     get(Endpoints.nokiaWifiListing.createNokiaUrl())
-                }?.bodyAsText() ?: "{}"
+                }?.bodyAsText()
             )
 
             WifiConfig(
@@ -685,7 +685,7 @@ private object NokiaClient : HTTPClient {
             val deviceInfo = json.decodeFromString<DeviceInfoStatus>(
                 httpClient.handleCatch {
                     get(Endpoints.nokiaDeviceInfoStatus.createNokiaUrl())
-                }?.bodyAsText() ?: "{}"
+                }?.bodyAsText()
             )
 
             val wiredClients = deviceInfo.deviceConfig?.filter { it.interfaceType == "Ethernet" }
@@ -719,12 +719,12 @@ private object NokiaClient : HTTPClient {
             val connectionStatus = json.decodeFromString<ConnectionStatus>(
                 httpClient.handleCatch {
                     get(Endpoints.nokiaRadioStatus.createNokiaUrl())
-                }?.bodyAsText() ?: "{}"
+                }?.bodyAsText()
             )
             val cellStatus = json.decodeFromString<CellStatus>(
                 httpClient.handleCatch {
                     get(Endpoints.nokiaCellStatus.createNokiaUrl())
-                }?.bodyAsText() ?: "{}"
+                }?.bodyAsText()
             )
 
             val lteConnected =
@@ -779,7 +779,7 @@ private object NokiaClient : HTTPClient {
             val statistics = json.decodeFromString<StatisticsInfo>(
                 httpClient.handleCatch {
                     get(Endpoints.nokiaStatisticsStatus.createNokiaUrl())
-                }?.bodyAsText() ?: "{}"
+                }?.bodyAsText()
             )
 
             SimDataRoot(
@@ -901,7 +901,7 @@ private object ArcadyanSagemcomClient : HTTPClient {
             json.decodeFromString(
                 httpClient.handleCatch {
                     get(Endpoints.gateWayURL.createFullUrl())
-                }?.bodyAsText() ?: "{}"
+                }?.bodyAsText()
             )
         }
     }
@@ -911,7 +911,7 @@ private object ArcadyanSagemcomClient : HTTPClient {
             json.decodeFromString(
                 httpClient.handleCatch {
                     get(Endpoints.getWifiConfigURL.createFullUrl())
-                }?.bodyAsText() ?: "{}"
+                }?.bodyAsText()
             )
         }
     }
@@ -921,7 +921,7 @@ private object ArcadyanSagemcomClient : HTTPClient {
             json.decodeFromString(
                 httpClient.handleCatch {
                     get(Endpoints.getDevicesURL.createFullUrl())
-                }?.bodyAsText() ?: "{}"
+                }?.bodyAsText()
             )
         }
     }
@@ -931,7 +931,7 @@ private object ArcadyanSagemcomClient : HTTPClient {
             json.decodeFromString(
                 httpClient.handleCatch {
                     get(Endpoints.getCellURL.createFullUrl())
-                }?.bodyAsText() ?: "{}"
+                }?.bodyAsText()
             )
         }
     }
@@ -941,7 +941,7 @@ private object ArcadyanSagemcomClient : HTTPClient {
             json.decodeFromString(
                 httpClient.handleCatch {
                     get(Endpoints.getSimURL.createFullUrl())
-                }?.bodyAsText() ?: "{}"
+                }?.bodyAsText()
             )
         }
     }
