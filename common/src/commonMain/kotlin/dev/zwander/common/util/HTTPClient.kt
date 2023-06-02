@@ -454,7 +454,6 @@ interface HTTPClient {
             }
             block()
         } catch (e: CancellationException) {
-            e.printStackTrace()
             null
         } catch (e: Throwable) {
             GlobalModel.httpError.value = null
@@ -495,8 +494,7 @@ interface HTTPClient {
     ): HttpResponse? {
         try {
             return methodBlock().also { if (showError) it.setError() }
-        } catch (e: CancellationException) {
-            Exception(e).printStackTrace()
+        } catch (_: CancellationException) {
         } catch (e: HttpRequestTimeoutException) {
             Exception(e).printStackTrace()
             if (!waitForLive()) {
