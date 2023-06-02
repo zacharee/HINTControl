@@ -2,6 +2,8 @@
 
 package dev.zwander.common.pages
 
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -11,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.stringResource
+import dev.zwander.common.components.CellBars
 import dev.zwander.common.components.EmptyableContent
 import dev.zwander.common.components.InfoRow
 import dev.zwander.common.components.PageGrid
@@ -27,6 +30,7 @@ private data class AdvancedItemData(
     val title: StringResource,
     val blocks: List<Pair<StringResource, Any?>>,
     val emptyMessage: StringResource,
+    val titleAccessory: (@Composable () -> Unit)? = null,
 )
 
 @Composable
@@ -47,6 +51,11 @@ fun AdvancedPage(
                     basicData?.signal?.fourG,
                 ),
                 emptyMessage = MR.strings.not_connected,
+                titleAccessory = {
+                    CellBars(
+                        bars = basicData?.signal?.fourG?.bars?.toInt(),
+                    )
+                },
             ),
             AdvancedItemData(
                 title = MR.strings.five_g,
@@ -55,6 +64,11 @@ fun AdvancedPage(
                     basicData?.signal?.fiveG,
                 ),
                 emptyMessage = MR.strings.not_connected,
+                titleAccessory = {
+                    CellBars(
+                        bars = basicData?.signal?.fiveG?.bars?.toInt(),
+                    )
+                },
             ),
             AdvancedItemData(
                 title = MR.strings.sim,
@@ -74,9 +88,19 @@ fun AdvancedPage(
         items = items,
         modifier = modifier,
         renderItemTitle = {
-            Text(
-                text = stringResource(it.title),
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text(
+                    text = stringResource(it.title),
+                )
+
+                Spacer(modifier = Modifier.weight(1f))
+
+                it.titleAccessory?.let { accessory ->
+                    accessory()
+                }
+            }
         },
         renderItem = {
             EmptyableContent(
