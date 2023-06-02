@@ -838,7 +838,7 @@ private object NokiaClient : HTTPClient {
             httpClient.handleCatch {
                 post(Endpoints.nokiaServiceFunction.createNokiaUrl()) {
                     contentType(ContentType.parse("application/json"))
-                    setBody(RebootAction)
+                    setBody(RebootAction())
                 }
             }
         }
