@@ -62,7 +62,7 @@ fun <T> LabeledDropdown(
                 Box(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
-                        .heightIn(min = 48.dp)
+                        .heightIn(min = 36.dp)
                         .padding(8.dp)
                         .animateContentWidth(),
                 ) {
