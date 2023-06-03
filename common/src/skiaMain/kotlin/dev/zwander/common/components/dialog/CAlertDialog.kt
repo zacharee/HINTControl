@@ -15,22 +15,36 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.onClick
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCompositionContext
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.input.key.KeyEvent
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.LocalComposeScene
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEvent
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.platform.SkiaBasedOwner
+import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.window.AlignmentOffsetPositionProvider
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.window.AlignmentOffsetPositionProvider
 import androidx.compose.ui.window.PopupPositionProvider
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.jvm.JvmName
@@ -51,7 +65,10 @@ actual fun CAlertDialog(
     contentColor: Color,
     maxWidthPercent: Float,
 ) {
-    val alpha by animateFloatAsState(if (showing) 1f else 0f, spring(stiffness = Spring.StiffnessMediumLow))
+    val alpha by animateFloatAsState(
+        if (showing) 1f else 0f,
+        spring(stiffness = Spring.StiffnessMediumLow)
+    )
     val showingForAnimation by derivedStateOf {
         alpha > 0f
     }
@@ -70,16 +87,17 @@ actual fun CAlertDialog(
                     .alpha(alpha),
                 contentAlignment = Alignment.Center
             ) {
-                with (LocalDensity.current) {
+                with(LocalDensity.current) {
                     AlertDialogContents(
                         buttons,
-                        modifier.then(
-                            Modifier.widthIn(
-                                max = constraints.maxWidth.toDp() * maxWidthPercent
-                            ).onClick {
-                                // To prevent the Box's onClick consuming clicks on the dialog itself.
-                            }
-                        ),
+                        modifier
+                            .then(
+                                Modifier.widthIn(
+                                    max = constraints.maxWidth.toDp() * maxWidthPercent
+                                ).onClick {
+                                    // To prevent the Box's onClick consuming clicks on the dialog itself.
+                                }
+                            ),
                         title,
                         text,
                         shape,
@@ -101,7 +119,7 @@ internal fun AbsolutePopup(
     onDismissRequest: (() -> Unit)? = null,
     onPreviewKeyEvent: (KeyEvent) -> Boolean = { false },
     onKeyEvent: (KeyEvent) -> Boolean = { false },
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     val popupPositioner = remember(alignment, offset) {
         AlignmentOffsetPositionProvider(
@@ -116,10 +134,11 @@ internal fun AbsolutePopup(
         onDismissRequest = onDismissRequest,
         onPreviewKeyEvent = onPreviewKeyEvent,
         onKeyEvent = onKeyEvent,
-        content = content
+        content = content,
     )
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun AbsolutePopup(
     provider: PopupPositionProvider,
@@ -133,6 +152,13 @@ internal fun AbsolutePopup(
     val density = LocalDensity.current
 
     var popupBounds by remember { mutableStateOf(IntRect.Zero) }
+    val focusRequester = remember {
+        FocusRequester()
+    }
+
+    LaunchedEffect(null) {
+        focusRequester.requestFocus()
+    }
 
     val parentComposition = rememberCompositionContext()
     val (owner, composition) = remember {
@@ -144,7 +170,7 @@ internal fun AbsolutePopup(
             onDismissRequest = onDismissRequest,
             onPreviewKeyEvent = onPreviewKeyEvent,
             onKeyEvent = onKeyEvent,
-            scene = scene
+            scene = scene,
         )
         scene.attach(owner)
 
@@ -174,7 +200,17 @@ internal fun AbsolutePopup(
                             placeable.place(position.x, position.y)
                         }
                     }
-                }
+                },
+                modifier = Modifier
+                    .onPreviewKeyEvent {
+                        if (it.key == Key.Escape) {
+                            onDismissRequest?.invoke()
+                            false
+                        } else {
+                            true
+                        }
+                    }
+                    .focusRequester(focusRequester),
             )
         }
 
