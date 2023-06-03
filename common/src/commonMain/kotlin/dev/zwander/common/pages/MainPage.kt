@@ -48,35 +48,6 @@ fun MainPage(
     val items = remember {
         listOf(
             ItemInfo(
-                title = MR.strings.device,
-                render = { DeviceDataLayout(it) }
-            ),
-            ItemInfo(
-                title = MR.strings.general,
-                render = { MainDataLayout(it) },
-            ),
-            ItemInfo(
-                title = MR.strings.sim,
-                render = {
-                    val simData by MainModel.currentSimData.collectAsState()
-
-                    val items = remember(simData) {
-                        listOf(
-                            MR.strings.iccid to simData?.sim?.iccId,
-                            MR.strings.imei to simData?.sim?.imei,
-                            MR.strings.imsi to simData?.sim?.imsi,
-                            MR.strings.msisdn to simData?.sim?.msisdn,
-                            MR.strings.status to simData?.sim?.status,
-                        ).filter { it.second != null }
-                    }
-
-                    InfoRow(
-                        items = items,
-                        modifier = Modifier.fillMaxWidth(),
-                    )
-                },
-            ),
-            ItemInfo(
                 title = MR.strings.lte,
                 render = {
                     val basicData by MainModel.currentMainData.collectAsState()
@@ -115,6 +86,35 @@ fun MainPage(
                     CellBars(
                         bars = basicData?.signal?.fiveG?.bars?.toInt(),
                         modifier = it,
+                    )
+                },
+            ),
+            ItemInfo(
+                title = MR.strings.device,
+                render = { DeviceDataLayout(it) }
+            ),
+            ItemInfo(
+                title = MR.strings.general,
+                render = { MainDataLayout(it) },
+            ),
+            ItemInfo(
+                title = MR.strings.sim,
+                render = {
+                    val simData by MainModel.currentSimData.collectAsState()
+
+                    val items = remember(simData) {
+                        listOf(
+                            MR.strings.iccid to simData?.sim?.iccId,
+                            MR.strings.imei to simData?.sim?.imei,
+                            MR.strings.imsi to simData?.sim?.imsi,
+                            MR.strings.msisdn to simData?.sim?.msisdn,
+                            MR.strings.status to simData?.sim?.status,
+                        ).filter { it.second != null }
+                    }
+
+                    InfoRow(
+                        items = items,
+                        modifier = Modifier.fillMaxWidth(),
                     )
                 },
             ),
