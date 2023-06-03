@@ -275,6 +275,8 @@ fun SSIDListLayout(
                         )
                     },
                 )
+
+                Spacer(modifier = Modifier.size(8.dp))
             }
 
             TextSwitch(
@@ -298,6 +300,34 @@ fun SSIDListLayout(
                             guest = it,
                         )
                     },
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                TextSwitch(
+                    text = stringResource(MR.strings.twoGig),
+                    checked = editingState?.twoGigSsid == true,
+                    onCheckedChange = {
+                        editingState = editingState?.copy(
+                            twoGigSsid = it,
+                            fiveGigSsid = if (!it) true else editingState?.fiveGigSsid,
+                        )
+                    },
+                    enabled = editingState?.fiveGigSsid == true,
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                TextSwitch(
+                    text = stringResource(MR.strings.fiveGig),
+                    checked = editingState?.fiveGigSsid == true,
+                    onCheckedChange = {
+                        editingState = editingState?.copy(
+                            fiveGigSsid = it,
+                            twoGigSsid = if (!it) true else editingState?.twoGigSsid,
+                        )
+                    },
+                    enabled = editingState?.twoGigSsid == true,
                 )
             }
         },
