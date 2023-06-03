@@ -139,7 +139,6 @@ fun SettingsPage(
                         listOf(
                             Page.Main,
                             Page.Clients,
-                            Page.Advanced,
                             Page.WifiConfig,
                         )
                     }

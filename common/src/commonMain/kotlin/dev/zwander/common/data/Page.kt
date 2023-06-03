@@ -57,9 +57,15 @@ sealed class Page(
         MAIN_PAGE_KEY,
         { rememberVectorPainter(Icons.Default.Home) },
         {
+            MainModel.currentCellData.value = GlobalModel.httpClient.value?.getCellData()
+            MainModel.currentSimData.value = GlobalModel.httpClient.value?.getSimData()
             MainModel.currentMainData.value = GlobalModel.httpClient.value?.getMainData()
         },
-        { MainModel.currentMainData.value == null },
+        {
+            MainModel.currentCellData.value == null ||
+                    MainModel.currentSimData.value == null ||
+                    MainModel.currentMainData.value == null
+        },
         { MainPage(it) }
     )
     object Clients : Page(

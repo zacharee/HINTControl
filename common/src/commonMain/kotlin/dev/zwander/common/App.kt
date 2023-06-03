@@ -152,7 +152,6 @@ fun App(
                 listOf(
                     Page.Main,
                     Page.Clients,
-                    Page.Advanced,
                     Page.WifiConfig,
                     Page.SettingsPage,
                 ) + if (fuzzerEnabled) {

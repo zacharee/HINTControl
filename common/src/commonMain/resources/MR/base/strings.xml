@@ -142,4 +142,7 @@
 
     <string name="default_page">Default Page</string>
     <string name="default_page_desc">Choose which page the app should open to.</string>
+
+    <string name="expand">Expand</string>
+    <string name="collapse">Collapse</string>
 </resources>

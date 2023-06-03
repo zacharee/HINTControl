@@ -2,17 +2,34 @@
 
 package dev.zwander.common.components
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalMinimumTouchTargetEnforcement
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.text.font.FontWeight
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
+import dev.zwander.common.model.adapters.AdvancedDataLTE
+import dev.zwander.common.model.adapters.BaseAdvancedData
 import dev.zwander.common.model.adapters.BaseCellData
 import dev.zwander.common.model.adapters.CellData5G
 import dev.zwander.common.model.adapters.CellDataLTE
@@ -43,22 +60,67 @@ fun CellBars(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @HiddenFromObjC
 fun CellDataLayout(
     data: BaseCellData?,
+    advancedData: BaseAdvancedData?,
     modifier: Modifier = Modifier,
 ) {
-    val items = remember(data) {
+    val basicItems = remember(data) {
         generateBasicCellItems(data)
+    }
+
+    val advancedItems = remember(advancedData) {
+        generateAdvancedCellItems(advancedData)
     }
 
     EmptyableContent(
         content = {
+            var expanded by remember {
+                mutableStateOf(false)
+            }
+
             InfoRow(
-                items = items,
+                items = basicItems,
                 modifier = Modifier.fillMaxWidth(),
             )
+
+            AnimatedVisibility(
+                visible = expanded,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                InfoRow(
+                    items = advancedItems,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
+
+            CompositionLocalProvider(
+                LocalMinimumTouchTargetEnforcement provides false,
+            ) {
+                Card(
+                    onClick = {
+                        expanded = !expanded
+                    },
+                    colors = CardDefaults.outlinedCardColors(),
+                    elevation = CardDefaults.outlinedCardElevation(),
+                ) {
+                    Box(
+                        modifier = Modifier.fillMaxWidth(),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        val rotation by animateFloatAsState(if (expanded) 180f else 0f)
+
+                        Icon(
+                            imageVector = Icons.Default.KeyboardArrowDown,
+                            contentDescription = stringResource(if (expanded) MR.strings.collapse else MR.strings.expand),
+                            modifier = Modifier.rotate(rotation),
+                        )
+                    }
+                }
+            }
         },
         emptyContent = {
             Text(
@@ -67,9 +129,29 @@ fun CellDataLayout(
                 fontWeight = FontWeight.Normal,
             )
         },
-        isEmpty = items.isEmpty(),
+        isEmpty = basicItems.isEmpty(),
         modifier = modifier,
     )
+}
+
+private fun generateAdvancedCellItems(
+    data: BaseAdvancedData?,
+): List<Pair<StringResource, Any?>> {
+    val allItems = listOf(
+        MR.strings.bandwidth to data?.bandwidth,
+        MR.strings.mcc to data?.mcc,
+        MR.strings.mnc to data?.mnc,
+        MR.strings.plmn to data?.plmn,
+        MR.strings.status to data?.status,
+        MR.strings.cqi to data?.cqi,
+        (if (data is AdvancedDataLTE?) MR.strings.earfcn else MR.strings.nrarfcn) to data?.earfcn,
+        MR.strings.ecgi to data?.ecgi,
+        MR.strings.pci to data?.pci,
+        MR.strings.tac to data?.tac,
+        MR.strings.supportedBands to data?.supportedBands?.joinToString(" • ")
+    )
+
+    return allItems.filter { it.second != null }
 }
 
 fun generateBasicCellItems(data: BaseCellData?): List<Pair<StringResource, Any?>> {

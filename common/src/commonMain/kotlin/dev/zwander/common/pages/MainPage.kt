@@ -42,11 +42,10 @@ private data class ItemInfo(
 fun MainPage(
     modifier: Modifier = Modifier,
 ) {
-    val data by MainModel.currentMainData.collectAsState()
     val httpClient by GlobalModel.httpClient.collectAsState()
     val scope = rememberCoroutineScope()
 
-    val items = remember(data) {
+    val items = remember {
         listOf(
             ItemInfo(
                 title = MR.strings.device,
@@ -57,16 +56,43 @@ fun MainPage(
                 render = { MainDataLayout(it) },
             ),
             ItemInfo(
+                title = MR.strings.sim,
+                render = {
+                    val simData by MainModel.currentSimData.collectAsState()
+
+                    val items = remember(simData) {
+                        listOf(
+                            MR.strings.iccid to simData?.sim?.iccId,
+                            MR.strings.imei to simData?.sim?.imei,
+                            MR.strings.imsi to simData?.sim?.imsi,
+                            MR.strings.msisdn to simData?.sim?.msisdn,
+                            MR.strings.status to simData?.sim?.status,
+                        ).filter { it.second != null }
+                    }
+
+                    InfoRow(
+                        items = items,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                },
+            ),
+            ItemInfo(
                 title = MR.strings.lte,
                 render = {
+                    val basicData by MainModel.currentMainData.collectAsState()
+                    val advancedData by MainModel.currentCellData.collectAsState()
+
                     CellDataLayout(
-                        data = data?.signal?.fourG,
-                        modifier = it
+                        data = basicData?.signal?.fourG,
+                        advancedData = advancedData?.cell?.fourG,
+                        modifier = it,
                     )
                 },
                 titleAccessory = {
+                    val basicData by MainModel.currentMainData.collectAsState()
+
                     CellBars(
-                        bars = data?.signal?.fourG?.bars?.toInt(),
+                        bars = basicData?.signal?.fourG?.bars?.toInt(),
                         modifier = it,
                     )
                 },
@@ -74,18 +100,24 @@ fun MainPage(
             ItemInfo(
                 title = MR.strings.five_g,
                 render = {
+                    val basicData by MainModel.currentMainData.collectAsState()
+                    val advancedData by MainModel.currentCellData.collectAsState()
+
                     CellDataLayout(
-                        data = data?.signal?.fiveG,
-                        modifier = it
-                    )
-                },
-                titleAccessory = {
-                    CellBars(
-                        bars = data?.signal?.fiveG?.bars?.toInt(),
+                        data = basicData?.signal?.fiveG,
+                        advancedData = advancedData?.cell?.fiveG,
                         modifier = it,
                     )
                 },
-            )
+                titleAccessory = {
+                    val basicData by MainModel.currentMainData.collectAsState()
+
+                    CellBars(
+                        bars = basicData?.signal?.fiveG?.bars?.toInt(),
+                        modifier = it,
+                    )
+                },
+            ),
         )
     }
 
