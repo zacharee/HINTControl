@@ -68,7 +68,7 @@ fun SSIDListLayout(
 
         val index = if (old != null) newList.indexOf(old) else null
 
-        if (index != null) {
+        if (index != null && index != -1) {
             if (new != null) {
                 newList[index] = new
             } else {
