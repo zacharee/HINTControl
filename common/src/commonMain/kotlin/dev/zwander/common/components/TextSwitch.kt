@@ -13,7 +13,6 @@ import androidx.compose.ui.unit.dp
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @HiddenFromObjC
 fun TextSwitch(
@@ -23,7 +22,7 @@ fun TextSwitch(
     enabled: Boolean = true,
     modifier: Modifier = Modifier,
 ) {
-    Card(
+    AnimatedCard(
         onClick = { onCheckedChange(!checked) },
         colors = CardDefaults.outlinedCardColors(),
         border = null,

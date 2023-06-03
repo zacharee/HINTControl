@@ -12,8 +12,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.MenuItemColors
 import androidx.compose.material3.Text
@@ -27,7 +25,6 @@ import dev.zwander.common.util.animateContentWidth
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @HiddenFromObjC
 fun <T> LabeledDropdown(
@@ -53,7 +50,7 @@ fun <T> LabeledDropdown(
         )
 
         Box {
-            Card(
+            AnimatedCard(
                 onClick = {
                     onExpandChange(!expanded)
                 },
