@@ -18,13 +18,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.text.font.FontWeight
+import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
@@ -33,6 +33,7 @@ import dev.zwander.common.model.adapters.BaseAdvancedData
 import dev.zwander.common.model.adapters.BaseCellData
 import dev.zwander.common.model.adapters.CellData5G
 import dev.zwander.common.model.adapters.CellDataLTE
+import dev.zwander.common.util.PersistentMutableStateFlow
 import dev.zwander.resources.common.MR
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
@@ -66,6 +67,7 @@ fun CellBars(
 fun CellDataLayout(
     data: BaseCellData?,
     advancedData: BaseAdvancedData?,
+    expandedKey: String,
     modifier: Modifier = Modifier,
 ) {
     val basicItems = remember(data) {
@@ -78,9 +80,11 @@ fun CellDataLayout(
 
     EmptyableContent(
         content = {
-            var expanded by remember {
-                mutableStateOf(false)
+            val expandedState = remember(expandedKey) {
+                PersistentMutableStateFlow(expandedKey, false)
             }
+
+            var expanded by expandedState.collectAsMutableState()
 
             InfoRow(
                 items = basicItems,
