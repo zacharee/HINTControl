@@ -2,6 +2,7 @@
 
 package dev.zwander.common.components
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
@@ -158,7 +159,9 @@ fun SSIDListLayout(
             }
         }
 
-        if (canAddAndRemove == true) {
+        AnimatedVisibility(
+            visible = canAddAndRemove == true,
+        ) {
             Button(
                 onClick = {
                     editingConfig = null to SSIDConfig(
@@ -265,18 +268,22 @@ fun SSIDListLayout(
 
             Spacer(modifier = Modifier.size(8.dp))
 
-            if (editingConfig?.second?.enabled != null) {
-                TextSwitch(
-                    text = stringResource(MR.strings.enabled),
-                    checked = editingState?.enabled == true,
-                    onCheckedChange = {
-                        editingState = editingState?.copy(
-                            enabled = it,
-                        )
-                    },
-                )
+            AnimatedVisibility(
+                visible = editingConfig?.second?.enabled != null,
+            ) {
+                Column {
+                    TextSwitch(
+                        text = stringResource(MR.strings.enabled),
+                        checked = editingState?.enabled == true,
+                        onCheckedChange = {
+                            editingState = editingState?.copy(
+                                enabled = it,
+                            )
+                        },
+                    )
 
-                Spacer(modifier = Modifier.size(8.dp))
+                    Spacer(modifier = Modifier.size(8.dp))
+                }
             }
 
             TextSwitch(
@@ -291,44 +298,48 @@ fun SSIDListLayout(
 
             Spacer(modifier = Modifier.size(8.dp))
 
-            if (editingConfig?.second?.canEditFrequencyAndGuest == true) {
-                TextSwitch(
-                    text = stringResource(MR.strings.guest),
-                    checked = editingState?.guest == true,
-                    onCheckedChange = {
-                        editingState = editingState?.copy(
-                            guest = it,
-                        )
-                    },
-                )
+            AnimatedVisibility(
+                visible = editingConfig?.second?.canEditFrequencyAndGuest == true,
+            ) {
+                Column {
+                    TextSwitch(
+                        text = stringResource(MR.strings.guest),
+                        checked = editingState?.guest == true,
+                        onCheckedChange = {
+                            editingState = editingState?.copy(
+                                guest = it,
+                            )
+                        },
+                    )
 
-                Spacer(modifier = Modifier.size(8.dp))
+                    Spacer(modifier = Modifier.size(8.dp))
 
-                TextSwitch(
-                    text = stringResource(MR.strings.twoGig),
-                    checked = editingState?.twoGigSsid == true,
-                    onCheckedChange = {
-                        editingState = editingState?.copy(
-                            twoGigSsid = it,
-                            fiveGigSsid = if (!it) true else editingState?.fiveGigSsid,
-                        )
-                    },
-                    enabled = editingState?.fiveGigSsid == true,
-                )
+                    TextSwitch(
+                        text = stringResource(MR.strings.twoGig),
+                        checked = editingState?.twoGigSsid == true,
+                        onCheckedChange = {
+                            editingState = editingState?.copy(
+                                twoGigSsid = it,
+                                fiveGigSsid = if (!it) true else editingState?.fiveGigSsid,
+                            )
+                        },
+                        enabled = editingState?.fiveGigSsid == true,
+                    )
 
-                Spacer(modifier = Modifier.size(8.dp))
+                    Spacer(modifier = Modifier.size(8.dp))
 
-                TextSwitch(
-                    text = stringResource(MR.strings.fiveGig),
-                    checked = editingState?.fiveGigSsid == true,
-                    onCheckedChange = {
-                        editingState = editingState?.copy(
-                            fiveGigSsid = it,
-                            twoGigSsid = if (!it) true else editingState?.twoGigSsid,
-                        )
-                    },
-                    enabled = editingState?.twoGigSsid == true,
-                )
+                    TextSwitch(
+                        text = stringResource(MR.strings.fiveGig),
+                        checked = editingState?.fiveGigSsid == true,
+                        onCheckedChange = {
+                            editingState = editingState?.copy(
+                                fiveGigSsid = it,
+                                twoGigSsid = if (!it) true else editingState?.twoGigSsid,
+                            )
+                        },
+                        enabled = editingState?.twoGigSsid == true,
+                    )
+                }
             }
         },
         onDismissRequest = { editingConfig = null },
