@@ -97,6 +97,7 @@ kotlin {
                 }
                 api("com.bugsnag:bugsnag-android:5.30.0")
                 api("androidx.activity:activity-compose:1.7.2")
+                api("com.getkeepsafe.relinker:relinker:1.4.4")
             }
         }
         val skiaMain by creating {
