@@ -149,3 +149,10 @@ tasks.withType<org.jetbrains.compose.experimental.uikit.tasks.ExperimentalPackCo
         }
         doLast(action)
     }
+
+compose {
+    val kotlinVersion = rootProject.extra["kotlin.version"].toString()
+
+    kotlinCompilerPlugin.set("org.jetbrains.compose.compiler:compiler:${rootProject.extra["compose.compiler.version"]}")
+    kotlinCompilerPluginArgs.add("suppressKotlinVersionCompatibilityCheck=${kotlinVersion}")
+}

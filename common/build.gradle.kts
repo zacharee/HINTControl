@@ -162,6 +162,13 @@ android {
     }
 }
 
+compose {
+    val kotlinVersion = rootProject.extra["kotlin.version"].toString()
+
+    kotlinCompilerPlugin.set("org.jetbrains.compose.compiler:compiler:${rootProject.extra["compose.compiler.version"]}")
+    kotlinCompilerPluginArgs.add("suppressKotlinVersionCompatibilityCheck=${kotlinVersion}")
+}
+
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(rootProject.extra["java_version"].toString()))
 }
