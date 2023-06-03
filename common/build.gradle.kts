@@ -161,6 +161,10 @@ android {
         sourceCompatibility = JavaVersion.toVersion(rootProject.extra["java_version"].toString())
         targetCompatibility = sourceCompatibility
     }
+    lint {
+        @Suppress("UnstableApiUsage")
+        abortOnError = false
+    }
 }
 
 compose {

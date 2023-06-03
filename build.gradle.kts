@@ -34,12 +34,17 @@ plugins {
 
 apply(plugin = "kotlinx-atomicfu")
 
-tasks.register("buildIPA") {
-    doFirst {
+tasks.register("clearIOSOutput") {
+    doLast {
         delete("iosApp/output")
         mkdir("iosApp/output")
         mkdir("iosApp/output/Payload/HINT Control.app")
     }
+}
+
+tasks.register("buildXCArchive") {
+    dependsOn(":clearIOSOutput")
+    dependsOn(":common:build")
 
     doLast {
         exec {
@@ -53,12 +58,26 @@ tasks.register("buildIPA") {
                 "-destination", "generic/platform=iOS",
             )
         }
+    }
+}
+
+tasks.register("moveXCArchive") {
+    dependsOn(":buildXCArchive")
+
+    doLast {
         exec {
             commandLine(
                 "mv", "iosApp/output/iosApp.xcarchive/Products/Applications/HINT Control.app",
                 "iosApp/output/Payload",
             )
         }
+    }
+}
+
+tasks.register("buildIPA") {
+    dependsOn(":moveXCArchive")
+
+    doLast {
         exec {
             setWorkingDir("iosApp/output")
             commandLine(

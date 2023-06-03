@@ -29,12 +29,7 @@ import platform.UIKit.UITraitCollection
 import platform.UIKit.UIUserInterfaceStyle
 import platform.UIKit.UIView
 import platform.UIKit.UIViewController
-import platform.UIKit.addSubview
-import platform.UIKit.backgroundColor
 import platform.UIKit.currentTraitCollection
-import platform.UIKit.removeFromSuperview
-import platform.UIKit.tintColor
-import platform.UIKit.window
 import kotlin.experimental.ExperimentalObjCRefinement
 
 @Composable
