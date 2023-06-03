@@ -15,7 +15,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.isShiftPressed
 import androidx.compose.ui.input.key.key
-import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
@@ -98,7 +98,7 @@ fun LoginPage(
                 onValueChange = { username = it.filterNot(Char::isWhitespace) },
                 isError = error != null,
                 modifier = Modifier.focusRequester(userFocusRequester)
-                    .onKeyEvent {
+                    .onPreviewKeyEvent {
                         when (it.key) {
                             Key.Enter -> {
                                 scope.launch {
@@ -129,7 +129,7 @@ fun LoginPage(
 
             OutlinedTextField(
                 value = password ?: "",
-                onValueChange = { password = it.filterNot(Char::isWhitespace) },
+                onValueChange = { password = it.filter { c -> !c.isWhitespace() || c == ' ' } },
                 visualTransformation = if (showingPassword) {
                     VisualTransformation.None
                 } else {
@@ -153,7 +153,7 @@ fun LoginPage(
                 },
                 isError = error != null,
                 modifier = Modifier.focusRequester(passFocusRequester)
-                    .onKeyEvent {
+                    .onPreviewKeyEvent {
                         when (it.key) {
                             Key.Enter -> {
                                 scope.launch {
