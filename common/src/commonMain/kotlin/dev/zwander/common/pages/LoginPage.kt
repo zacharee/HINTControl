@@ -2,6 +2,7 @@
 
 package dev.zwander.common.pages
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -29,6 +30,7 @@ import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.components.TextSwitch
 import dev.zwander.common.components.dialog.AlertDialogDef
 import dev.zwander.common.model.GlobalModel
+import dev.zwander.common.model.SettingsModel
 import dev.zwander.common.model.UserModel
 import dev.zwander.resources.common.MR
 import kotlinx.coroutines.launch
@@ -44,12 +46,14 @@ fun LoginPage(
     val scope = rememberCoroutineScope()
     val focusManager = LocalFocusManager.current
 
+    val gatewayFocusRequester = remember { FocusRequester() }
     val userFocusRequester = remember { FocusRequester() }
     val passFocusRequester = remember { FocusRequester() }
     val loginInteractionSource = remember { MutableInteractionSource() }
 
     var username by UserModel.username.collectAsMutableState()
     var password by UserModel.password.collectAsMutableState()
+    var gatewayIp by SettingsModel.gatewayIp.collectAsMutableState()
 
     val isBlocking by GlobalModel.isBlocking.collectAsState()
     val client by GlobalModel.httpClient.collectAsMutableState()
@@ -64,6 +68,9 @@ fun LoginPage(
         mutableStateOf(true)
     }
     var showingHelpDialog by remember {
+        mutableStateOf(false)
+    }
+    var advanced by remember {
         mutableStateOf(false)
     }
 
@@ -90,42 +97,85 @@ fun LoginPage(
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier.width(IntrinsicSize.Min),
         ) {
-            OutlinedTextField(
-                value = username,
-                onValueChange = { username = it.filterNot(Char::isWhitespace) },
-                isError = error != null,
-                modifier = Modifier.focusRequester(userFocusRequester)
-                    .onPreviewKeyEvent {
-                        when (it.key) {
-                            Key.Enter -> {
-                                scope.launch {
-                                    performLogin()
+            AnimatedVisibility(
+                visible = advanced,
+            ) {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    OutlinedTextField(
+                        value = gatewayIp,
+                        onValueChange = { gatewayIp = it.filterNot(Char::isWhitespace) },
+                        isError = error != null,
+                        modifier = Modifier.focusRequester(gatewayFocusRequester)
+                            .onPreviewKeyEvent {
+                                when (it.key) {
+                                    Key.Enter -> {
+                                        scope.launch {
+                                            performLogin()
+                                        }
+                                        true
+                                    }
+                                    Key.Tab -> {
+                                        if (!it.isShiftPressed) {
+                                            userFocusRequester.requestFocus()
+                                            true
+                                        } else {
+                                            false
+                                        }
+                                    }
+                                    else -> {
+                                        false
+                                    }
                                 }
-                                true
-                            }
-                            Key.Tab -> {
-                                if (!it.isShiftPressed) {
-                                    passFocusRequester.requestFocus()
-                                    true
-                                } else {
-                                    false
+                            },
+                        keyboardOptions = KeyboardOptions(
+                            autoCorrect = false,
+                        ),
+                        label = {
+                            Text(text = stringResource(MR.strings.gateway_address))
+                        },
+                    )
+
+                    OutlinedTextField(
+                        value = username,
+                        onValueChange = { username = it.filterNot(Char::isWhitespace) },
+                        isError = error != null,
+                        modifier = Modifier.focusRequester(userFocusRequester)
+                            .onPreviewKeyEvent {
+                                when (it.key) {
+                                    Key.Enter -> {
+                                        scope.launch {
+                                            performLogin()
+                                        }
+                                        true
+                                    }
+                                    Key.Tab -> {
+                                        if (!it.isShiftPressed) {
+                                            passFocusRequester.requestFocus()
+                                            true
+                                        } else {
+                                            false
+                                        }
+                                    }
+                                    else -> {
+                                        false
+                                    }
                                 }
-                            }
-                            else -> {
-                                false
-                            }
-                        }
-                    },
-                keyboardOptions = KeyboardOptions(
-                    autoCorrect = false,
-                ),
-                label = {
-                    Text(text = stringResource(MR.strings.gateway_username))
-                },
-            )
+                            },
+                        keyboardOptions = KeyboardOptions(
+                            autoCorrect = false,
+                        ),
+                        label = {
+                            Text(text = stringResource(MR.strings.gateway_username))
+                        },
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.size(8.dp))
 
             OutlinedTextField(
                 value = password ?: "",
@@ -183,6 +233,8 @@ fun LoginPage(
                 },
             )
 
+            Spacer(modifier = Modifier.size(8.dp))
+
             TextButton(
                 onClick = {
                     showingHelpDialog = true
@@ -191,11 +243,23 @@ fun LoginPage(
                 Text(text = stringResource(MR.strings.where_password))
             }
 
+            Spacer(modifier = Modifier.size(8.dp))
+
             TextSwitch(
                 text = stringResource(MR.strings.remember_credentials),
                 checked = rememberCredentials,
                 onCheckedChange = { rememberCredentials = it },
             )
+
+            Spacer(modifier = Modifier.size(8.dp))
+
+            TextSwitch(
+                text = stringResource(MR.strings.advanced),
+                checked = advanced,
+                onCheckedChange = { advanced = it },
+            )
+
+            Spacer(modifier = Modifier.size(8.dp))
 
             Button(
                 onClick = {

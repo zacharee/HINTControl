@@ -126,6 +126,7 @@
     <string name="fuzzer">Fuzzer</string>
     <string name="gateway_username">Gateway Username</string>
     <string name="gateway_password">Gateway Password</string>
+    <string name="gateway_address">Gateway Address</string>
 
     <string name="help">Help</string>
     <string name="where_password">Where is my password?</string>
@@ -145,4 +146,5 @@
 
     <string name="expand">Expand</string>
     <string name="collapse">Collapse</string>
+    <string name="advanced">Advanced</string>
 </resources>

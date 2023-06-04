@@ -1,8 +1,7 @@
 package dev.zwander.common.model
 
 object Endpoints {
-    const val baseIp = "http://192.168.12.1"
-    const val baseUrl = "$baseIp/TMI/v1/"
+    const val baseArcadyanUrl = "TMI/v1"
 
     const val gateWayURL = "gateway/?get=all"
     const val getWifiConfigURL = "network/configuration/v2?get=ap"
@@ -31,10 +30,10 @@ object Endpoints {
     const val nokiaSimStatus = "sim_status_app.cgi"
 
     fun String.createFullUrl(): String {
-        return "$baseUrl$this"
+        return "http://${SettingsModel.gatewayIp.value}/$baseArcadyanUrl/$this"
     }
 
     fun String.createNokiaUrl(): String {
-        return "$baseIp/$this"
+        return "http://${SettingsModel.gatewayIp.value}/$this"
     }
 }

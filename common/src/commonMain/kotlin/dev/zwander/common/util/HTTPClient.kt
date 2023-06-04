@@ -65,7 +65,9 @@ import io.ktor.http.parameters
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.util.appendIfNameAbsent
 import io.ktor.utils.io.ByteReadChannel
+import korlibs.io.async.async
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.decodeFromString
@@ -410,12 +412,27 @@ private object NokiaClients {
 }
 
 object ClientUtils {
-    suspend fun chooseClient(test: Boolean): HTTPClient {
-        return if (test || ArcadyanSagemcomClient.exists()) {
-            ArcadyanSagemcomClient
-        } else {
-            NokiaClient
+    suspend fun chooseClient(test: Boolean): HTTPClient? {
+        if (test) {
+            return ArcadyanSagemcomClient
         }
+
+        val arcadyanExists = async(Dispatchers.Unconfined) { ArcadyanSagemcomClient.exists() }
+        val nokiaExists = async(Dispatchers.Unconfined) { NokiaClient.exists() }
+
+        if (arcadyanExists.await()) {
+            nokiaExists.cancel()
+            return ArcadyanSagemcomClient
+        }
+
+        if (nokiaExists.await()) {
+            arcadyanExists.cancel()
+            return NokiaClient
+        }
+
+        GlobalModel.updateHttpError("No T-Mobile gateway found!")
+
+        return null
     }
 }
 

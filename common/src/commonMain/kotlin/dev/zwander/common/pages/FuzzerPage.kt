@@ -23,8 +23,8 @@ import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.components.PageGrid
-import dev.zwander.common.model.Endpoints
 import dev.zwander.common.model.GlobalModel
+import dev.zwander.common.model.SettingsModel
 import dev.zwander.resources.common.MR
 import io.ktor.client.request.get
 import io.ktor.client.request.post
@@ -116,7 +116,7 @@ fun FuzzerPage(
                 onClick = {
                     scope.launch {
                         response = it.runMethod(
-                            "${Endpoints.baseIp}/${url}",
+                            "${SettingsModel.gatewayIp.value}/${url}",
                             body.replace("\"", "\\\"")
                         )?.bodyAsText()
                     }
