@@ -3,6 +3,7 @@
 package dev.zwander.common.components
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -44,21 +45,25 @@ fun CellBars(
     bars: Int?,
     modifier: Modifier = Modifier,
 ) {
-    Icon(
-        painter = painterResource(
-            when (bars) {
-                0 -> MR.images.cell_0
-                1 -> MR.images.cell_1
-                2 -> MR.images.cell_2
-                3 -> MR.images.cell_3
-                4 -> MR.images.cell_4
-                5 -> MR.images.cell_5
-                else -> MR.images.cell_none
-            }
-        ),
-        contentDescription = stringResource(MR.strings.strength),
+    Crossfade(
+        targetState = bars,
         modifier = modifier,
-    )
+    ) {
+        Icon(
+            painter = painterResource(
+                when (it) {
+                    0 -> MR.images.cell_0
+                    1 -> MR.images.cell_1
+                    2 -> MR.images.cell_2
+                    3 -> MR.images.cell_3
+                    4 -> MR.images.cell_4
+                    5 -> MR.images.cell_5
+                    else -> MR.images.cell_none
+                }
+            ),
+            contentDescription = stringResource(MR.strings.strength),
+        )
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
