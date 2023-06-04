@@ -124,6 +124,7 @@ fun SettingsPage(
                         label = {
                             Text(text = stringResource(MR.strings.period_ms))
                         },
+                        enabled = enabled,
                     )
                 },
                 description = {
