@@ -12,6 +12,11 @@ import androidx.compose.ui.Modifier
 import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.model.MainModel
 import dev.zwander.resources.common.MR
+import korlibs.io.lang.format
+import korlibs.memory.toIntFloor
+import korlibs.time.TimeFormat
+import korlibs.time.days
+import korlibs.time.milliseconds
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
 
@@ -23,7 +28,11 @@ fun DeviceDataLayout(
     val data by MainModel.currentMainData.collectAsState()
     val deviceData = data?.device
 
-    val items = remember(deviceData) {
+    val timeFormat = remember {
+        TimeFormat("HH'h' mm'm' ss's'")
+    }
+
+    val items = remember(deviceData, data) {
         listOf(
             MR.strings.friendly_name to deviceData?.friendlyName,
             MR.strings.name to deviceData?.name,
@@ -38,6 +47,14 @@ fun DeviceDataLayout(
             MR.strings.type to deviceData?.type,
             MR.strings.manufacturer to deviceData?.manufacturer,
             MR.strings.model to deviceData?.model,
+            MR.strings.uptime to data?.time?.upTime?.let { upTime ->
+                val milliseconds = (upTime * 1000).milliseconds
+
+                val days = milliseconds.days.toIntFloor()
+                val rest = milliseconds - days.days
+
+                "${"%2".format(days)}d ${timeFormat.format(rest)}"
+            },
         ).filter { it.second != null }
     }
 

@@ -147,4 +147,6 @@
     <string name="expand">Expand</string>
     <string name="collapse">Collapse</string>
     <string name="advanced">Advanced</string>
+
+    <string name="uptime">Uptime</string>
 </resources>
