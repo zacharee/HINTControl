@@ -4,22 +4,31 @@ package dev.zwander.common.pages
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.input.key.Key
-import androidx.compose.ui.input.key.isShiftPressed
-import androidx.compose.ui.input.key.key
-import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
@@ -27,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
+import dev.zwander.common.components.FormField
 import dev.zwander.common.components.TextSwitch
 import dev.zwander.common.components.dialog.AlertDialogDef
 import dev.zwander.common.model.GlobalModel
@@ -37,7 +47,6 @@ import kotlinx.coroutines.launch
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 @HiddenFromObjC
 fun LoginPage(
@@ -105,79 +114,34 @@ fun LoginPage(
                 Column(
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
-                    OutlinedTextField(
+                    FormField(
                         value = gatewayIp,
                         onValueChange = { gatewayIp = it.filterNot(Char::isWhitespace) },
+                        focusRequester = gatewayFocusRequester,
+                        nextFocus = userFocusRequester,
                         isError = error != null,
-                        modifier = Modifier.focusRequester(gatewayFocusRequester)
-                            .onPreviewKeyEvent {
-                                when (it.key) {
-                                    Key.Enter -> {
-                                        scope.launch {
-                                            performLogin()
-                                        }
-                                        true
-                                    }
-                                    Key.Tab -> {
-                                        if (!it.isShiftPressed) {
-                                            userFocusRequester.requestFocus()
-                                            true
-                                        } else {
-                                            false
-                                        }
-                                    }
-                                    else -> {
-                                        false
-                                    }
-                                }
-                            },
-                        keyboardOptions = KeyboardOptions(
-                            autoCorrect = false,
-                        ),
                         label = {
                             Text(text = stringResource(MR.strings.gateway_address))
-                        },
+                        }
                     )
 
-                    OutlinedTextField(
+                    FormField(
                         value = username,
                         onValueChange = { username = it.filterNot(Char::isWhitespace) },
                         isError = error != null,
-                        modifier = Modifier.focusRequester(userFocusRequester)
-                            .onPreviewKeyEvent {
-                                when (it.key) {
-                                    Key.Enter -> {
-                                        scope.launch {
-                                            performLogin()
-                                        }
-                                        true
-                                    }
-                                    Key.Tab -> {
-                                        if (!it.isShiftPressed) {
-                                            passFocusRequester.requestFocus()
-                                            true
-                                        } else {
-                                            false
-                                        }
-                                    }
-                                    else -> {
-                                        false
-                                    }
-                                }
-                            },
-                        keyboardOptions = KeyboardOptions(
-                            autoCorrect = false,
-                        ),
                         label = {
                             Text(text = stringResource(MR.strings.gateway_username))
                         },
+                        focusRequester = userFocusRequester,
+                        nextFocus = passFocusRequester,
+                        previousFocus = gatewayFocusRequester,
                     )
                 }
             }
 
             Spacer(modifier = Modifier.size(8.dp))
 
-            OutlinedTextField(
+            FormField(
                 value = password ?: "",
                 onValueChange = { password = it.filter { c -> !c.isWhitespace() || c == ' ' } },
                 visualTransformation = if (showingPassword) {
@@ -202,35 +166,11 @@ fun LoginPage(
                     }
                 },
                 isError = error != null,
-                modifier = Modifier.focusRequester(passFocusRequester)
-                    .onPreviewKeyEvent {
-                        when (it.key) {
-                            Key.Enter -> {
-                                scope.launch {
-                                    performLogin()
-                                }
-                                true
-                            }
-                            Key.Tab -> {
-                                if (it.isShiftPressed) {
-                                    userFocusRequester.requestFocus()
-                                    true
-                                } else {
-                                    false
-                                }
-                            }
-                            else -> {
-                                false
-                            }
-                        }
-                    },
-                keyboardOptions = KeyboardOptions(
-                    autoCorrect = false,
-                    keyboardType = KeyboardType.Password,
-                ),
                 label = {
                     Text(text = stringResource(MR.strings.gateway_password))
                 },
+                focusRequester = passFocusRequester,
+                previousFocus = if (advanced) userFocusRequester else null,
             )
 
             Spacer(modifier = Modifier.size(8.dp))
