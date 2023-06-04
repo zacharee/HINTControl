@@ -122,7 +122,12 @@ fun LoginPage(
                         isError = error != null,
                         label = {
                             Text(text = stringResource(MR.strings.gateway_address))
-                        }
+                        },
+                        onEnter = {
+                            scope.launch {
+                                performLogin()
+                            }
+                        },
                     )
 
                     FormField(
@@ -135,6 +140,11 @@ fun LoginPage(
                         focusRequester = userFocusRequester,
                         nextFocus = passFocusRequester,
                         previousFocus = gatewayFocusRequester,
+                        onEnter = {
+                            scope.launch {
+                                performLogin()
+                            }
+                        },
                     )
                 }
             }
@@ -171,6 +181,11 @@ fun LoginPage(
                 },
                 focusRequester = passFocusRequester,
                 previousFocus = if (advanced) userFocusRequester else null,
+                onEnter = {
+                    scope.launch {
+                        performLogin()
+                    }
+                },
             )
 
             Spacer(modifier = Modifier.size(8.dp))
