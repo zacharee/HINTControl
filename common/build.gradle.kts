@@ -53,8 +53,13 @@ kotlin {
     }
 
     sourceSets {
-        val ktorVersion = "2.3.0"
+        val ktorVersion = "2.3.1"
         val coroutinesVersion = "1.6.4"
+        val slf4jVersion = "2.0.7"
+        val multiplatformSettingsVersion = "1.0.0"
+        val mokoMvvmVersion = "0.16.1"
+        val mokoResourcesVersion = "0.23.0"
+        val korlibsVersion = "4.0.3"
 
         val commonMain by getting {
             dependencies {
@@ -62,19 +67,19 @@ kotlin {
                 api(compose.foundation)
                 api(compose.material3)
 
-                api("dev.icerock.moko:resources:0.22.0")
-                api("dev.icerock.moko:resources-compose:0.22.0")
+                api("dev.icerock.moko:resources:${mokoResourcesVersion}")
+                api("dev.icerock.moko:resources-compose:${mokoResourcesVersion}")
                 api("io.ktor:ktor-client-core:${ktorVersion}")
                 api("io.ktor:ktor-client-auth:${ktorVersion}")
                 api("io.ktor:ktor-client-content-negotiation:${ktorVersion}")
                 api("io.ktor:ktor-serialization-kotlinx-json:${ktorVersion}")
                 api("io.ktor:ktor-client-mock:${ktorVersion}")
-                api("dev.icerock.moko:mvvm-compose:0.16.1")
-                api("dev.icerock.moko:mvvm-flow-compose:0.16.1")
+                api("dev.icerock.moko:mvvm-compose:${mokoMvvmVersion}")
+                api("dev.icerock.moko:mvvm-flow-compose:${mokoMvvmVersion}")
                 api("org.jetbrains.kotlin:kotlin-reflect:${rootProject.extra["kotlin.version"]}")
-                api("com.soywiz.korlibs.korio:korio:4.0.0")
-                api("com.russhwolf:multiplatform-settings:1.0.0")
-                api("com.russhwolf:multiplatform-settings-no-arg:1.0.0")
+                api("com.soywiz.korlibs.korio:korio:${korlibsVersion}")
+                api("com.russhwolf:multiplatform-settings:${multiplatformSettingsVersion}")
+                api("com.russhwolf:multiplatform-settings-no-arg:${multiplatformSettingsVersion}")
                 api("org.jetbrains.kotlinx:atomicfu:0.20.2")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core") {
                     version {
@@ -86,9 +91,10 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 api("androidx.appcompat:appcompat:1.6.1")
+                api("androidx.activity:activity-compose:1.7.2")
+                api("androidx.core:core-ktx:1.10.1")
                 api("com.google.android.material:material:1.9.0")
 
-                api("androidx.core:core-ktx:1.10.1")
                 api("io.ktor:ktor-client-okhttp:${ktorVersion}")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-android") {
                     version {
@@ -96,30 +102,33 @@ kotlin {
                     }
                 }
                 api("com.bugsnag:bugsnag-android:5.30.0")
-                api("androidx.activity:activity-compose:1.7.2")
                 api("com.getkeepsafe.relinker:relinker:1.4.4")
             }
         }
         val skiaMain by creating {
             dependsOn(commonMain)
-            dependencies {
-
-            }
         }
         val desktopMain by getting {
             dependsOn(skiaMain)
             dependencies {
                 api(compose.preview)
                 api(compose.desktop.currentOs)
+
                 api("io.ktor:ktor-client-okhttp:${ktorVersion}")
                 api("com.github.weisj:darklaf-core:3.0.2")
-                api("com.github.weisj:darklaf-macos:3.0.2")
                 api("net.java.dev.jna:jna:5.13.0")
-                api("org.slf4j:slf4j-api:2.0.7")
-                api("org.slf4j:slf4j-jdk14:2.0.7")
+                api("org.slf4j:slf4j-api:${slf4jVersion}")
+                api("org.slf4j:slf4j-jdk14:${slf4jVersion}")
                 api("com.bugsnag:bugsnag:3.6.4")
                 api("com.github.Dansoftowner:jSystemThemeDetector:3.6")
                 api("com.github.oshi:oshi-core:6.4.2")
+            }
+        }
+
+        val darwinMain by creating {
+            dependsOn(skiaMain)
+            dependencies {
+                api("io.ktor:ktor-client-darwin:${ktorVersion}")
             }
         }
 
@@ -127,24 +136,18 @@ kotlin {
         val iosArm64Main by getting
         val iosSimulatorArm64Main by getting
         val iosMain by creating {
-            dependsOn(skiaMain)
+            dependsOn(darwinMain)
             iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)
             iosSimulatorArm64Main.dependsOn(this)
-            dependencies {
-                api("io.ktor:ktor-client-darwin:${ktorVersion}")
-            }
         }
 
         val macosX64Main by getting
         val macosArm64Main by getting
         val macosMain by creating {
-            dependsOn(skiaMain)
+            dependsOn(darwinMain)
             macosX64Main.dependsOn(this)
             macosArm64Main.dependsOn(this)
-            dependencies {
-                api("io.ktor:ktor-client-darwin:${ktorVersion}")
-            }
         }
     }
 }
