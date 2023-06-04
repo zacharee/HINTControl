@@ -44,7 +44,6 @@ tasks.register("clearIOSOutput") {
 
 tasks.register("buildXCArchive") {
     dependsOn(":clearIOSOutput")
-    dependsOn(":common:build")
 
     doLast {
         exec {

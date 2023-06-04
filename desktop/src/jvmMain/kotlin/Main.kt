@@ -114,9 +114,9 @@ fun main() {
             }
 
             App(
-                windowInsets = PaddingValues(
+                fullPadding = PaddingValues(
                     top = menuBarHeight,
-                )
+                ),
             )
         }
     }

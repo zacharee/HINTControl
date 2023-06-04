@@ -3,7 +3,6 @@
 package dev.zwander.common.ui
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -14,21 +13,17 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.interop.LocalUIViewController
 import dev.icerock.moko.resources.compose.colorResource
 import dev.zwander.common.monet.ColorScheme
+import dev.zwander.common.util.TraitEffect
 import dev.zwander.resources.common.MR
-import kotlinx.cinterop.ExportObjCClass
 import kotlinx.cinterop.alloc
 import kotlinx.cinterop.memScoped
 import kotlinx.cinterop.ptr
-import kotlinx.cinterop.readValue
 import kotlinx.cinterop.value
 import platform.CoreGraphics.CGFloat
 import platform.CoreGraphics.CGFloatVar
-import platform.CoreGraphics.CGRectZero
 import platform.UIKit.UIColor
 import platform.UIKit.UITraitCollection
 import platform.UIKit.UIUserInterfaceStyle
-import platform.UIKit.UIView
-import platform.UIKit.UIViewController
 import platform.UIKit.currentTraitCollection
 import kotlin.experimental.ExperimentalObjCRefinement
 
@@ -70,17 +65,8 @@ actual fun getThemeInfo(): ThemeInfo {
         derivedStateOf { style == UIUserInterfaceStyle.UIUserInterfaceStyleDark }
     }
 
-    val viewController: UIViewController = LocalUIViewController.current
-    DisposableEffect(Unit) {
-        val view: UIView = viewController.view
-        val traitView = TraitView {
-            style = UITraitCollection.currentTraitCollection.userInterfaceStyle
-        }
-        view.addSubview(traitView)
-
-        onDispose {
-            traitView.removeFromSuperview()
-        }
+    TraitEffect {
+        style = UITraitCollection.currentTraitCollection.userInterfaceStyle
     }
 
     val colorScheme = ColorScheme(
@@ -109,15 +95,4 @@ actual fun getThemeInfo(): ThemeInfo {
     rv?.backgroundColor = uiColor
 
     return colors
-}
-
-// https://github.com/JetBrains/compose-multiplatform/issues/3213#issuecomment-1572378546
-@ExportObjCClass
-private class TraitView(
-    private val onTraitChanged: () -> Unit
-) : UIView(frame = CGRectZero.readValue()) {
-    override fun traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        onTraitChanged()
-    }
 }

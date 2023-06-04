@@ -1,4 +1,5 @@
 @file:OptIn(ExperimentalObjCRefinement::class)
+@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE", "EXPOSED_PARAMETER_TYPE")
 
 package dev.zwander.common
 
@@ -24,9 +25,10 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.absolutePadding
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.pager.HorizontalPager
@@ -53,6 +55,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.systemBarsForVisualComponents
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -71,7 +74,6 @@ import androidx.compose.ui.input.key.isMetaPressed
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
 import dev.icerock.moko.resources.compose.stringResource
@@ -97,9 +99,8 @@ import kotlin.native.HiddenFromObjC
 @Composable
 fun App(
     modifier: Modifier = Modifier,
-    windowInsets: PaddingValues = PaddingValues(0.dp),
+    fullPadding: PaddingValues = PaddingValues(0.dp),
 ) {
-    val layoutDirection = LocalLayoutDirection.current
     val scope = rememberCoroutineScope()
 
     val isBlockingState by GlobalModel.isBlocking.collectAsState()
@@ -192,11 +193,7 @@ fun App(
             ) {
                 BoxWithConstraints(
                     modifier = Modifier.fillMaxSize()
-                        .absolutePadding(
-                            top = windowInsets.calculateTopPadding(),
-                            left = windowInsets.calculateLeftPadding(layoutDirection),
-                            right = windowInsets.calculateRightPadding(layoutDirection),
-                        ),
+                        .padding(fullPadding),
                 ) {
                     val constraints = this.constraints
                     val maxWidthDp = with(LocalDensity.current) { constraints.maxWidth.toDp() }
@@ -216,10 +213,7 @@ fun App(
                     val fabVisible = !sideRail && !Platform.isAndroid && !Platform.isIos && currentPage.refreshAction != null
 
                     Scaffold(
-                        modifier = modifier.fillMaxSize()
-                            .padding(
-                                bottom = if (!showBottomBar) windowInsets.calculateBottomPadding() else 0.dp
-                            ),
+                        modifier = modifier.fillMaxSize(),
                         bottomBar = {
                             AnimatedVisibility(
                                 visible = showBottomBar,
@@ -232,7 +226,6 @@ fun App(
                                     pages = pages,
                                     onPageChange = { currentPage = it },
                                     vertical = false,
-                                    windowInsets = WindowInsets(bottom = windowInsets.calculateBottomPadding()),
                                 )
                             }
                         },
@@ -443,7 +436,6 @@ private fun NavBar(
     onPageChange: (Page) -> Unit,
     modifier: Modifier = Modifier,
     vertical: Boolean = true,
-    windowInsets: WindowInsets = NavigationBarDefaults.windowInsets,
 ) {
     val scope = rememberCoroutineScope()
 
@@ -451,6 +443,8 @@ private fun NavBar(
         NavigationRail(
             modifier = modifier.padding(vertical = 8.dp)
                 .verticalScroll(rememberScrollState()),
+            windowInsets = WindowInsets.systemBarsForVisualComponents()
+                .only(WindowInsetsSides.Vertical),
         ) {
             pages.forEach { page ->
                 NavigationRailItem(
@@ -481,7 +475,7 @@ private fun NavBar(
     } else {
         NavigationBar(
             modifier = modifier,
-            windowInsets = windowInsets,
+            windowInsets = NavigationBarDefaults.windowInsets,
         ) {
             pages.forEach { page ->
                 NavigationBarItem(
