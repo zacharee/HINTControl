@@ -26,9 +26,15 @@ fun InfoRow(
         modifier = modifier,
     ) {
         items.forEach { (labelRes, value) ->
+            val valueString = if (value is StringResource) {
+                stringResource(value)
+            } else {
+                value.toString()
+            }
+
             FormatText(
                 text = stringResource(labelRes),
-                textFormat = value.toString(),
+                textFormat = valueString,
                 modifier = Modifier.padding(horizontal = 4.dp),
             )
         }

@@ -44,6 +44,7 @@ import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.GradleConfig
 import dev.zwander.common.components.DropdownMenuItem
+import dev.zwander.common.components.InfoRow
 import dev.zwander.common.components.LabeledDropdown
 import dev.zwander.common.components.PageGrid
 import dev.zwander.common.components.TextSwitch
@@ -284,7 +285,21 @@ fun SettingsPage(
                         }
                     }
                 },
-            )
+            ),
+            SettingsItem(
+                title = MR.strings.credits,
+                render = {
+                    InfoRow(
+                        items = remember {
+                            listOf(
+                                MR.strings.creator to MR.strings.zachary_wander,
+                                MR.strings.nokia_tester to MR.strings.shad,
+                            )
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                },
+            ),
         )
     }
 
