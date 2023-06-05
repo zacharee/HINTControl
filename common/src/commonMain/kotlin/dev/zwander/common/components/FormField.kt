@@ -14,6 +14,8 @@ import androidx.compose.ui.input.key.isShiftPressed
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
+import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
@@ -30,6 +32,7 @@ fun FormField(
     onEnter: (() -> Unit)? = null,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     trailingIcon: (@Composable () -> Unit)? = null,
+    keyboardType: KeyboardType = KeyboardType.Text,
 ) {
     OutlinedTextField(
         value = value,
@@ -68,6 +71,8 @@ fun FormField(
             },
         keyboardOptions = KeyboardOptions(
             autoCorrect = false,
+            keyboardType = keyboardType,
+            capitalization = KeyboardCapitalization.None,
         ),
         label = label,
         visualTransformation = visualTransformation,
