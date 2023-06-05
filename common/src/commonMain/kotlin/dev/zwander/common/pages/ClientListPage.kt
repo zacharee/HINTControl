@@ -37,38 +37,20 @@ fun ClientListPage(
     val data by MainModel.currentClientData.collectAsState()
 
     val items: List<ClientListItem> = remember(data) {
-        val list = mutableListOf<ClientListItem>()
-
-        if (data?.clients?.wireless != null) {
-            list.add(
-                ClientListItem(
-                    title = MR.strings.wireless,
-                    datas = data?.clients?.wireless,
-                )
-            )
-        } else {
-            list.addAll(
-                listOf(
-                    ClientListItem(
-                        title = MR.strings.twoGig,
-                        datas = data?.clients?.twoGig,
-                    ),
-                    ClientListItem(
-                        title = MR.strings.fiveGig,
-                        datas = data?.clients?.fiveGig,
-                    ),
-                )
-            )
-        }
-
-        list.add(
+        listOf(
+            ClientListItem(
+                title = MR.strings.twoGig,
+                datas = data?.clients?.twoGig,
+            ),
+            ClientListItem(
+                title = MR.strings.fiveGig,
+                datas = data?.clients?.fiveGig,
+            ),
             ClientListItem(
                 title = MR.strings.wired,
                 datas = data?.clients?.ethernet,
             ),
         )
-
-        list
     }
 
     PageGrid(

@@ -24,7 +24,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -47,6 +46,7 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationRail
+import androidx.compose.material3.NavigationRailDefaults
 import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
@@ -55,7 +55,6 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.systemBarsForVisualComponents
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -443,8 +442,7 @@ private fun NavBar(
         NavigationRail(
             modifier = modifier.padding(vertical = 8.dp)
                 .verticalScroll(rememberScrollState()),
-            windowInsets = WindowInsets.systemBarsForVisualComponents()
-                .only(WindowInsetsSides.Vertical),
+            windowInsets = NavigationRailDefaults.windowInsets.only(WindowInsetsSides.Vertical),
         ) {
             pages.forEach { page ->
                 NavigationRailItem(

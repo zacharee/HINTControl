@@ -70,7 +70,6 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
 private object CommonClients {
@@ -706,7 +705,8 @@ private object NokiaClient : HTTPClient {
             )
 
             val wiredClients = deviceInfo.deviceConfig?.filter { it.interfaceType == "Ethernet" }
-            val wirelessClients = deviceInfo.deviceConfig?.filter { it.interfaceType == "802.11" }
+            val twoGigClients = deviceInfo.deviceConfig?.filter { it.interfaceType == "802.11" }
+            val fiveGigClients = deviceInfo.deviceConfig?.filter { it.interfaceType == "802.11ac" || it.interfaceType == "802.11ax" }
 
             ClientDeviceData(
                 clients = ClientsData(
@@ -718,7 +718,15 @@ private object NokiaClient : HTTPClient {
                             name = it.hostName,
                         )
                     },
-                    wireless = wirelessClients?.map {
+                    twoGig = twoGigClients?.map {
+                        WirelessClientData(
+                            connected = it.active == 1,
+                            ipv4 = it.ipAddress,
+                            mac = it.macAddress,
+                            name = it.hostName,
+                        )
+                    },
+                    fiveGig = fiveGigClients?.map {
                         WirelessClientData(
                             connected = it.active == 1,
                             ipv4 = it.ipAddress,
@@ -863,7 +871,7 @@ private object NokiaClient : HTTPClient {
 
     override suspend fun exists(): Boolean {
         return try {
-            unauthedClient.get(Endpoints.nokiaDeviceStatus).status.isSuccess()
+            unauthedClient.get(Endpoints.nokiaDeviceStatus.createNokiaUrl()).status.isSuccess()
         } catch (e: Exception) {
             false
         }
