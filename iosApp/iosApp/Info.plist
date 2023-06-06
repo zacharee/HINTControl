@@ -2,11 +2,16 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>bugsnag</key>
-    <dict>
-      <key>apiKey</key>
-      <string>6cefc5a9296f11ea3be1a707f17201b4</string>
-    </dict>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+	<key>bugsnag</key>
+	<dict>
+		<key>apiKey</key>
+		<string>6cefc5a9296f11ea3be1a707f17201b4</string>
+	</dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -23,8 +28,8 @@
 	<string>1.5.0</string>
 	<key>CFBundleLocalizations</key>
 	<array>
-    <string>en</string>
-    </array>
+		<string>en</string>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>13</string>
 	<key>LSRequiresIPhoneOS</key>
