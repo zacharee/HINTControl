@@ -2,7 +2,7 @@
 A cross-platform app using JetBrains Compose to view and control the Arcadyan KVD21, Sagemcom Fast 5688W, and Nokia 5G21 T-Mobile Home Internet gateways.
 
 # Installing
-Check the Releases page for binaries.
+Check the [Releases page](https://github.com/zacharee/ArcadyanKVD21Control/releases) for binaries.
 
 ## Android
 Download `android-release.apk` and install it.
