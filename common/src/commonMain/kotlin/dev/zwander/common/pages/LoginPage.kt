@@ -63,9 +63,21 @@ fun LoginPage(
     val passFocusRequester = remember { FocusRequester() }
     val loginInteractionSource = remember { MutableInteractionSource() }
 
-    var username by UserModel.username.collectAsMutableState()
-    var password by UserModel.password.collectAsMutableState()
+    val username by UserModel.username.collectAsState()
+    val password by UserModel.password.collectAsState()
     var gatewayIp by SettingsModel.gatewayIp.collectAsMutableState()
+
+    var usernameTemp by remember {
+        mutableStateOf(username)
+    }
+
+    var passwordTemp by remember {
+        mutableStateOf(password)
+    }
+
+    var gatewayIpTemp by remember {
+        mutableStateOf(gatewayIp)
+    }
 
     val isBlocking by GlobalModel.isBlocking.collectAsState()
     val client by GlobalModel.httpClient.collectAsMutableState()
@@ -87,6 +99,8 @@ fun LoginPage(
     }
 
     suspend fun performLogin() {
+        gatewayIp = gatewayIpTemp
+
         var actualClient = client
 
         if (actualClient == null) {
@@ -94,11 +108,11 @@ fun LoginPage(
         }
         error = null
         focusManager.clearFocus()
-        actualClient?.logIn(username, password ?: "", rememberCredentials)
+        actualClient?.logIn(usernameTemp, passwordTemp ?: "", rememberCredentials)
     }
 
     LaunchedEffect(client) {
-        if (username.isNotBlank() && !password.isNullOrBlank() && client != null) {
+        if (usernameTemp.isNotBlank() && !passwordTemp.isNullOrBlank() && client != null) {
             performLogin()
         }
     }
@@ -119,8 +133,8 @@ fun LoginPage(
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     FormField(
-                        value = gatewayIp,
-                        onValueChange = { gatewayIp = it.filterNot(Char::isWhitespace) },
+                        value = gatewayIpTemp,
+                        onValueChange = { gatewayIpTemp = it },
                         focusRequester = gatewayFocusRequester,
                         nextFocus = userFocusRequester,
                         isError = error != null,
@@ -135,8 +149,8 @@ fun LoginPage(
                     )
 
                     FormField(
-                        value = username,
-                        onValueChange = { username = it.filterNot(Char::isWhitespace) },
+                        value = usernameTemp,
+                        onValueChange = { usernameTemp = it },
                         isError = error != null,
                         label = {
                             Text(text = stringResource(MR.strings.gateway_username))
@@ -156,8 +170,8 @@ fun LoginPage(
             Spacer(modifier = Modifier.size(8.dp))
 
             FormField(
-                value = password ?: "",
-                onValueChange = { password = it.filter { c -> !c.isWhitespace() || c == ' ' } },
+                value = passwordTemp ?: "",
+                onValueChange = { passwordTemp = it },
                 visualTransformation = if (showingPassword) {
                     VisualTransformation.None
                 } else {
@@ -227,7 +241,7 @@ fun LoginPage(
                         performLogin()
                     }
                 },
-                enabled = username.isNotBlank() && !password.isNullOrBlank() && !isBlocking && !isLoggedIn,
+                enabled = usernameTemp.isNotBlank() && !passwordTemp.isNullOrBlank() && !isBlocking && !isLoggedIn,
                 interactionSource = loginInteractionSource,
             ) {
                 Text(
