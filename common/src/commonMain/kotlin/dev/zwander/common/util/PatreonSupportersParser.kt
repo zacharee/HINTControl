@@ -45,14 +45,15 @@ class PatreonSupportersParser private constructor() {
                 supportersString.append(statement.bodyAsText())
             } catch (e: Exception) {
                 e.printStackTrace()
+                BugsnagUtils.notify(e)
             }
         }
 
         return try {
             Json.decodeFromString(ListSerializer(SupporterInfo.serializer()), supportersString.toString())
         } catch (e: Exception) {
-            println(supportersString)
             e.printStackTrace()
+            BugsnagUtils.notify(Exception(supportersString.toString(), e))
             listOf()
         }
     }

@@ -1,5 +1,6 @@
 package dev.zwander.common.ui
 
+import dev.zwander.common.util.BugsnagUtils
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -32,6 +33,7 @@ internal class GenericLinuxThemeDetector {
             } catch (e: IOException) {
                 println("Couldn't detect Linux OS theme")
                 e.printStackTrace()
+                BugsnagUtils.notify(e)
             }
             return false
         }
@@ -75,6 +77,7 @@ internal class GenericLinuxThemeDetector {
             priority = NORM_PRIORITY - 1
         }
 
+        @Suppress("NewApi")
         override fun run() {
             try {
                 val runtime = Runtime.getRuntime()
@@ -97,6 +100,7 @@ internal class GenericLinuxThemeDetector {
                                 } catch (e: RuntimeException) {
                                     println("Caught exception during listener notifying ")
                                     e.printStackTrace()
+                                    BugsnagUtils.notify(e)
                                 }
                             }
                         }
@@ -110,9 +114,11 @@ internal class GenericLinuxThemeDetector {
             } catch (e: IOException) {
                 println("Couldn't start monitoring process ")
                 e.printStackTrace()
+                BugsnagUtils.notify(e)
             } catch (e: ArrayIndexOutOfBoundsException) {
                 println("Couldn't parse command line output")
                 e.printStackTrace()
+                BugsnagUtils.notify(e)
             }
         }
     }

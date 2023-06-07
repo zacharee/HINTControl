@@ -129,6 +129,8 @@ kotlin {
             dependsOn(skiaMain)
             dependencies {
                 api("io.ktor:ktor-client-darwin:${ktorVersion}")
+                api("com.rickclephas.kmp:nsexception-kt-bugsnag:0.1.7")
+                api("com.rickclephas.kmp:nserror-kt:0.1.0")
             }
         }
 
@@ -165,7 +167,6 @@ android {
         targetCompatibility = sourceCompatibility
     }
     lint {
-        @Suppress("UnstableApiUsage")
         abortOnError = false
     }
 }

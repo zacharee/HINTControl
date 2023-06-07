@@ -429,7 +429,12 @@ object ClientUtils {
             return NokiaClient
         }
 
-        GlobalModel.updateHttpError("No T-Mobile gateway found!")
+        GlobalModel.updateHttpError(
+            Exception(
+                "No T-Mobile gateway found!",
+                Exception("${ArcadyanSagemcomClient.testUrl}, ${NokiaClient.testUrl}"),
+            ),
+        )
 
         return null
     }
@@ -472,7 +477,7 @@ interface HTTPClient {
         } catch (_: CancellationException) {
             null
         } catch (e: Throwable) {
-            GlobalModel.updateHttpError(e.message)
+            GlobalModel.updateHttpError(e)
             null
         } finally {
             if (blocking) {
@@ -514,13 +519,17 @@ interface HTTPClient {
             Exception(e).printStackTrace()
             if (!waitForLive()) {
                 if (showError) {
-                    GlobalModel.updateHttpError(e.message)
+                    GlobalModel.updateHttpError(e)
+                } else {
+                    BugsnagUtils.notify(e)
                 }
             }
         } catch (e: Exception) {
             Exception(e).printStackTrace()
             if (showError) {
-                GlobalModel.updateHttpError(e.message)
+                GlobalModel.updateHttpError(e)
+            } else {
+                BugsnagUtils.notify(e)
             }
         }
 
@@ -537,7 +546,7 @@ interface HTTPClient {
                 items.add(body)
             }
 
-            GlobalModel.updateHttpError(items.joinToString("\n"))
+            GlobalModel.updateHttpError(Exception(items.joinToString("\n")))
             true
         } else {
             false
@@ -873,6 +882,7 @@ private object NokiaClient : HTTPClient {
         return try {
             unauthedClient.get(Endpoints.nokiaDeviceStatus.createNokiaUrl()).status.isSuccess()
         } catch (e: Exception) {
+            BugsnagUtils.notify(e)
             false
         }
     }
@@ -915,7 +925,7 @@ private object ArcadyanSagemcomClient : HTTPClient {
                 UserModel.token.value = token
 
                 if (token == null) {
-                    GlobalModel.updateHttpError(text)
+                    GlobalModel.updateHttpError(Exception(text))
                 }
             }
         }
@@ -1007,6 +1017,7 @@ private object ArcadyanSagemcomClient : HTTPClient {
 
             response.status.value != 404
         } catch (e: Exception) {
+            BugsnagUtils.notify(e)
             false
         }
     }

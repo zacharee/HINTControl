@@ -8,11 +8,11 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import com.bugsnag.Bugsnag
 import dev.icerock.moko.resources.compose.painterResource
 import dev.zwander.common.App
 import dev.zwander.common.GradleConfig
 import dev.zwander.common.ui.getThemeInfo
+import dev.zwander.common.util.BugsnagUtils.bugsnag
 import dev.zwander.resources.common.MR
 import io.github.mimoguz.custom_window.DwmAttribute
 import io.github.mimoguz.custom_window.StageOps
@@ -26,7 +26,6 @@ fun main() {
     System.setProperty("apple.awt.application.appearance", "system")
     System.setProperty("apple.awt.application.name", MR.strings.app_name.localized())
 
-    val bugsnag = Bugsnag("e709115241c5468fd88637578daa5cfa")
     bugsnag.setAppVersion(GradleConfig.versionName)
     bugsnag.addCallback {
         it.addToTab("app", "version_code", GradleConfig.versionCode)

@@ -1,6 +1,7 @@
 package dev.zwander.common.model
 
 import dev.zwander.common.data.Page
+import dev.zwander.common.util.BugsnagUtils
 import dev.zwander.common.util.ClientUtils
 import dev.zwander.common.util.HTTPClient
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,9 +14,11 @@ object GlobalModel {
 
     val httpClient = MutableStateFlow<HTTPClient?>(null)
 
-    fun updateHttpError(error: String?) {
+    fun updateHttpError(error: Throwable?) {
         httpError.value = null
-        httpError.value = error
+        httpError.value = error?.message
+
+        error?.let { BugsnagUtils.notify(it) }
     }
 
     suspend fun updateClient(): HTTPClient? {
