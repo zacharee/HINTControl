@@ -5,7 +5,14 @@ A cross-platform app using JetBrains Compose to view and control the Arcadyan KV
 Check the [Releases page](https://github.com/zacharee/ArcadyanKVD21Control/releases) for binaries.
 
 ## Android
-Download `android-release.apk` and install it.
+The Android version is available on the [Google Play Store](https://play.google.com/store/apps/details?id=dev.zwander.arcadyankvd21control),
+
+Alternatively, you can download `android-release.apk` and install it.
+
+## iOS
+The iOS version is available on [TestFlight](https://testflight.apple.com/join/guaoX3zI).
+
+Alternatively, you can download `Hint.Control.ipa` and use something like [Sideloadly](https://sideloadly.io/) or [AltStore](https://altstore.io/) to install it.
 
 ## Windows
 Download the .zip ending in `windows-amd64`.
@@ -23,11 +30,6 @@ Extract the downloaded ZIP, then right-click the .app file and choose "Open". Th
  - On other Linux distros, download the `.tar.gz` file.
 
 Native ARM64 binaries for Linux aren't currently available.
-
-## iOS
-Download `Hint.Control.ipa`.
-
-Since this .ipa isn't signed, you'll need to use something like [Sideloadly](https://sideloadly.io/) or [AltStore](https://altstore.io/) to install it.
 
 # Building
 ## Desktop
