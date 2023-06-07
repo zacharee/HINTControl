@@ -23,6 +23,9 @@ Pod::Spec.new do |spec|
             :execution_position => :before_compile,
             :shell_path => '/bin/sh',
             :script => <<-SCRIPT
+                if [[ -z "${JAVA_HOME}" ]]; then
+                    JAVA_HOME=/Users/local/.sdkman/candidates/java/current
+                fi
                 if [ "YES" = "$OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED" ]; then
                   echo "Skipping Gradle build task invocation due to OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED environment variable set to \"YES\""
                   exit 0
