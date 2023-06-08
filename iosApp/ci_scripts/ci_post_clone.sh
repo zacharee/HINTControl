@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # https://stackoverflow.com/questions/72578619/building-kotlin-multiplatform-app-with-xcode-cloud
-# https://stackoverflow.com/questions/72578619/building-kotlin-multiplatform-app-with-xcode-cloud
+# https://developer.apple.com/forums/thread/720137?answerId=741461022#741461022
 
 brew install cocoapods
 
