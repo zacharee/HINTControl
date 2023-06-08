@@ -36,6 +36,7 @@ import dev.zwander.common.model.adapters.nokia.SetSSIDConfig
 import dev.zwander.common.model.adapters.nokia.SetWifiConfig
 import dev.zwander.common.model.adapters.nokia.StatisticsInfo
 import dev.zwander.common.model.adapters.nokia.WifiListing
+import dev.zwander.common.util.HttpUtils.formatForReport
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.respond
@@ -540,8 +541,9 @@ interface HTTPClient {
         return if (!status.isSuccess()) {
             val items = mutableListOf(status.description)
 
-            val body = bodyAsText()
+            items.add(this.formatForReport().map { "${it.key}==${it.value}" }.joinToString("\n", "{", "}"))
 
+            val body = bodyAsText()
             if (body.isNotBlank()) {
                 items.add(body)
             }
