@@ -92,7 +92,7 @@ data class CellStatsLte(
     @SerialName("RSRPStrengthIndexCurrent")
     override val rsrpStrengthIndex: Int? = null,
     @SerialName("PhysicalCellID")
-    override val pci: Int? = null,
+    override val pci: String? = null,
     @SerialName("RSRQCurrent")
     override val rsrq: Int? = null,
     @SerialName("SignalStrengthLevel")
@@ -119,7 +119,7 @@ data class CellStats5G(
     @SerialName("RSRPStrengthIndexCurrent")
     override val rsrpStrengthIndex: Int? = null,
     @SerialName("PhysicalCellID")
-    override val pci: Int? = null,
+    override val pci: String? = null,
     @SerialName("RSRQCurrent")
     override val rsrq: Int? = null,
     @SerialName("SignalStrengthLevel")
@@ -140,7 +140,7 @@ interface CellStats {
     @SerialName("RSRPStrengthIndexCurrent")
     val rsrpStrengthIndex: Int?
     @SerialName("PhysicalCellID")
-    val pci: Int?
+    val pci: String?
     @SerialName("RSRQCurrent")
     val rsrq: Int?
     @SerialName("SignalStrengthLevel")

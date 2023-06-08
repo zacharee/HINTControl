@@ -567,6 +567,8 @@ private object NokiaClient : HTTPClient {
 
     private val json = Json {
         ignoreUnknownKeys = true
+        coerceInputValues = true
+        isLenient = true
     }
 
     override suspend fun logIn(username: String, password: String, rememberCredentials: Boolean) {
@@ -775,7 +777,7 @@ private object NokiaClient : HTTPClient {
                             cqi = cellStatus.cellStatLte?.firstOrNull()?.cqi?.toInt(),
                             earfcn = connectionStatus.fourGStats?.firstOrNull()?.stat?.earfcn?.toString(),
                             ecgi = cellStatus.cellStatLte?.firstOrNull()?.ecgi,
-                            pci = connectionStatus.fourGStats?.firstOrNull()?.stat?.pci?.toString(),
+                            pci = connectionStatus.fourGStats?.firstOrNull()?.stat?.pci,
                             tac = cellStatus.cellStatGeneric?.firstOrNull()?.tac,
                             bandwidth = cellStatus.cellStatLte?.firstOrNull()?.bandwidth,
                             mcc = cellStatus.cellStatLte?.firstOrNull()?.mcc,
@@ -790,7 +792,7 @@ private object NokiaClient : HTTPClient {
                             cqi = cellStatus.cellStat5G?.firstOrNull()?.cqi?.toInt(),
                             earfcn = connectionStatus.fiveGStats?.firstOrNull()?.stat?.nrarfcn?.toString(),
                             ecgi = cellStatus.cellStat5G?.firstOrNull()?.ecgi,
-                            pci = connectionStatus.fiveGStats?.firstOrNull()?.stat?.pci?.toString(),
+                            pci = connectionStatus.fiveGStats?.firstOrNull()?.stat?.pci,
                             bandwidth = cellStatus.cellStat5G?.firstOrNull()?.bandwidth,
                             mcc = cellStatus.cellStat5G?.firstOrNull()?.mcc,
                             mnc = cellStatus.cellStat5G?.firstOrNull()?.mnc,
