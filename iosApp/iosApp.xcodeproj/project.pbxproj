@@ -12,22 +12,7 @@
 		2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* iOSApp.swift */; };
 		7555FF83242A565900829871 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF82242A565900829871 /* ContentView.swift */; };
 		B67DC2062A317BEE008FB35B /* Pods_iosApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B1049432C0C2B312090ABF6 /* Pods_iosApp.framework */; };
-		B67DC2072A317BEE008FB35B /* Pods_iosApp.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6B1049432C0C2B312090ABF6 /* Pods_iosApp.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		B6D41D102A181DFC00D6F115 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				B67DC2072A317BEE008FB35B /* Pods_iosApp.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		058557BA273AAA24004C7B11 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -138,7 +123,6 @@
 				7555FF79242A565900829871 /* Resources */,
 				F85CB1118929364A9C6EFABC /* Frameworks */,
 				2134C13603D0B299603D9F49 /* [CP] Copy Pods Resources */,
-				B6D41D102A181DFC00D6F115 /* Embed Frameworks */,
 				B6F2AC352A18218400C5FE22 /* ShellScript */,
 				4AF6DC5157F7960D96D40562 /* [CP] Embed Pods Frameworks */,
 				B67DC2052A317566008FB35B /* ShellScript */,
