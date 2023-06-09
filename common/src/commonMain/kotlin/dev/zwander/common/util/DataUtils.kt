@@ -8,8 +8,21 @@ fun List<Pair<StringResource, Any?>>.filterBlanks(): List<Pair<StringResource, A
     return filterNot { it.second?.toString().isNullOrBlank() }
 }
 
-fun <T> List<T>.bulletedList(): String {
-    return joinToString(" $BULLET ")
+fun <T> List<T>.bulletedList(
+    prefix: CharSequence = "",
+    postfix: CharSequence = "",
+    limit: Int = -1,
+    truncated: CharSequence = "...",
+    transform: ((T) -> CharSequence)? = null,
+): String {
+    return joinToString(
+        separator = " $BULLET ",
+        prefix = prefix,
+        postfix = postfix,
+        limit = limit,
+        truncated = truncated,
+        transform = transform,
+    )
 }
 
 fun <T> MutableList<T>.addAll(vararg elements: T) {
