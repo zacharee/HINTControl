@@ -11,6 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.model.MainModel
+import dev.zwander.common.util.filterBlanks
 import dev.zwander.resources.common.MR
 import korlibs.io.lang.format
 import korlibs.memory.toIntFloor
@@ -55,7 +56,7 @@ fun DeviceDataLayout(
 
                 "${"%2".format(days)}d ${timeFormat.format(rest)}"
             },
-        ).filter { it.second != null }
+        ).filterBlanks()
     }
 
     EmptyableContent(

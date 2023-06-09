@@ -35,6 +35,7 @@ import dev.zwander.common.model.adapters.BaseCellData
 import dev.zwander.common.model.adapters.CellData5G
 import dev.zwander.common.model.adapters.CellDataLTE
 import dev.zwander.common.util.PersistentMutableStateFlow
+import dev.zwander.common.util.filterBlanks
 import dev.zwander.resources.common.MR
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
@@ -160,7 +161,7 @@ private fun generateAdvancedCellItems(
         MR.strings.supportedBands to data?.supportedBands?.joinToString(" • ")
     )
 
-    return allItems.filter { it.second != null }
+    return allItems.filterBlanks()
 }
 
 fun generateBasicCellItems(data: BaseCellData?): List<Pair<StringResource, Any?>> {
@@ -183,5 +184,5 @@ fun generateBasicCellItems(data: BaseCellData?): List<Pair<StringResource, Any?>
         else -> listOf()
     }
 
-    return allItems.filter { it.second != null }
+    return allItems.filterBlanks()
 }

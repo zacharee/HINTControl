@@ -20,6 +20,7 @@ import dev.zwander.common.components.InfoRow
 import dev.zwander.common.components.PageGrid
 import dev.zwander.common.model.MainModel
 import dev.zwander.common.model.adapters.BaseClientData
+import dev.zwander.common.util.filterBlanks
 import dev.zwander.resources.common.MR
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
@@ -111,7 +112,7 @@ private fun ClientItem(
             MR.strings.ipv4 to data.ipv4,
             MR.strings.ipv6 to data.ipv6?.joinToString(" • "),
             MR.strings.mac to data.mac,
-        ).filter { it.second != null }
+        ).filterBlanks()
     }
 
     Column(modifier = modifier) {

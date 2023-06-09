@@ -774,7 +774,7 @@ private object NokiaClient : HTTPClient {
                 cell = AdvancedCellData(
                     fourG = if (lteConnected) {
                         AdvancedDataLTE(
-                            cqi = cellStatus.cellStatLte?.firstOrNull()?.cqi?.toInt(),
+                            cqi = cellStatus.cellStatLte?.firstOrNull()?.cqi?.toIntOrNull(),
                             earfcn = connectionStatus.fourGStats?.firstOrNull()?.stat?.earfcn?.toString(),
                             ecgi = cellStatus.cellStatLte?.firstOrNull()?.ecgi,
                             pci = connectionStatus.fourGStats?.firstOrNull()?.stat?.pci,
@@ -789,7 +789,7 @@ private object NokiaClient : HTTPClient {
                     },
                     fiveG = if (fiveGConnected) {
                         AdvancedData5G(
-                            cqi = cellStatus.cellStat5G?.firstOrNull()?.cqi?.toInt(),
+                            cqi = cellStatus.cellStat5G?.firstOrNull()?.cqi?.toIntOrNull(),
                             earfcn = connectionStatus.fiveGStats?.firstOrNull()?.stat?.nrarfcn?.toString(),
                             ecgi = cellStatus.cellStat5G?.firstOrNull()?.ecgi,
                             pci = connectionStatus.fiveGStats?.firstOrNull()?.stat?.pci,

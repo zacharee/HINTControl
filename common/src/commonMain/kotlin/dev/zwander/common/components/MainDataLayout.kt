@@ -11,6 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.model.MainModel
+import dev.zwander.common.util.filterBlanks
 import dev.zwander.resources.common.MR
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
@@ -28,7 +29,7 @@ fun MainDataLayout(
             MR.strings.ipv6 to data?.signal?.generic?.hasIPv6,
             MR.strings.registration to data?.signal?.generic?.registration,
             MR.strings.roaming to data?.signal?.generic?.roaming,
-        ).filter { it.second != null }
+        ).filterBlanks()
     }
 
     EmptyableContent(
