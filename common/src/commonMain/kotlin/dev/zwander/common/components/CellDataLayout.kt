@@ -35,7 +35,9 @@ import dev.zwander.common.model.adapters.BaseCellData
 import dev.zwander.common.model.adapters.CellData5G
 import dev.zwander.common.model.adapters.CellDataLTE
 import dev.zwander.common.util.PersistentMutableStateFlow
-import dev.zwander.common.util.filterBlanks
+import dev.zwander.common.util.addAll
+import dev.zwander.common.util.buildItemList
+import dev.zwander.common.util.bulletedList
 import dev.zwander.resources.common.MR
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
@@ -147,42 +149,42 @@ fun CellDataLayout(
 private fun generateAdvancedCellItems(
     data: BaseAdvancedData?,
 ): List<Pair<StringResource, Any?>> {
-    val allItems = listOf(
-        MR.strings.bandwidth to data?.bandwidth,
-        MR.strings.mcc to data?.mcc,
-        MR.strings.mnc to data?.mnc,
-        MR.strings.plmn to data?.plmn,
-        MR.strings.status to data?.status,
-        MR.strings.cqi to data?.cqi,
-        (if (data is AdvancedDataLTE?) MR.strings.earfcn else MR.strings.nrarfcn) to data?.earfcn,
-        MR.strings.ecgi to data?.ecgi,
-        MR.strings.pci to data?.pci,
-        MR.strings.tac to data?.tac,
-        MR.strings.supportedBands to data?.supportedBands?.joinToString(" • ")
-    )
-
-    return allItems.filterBlanks()
+    return buildItemList {
+        addAll(
+            MR.strings.bandwidth to data?.bandwidth,
+            MR.strings.mcc to data?.mcc,
+            MR.strings.mnc to data?.mnc,
+            MR.strings.plmn to data?.plmn,
+            MR.strings.status to data?.status,
+            MR.strings.cqi to data?.cqi,
+            (if (data is AdvancedDataLTE?) MR.strings.earfcn else MR.strings.nrarfcn) to data?.earfcn,
+            MR.strings.ecgi to data?.ecgi,
+            MR.strings.pci to data?.pci,
+            MR.strings.tac to data?.tac,
+            MR.strings.supportedBands to data?.supportedBands?.bulletedList(),
+        )
+    }
 }
 
 fun generateBasicCellItems(data: BaseCellData?): List<Pair<StringResource, Any?>> {
-    val allItems = listOf(
-        MR.strings.bands to data?.bands?.joinToString(" • "),
-        MR.strings.rsrp to data?.rsrp,
-        MR.strings.rsrq to data?.rsrq,
-        MR.strings.rssi to data?.rssi,
-        MR.strings.sinr to data?.sinr,
-        MR.strings.cid to data?.cid,
-    ) + when (data) {
-        is CellDataLTE -> listOf(
-            MR.strings.enbid to data.eNBID
+    return buildItemList {
+        addAll(
+            MR.strings.bands to data?.bands?.bulletedList(),
+            MR.strings.rsrp to data?.rsrp,
+            MR.strings.rsrq to data?.rsrq,
+            MR.strings.rssi to data?.rssi,
+            MR.strings.sinr to data?.sinr,
+            MR.strings.cid to data?.cid,
         )
 
-        is CellData5G -> listOf(
-            MR.strings.gnbid to data.gNBID
-        )
+        when (data) {
+            is CellDataLTE -> add(
+                MR.strings.enbid to data.eNBID
+            )
 
-        else -> listOf()
+            is CellData5G -> add(
+                MR.strings.gnbid to data.gNBID
+            )
+        }
     }
-
-    return allItems.filterBlanks()
 }

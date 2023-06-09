@@ -22,7 +22,9 @@ import dev.zwander.common.model.MainModel
 import dev.zwander.common.model.adapters.AdvancedDataLTE
 import dev.zwander.common.model.adapters.BaseAdvancedData
 import dev.zwander.common.model.adapters.BaseCellData
-import dev.zwander.common.util.filterBlanks
+import dev.zwander.common.util.addAll
+import dev.zwander.common.util.buildItemList
+import dev.zwander.common.util.bulletedList
 import dev.zwander.resources.common.MR
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
@@ -73,13 +75,15 @@ fun AdvancedPage(
             ),
             AdvancedItemData(
                 title = MR.strings.sim,
-                blocks = listOf(
-                    MR.strings.iccid to simData?.sim?.iccId,
-                    MR.strings.imei to simData?.sim?.imei,
-                    MR.strings.imsi to simData?.sim?.imsi,
-                    MR.strings.msisdn to simData?.sim?.msisdn,
-                    MR.strings.status to simData?.sim?.status,
-                ).filterBlanks(),
+                blocks = buildItemList {
+                    addAll(
+                        MR.strings.iccid to simData?.sim?.iccId,
+                        MR.strings.imei to simData?.sim?.imei,
+                        MR.strings.imsi to simData?.sim?.imsi,
+                        MR.strings.msisdn to simData?.sim?.msisdn,
+                        MR.strings.status to simData?.sim?.status,
+                    )
+                },
                 emptyMessage = MR.strings.unavailable,
             )
         )
@@ -125,19 +129,21 @@ fun AdvancedPage(
 private fun generateBaseCellItems(data: BaseAdvancedData?, basicData: BaseCellData?): List<Pair<StringResource, Any?>> {
     val basicItems = generateBasicCellItems(basicData)
 
-    val allItems = listOf(
-        MR.strings.bandwidth to data?.bandwidth,
-        MR.strings.mcc to data?.mcc,
-        MR.strings.mnc to data?.mnc,
-        MR.strings.plmn to data?.plmn,
-        MR.strings.status to data?.status,
-        MR.strings.cqi to data?.cqi,
-        (if (data is AdvancedDataLTE?) MR.strings.earfcn else MR.strings.nrarfcn) to data?.earfcn,
-        MR.strings.ecgi to data?.ecgi,
-        MR.strings.pci to data?.pci,
-        MR.strings.tac to data?.tac,
-        MR.strings.supportedBands to data?.supportedBands?.joinToString(" • ")
-    )
+    val allItems = buildItemList {
+        addAll(
+            MR.strings.bandwidth to data?.bandwidth,
+            MR.strings.mcc to data?.mcc,
+            MR.strings.mnc to data?.mnc,
+            MR.strings.plmn to data?.plmn,
+            MR.strings.status to data?.status,
+            MR.strings.cqi to data?.cqi,
+            (if (data is AdvancedDataLTE?) MR.strings.earfcn else MR.strings.nrarfcn) to data?.earfcn,
+            MR.strings.ecgi to data?.ecgi,
+            MR.strings.pci to data?.pci,
+            MR.strings.tac to data?.tac,
+            MR.strings.supportedBands to data?.supportedBands?.bulletedList(),
+        )
+    }
 
-    return basicItems + allItems.filterBlanks()
+    return basicItems + allItems
 }

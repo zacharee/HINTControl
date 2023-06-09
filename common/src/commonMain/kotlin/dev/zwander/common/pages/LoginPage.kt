@@ -45,6 +45,7 @@ import dev.zwander.common.components.dialog.AlertDialogDef
 import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.SettingsModel
 import dev.zwander.common.model.UserModel
+import dev.zwander.common.util.BULLET
 import dev.zwander.resources.common.MR
 import kotlinx.coroutines.launch
 import kotlin.experimental.ExperimentalObjCRefinement
@@ -177,7 +178,7 @@ fun LoginPage(
                 } else {
                     VisualTransformation {
                         TransformedText(
-                            AnnotatedString("•".repeat(it.text.length)),
+                            AnnotatedString(BULLET.repeat(it.text.length)),
                             OffsetMapping.Identity,
                         )
                     }

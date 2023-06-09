@@ -26,7 +26,8 @@ import dev.zwander.common.components.dialog.AlertDialogDef
 import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.MainModel
 import dev.zwander.common.model.UserModel
-import dev.zwander.common.util.filterBlanks
+import dev.zwander.common.util.addAll
+import dev.zwander.common.util.buildItemList
 import dev.zwander.resources.common.MR
 import kotlinx.coroutines.launch
 import kotlin.experimental.ExperimentalObjCRefinement
@@ -106,13 +107,15 @@ fun MainPage(
                     val simData by MainModel.currentSimData.collectAsState()
 
                     val items = remember(simData) {
-                        listOf(
-                            MR.strings.iccid to simData?.sim?.iccId,
-                            MR.strings.imei to simData?.sim?.imei,
-                            MR.strings.imsi to simData?.sim?.imsi,
-                            MR.strings.msisdn to simData?.sim?.msisdn,
-                            MR.strings.status to simData?.sim?.status,
-                        ).filterBlanks()
+                        buildItemList {
+                            addAll(
+                                MR.strings.iccid to simData?.sim?.iccId,
+                                MR.strings.imei to simData?.sim?.imei,
+                                MR.strings.imsi to simData?.sim?.imsi,
+                                MR.strings.msisdn to simData?.sim?.msisdn,
+                                MR.strings.status to simData?.sim?.status,
+                            )
+                        }
                     }
 
                     InfoRow(
