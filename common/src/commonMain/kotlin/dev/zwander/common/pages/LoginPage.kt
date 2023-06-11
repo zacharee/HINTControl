@@ -64,8 +64,8 @@ fun LoginPage(
     val passFocusRequester = remember { FocusRequester() }
     val loginInteractionSource = remember { MutableInteractionSource() }
 
-    val username by UserModel.username.collectAsState()
-    val password by UserModel.password.collectAsState()
+    var username by UserModel.username.collectAsMutableState()
+    var password by UserModel.password.collectAsMutableState()
     var gatewayIp by SettingsModel.gatewayIp.collectAsMutableState()
 
     var usernameTemp by remember {
@@ -101,6 +101,8 @@ fun LoginPage(
 
     suspend fun performLogin() {
         gatewayIp = gatewayIpTemp
+        username = usernameTemp
+        password = passwordTemp
 
         var actualClient = client
 
