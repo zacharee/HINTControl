@@ -44,6 +44,14 @@ object Bugsnag {
             return
         }
 
+        if (e.message?.contains("No such host is known") == true) {
+            return
+        }
+
+        if (e.message?.contains("No route to host") == true) {
+            return
+        }
+
         if (e.message?.contains("Internal Server Error") == true) {
             return
         }

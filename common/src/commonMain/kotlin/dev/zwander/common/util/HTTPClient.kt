@@ -583,7 +583,7 @@ private object NokiaClient : HTTPClient {
                     formParameters = parameters {
                         append("name", UserModel.username.value)
                         append("pswd", UserModel.password.value ?: "")
-                    }
+                    },
                 )
             }
 
