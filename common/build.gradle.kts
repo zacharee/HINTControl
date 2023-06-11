@@ -54,7 +54,7 @@ kotlin {
 
     sourceSets {
         val ktorVersion = "2.3.1"
-        val coroutinesVersion = "1.6.4"
+        val coroutinesVersion = "1.7.0"
         val slf4jVersion = "2.0.7"
         val multiplatformSettingsVersion = "1.0.0"
         val mokoMvvmVersion = "0.16.1"
