@@ -45,7 +45,7 @@ class PatreonSupportersParser private constructor() {
                 supportersString.append(statement.bodyAsText())
             } catch (e: Exception) {
                 e.printStackTrace()
-                BugsnagUtils.notify(e)
+                Bugsnag.notify(e)
             }
         }
 
@@ -53,7 +53,7 @@ class PatreonSupportersParser private constructor() {
             Json.decodeFromString(ListSerializer(SupporterInfo.serializer()), supportersString.toString())
         } catch (e: Exception) {
             e.printStackTrace()
-            BugsnagUtils.notify(Exception(supportersString.toString(), e))
+            Bugsnag.notify(Exception(supportersString.toString(), e))
             listOf()
         }
     }
