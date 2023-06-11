@@ -1,6 +1,7 @@
 package dev.zwander.common.util
 
 import dev.zwander.common.exceptions.NoGatewayFoundException
+import dev.zwander.common.exceptions.pickExceptionForStatus
 import dev.zwander.common.model.Endpoints
 import dev.zwander.common.model.Endpoints.createFullUrl
 import dev.zwander.common.model.Endpoints.createNokiaUrl
@@ -549,7 +550,9 @@ interface HTTPClient {
                 items.add(body)
             }
 
-            GlobalModel.updateHttpError(Exception(items.joinToString("\n")))
+            val message = items.joinToString("\n")
+
+            GlobalModel.updateHttpError(pickExceptionForStatus(status.value, message))
             true
         } else {
             false
@@ -930,7 +933,7 @@ private object ArcadyanSagemcomClient : HTTPClient {
                 UserModel.token.value = token
 
                 if (token == null) {
-                    GlobalModel.updateHttpError(Exception(text))
+                    GlobalModel.updateHttpError(pickExceptionForStatus(response.status.value, text))
                 }
             }
         }

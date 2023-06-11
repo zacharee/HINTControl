@@ -44,6 +44,10 @@ object Bugsnag {
             return
         }
 
+        if (e.message?.contains("Internal Server Error") == true) {
+            return
+        }
+
         BugsnagUtils.notify(e)
     }
 }
