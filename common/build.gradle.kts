@@ -41,7 +41,7 @@ kotlin {
         version = rootProject.extra["app_version_code"].toString()
         summary = "KVD21Control"
         homepage = "https://zwander.dev"
-        ios.deploymentTarget = "15.2"
+        ios.deploymentTarget = "14.0"
         osx.deploymentTarget = "10.13"
         podfile = project.file("../iosApp/Podfile")
         framework {
@@ -53,8 +53,8 @@ kotlin {
     }
 
     sourceSets {
-        val ktorVersion = "2.3.1"
-        val coroutinesVersion = "1.7.0"
+        val ktorVersion = "2.3.2-eap-692"
+        val coroutinesVersion = "1.7.1"
         val slf4jVersion = "2.0.7"
         val multiplatformSettingsVersion = "1.0.0"
         val mokoMvvmVersion = "0.16.1"
