@@ -205,9 +205,9 @@ internal fun AbsolutePopup(
                     .onPreviewKeyEvent {
                         if (it.key == Key.Escape) {
                             onDismissRequest?.invoke()
-                            false
-                        } else {
                             true
+                        } else {
+                            false
                         }
                     }
                     .focusRequester(focusRequester),
