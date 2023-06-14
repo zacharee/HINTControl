@@ -63,6 +63,17 @@ fun SSIDListLayout(
         mutableStateOf(editingConfig?.second)
     }
 
+    val validWpaKey by remember(editingState) {
+        derivedStateOf {
+            editingState?.let { state ->
+                state.wpaKey?.let { key ->
+                    key.isNotBlank() &&
+                            Regex("^[\\u0020-\\u007e]{8,63}\$").matches(key)
+                }
+            } ?: false
+        }
+    }
+
     fun updateSsidConfig(old: SSIDConfig?, new: SSIDConfig?) {
         val newList = data?.ssids?.toMutableList() ?: mutableListOf()
 
@@ -227,7 +238,7 @@ fun SSIDListLayout(
                     )
                 },
                 modifier = Modifier.fillMaxWidth(),
-                isError = editingState?.wpaKey.isNullOrBlank(),
+                isError = !validWpaKey,
             )
 
             Spacer(modifier = Modifier.size(8.dp))
@@ -364,7 +375,7 @@ fun SSIDListLayout(
                     editingConfig = null
                 },
                 enabled = !editingState?.ssidName.isNullOrBlank() &&
-                        !editingState?.wpaKey.isNullOrBlank(),
+                        validWpaKey,
             ) {
                 Text(
                     text = stringResource(MR.strings.save),
