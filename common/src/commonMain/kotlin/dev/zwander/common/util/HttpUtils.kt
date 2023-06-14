@@ -7,6 +7,8 @@ import io.ktor.client.statement.request
 import io.ktor.util.toMap
 
 object HttpUtils {
+    private val urlRegex = Regex(" <>\"#%\\{}\\|\\\\\\^~\\[]`;/\\?:@=&")
+
     suspend fun HttpResponse.formatForReport(): Map<String, String> {
         val map = mutableMapOf<String, String>()
 
@@ -30,7 +32,11 @@ object HttpUtils {
             this
         } else {
             UserModel.password.value?.let {
-                this.replace(it, "***")
+                this.replace(it, "***") + (if (it.matches(urlRegex)) {
+                    urlRegex.findAll(it).joinToString(",", "[", "]")
+                } else {
+                    ""
+                })
             } ?: this
         }
     }

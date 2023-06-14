@@ -400,6 +400,9 @@ private object NokiaClients {
             headers.appendIfNameAbsent(HttpHeaders.Cookie, UserModel.cookie.value ?: "")
         }
         install(HttpRequestRetry) {
+            retryIf(3) { _, response ->
+                response.status.value.let { it == 403 || it in 500..599 }
+            }
             this.modifyRequest {
                 runBlocking {
                     NokiaClient.logIn(
@@ -933,7 +936,7 @@ private object ArcadyanSagemcomClient : HTTPClient {
                 UserModel.token.value = token
 
                 if (token == null) {
-                    GlobalModel.updateHttpError(pickExceptionForStatus(response.status.value, text))
+                    response.setError()
                 }
             }
         }
