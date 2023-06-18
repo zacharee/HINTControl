@@ -53,13 +53,13 @@ kotlin {
     }
 
     sourceSets {
-        val ktorVersion = "2.3.2-eap-692"
+        val ktorVersion = "2.3.2-eap-695"
         val coroutinesVersion = "1.7.1"
         val slf4jVersion = "2.0.7"
         val multiplatformSettingsVersion = "1.0.0"
         val mokoMvvmVersion = "0.16.1"
-        val mokoResourcesVersion = "0.23.0"
-        val korlibsVersion = "4.0.3"
+        val mokoResourcesVersion = rootProject.extra["moko.resources.version"].toString()
+        val korlibsVersion = "4.0.6"
 
         val commonMain by getting {
             dependencies {
@@ -119,8 +119,8 @@ kotlin {
                 api("net.java.dev.jna:jna:5.13.0")
                 api("org.slf4j:slf4j-api:${slf4jVersion}")
                 api("org.slf4j:slf4j-jdk14:${slf4jVersion}")
-                api("com.bugsnag:bugsnag:3.6.4")
-                api("com.github.Dansoftowner:jSystemThemeDetector:3.6")
+                api("com.bugsnag:bugsnag:3.7.0")
+                api("com.github.Dansoftowner:jSystemThemeDetector:3.8")
                 api("com.github.oshi:oshi-core:6.4.4-SNAPSHOT")
             }
         }
