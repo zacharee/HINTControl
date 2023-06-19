@@ -54,3 +54,8 @@ object EncryptionVersions {
     const val wpa2 = "WPA2"
     const val wpa2Wpa3 = "WPA2/WPA3"
 }
+
+object EncryptionModes {
+    const val aes = "AES"
+    const val tkip = "TKIP"
+}

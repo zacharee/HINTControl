@@ -19,6 +19,7 @@ import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.components.dialog.AlertDialogDef
 import dev.zwander.common.model.MainModel
+import dev.zwander.common.model.adapters.EncryptionModes
 import dev.zwander.common.model.adapters.EncryptionVersions
 import dev.zwander.common.model.adapters.SSIDConfig
 import dev.zwander.resources.common.MR
@@ -243,14 +244,17 @@ fun SSIDListLayout(
 
             Spacer(modifier = Modifier.size(8.dp))
 
-            var expanded by remember {
+            var encVExpanded by remember {
+                mutableStateOf(false)
+            }
+            var encMExpanded by remember {
                 mutableStateOf(false)
             }
 
             LabeledDropdown(
                 label = stringResource(MR.strings.encryption),
-                expanded = expanded,
-                onExpandChange = { expanded = it },
+                expanded = encVExpanded,
+                onExpandChange = { encVExpanded = it },
                 modifier = Modifier.fillMaxWidth(),
                 selectedValue = editingState?.encryptionVersion ?: "",
             ) {
@@ -271,7 +275,38 @@ fun SSIDListLayout(
                             editingState = editingState?.copy(
                                 encryptionVersion = version,
                             )
-                            expanded = false
+                            encVExpanded = false
+                        },
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.size(8.dp))
+
+            LabeledDropdown(
+                label = stringResource(MR.strings.encryption_mode),
+                expanded = encMExpanded,
+                onExpandChange = { encMExpanded = it },
+                modifier = Modifier.fillMaxWidth(),
+                selectedValue = editingState?.encryptionMode ?: "",
+            ) {
+                val versions = remember {
+                    listOf(
+                        EncryptionModes.aes,
+                        EncryptionModes.tkip,
+                    )
+                }
+
+                versions.forEach { version ->
+                    DropdownMenuItem(
+                        text = {
+                            Text(text = version)
+                        },
+                        onClick = {
+                            editingState = editingState?.copy(
+                                encryptionMode = version,
+                            )
+                            encMExpanded = false
                         },
                     )
                 }
