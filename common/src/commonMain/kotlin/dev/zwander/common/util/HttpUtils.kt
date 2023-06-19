@@ -5,9 +5,14 @@ import io.ktor.client.engine.mock.toByteArray
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.request
 import io.ktor.util.toMap
+import korlibs.io.util.quote
 
 object HttpUtils {
-    private val urlRegex = Regex(" <>\"#%\\{}\\|\\\\\\^~\\[]`;/\\?:@=&")
+    private val urlRegex by lazy {
+        Regex(Regex.quote(
+            " <>\"#%{}\\^~[]`;/?:@=&"
+        ))
+    }
 
     suspend fun HttpResponse.formatForReport(): Map<String, String> {
         val map = mutableMapOf<String, String>()
@@ -32,8 +37,11 @@ object HttpUtils {
             this
         } else {
             UserModel.password.value?.let {
-                this.replace(it, "***") + (if (it.matches(urlRegex)) {
-                    urlRegex.findAll(it).joinToString(",", "[", "]")
+                // Check for "|" manually since some versions of Android don't like it being
+                // used in regex.
+                this.replace(it, "***") + (if (it.matches(urlRegex) || it.contains('|')) {
+                    (urlRegex.findAll(it) + if (it.contains('|')) listOf("|") else listOf())
+                        .joinToString(",", "[", "]")
                 } else {
                     ""
                 })
