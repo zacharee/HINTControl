@@ -8,6 +8,7 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
+import com.russhwolf.settings.Settings
 import dev.icerock.moko.resources.compose.painterResource
 import dev.zwander.common.App
 import dev.zwander.common.GradleConfig
@@ -18,7 +19,9 @@ import io.github.mimoguz.custom_window.DwmAttribute
 import io.github.mimoguz.custom_window.StageOps
 import org.jetbrains.skiko.OS
 import org.jetbrains.skiko.hostOs
+import java.util.UUID
 
+private const val UUID_KEY = "bugsnag_user_id"
 
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {
@@ -26,8 +29,15 @@ fun main() {
     System.setProperty("apple.awt.application.appearance", "system")
     System.setProperty("apple.awt.application.name", MR.strings.app_name.localized())
 
+    val settings = Settings()
+
+    val uuid = settings.getStringOrNull(UUID_KEY) ?: UUID.randomUUID().toString().also {
+        settings.putString(UUID_KEY, it)
+    }
+
     bugsnag.setAppVersion(GradleConfig.versionName)
     bugsnag.addCallback {
+        it.setUserId(uuid)
         it.addToTab("app", "version_code", GradleConfig.versionCode)
         it.addToTab("app", "jdk_architecture", System.getProperty("sun.arch.data.model"))
     }
