@@ -2,9 +2,22 @@
 HINT Control collects no personal information from your device. Any data that is collected is non-sensitive and anonymous.
 
 ## Crash Reports
-HINT Control uses Bugsnag to collect crash reports on Desktop, Android, and iOS. Bugsnag reports are completely anonymous and only contain stack traces and basic device information needed for debugging.
+HINT Control uses Bugsnag to collect crash reports on Desktop, Android, and iOS. Bugsnag reports are completely anonymous and only contain basic information needed for debugging.
 
-Information such as your name or email address is not included.
+This information usually includes:
+- Stack traces (where a crash or error occurred in the source code).
+- Device information such as OS version and model.
+- HTTP information such as the content of requests and responses (stripped to remove credentials *before* being uploaded).
+- Breadcrumbs (where the app navigated and when it went to the background/foreground leading up to the error).
+
+Reports do not include any personal information, including, but not limited to:
+- Name.
+- Email address.
+- Phone number.
+- IMEI.
+- SIM ID.
+- Location.
+- Statistics from your gateway, such as Cell ID or connected bands.
 
 ## Gateway Password
 HINT Control can optionally store your gateway login and automatically authenticate on subsequent app launches.
