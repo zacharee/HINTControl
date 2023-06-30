@@ -1,5 +1,6 @@
 package dev.zwander.common.util
 
+import dev.zwander.common.exceptions.InvalidJSONException
 import dev.zwander.common.exceptions.NoGatewayFoundException
 import io.ktor.client.network.sockets.ConnectTimeoutException
 import io.ktor.client.network.sockets.SocketTimeoutException
@@ -53,6 +54,10 @@ object Bugsnag {
         }
 
         if (e.message?.contains("Internal Server Error") == true) {
+            return
+        }
+
+        if (e is InvalidJSONException && e.message?.startsWith("<!doctype html>") == true) {
             return
         }
 
