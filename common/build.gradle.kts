@@ -53,13 +53,13 @@ kotlin {
     }
 
     sourceSets {
-        val ktorVersion = "2.3.2-eap-695"
-        val coroutinesVersion = "1.7.1"
+        val ktorVersion = "2.3.2"
+        val coroutinesVersion = "1.7.2"
         val slf4jVersion = "2.0.7"
         val multiplatformSettingsVersion = "1.0.0"
         val mokoMvvmVersion = "0.16.1"
         val mokoResourcesVersion = rootProject.extra["moko.resources.version"].toString()
-        val korlibsVersion = "4.0.6"
+        val korlibsVersion = "4.0.7"
 
         val commonMain by getting {
             dependencies {
@@ -80,7 +80,7 @@ kotlin {
                 api("com.soywiz.korlibs.korio:korio:${korlibsVersion}")
                 api("com.russhwolf:multiplatform-settings:${multiplatformSettingsVersion}")
                 api("com.russhwolf:multiplatform-settings-no-arg:${multiplatformSettingsVersion}")
-                api("org.jetbrains.kotlinx:atomicfu:0.20.2")
+                api("org.jetbrains.kotlinx:atomicfu:${rootProject.extra["kotlin.atomicfu.version"]}")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core") {
                     version {
                         strictly(coroutinesVersion)
@@ -102,7 +102,7 @@ kotlin {
                     }
                 }
                 api("com.bugsnag:bugsnag-android:5.30.0")
-                api("com.getkeepsafe.relinker:relinker:1.4.4")
+                api("com.getkeepsafe.relinker:relinker:1.4.5")
             }
         }
         val skiaMain by creating {
