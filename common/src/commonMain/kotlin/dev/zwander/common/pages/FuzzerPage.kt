@@ -116,7 +116,7 @@ fun FuzzerPage(
                 onClick = {
                     scope.launch {
                         response = it.runMethod(
-                            "${SettingsModel.gatewayIp.value}/${url}",
+                            "http://${SettingsModel.gatewayIp.value}/${url}",
                             body.replace("\"", "\\\"")
                         )?.bodyAsText()
                     }
