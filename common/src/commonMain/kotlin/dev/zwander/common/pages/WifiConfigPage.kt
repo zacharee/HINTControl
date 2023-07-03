@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
 import dev.icerock.moko.resources.StringResource
@@ -124,6 +125,11 @@ fun WifiConfigPage(
                 },
                 enabled = tempState != data && tempState != null,
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
+                colors = ButtonDefaults.buttonColors(
+                    disabledContainerColor = MaterialTheme.colorScheme.onSurface
+                        .copy(alpha = 0.12f)
+                        .compositeOver(MaterialTheme.colorScheme.background),
+                ),
             ) {
                 Text(
                     text = stringResource(MR.strings.save)
