@@ -2,7 +2,14 @@
 
 package dev.zwander.common.pages
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -18,10 +25,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.stringResource
-import dev.zwander.common.components.*
+import dev.zwander.common.components.CellBars
+import dev.zwander.common.components.CellDataLayout
+import dev.zwander.common.components.DeviceDataLayout
+import dev.zwander.common.components.InfoRow
+import dev.zwander.common.components.MainDataLayout
+import dev.zwander.common.components.PageGrid
 import dev.zwander.common.components.dialog.AlertDialogDef
 import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.MainModel
@@ -134,36 +145,28 @@ fun MainPage(
     Box(
         modifier = modifier
     ) {
-        Column(
+        PageGrid(
+            id = "MainPage",
+            items = items,
             modifier = Modifier.fillMaxSize(),
-        ) {
-            PageGrid(
-                items = items,
-                modifier = Modifier.fillMaxWidth().weight(1f),
-                renderItemTitle = {
-                    Row(
-                        modifier = Modifier.fillMaxWidth()
-                            .height(IntrinsicSize.Min),
-                        verticalAlignment = Alignment.Bottom,
-                    ) {
-                        Text(
-                            text = stringResource(it.title),
-                            modifier = Modifier.weight(1f),
-                        )
+            renderItemTitle = {
+                Row(
+                    modifier = Modifier.fillMaxWidth()
+                        .height(IntrinsicSize.Min),
+                    verticalAlignment = Alignment.Bottom,
+                ) {
+                    Text(
+                        text = stringResource(it.title),
+                        modifier = Modifier.weight(1f),
+                    )
 
-                        it.titleAccessory?.invoke(Modifier.fillMaxHeight().aspectRatio(1f))
-                    }
-                },
-                renderItem = {
-                    it.render(Modifier.fillMaxWidth())
+                    it.titleAccessory?.invoke(Modifier.fillMaxHeight().aspectRatio(1f))
                 }
-            )
-
-            Row(
-                modifier = Modifier.fillMaxWidth().padding(8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
+            },
+            renderItem = {
+                it.render(Modifier.fillMaxWidth())
+            },
+            bottomBarContents = {
                 Button(
                     onClick = {
                         scope.launch {
@@ -192,7 +195,7 @@ fun MainPage(
                     )
                 }
             }
-        }
+        )
     }
 
     AlertDialogDef(

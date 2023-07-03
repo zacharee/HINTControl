@@ -2,7 +2,6 @@
 
 package dev.zwander.common.pages
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -98,43 +97,41 @@ fun WifiConfigPage(
         list
     }
 
-    Column(
+    PageGrid(
+        items = items,
         modifier = modifier,
-    ) {
-        PageGrid(
-            items = items,
-            modifier = Modifier.fillMaxWidth().weight(1f),
-            renderItemTitle = {
-                Text(
-                    text = stringResource(it.title),
-                )
-            },
-            renderItem = {
-                it.render(Modifier.fillMaxWidth())
-            },
-            renderItemDescription = {
-                it.description?.invoke()
-            },
-        )
-
-        Button(
-            onClick = {
-                if ((tempState?.twoGig?.isRadioEnabled == false && tempState?.twoGig?.isRadioEnabled != data?.twoGig?.isRadioEnabled) ||
-                    (tempState?.fiveGig?.isRadioEnabled == false && tempState?.fiveGig?.isRadioEnabled != data?.fiveGig?.isRadioEnabled)
-                ) {
-                    showingRadioWarning = true
-                } else {
-                    save()
-                }
-            },
-            enabled = tempState != data && tempState != null,
-            modifier = Modifier.fillMaxWidth().padding(8.dp),
-        ) {
+        renderItemTitle = {
             Text(
-                text = stringResource(MR.strings.save)
+                text = stringResource(it.title),
             )
-        }
-    }
+        },
+        renderItem = {
+            it.render(Modifier.fillMaxWidth())
+        },
+        renderItemDescription = {
+            it.description?.invoke()
+        },
+        bottomBarContents = {
+            Button(
+                onClick = {
+                    if ((tempState?.twoGig?.isRadioEnabled == false && tempState?.twoGig?.isRadioEnabled != data?.twoGig?.isRadioEnabled) ||
+                        (tempState?.fiveGig?.isRadioEnabled == false && tempState?.fiveGig?.isRadioEnabled != data?.fiveGig?.isRadioEnabled)
+                    ) {
+                        showingRadioWarning = true
+                    } else {
+                        save()
+                    }
+                },
+                enabled = tempState != data && tempState != null,
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
+            ) {
+                Text(
+                    text = stringResource(MR.strings.save)
+                )
+            }
+        },
+        showBottomBarExpander = false,
+    )
 
     AlertDialogDef(
         showing = showingRadioWarning,
