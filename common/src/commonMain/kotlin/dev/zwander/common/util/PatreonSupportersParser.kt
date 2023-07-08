@@ -52,7 +52,6 @@ class PatreonSupportersParser private constructor() {
             Json.decodeFromString(ListSerializer(SupporterInfo.serializer()), supportersString.toString())
         } catch (e: Exception) {
             e.printStackTrace()
-            Bugsnag.notify(Exception(supportersString.toString(), e))
             listOf()
         }
     }
