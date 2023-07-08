@@ -31,7 +31,7 @@ private data class SSIDItem(
     val data: SSIDConfig?,
 )
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 @HiddenFromObjC
 fun SSIDListLayout(
@@ -210,37 +210,42 @@ fun SSIDListLayout(
             )
         },
         text = {
-            OutlinedTextField(
-                value = editingState?.ssidName ?: "",
-                onValueChange = {
-                    editingState = editingState?.copy(
-                        ssidName = it,
-                    )
-                },
-                label = {
-                    Text(
-                        text = stringResource(MR.strings.ssid),
-                    )
-                },
+            FlowRow(
                 modifier = Modifier.fillMaxWidth(),
-                isError = editingState?.ssidName.isNullOrBlank(),
-            )
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                OutlinedTextField(
+                    value = editingState?.ssidName ?: "",
+                    onValueChange = {
+                        editingState = editingState?.copy(
+                            ssidName = it,
+                        )
+                    },
+                    label = {
+                        Text(
+                            text = stringResource(MR.strings.ssid),
+                        )
+                    },
+                    modifier = Modifier.weight(1f),
+                    isError = editingState?.ssidName.isNullOrBlank(),
+                )
 
-            OutlinedTextField(
-                value = editingState?.wpaKey ?: "",
-                onValueChange = {
-                    editingState = editingState?.copy(
-                        wpaKey = it,
-                    )
-                },
-                label = {
-                    Text(
-                        text = stringResource(MR.strings.password),
-                    )
-                },
-                modifier = Modifier.fillMaxWidth(),
-                isError = !validWpaKey,
-            )
+                OutlinedTextField(
+                    value = editingState?.wpaKey ?: "",
+                    onValueChange = {
+                        editingState = editingState?.copy(
+                            wpaKey = it,
+                        )
+                    },
+                    label = {
+                        Text(
+                            text = stringResource(MR.strings.password),
+                        )
+                    },
+                    modifier = Modifier.weight(1f),
+                    isError = !validWpaKey,
+                )
+            }
 
             Spacer(modifier = Modifier.size(8.dp))
 
