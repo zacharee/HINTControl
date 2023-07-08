@@ -51,6 +51,7 @@ import io.ktor.client.plugins.auth.providers.bearer
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.cookies.HttpCookies
 import io.ktor.client.plugins.defaultRequest
+import io.ktor.client.request.HttpRequestPipeline
 import io.ktor.client.request.forms.submitForm
 import io.ktor.client.request.get
 import io.ktor.client.request.post
@@ -518,6 +519,16 @@ interface HTTPClient {
         showError: Boolean = true,
         methodBlock: suspend HttpClient.() -> HttpResponse,
     ): HttpResponse? {
+        this.requestPipeline.intercept(HttpRequestPipeline.Before) {
+            BugsnagUtils.addBreadcrumb(
+                "Making request.",
+                mapOf(
+                    "url" to this.context.url.buildString(),
+                    "method" to this.context.method,
+                )
+            )
+        }
+
         try {
             return methodBlock().also { if (showError) it.setError() }
         } catch (_: CancellationException) {

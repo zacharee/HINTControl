@@ -2,6 +2,7 @@ package dev.zwander.common.util
 
 import dev.zwander.common.exceptions.InvalidJSONException
 import dev.zwander.common.exceptions.NoGatewayFoundException
+import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.MainModel
 import io.ktor.client.network.sockets.ConnectTimeoutException
 import io.ktor.client.network.sockets.SocketTimeoutException
@@ -83,10 +84,20 @@ object Bugsnag {
                 key = "model",
                 value = MainModel.currentMainData.value?.device?.model,
             ),
+            ExtraErrorData(
+                tabName = "gateway",
+                key = "client",
+                value = GlobalModel.httpClient.value?.let { it::class.qualifiedName ?: it::class.simpleName },
+            ),
         )
     }
 }
 
 expect object BugsnagUtils {
     fun notify(e: Throwable)
+
+    fun addBreadcrumb(
+        message: String,
+        data: Map<String?, Any?>,
+    )
 }
