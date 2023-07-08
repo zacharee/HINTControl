@@ -51,6 +51,8 @@ fun main() {
         }
     }
 
+    bugsnag.setAutoCaptureSessions(true)
+
     when (hostOs) {
         OS.Windows -> {
             System.setProperty("skiko.renderApi", "OPENGL")
