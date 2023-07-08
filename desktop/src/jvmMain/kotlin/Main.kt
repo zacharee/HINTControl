@@ -1,7 +1,10 @@
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyShortcut
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.MenuBar
 import androidx.compose.ui.window.Window
@@ -19,6 +22,7 @@ import io.github.mimoguz.custom_window.DwmAttribute
 import io.github.mimoguz.custom_window.StageOps
 import org.jetbrains.skiko.OS
 import org.jetbrains.skiko.hostOs
+import java.awt.Dimension
 import java.util.UUID
 
 private const val UUID_KEY = "bugsnag_user_id"
@@ -60,31 +64,46 @@ fun main() {
             state = windowState,
             icon = painterResource(MR.images.icon),
         ) {
-            window.rootPane.putClientProperty("apple.awt.transparentTitleBar", true)
-            window.rootPane.putClientProperty("apple.awt.fullWindowContent", true)
-
             // For some reason this returns the title bar height on macOS.
-            val menuBarHeight = if (hostOs == OS.MacOS) window.height.dp else 0.dp
+            val menuBarHeight = remember {
+                if (hostOs == OS.MacOS) window.height.dp else 0.dp
+            }
+
+            val density = LocalDensity.current
+
+            LaunchedEffect(null) {
+                // Set this after getting the original height.
+                window.minimumSize = with(density) {
+                    Dimension(200.dp.roundToPx(), 200.dp.roundToPx())
+                }
+
+                window.rootPane.putClientProperty("apple.awt.transparentTitleBar", true)
+                window.rootPane.putClientProperty("apple.awt.fullWindowContent", true)
+            }
 
             when (hostOs) {
                 OS.Windows -> {
-                    val handle = StageOps.findWindowHandle(window)
-                    StageOps.dwmSetBooleanValue(
-                        handle,
-                        DwmAttribute.DWMWA_USE_IMMERSIVE_DARK_MODE,
-                        false,
-                    )
-                    getThemeInfo().colors?.background?.let {
-                        StageOps.setCaptionColor(
+                    val themeInfo = getThemeInfo()
+
+                    LaunchedEffect(themeInfo) {
+                        val handle = StageOps.findWindowHandle(window)
+                        StageOps.dwmSetBooleanValue(
                             handle,
-                            it
+                            DwmAttribute.DWMWA_USE_IMMERSIVE_DARK_MODE,
+                            false,
                         )
-                    }
-                    getThemeInfo().colors?.onBackground?.let {
-                        StageOps.setTextColor(
-                            handle,
-                            it
-                        )
+                        themeInfo.colors?.background?.let {
+                            StageOps.setCaptionColor(
+                                handle,
+                                it
+                            )
+                        }
+                        themeInfo.colors?.onBackground?.let {
+                            StageOps.setTextColor(
+                                handle,
+                                it
+                            )
+                        }
                     }
                 }
                 OS.MacOS -> {
