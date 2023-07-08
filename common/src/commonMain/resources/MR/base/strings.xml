@@ -10,6 +10,7 @@
     <string name="reboot">Reboot</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="error">Error</string>
 
     <string name="show_password">Show Password</string>
     <string name="hide_password">Hide Password</string>
