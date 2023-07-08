@@ -17,6 +17,13 @@ class App : Application() {
         instance = this
 
         ReLinker.loadLibrary(this, "bugsnag-plugin-android-anr")
-        Bugsnag.start(this)
+        Bugsnag.start(this).apply {
+            this.addOnError {
+                dev.zwander.common.util.Bugsnag.generateExtraErrorData().forEach { data ->
+                    it.addMetadata(data.tabName, data.key, data.value)
+                }
+                true
+            }
+        }
     }
 }

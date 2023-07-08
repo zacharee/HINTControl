@@ -16,6 +16,7 @@ import dev.icerock.moko.resources.compose.painterResource
 import dev.zwander.common.App
 import dev.zwander.common.GradleConfig
 import dev.zwander.common.ui.getThemeInfo
+import dev.zwander.common.util.Bugsnag
 import dev.zwander.common.util.BugsnagUtils.bugsnag
 import dev.zwander.resources.common.MR
 import io.github.mimoguz.custom_window.DwmAttribute
@@ -44,6 +45,10 @@ fun main() {
         it.setUserId(uuid)
         it.addToTab("app", "version_code", GradleConfig.versionCode)
         it.addToTab("app", "jdk_architecture", System.getProperty("sun.arch.data.model"))
+
+        Bugsnag.generateExtraErrorData().forEach { data ->
+            it.addToTab(data.tabName, data.key, data.value)
+        }
     }
 
     when (hostOs) {

@@ -2,10 +2,17 @@ package dev.zwander.common.util
 
 import dev.zwander.common.exceptions.InvalidJSONException
 import dev.zwander.common.exceptions.NoGatewayFoundException
+import dev.zwander.common.model.MainModel
 import io.ktor.client.network.sockets.ConnectTimeoutException
 import io.ktor.client.network.sockets.SocketTimeoutException
 import io.ktor.client.plugins.HttpRequestTimeoutException
 import kotlinx.coroutines.CancellationException
+
+data class ExtraErrorData(
+    val tabName: String,
+    val key: String,
+    val value: Any?,
+)
 
 object Bugsnag {
     fun notify(e: Throwable) {
@@ -57,11 +64,26 @@ object Bugsnag {
             return
         }
 
-        if (e is InvalidJSONException && e.message?.startsWith("<!doctype html>") == true) {
+        if (e is InvalidJSONException && e.message?.lowercase()?.startsWith("<!doctype html>") == true) {
             return
         }
 
         BugsnagUtils.notify(e)
+    }
+
+    fun generateExtraErrorData(): List<ExtraErrorData> {
+        return listOf(
+            ExtraErrorData(
+                tabName = "gateway",
+                key = "firmware",
+                value = MainModel.currentMainData.value?.device?.softwareVersion,
+            ),
+            ExtraErrorData(
+                tabName = "gateway",
+                key = "model",
+                value = MainModel.currentMainData.value?.device?.model,
+            ),
+        )
     }
 }
 
