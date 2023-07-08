@@ -45,7 +45,6 @@ class PatreonSupportersParser private constructor() {
                 supportersString.append(statement.bodyAsText())
             } catch (e: Exception) {
                 e.printStackTrace()
-                Bugsnag.notify(e)
             }
         }
 
