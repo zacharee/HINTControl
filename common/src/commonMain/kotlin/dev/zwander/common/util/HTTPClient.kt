@@ -1026,7 +1026,7 @@ private object ArcadyanSagemcomClient : HTTPClient {
         return try {
             val response = httpClient.get(Endpoints.gateWayURL.createFullUrl())
 
-            response.status.value != 404
+            !intArrayOf(404, 403).contains(response.status.value)
         } catch (e: Exception) {
             Bugsnag.notify(e)
             false
