@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.onClick
 import androidx.compose.runtime.Composable
@@ -44,6 +45,7 @@ import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.AlignmentOffsetPositionProvider
 import androidx.compose.ui.window.PopupPositionProvider
 import kotlin.experimental.ExperimentalObjCRefinement
@@ -94,7 +96,7 @@ actual fun CAlertDialog(
                             .then(
                                 Modifier.widthIn(
                                     max = constraints.maxWidth.toDp() * maxWidthPercent
-                                ).onClick {
+                                ).padding(vertical = 16.dp).onClick {
                                     // To prevent the Box's onClick consuming clicks on the dialog itself.
                                 }
                             ),
