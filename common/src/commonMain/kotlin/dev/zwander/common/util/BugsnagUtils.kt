@@ -1,6 +1,5 @@
 package dev.zwander.common.util
 
-import dev.zwander.common.exceptions.InvalidJSONException
 import dev.zwander.common.exceptions.NoGatewayFoundException
 import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.MainModel
@@ -62,10 +61,6 @@ object Bugsnag {
         }
 
         if (e.message?.contains("Internal Server Error") == true) {
-            return
-        }
-
-        if (e is InvalidJSONException && e.message?.lowercase()?.startsWith("<!doctype html>") == true) {
             return
         }
 
