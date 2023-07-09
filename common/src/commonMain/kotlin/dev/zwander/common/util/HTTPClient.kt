@@ -524,7 +524,7 @@ interface HTTPClient {
                 "Making request.",
                 mapOf(
                     "url" to this.context.url.buildString(),
-                    "method" to this.context.method,
+                    "method" to this.context.method.value,
                 )
             )
         }
