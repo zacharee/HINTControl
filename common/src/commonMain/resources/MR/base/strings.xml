@@ -159,4 +159,6 @@
 
     <string name="zachary_wander">Zachary Wander</string>
     <string name="shad">Shad</string>
+
+    <string name="connection">Connection</string>
 </resources>

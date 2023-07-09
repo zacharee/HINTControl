@@ -4,8 +4,10 @@ import android.annotation.SuppressLint
 import android.app.Application
 import com.bugsnag.android.Bugsnag
 import com.getkeepsafe.relinker.ReLinker
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.MainScope
 
-class App : Application() {
+class App : Application(), CoroutineScope by MainScope() {
     companion object {
         @SuppressLint("StaticFieldLeak")
         var instance: App? = null
