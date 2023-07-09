@@ -33,7 +33,6 @@ import dev.zwander.common.model.adapters.WirelessClientData
 import dev.zwander.common.model.adapters.nokia.CellStatus
 import dev.zwander.common.model.adapters.nokia.ConnectionStatus
 import dev.zwander.common.model.adapters.nokia.DeviceInfoStatus
-import dev.zwander.common.model.adapters.nokia.RebootAction
 import dev.zwander.common.model.adapters.nokia.SetSSIDConfig
 import dev.zwander.common.model.adapters.nokia.SetWifiConfig
 import dev.zwander.common.model.adapters.nokia.StatisticsInfo
@@ -892,10 +891,12 @@ private object NokiaClient : HTTPClient {
     override suspend fun reboot() {
         withLoader(true) {
             httpClient.handleCatch {
-                post(Endpoints.nokiaServiceFunction.createNokiaUrl()) {
-                    contentType(ContentType.parse("application/json"))
-                    setBody(RebootAction())
-                }
+                submitForm(
+                    url = Endpoints.nokiaLogin.createNokiaUrl(),
+                    formParameters = parameters {
+                        append("action", "Reboot")
+                    },
+                )
             }
         }
     }
