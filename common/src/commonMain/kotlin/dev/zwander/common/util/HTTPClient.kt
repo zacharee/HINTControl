@@ -452,7 +452,7 @@ interface HTTPClient {
     val unauthedClient: HttpClient
 
     suspend fun logIn(username: String, password: String, rememberCredentials: Boolean)
-    suspend fun getMainData(): MainData?
+    suspend fun getMainData(unauthed: Boolean = false): MainData?
     suspend fun getWifiData(): WifiConfig?
     suspend fun getDeviceData(): ClientDeviceData?
     suspend fun getCellData(): CellDataRoot?
@@ -516,6 +516,7 @@ interface HTTPClient {
 
     suspend fun HttpClient.handleCatch(
         showError: Boolean = true,
+        reportError: Boolean = true,
         methodBlock: suspend HttpClient.() -> HttpResponse,
     ): HttpResponse? {
         this.requestPipeline.intercept(HttpRequestPipeline.Before) {
@@ -536,7 +537,7 @@ interface HTTPClient {
             if (!waitForLive()) {
                 if (showError) {
                     GlobalModel.updateHttpError(e)
-                } else {
+                } else if (reportError) {
                     Bugsnag.notify(e)
                 }
             }
@@ -544,7 +545,7 @@ interface HTTPClient {
             Exception(e).printStackTrace()
             if (showError) {
                 GlobalModel.updateHttpError(e)
-            } else {
+            } else if (reportError) {
                 Bugsnag.notify(e)
             }
         }
@@ -619,20 +620,20 @@ private object NokiaClient : HTTPClient {
         NokiaClients.cookieStorage.clear()
     }
 
-    override suspend fun getMainData(): MainData? {
+    override suspend fun getMainData(unauthed: Boolean): MainData? {
         return withLoader {
             val nokiaDeviceData = json.decodeFromString<DeviceInfoStatus>(
-                httpClient.handleCatch {
+                (if (unauthed) unauthedClient else httpClient).handleCatch(!unauthed, !unauthed) {
                     get(Endpoints.nokiaDeviceInfoStatus.createNokiaUrl())
                 }?.bodyAsText()
             )
             val cellStatus = json.decodeFromString<CellStatus>(
-                httpClient.handleCatch {
+                (if (unauthed) unauthedClient else httpClient).handleCatch(!unauthed, !unauthed) {
                     get(Endpoints.nokiaCellStatus.createNokiaUrl())
                 }?.bodyAsText()
             )
             val connectionStatus = json.decodeFromString<ConnectionStatus>(
-                httpClient.handleCatch {
+                (if (unauthed) unauthedClient else httpClient).handleCatch(!unauthed, !unauthed) {
                     get(Endpoints.nokiaRadioStatus.createNokiaUrl())
                 }?.bodyAsText()
             )
@@ -954,10 +955,10 @@ private object ArcadyanSagemcomClient : HTTPClient {
         }
     }
 
-    override suspend fun getMainData(): MainData? {
+    override suspend fun getMainData(unauthed: Boolean): MainData? {
         return withLoader {
             json.decodeFromString(
-                httpClient.handleCatch {
+                (if (unauthed) unauthedClient else httpClient).handleCatch(!unauthed, !unauthed) {
                     get(Endpoints.gateWayURL.createFullUrl())
                 }?.bodyAsText()
             )

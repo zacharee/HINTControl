@@ -111,6 +111,7 @@ fun LoginPage(
         }
         error = null
         focusManager.clearFocus()
+        actualClient?.getMainData(true)
         actualClient?.logIn(usernameTemp, passwordTemp ?: "", rememberCredentials)
     }
 
