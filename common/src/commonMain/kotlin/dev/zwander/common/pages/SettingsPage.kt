@@ -22,7 +22,9 @@ import dev.zwander.common.components.settings.AutoRefresh
 import dev.zwander.common.components.settings.Credits
 import dev.zwander.common.components.settings.DefaultPage
 import dev.zwander.common.components.settings.Supporters
+import dev.zwander.common.components.settings.WidgetRefresh
 import dev.zwander.resources.common.MR
+import korlibs.memory.Platform
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
 
@@ -83,7 +85,18 @@ fun SettingsPage(
                     Credits()
                 },
             ),
-        )
+        ) + if (Platform.isAndroid) {
+            listOf(
+                SettingsItem(
+                    title = MR.strings.widget_refresh,
+                    render = {
+                        WidgetRefresh()
+                    },
+                ),
+            )
+        } else {
+            listOf()
+        }
     }
 
     Box(
