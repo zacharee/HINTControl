@@ -1,6 +1,6 @@
 package dev.zwander.common.ui
 
-import dev.zwander.common.util.Bugsnag
+import dev.zwander.common.util.CrossPlatformBugsnag
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -33,7 +33,7 @@ internal class GenericLinuxThemeDetector {
             } catch (e: IOException) {
                 println("Couldn't detect Linux OS theme")
                 e.printStackTrace()
-                Bugsnag.notify(e)
+                CrossPlatformBugsnag.notify(e)
             }
             return false
         }
@@ -100,7 +100,7 @@ internal class GenericLinuxThemeDetector {
                                 } catch (e: RuntimeException) {
                                     println("Caught exception during listener notifying ")
                                     e.printStackTrace()
-                                    Bugsnag.notify(e)
+                                    CrossPlatformBugsnag.notify(e)
                                 }
                             }
                         }
@@ -114,11 +114,11 @@ internal class GenericLinuxThemeDetector {
             } catch (e: IOException) {
                 println("Couldn't start monitoring process ")
                 e.printStackTrace()
-                Bugsnag.notify(e)
+                CrossPlatformBugsnag.notify(e)
             } catch (e: ArrayIndexOutOfBoundsException) {
                 println("Couldn't parse command line output")
                 e.printStackTrace()
-                Bugsnag.notify(e)
+                CrossPlatformBugsnag.notify(e)
             }
         }
     }

@@ -538,7 +538,7 @@ interface HTTPClient {
                 if (showError) {
                     GlobalModel.updateHttpError(e)
                 } else if (reportError) {
-                    Bugsnag.notify(e)
+                    CrossPlatformBugsnag.notify(e)
                 }
             }
         } catch (e: Exception) {
@@ -546,7 +546,7 @@ interface HTTPClient {
             if (showError) {
                 GlobalModel.updateHttpError(e)
             } else if (reportError) {
-                Bugsnag.notify(e)
+                CrossPlatformBugsnag.notify(e)
             }
         }
 
@@ -906,7 +906,7 @@ private object NokiaClient : HTTPClient {
         return try {
             unauthedClient.get(Endpoints.nokiaDeviceStatus.createNokiaUrl()).status.isSuccess()
         } catch (e: Exception) {
-            Bugsnag.notify(e)
+            CrossPlatformBugsnag.notify(e)
             false
         }
     }
@@ -1041,7 +1041,7 @@ private object ArcadyanSagemcomClient : HTTPClient {
 
             !intArrayOf(404, 403).contains(response.status.value)
         } catch (e: Exception) {
-            Bugsnag.notify(e)
+            CrossPlatformBugsnag.notify(e)
             false
         }
     }

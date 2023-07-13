@@ -14,7 +14,7 @@ data class ExtraErrorData(
     val value: Any?,
 )
 
-object Bugsnag {
+object CrossPlatformBugsnag {
     fun notify(e: Throwable) {
         if (e is SocketTimeoutException) {
             return
