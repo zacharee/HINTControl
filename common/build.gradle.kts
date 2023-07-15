@@ -61,6 +61,7 @@ kotlin {
         val mokoMvvmVersion = "0.16.1"
         val mokoResourcesVersion = rootProject.extra["moko.resources.version"].toString()
         val korlibsVersion = "4.0.7"
+        val kstoreVersion = "0.6.0"
 
         val commonMain by getting {
             dependencies {
@@ -81,6 +82,8 @@ kotlin {
                 api("com.soywiz.korlibs.korio:korio:${korlibsVersion}")
                 api("com.russhwolf:multiplatform-settings:${multiplatformSettingsVersion}")
                 api("com.russhwolf:multiplatform-settings-no-arg:${multiplatformSettingsVersion}")
+                api("io.github.xxfast:kstore:$kstoreVersion")
+                api("io.github.xxfast:kstore-file:$kstoreVersion")
                 api("org.jetbrains.kotlinx:atomicfu:${rootProject.extra["kotlin.atomicfu.version"]}")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core") {
                     version {
@@ -124,6 +127,7 @@ kotlin {
                 api("com.bugsnag:bugsnag:3.7.0")
                 api("com.github.Dansoftowner:jSystemThemeDetector:3.8")
                 api("com.github.oshi:oshi-core:6.4.4")
+                api("net.harawata:appdirs:1.2.1")
             }
         }
 
@@ -197,5 +201,6 @@ buildkonfig {
         buildConfigField(STRING, "versionName", "${rootProject.extra["app_version_name"]}")
         buildConfigField(STRING, "versionCode", "${rootProject.extra["app_version_code"]}")
         buildConfigField(STRING, "appName", "${rootProject.extra["app_name"]}")
+        buildConfigField(STRING, "packageName", "${rootProject.extra["package_name"]}")
     }
 }
