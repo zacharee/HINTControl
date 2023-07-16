@@ -161,4 +161,9 @@
     <string name="shad">Shad</string>
 
     <string name="connection">Connection</string>
+
+    <string name="record_snapshots">Record Snapshots</string>
+    <string name="record_snapshots_desc">When enabled, each time new data is fetched, it will be appended to a JSON file.</string>
+    <string name="export">Export</string>
+    <string name="clear">Clear</string>
 </resources>

@@ -21,6 +21,7 @@ import dev.zwander.common.components.settings.AboutTitleAddon
 import dev.zwander.common.components.settings.AutoRefresh
 import dev.zwander.common.components.settings.Credits
 import dev.zwander.common.components.settings.DefaultPage
+import dev.zwander.common.components.settings.RecordSnapshots
 import dev.zwander.common.components.settings.Supporters
 import dev.zwander.common.components.settings.WidgetRefresh
 import dev.zwander.resources.common.MR
@@ -65,6 +66,17 @@ fun SettingsPage(
                 },
             ),
             SettingsItem(
+                title = MR.strings.record_snapshots,
+                render = {
+                    RecordSnapshots()
+                },
+                description = {
+                    Text(
+                        text = stringResource(MR.strings.record_snapshots_desc)
+                    )
+                },
+            ),
+            SettingsItem(
                 title = MR.strings.about,
                 render = {
                     About()
@@ -85,7 +97,7 @@ fun SettingsPage(
                     Credits()
                 },
             ),
-        ) + if (Platform.isAndroid) {
+        ) + if (Platform.isAndroid || Platform.isIos) {
             listOf(
                 SettingsItem(
                     title = MR.strings.widget_refresh,

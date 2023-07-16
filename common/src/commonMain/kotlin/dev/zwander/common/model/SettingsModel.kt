@@ -11,4 +11,5 @@ object SettingsModel {
     val defaultPage = PersistentMutableStateFlow<Page>(SettingsManager.Keys.DEFAULT_PAGE, Page.Main)
     val gatewayIp = PersistentMutableStateFlow<String>(SettingsManager.Keys.GATEWAY_IP, "192.168.12.1")
     val widgetRefreshMs = PersistentMutableStateFlow(SettingsManager.Keys.WIDGET_REFRESH_PERIOD_MS, 60000L)
+    val recordSnapshots = PersistentMutableStateFlow(SettingsManager.Keys.RECORD_SNAPSHOTS, false)
 }

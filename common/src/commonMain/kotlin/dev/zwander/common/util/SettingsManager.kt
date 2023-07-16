@@ -12,6 +12,7 @@ object SettingsManager {
         const val DEFAULT_PAGE = "default_page"
         const val GATEWAY_IP = "gateway_ip"
         const val WIDGET_REFRESH_PERIOD_MS = "widget_refresh_period_ms"
+        const val RECORD_SNAPSHOTS = "record_snapshots"
     }
 
     val settings = Settings()

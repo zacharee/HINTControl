@@ -83,6 +83,7 @@ import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.SettingsModel
 import dev.zwander.common.model.UserModel
 import dev.zwander.common.ui.Theme
+import dev.zwander.common.util.Storage
 import dev.zwander.resources.common.MR
 import korlibs.memory.Platform
 import kotlinx.coroutines.delay
@@ -108,6 +109,7 @@ fun App(
     val autoRefresh by SettingsModel.enableAutoRefresh.collectAsState()
     val autoRefreshMs by SettingsModel.autoRefreshMs.collectAsState()
     val isLoggedIn by UserModel.isLoggedIn.collectAsState(false)
+    val saveSnapshots by SettingsModel.recordSnapshots.collectAsState()
 
     var currentPage by GlobalModel.currentPage.collectAsMutableState()
     val error by GlobalModel.httpError.collectAsState()
@@ -117,6 +119,14 @@ fun App(
     val isBlocking by remember {
         derivedStateOf {
             isBlockingState || (httpClient == null && httpError == null)
+        }
+    }
+
+    LaunchedEffect(saveSnapshots) {
+        if (saveSnapshots) {
+            Storage.startListening()
+        } else {
+            Storage.stopListening()
         }
     }
 

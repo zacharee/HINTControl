@@ -85,6 +85,7 @@ kotlin {
                 api("io.github.xxfast:kstore:$kstoreVersion")
                 api("io.github.xxfast:kstore-file:$kstoreVersion")
                 api("org.jetbrains.kotlinx:atomicfu:${rootProject.extra["kotlin.atomicfu.version"]}")
+                api("com.squareup.okio:okio:3.4.0")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core") {
                     version {
                         strictly(coroutinesVersion)

@@ -1,4 +1,5 @@
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -11,6 +12,7 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
+import com.github.weisj.darklaf.LafManager
 import com.russhwolf.settings.Settings
 import dev.icerock.moko.resources.compose.painterResource
 import dev.zwander.common.App
@@ -18,6 +20,7 @@ import dev.zwander.common.GradleConfig
 import dev.zwander.common.ui.getThemeInfo
 import dev.zwander.common.util.CrossPlatformBugsnag
 import dev.zwander.common.util.BugsnagUtils.bugsnag
+import dev.zwander.common.util.LocalFrame
 import dev.zwander.resources.common.MR
 import io.github.mimoguz.custom_window.DwmAttribute
 import io.github.mimoguz.custom_window.StageOps
@@ -61,6 +64,12 @@ fun main() {
             /* no-op */
         }
     }
+
+    LafManager.install(
+        LafManager.themeForPreferredStyle(
+            LafManager.getPreferredThemeStyle()
+        )
+    )
 
     application {
         val windowState = rememberWindowState()
@@ -148,11 +157,15 @@ fun main() {
                 }
             }
 
-            App(
-                fullPadding = PaddingValues(
-                    top = menuBarHeight,
-                ),
-            )
+            CompositionLocalProvider(
+                LocalFrame provides window,
+            ) {
+                App(
+                    fullPadding = PaddingValues(
+                        top = menuBarHeight,
+                    ),
+                )
+            }
         }
     }
 }
