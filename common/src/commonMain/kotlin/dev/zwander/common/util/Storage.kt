@@ -29,7 +29,7 @@ object Storage {
 
     private val snapshotMutex = Mutex()
 
-    private var listenJob = atomic<Job?>(initial = null)
+    private val listenJob = atomic<Job?>(initial = null)
 
     suspend fun startListening() = coroutineScope {
         if (listenJob.value != null) {
