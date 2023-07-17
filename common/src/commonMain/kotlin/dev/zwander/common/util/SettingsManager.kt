@@ -2,6 +2,8 @@ package dev.zwander.common.util
 
 import com.russhwolf.settings.Settings
 
+expect fun ActualSettings(): Settings
+
 object SettingsManager {
     object Keys {
         const val USERNAME = "login_username"
@@ -15,7 +17,7 @@ object SettingsManager {
         const val RECORD_SNAPSHOTS = "record_snapshots"
     }
 
-    val settings = Settings()
+    val settings = ActualSettings()
 
     var username: String
         get() = settings.getString(Keys.USERNAME, "admin")

@@ -41,7 +41,7 @@ kotlin {
         version = rootProject.extra["app_version_code"].toString()
         summary = "KVD21Control"
         homepage = "https://zwander.dev"
-        ios.deploymentTarget = "15.2"
+        ios.deploymentTarget = "14.0"
         osx.deploymentTarget = "10.13"
         podfile = project.file("../iosApp/Podfile")
         framework {
@@ -51,6 +51,9 @@ kotlin {
         }
         extraSpecAttributes["resources"] = "['src/commonMain/resources/**', 'src/iosMain/resources/**']"
         pod("Bugsnag")
+
+        xcodeConfigurationToNativeBuildType["Debug"] =
+            org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType.RELEASE
     }
 
     sourceSets {
@@ -93,7 +96,12 @@ kotlin {
                 }
             }
         }
+        val nonAppleMain by creating {
+            dependsOn(commonMain)
+        }
+
         val androidMain by getting {
+            dependsOn(nonAppleMain)
             dependencies {
                 api("androidx.appcompat:appcompat:1.6.1")
                 api("androidx.activity:activity-compose:1.7.2")
@@ -116,6 +124,7 @@ kotlin {
         }
         val desktopMain by getting {
             dependsOn(skiaMain)
+            dependsOn(nonAppleMain)
             dependencies {
                 api(compose.preview)
                 api(compose.desktop.currentOs)
