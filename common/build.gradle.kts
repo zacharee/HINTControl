@@ -63,7 +63,7 @@ kotlin {
         val multiplatformSettingsVersion = "1.0.0"
         val mokoMvvmVersion = "0.16.1"
         val mokoResourcesVersion = rootProject.extra["moko.resources.version"].toString()
-        val korlibsVersion = "4.0.7"
+        val korlibsVersion = "4.0.9"
         val kstoreVersion = "0.6.0"
 
         val commonMain by getting {
@@ -145,7 +145,7 @@ kotlin {
             dependsOn(skiaMain)
             dependencies {
                 api("io.ktor:ktor-client-darwin:${ktorVersion}")
-                api("com.rickclephas.kmp:nsexception-kt-bugsnag:0.1.7")
+                api("com.rickclephas.kmp:nsexception-kt-bugsnag:0.1.8")
                 api("com.rickclephas.kmp:nserror-kt:0.1.0")
             }
         }
