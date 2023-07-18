@@ -24,6 +24,7 @@ import dev.zwander.common.util.FileExporter
 import dev.zwander.common.util.Storage
 import dev.zwander.resources.common.MR
 import io.github.xxfast.kstore.file.utils.FILE_SYSTEM
+import korlibs.memory.Platform
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
@@ -52,25 +53,27 @@ fun ColumnScope.RecordSnapshots() {
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        Button(
-            onClick = {
-                scope.launch(Dispatchers.IO) {
-                    try {
-                        FILE_SYSTEM.source(Storage.path.toPath()).buffer().use { input ->
-                            sinkCreator(Storage.name)?.use { output ->
-                                output.writeAll(input)
+        if (!Platform.isIos) {
+            Button(
+                onClick = {
+                    scope.launch(Dispatchers.IO) {
+                        try {
+                            FILE_SYSTEM.source(Storage.path.toPath()).buffer().use { input ->
+                                sinkCreator(Storage.name)?.use { output ->
+                                    output.writeAll(input)
+                                }
                             }
+                        } catch (e: FileNotFoundException) {
+                            e.printStackTrace()
+                        } catch (e: NullPointerException) {
+                            e.printStackTrace()
                         }
-                    } catch (e: FileNotFoundException) {
-                        e.printStackTrace()
-                    } catch (e: NullPointerException) {
-                        e.printStackTrace()
                     }
-                }
-            },
-            modifier = Modifier.weight(1f),
-        ) {
-            Text(text = stringResource(MR.strings.export))
+                },
+                modifier = Modifier.weight(1f),
+            ) {
+                Text(text = stringResource(MR.strings.export))
+            }
         }
 
         Button(

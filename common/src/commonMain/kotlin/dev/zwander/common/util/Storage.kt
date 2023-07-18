@@ -14,17 +14,24 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.serialization.json.Json
 
-expect fun pathTo(subPath: String): String
+expect fun pathTo(subPath: String, startingTag: String): String
 
 object Storage {
     const val name = "snapshots.json"
-    val path = pathTo(name)
+    val path = pathTo(name, "[]")
 
     val snapshots: KStore<List<HistoricalSnapshot>> = listStoreOf(
         filePath = path,
         default = listOf(),
         enableCache = false,
+        json = Json {
+            ignoreUnknownKeys = true
+            isLenient = true
+            encodeDefaults = true
+            coerceInputValues = true
+        },
     )
 
     private val snapshotMutex = Mutex()
