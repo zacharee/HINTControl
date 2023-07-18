@@ -35,6 +35,11 @@
             </intent-filter>
         </activity>
 
+        <service android:name="dev.zwander.common.widget.WidgetUpdaterService"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            />
+
         <meta-data
             android:name="com.bugsnag.android.API_KEY"
             android:value="462792f423289145bdd224a4450373ef"/>

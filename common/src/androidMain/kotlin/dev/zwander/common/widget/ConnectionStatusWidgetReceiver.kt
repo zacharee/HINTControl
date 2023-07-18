@@ -33,6 +33,7 @@ import androidx.glance.text.Text
 import androidx.glance.text.TextAlign
 import androidx.glance.text.TextStyle
 import dev.icerock.moko.resources.StringResource
+import dev.zwander.common.App
 import dev.zwander.common.R
 import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.UserModel
@@ -201,4 +202,16 @@ class ConnectionStatusWidget : GlanceAppWidget() {
 
 class ConnectionStatusWidgetReceiver : GlanceAppWidgetReceiver() {
     override val glanceAppWidget: GlanceAppWidget = ConnectionStatusWidget()
+
+    override fun onEnabled(context: Context?) {
+        super.onEnabled(context)
+
+        App.instance?.scheduleWidgetRefresh()
+    }
+
+    override fun onDisabled(context: Context?) {
+        super.onDisabled(context)
+
+        App.instance?.cancelWidgetRefresh()
+    }
 }
