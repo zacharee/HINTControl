@@ -15,7 +15,7 @@ import dev.zwander.resources.common.MR
 
 @Composable
 fun WidgetRefresh() {
-    var widgetRefreshMs by SettingsModel.widgetRefreshMs.collectAsMutableState()
+    var widgetRefreshMs by SettingsModel.widgetRefresh.collectAsMutableState()
 
     TextFieldSetting(
         value = widgetRefreshMs.toString(),

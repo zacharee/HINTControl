@@ -7,7 +7,9 @@ end
 
 target 'HINT WidgetExtension' do
   use_frameworks!
+  platform :ios, '15.0'
   pod 'common', :path => '../common'
+  plugin 'cocoapods-bugsnag'
 end
 
 post_install do |installer|

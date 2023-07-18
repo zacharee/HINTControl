@@ -12,14 +12,13 @@
 		2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* iOSApp.swift */; };
 		7555FF83242A565900829871 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF82242A565900829871 /* ContentView.swift */; };
 		A6ABD57A6BF68E53688B3885 /* Pods_HINT_WidgetExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 884368772D5026BF3EC6B47C /* Pods_HINT_WidgetExtension.framework */; };
-		B633591E2A65F78400BCBB06 /* Pods_iosApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C05AC757A956F32DD5C11C4 /* Pods_iosApp.framework */; };
 		B65F50C62A60A4ED003D9D48 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B65F50C52A60A4ED003D9D48 /* WidgetKit.framework */; };
 		B65F50C82A60A4ED003D9D48 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B65F50C72A60A4ED003D9D48 /* SwiftUI.framework */; };
 		B65F50CB2A60A4ED003D9D48 /* HINT_WidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65F50CA2A60A4ED003D9D48 /* HINT_WidgetBundle.swift */; };
 		B65F50CD2A60A4ED003D9D48 /* HINT_Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65F50CC2A60A4ED003D9D48 /* HINT_Widget.swift */; };
 		B65F50CF2A60A4EF003D9D48 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B65F50CE2A60A4EF003D9D48 /* Assets.xcassets */; };
 		B65F50D32A60A4EF003D9D48 /* HINT WidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B65F50C42A60A4ED003D9D48 /* HINT WidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		B9DF6E0D7B9FD31516FEAB6E /* (null) in Frameworks */ = {isa = PBXBuildFile; };
+		B67067122A6603F700A64F6E /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B65F50C72A60A4ED003D9D48 /* SwiftUI.framework */; };
 		F9C4BB13F24A236966DB1B1F /* Pods_iosApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C05AC757A956F32DD5C11C4 /* Pods_iosApp.framework */; };
 /* End PBXBuildFile section */
 
@@ -69,9 +68,6 @@
 		B65F50CC2A60A4ED003D9D48 /* HINT_Widget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HINT_Widget.swift; sourceTree = "<group>"; };
 		B65F50CE2A60A4EF003D9D48 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B65F50D02A60A4EF003D9D48 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B6D41D112A181EAB00D6F115 /* common.podspec.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = common.podspec.json; path = "Pods/Local Podspecs/common.podspec.json"; sourceTree = "<group>"; };
-		B6D41D122A181EBE00D6F115 /* common */ = {isa = PBXFileReference; lastKnownFileType = folder; name = common; path = "Pods/Target Support Files/common"; sourceTree = "<group>"; };
-		B6D41D132A181EDD00D6F115 /* common.debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = common.debug.xcconfig; path = "Pods/Target Support Files/common/common.debug.xcconfig"; sourceTree = "<group>"; };
 		C763C145FB93F45B69C1712E /* Pods-iosApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosApp.release.xcconfig"; path = "Target Support Files/Pods-iosApp/Pods-iosApp.release.xcconfig"; sourceTree = "<group>"; };
 		CB14F37593AD67ED6BB1C8C4 /* Pods-iosApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosApp.debug.xcconfig"; path = "Target Support Files/Pods-iosApp/Pods-iosApp.debug.xcconfig"; sourceTree = "<group>"; };
 		E0E229EB2148322EE2881B08 /* Contents.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Contents.json; path = "Preview Assets.xcassets/Contents.json"; sourceTree = "<group>"; };
@@ -84,7 +80,6 @@
 			files = (
 				B65F50C82A60A4ED003D9D48 /* SwiftUI.framework in Frameworks */,
 				B65F50C62A60A4ED003D9D48 /* WidgetKit.framework in Frameworks */,
-				B633591E2A65F78400BCBB06 /* Pods_iosApp.framework in Frameworks */,
 				A6ABD57A6BF68E53688B3885 /* Pods_HINT_WidgetExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -93,7 +88,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B9DF6E0D7B9FD31516FEAB6E /* (null) in Frameworks */,
+				B67067122A6603F700A64F6E /* SwiftUI.framework in Frameworks */,
 				F9C4BB13F24A236966DB1B1F /* Pods_iosApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -114,13 +109,10 @@
 			isa = PBXGroup;
 			children = (
 				B633591A2A65F77100BCBB06 /* Bugsnag.framework */,
-				B6D41D132A181EDD00D6F115 /* common.debug.xcconfig */,
-				B6D41D122A181EBE00D6F115 /* common */,
-				B6D41D112A181EAB00D6F115 /* common.podspec.json */,
 				B65F50C52A60A4ED003D9D48 /* WidgetKit.framework */,
 				B65F50C72A60A4ED003D9D48 /* SwiftUI.framework */,
-				884368772D5026BF3EC6B47C /* Pods_HINT_WidgetExtension.framework */,
 				0C05AC757A956F32DD5C11C4 /* Pods_iosApp.framework */,
+				884368772D5026BF3EC6B47C /* Pods_HINT_WidgetExtension.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -201,11 +193,11 @@
 				7555FF77242A565900829871 /* Sources */,
 				7555FF79242A565900829871 /* Resources */,
 				F85CB1118929364A9C6EFABC /* Frameworks */,
-				B6F2AC352A18218400C5FE22 /* ShellScript */,
-				B67DC2052A317566008FB35B /* ShellScript */,
 				B65F50D42A60A4EF003D9D48 /* Embed Foundation Extensions */,
 				B51077FC6BB5B7752709B491 /* [CP] Embed Pods Frameworks */,
 				12C02909118F7ABC85046FF3 /* [CP] Copy Pods Resources */,
+				B6F2AC352A18218400C5FE22 /* ShellScript */,
+				B67DC2052A317566008FB35B /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -529,7 +521,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -586,7 +578,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;

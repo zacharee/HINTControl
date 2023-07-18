@@ -6,15 +6,15 @@
 //  Copyright © 2023 orgName. All rights reserved.
 //
 
+import Bugsnag
 import WidgetKit
 import SwiftUI
 import common
-import Bugsnag
 
 struct Provider: TimelineProvider {
     func placeholder(in context: Context) -> SimpleEntry {
-        let cellData = MainModel.shared.currentCellData.value as? CellDataRoot
-        let signalData = (MainModel.shared.currentMainData.value as? MainData)?.signal
+        let cellData = MainModel.shared.currentCellData.value
+        let signalData = MainModel.shared.currentMainData.value?.signal
         
         return SimpleEntry(
             date: Date(),
@@ -39,7 +39,7 @@ struct Provider: TimelineProvider {
                 completion(entry)
             } catch {
                 print("Error getting snapshot: \(error)")
-                Bugnsag.notify(error)
+                Bugsnag.notifyError(error)
             }
         }
     }
@@ -56,7 +56,7 @@ struct Provider: TimelineProvider {
                 let date = Date()
                 let entry = SimpleEntry(date: date, cellData: cellData, signalData: signalData)
                 
-                let nextUpdate = Calendar.current.date(byAdding: .minute, value: 1, to: date)
+                let nextUpdate = Calendar.current.date(byAdding: .second, value: 1, to: date)
                 let timeline = Timeline(
                     entries: [entry],
                     policy: .after(nextUpdate ?? date)
@@ -65,7 +65,7 @@ struct Provider: TimelineProvider {
                 completion(timeline)
             } catch {
                 print("Error getting timeline: \(error)")
-                Bugnsag.notify(error)
+                Bugsnag.notifyError(error)
             }
         }
     }
@@ -185,7 +185,7 @@ struct HINT_Widget: Widget {
                     .padding()
                     .background()
             }
-        }
+        }.supportedFamilies([.systemMedium])
     }
 }
 
