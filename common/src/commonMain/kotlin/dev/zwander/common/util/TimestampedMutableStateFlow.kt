@@ -2,12 +2,12 @@
 
 package dev.zwander.common.util
 
+import korlibs.time.DateTime
 import kotlinx.atomicfu.atomic
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import org.jetbrains.skiko.currentNanoTime
 
 class TimestampedMutableStateFlow<T>(
     initialState: T,
@@ -27,7 +27,7 @@ class TimestampedMutableStateFlow<T>(
         get() = wrapped.value
         set(value) {
             wrapped.value = value
-            _lastUpdateTime.value = currentNanoTime() / 1000L
+            _lastUpdateTime.value = DateTime.nowUnixMillisLong()
         }
 
     val timestampedValue: Pair<Long, T>

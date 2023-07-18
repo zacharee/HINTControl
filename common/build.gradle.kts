@@ -83,6 +83,7 @@ kotlin {
                 api("dev.icerock.moko:mvvm-flow-compose:${mokoMvvmVersion}")
                 api("org.jetbrains.kotlin:kotlin-reflect:${rootProject.extra["kotlin.version"]}")
                 api("com.soywiz.korlibs.korio:korio:${korlibsVersion}")
+                api("com.soywiz.korlibs.klock:klock:${korlibsVersion}")
                 api("com.russhwolf:multiplatform-settings:${multiplatformSettingsVersion}")
                 api("com.russhwolf:multiplatform-settings-no-arg:${multiplatformSettingsVersion}")
                 api("io.github.xxfast:kstore:$kstoreVersion")

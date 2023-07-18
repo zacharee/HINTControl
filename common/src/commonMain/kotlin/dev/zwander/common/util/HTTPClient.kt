@@ -68,9 +68,10 @@ import io.ktor.http.parameters
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.util.appendIfNameAbsent
 import io.ktor.utils.io.ByteReadChannel
-import korlibs.io.async.async
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
@@ -417,9 +418,9 @@ private object NokiaClients {
 }
 
 object ClientUtils {
-    suspend fun chooseClient(test: Boolean): HTTPClient? {
+    suspend fun chooseClient(test: Boolean): HTTPClient? = coroutineScope {
         if (test) {
-            return ArcadyanSagemcomClient
+            return@coroutineScope ArcadyanSagemcomClient
         }
 
         val arcadyanExists = async(Dispatchers.Unconfined) { ArcadyanSagemcomClient.exists() }
@@ -427,12 +428,12 @@ object ClientUtils {
 
         if (arcadyanExists.await()) {
             nokiaExists.cancel()
-            return ArcadyanSagemcomClient
+            return@coroutineScope ArcadyanSagemcomClient
         }
 
         if (nokiaExists.await()) {
             arcadyanExists.cancel()
-            return NokiaClient
+            return@coroutineScope NokiaClient
         }
 
         GlobalModel.updateHttpError(
@@ -442,7 +443,7 @@ object ClientUtils {
             ),
         )
 
-        return null
+        null
     }
 }
 
