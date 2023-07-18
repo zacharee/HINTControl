@@ -29,7 +29,6 @@ struct ContentView: View {
         ZStack {
            ComposeView()
                    .ignoresSafeArea(.container)
-//             VisualEffectView()
         }
     }
 }

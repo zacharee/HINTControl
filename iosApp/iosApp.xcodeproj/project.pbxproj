@@ -19,6 +19,7 @@
 		B65F50CF2A60A4EF003D9D48 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B65F50CE2A60A4EF003D9D48 /* Assets.xcassets */; };
 		B65F50D32A60A4EF003D9D48 /* HINT WidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B65F50C42A60A4ED003D9D48 /* HINT WidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B67067122A6603F700A64F6E /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B65F50C72A60A4ED003D9D48 /* SwiftUI.framework */; };
+		B6CD7E752A66A87100F3BEA8 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B65F50C52A60A4ED003D9D48 /* WidgetKit.framework */; };
 		F9C4BB13F24A236966DB1B1F /* Pods_iosApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C05AC757A956F32DD5C11C4 /* Pods_iosApp.framework */; };
 /* End PBXBuildFile section */
 
@@ -90,6 +91,7 @@
 			files = (
 				B67067122A6603F700A64F6E /* SwiftUI.framework in Frameworks */,
 				F9C4BB13F24A236966DB1B1F /* Pods_iosApp.framework in Frameworks */,
+				B6CD7E752A66A87100F3BEA8 /* WidgetKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,5 +1,6 @@
 import Bugsnag
 import SwiftUI
+import WidgetKit
 import common
 
 @main
@@ -17,6 +18,10 @@ struct iOSApp: App {
         Main_iosKt.updateBugsnagConfig(config: config)
         Bugsnag.start()
         Main_iosKt.setupBugsnag()
+        
+        FlowUtilsKt.asCommonFlow(SettingsModel.shared.widgetRefresh).watch { _ in
+            WidgetCenter.shared.reloadTimelines(ofKind: "HINT_Widget")
+        }
     }
 
 	var body: some Scene {

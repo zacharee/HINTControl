@@ -6,6 +6,7 @@
 //  Copyright © 2023 orgName. All rights reserved.
 //
 
+import AppIntents
 import Bugsnag
 import WidgetKit
 import SwiftUI
@@ -56,7 +57,7 @@ struct Provider: TimelineProvider {
                 let date = Date()
                 let entry = SimpleEntry(date: date, cellData: cellData, signalData: signalData)
                 
-                let nextUpdate = Calendar.current.date(byAdding: .second, value: 1, to: date)
+                let nextUpdate = Calendar.current.date(byAdding: .second, value: SettingsModel.shared.widgetRefresh.value?.intValue ?? 60, to: date)
                 let timeline = Timeline(
                     entries: [entry],
                     policy: .after(nextUpdate ?? date)
@@ -81,11 +82,29 @@ struct HINT_WidgetEntryView : View {
     var entry: Provider.Entry
 
     var body: some View {
-        LazyVStack(spacing: 8) {
-            HINT_WidgetEntryItem(data: entry.signalData?.fourG, advancedData: entry.cellData?.cell?.fourG)
-            HINT_WidgetEntryItem(data: entry.signalData?.fiveG, advancedData: entry.cellData?.cell?.fiveG)
+        VStack {
+            HStack {
+                Text(MR.strings.shared.connection.desc().localized())
+                
+                Spacer()
+                
+                if #available(iOS 17.0, *) {
+                    Button(
+                        intent: RefreshIntent()
+                    ) {
+                        Image(uiImage: MR.images.shared.refresh.toUIImage()!)
+                            .renderingMode(.template)
+                            .foregroundColor(Color(UIColor.label))
+                    }.buttonStyle(.borderless)
+                }
+            }
+            
+            LazyVStack(spacing: 8) {
+                HINT_WidgetEntryItem(data: entry.signalData?.fourG, advancedData: entry.cellData?.cell?.fourG)
+                HINT_WidgetEntryItem(data: entry.signalData?.fiveG, advancedData: entry.cellData?.cell?.fiveG)
+            }.frame(maxWidth: .infinity, maxHeight: .infinity)
+                .padding(.all, 8)
         }.frame(maxWidth: .infinity, maxHeight: .infinity)
-            .padding(.all, 8)
     }
 }
 
@@ -186,6 +205,17 @@ struct HINT_Widget: Widget {
                     .background()
             }
         }.supportedFamilies([.systemMedium])
+    }
+}
+
+@available(iOS 16.0, macOS 13.0, watchOS 9.0, tvOS 16.0, *)
+struct RefreshIntent : AppIntent {
+    static var title: LocalizedStringResource = LocalizedStringResource(stringLiteral: MR.strings.shared.refresh.desc().localized())
+    static var description: IntentDescription? = nil
+    
+    func perform() async throws -> some IntentResult {
+        WidgetCenter.shared.reloadTimelines(ofKind: "HINT_Widget")
+        return .result()
     }
 }
 
