@@ -34,6 +34,7 @@ kotlin {
             isStatic = true
             baseName = "common"
             xcFramework.add(this)
+            linkerOpts += "-ld64"
         }
     }
 
@@ -46,7 +47,7 @@ kotlin {
         podfile = project.file("../iosApp/Podfile")
         framework {
             baseName = "common"
-            isStatic = true
+            isStatic = false
             export("dev.icerock.moko:resources:${rootProject.extra["moko.resources.version"]}")
         }
         extraSpecAttributes["resources"] = "['src/commonMain/resources/**', 'src/iosMain/resources/**']"
