@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalObjCRefinement::class)
+@file:OptIn(ExperimentalObjCRefinement::class, ExperimentalForeignApi::class)
 
 package dev.zwander.common.ui
 
@@ -7,6 +7,7 @@ import androidx.compose.ui.graphics.toArgb
 import dev.icerock.moko.resources.compose.colorResource
 import dev.zwander.common.monet.ColorScheme
 import dev.zwander.resources.common.MR
+import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.useContents
 import platform.Foundation.NSProcessInfo
 import platform.Foundation.NSUserDefaults
