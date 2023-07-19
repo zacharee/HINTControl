@@ -108,6 +108,20 @@ struct HINT_WidgetEntryView : View {
     }
 }
 
+extension RoundedRectangle {
+    func fillCompat() -> RoundedRectangle {
+        if #available(iOS 17.0, *) {
+            fill(.fill.secondary)
+        } else if #available(iOS 15.0, *) {
+            fill(.secondary)
+        } else {
+            fill(Color.gray)
+        }
+        
+        return self
+    }
+}
+
 struct HINT_WidgetEntryItem : View {
     var data: BaseCellData?
     var advancedData: BaseAdvancedData?
@@ -115,9 +129,9 @@ struct HINT_WidgetEntryItem : View {
     var body: some View {
         ZStack(alignment: Alignment(horizontal: .center, vertical: .center)) {
             RoundedRectangle(cornerSize: CGSize(width: 8, height: 8))
-                .fill(.secondary)
+                .fillCompat()
                 .frame(maxWidth: .infinity, minHeight: 32)
-            
+
             HStack(alignment: .center, spacing: 8) {
                 if (data != nil || advancedData != nil) {
                     Spacer()
@@ -177,6 +191,7 @@ struct TwoRowText : View {
 }
 
 struct HINT_Widget: Widget {
+    @Environment(\.colorScheme) var colorScheme
     let kind: String = "HINT_Widget"
     
     init() {
@@ -199,10 +214,14 @@ struct HINT_Widget: Widget {
             if #available(iOS 17.0, *) {
                 HINT_WidgetEntryView(entry: entry)
                     .containerBackground(.fill.tertiary, for: .widget)
-            } else {
+            } else if #available(iOS 15.0, *) {
                 HINT_WidgetEntryView(entry: entry)
                     .padding()
                     .background()
+            } else {
+                HINT_WidgetEntryView(entry: entry)
+                    .padding()
+                    .background(colorScheme == .dark ? Color.black : Color.white)
             }
         }.supportedFamilies([.systemMedium])
     }

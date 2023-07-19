@@ -20,7 +20,6 @@
 		B65F50D32A60A4EF003D9D48 /* HINT WidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B65F50C42A60A4ED003D9D48 /* HINT WidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B67067122A6603F700A64F6E /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B65F50C72A60A4ED003D9D48 /* SwiftUI.framework */; };
 		B6A2DCDA2A678FFA00D2B49C /* common.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6A2DCD92A678FFA00D2B49C /* common.xcframework */; };
-		B6A2DCDB2A678FFA00D2B49C /* common.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B6A2DCD92A678FFA00D2B49C /* common.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B6A2DCDD2A67900200D2B49C /* common.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6A2DCD92A678FFA00D2B49C /* common.xcframework */; };
 		B6A2DCDE2A67900200D2B49C /* common.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B6A2DCD92A678FFA00D2B49C /* common.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B6CD7E752A66A87100F3BEA8 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B65F50C52A60A4ED003D9D48 /* WidgetKit.framework */; };
@@ -55,7 +54,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				B6A2DCDB2A678FFA00D2B49C /* common.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -253,6 +251,7 @@
 				B6826D212A65D95C00F4CB00 /* ShellScript */,
 				B6A2DCDC2A678FFA00D2B49C /* Embed Frameworks */,
 				59D0D95704F6B1D27A0110C5 /* Upload Bugsnag dSYM */,
+				B6A2DCE02A6792FB00D2B49C /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -332,6 +331,7 @@
 				"${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH}",
 				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
 				"${BUILT_PRODUCTS_DIR}/Bugsnag/Bugsnag.framework.dSYM/Contents/Resources/DWARF/Bugsnag",
+				"${BUILT_PRODUCTS_DIR}/Bugsnag-iOS14.0/Bugsnag.framework.dSYM/Contents/Resources/DWARF/Bugsnag",
 			);
 			name = "Upload Bugsnag dSYM";
 			outputFileListPaths = (
@@ -354,6 +354,7 @@
 				"${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH}",
 				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
 				"${BUILT_PRODUCTS_DIR}/Bugsnag/Bugsnag.framework.dSYM/Contents/Resources/DWARF/Bugsnag",
+				"${BUILT_PRODUCTS_DIR}/Bugsnag-iOS15.0/Bugsnag.framework.dSYM/Contents/Resources/DWARF/Bugsnag",
 			);
 			name = "Upload Bugsnag dSYM";
 			outputFileListPaths = (
@@ -462,6 +463,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"$SRCROOT/../gradlew\" -p \"$SRCROOT/../\" :common:copyResourcesCommonDebugXCFrameworkToApp \\\n    -Pmoko.resources.BUILT_PRODUCTS_DIR=\"$BUILT_PRODUCTS_DIR\" \\\n    -Pmoko.resources.CONTENTS_FOLDER_PATH=\"$CONTENTS_FOLDER_PATH\"\n";
+		};
+		B6A2DCE02A6792FB00D2B49C /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd \"${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"\nif [[ -d \"Frameworks\" ]]; then \n    rm -fr Frameworks\nfi\n";
 		};
 		B6F2AC352A18218400C5FE22 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -735,12 +753,17 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 3GDX95D5NT;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Bugsnag\"",
+					"@executable_path/../../Frameworks",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "HINT Widget/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "HINT Widget";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 orgName. All rights reserved.";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -788,13 +811,18 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3GDX95D5NT;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Bugsnag\"",
+					"@executable_path/../../Frameworks",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "HINT Widget/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "HINT Widget";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 orgName. All rights reserved.";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

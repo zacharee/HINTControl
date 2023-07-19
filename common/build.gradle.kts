@@ -33,8 +33,10 @@ kotlin {
         binaries.withType(Framework::class.java) {
             isStatic = true
             baseName = "common"
-            xcFramework.add(this)
             linkerOpts += "-ld64"
+            xcFramework.add(this)
+
+            freeCompilerArgs += listOf("-Xoverride-konan-properties=osVersionMin.ios_arm32=14;osVersionMin.ios_arm64=14;osVersionMin.ios_x64=14")
         }
     }
 
@@ -47,7 +49,7 @@ kotlin {
         podfile = project.file("../iosApp/Podfile")
         framework {
             baseName = "common"
-            isStatic = false
+            isStatic = true
             export("dev.icerock.moko:resources:${rootProject.extra["moko.resources.version"]}")
         }
         extraSpecAttributes["resources"] = "['src/commonMain/resources/**', 'src/iosMain/resources/**']"
