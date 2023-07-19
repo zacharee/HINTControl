@@ -17,7 +17,7 @@ plugins {
 version = rootProject.extra["app_version_code"].toString()
 
 kotlin {
-    android()
+    androidTarget()
     jvm("desktop") {
         jvmToolchain(rootProject.extra["java_version"].toString().toInt())
     }
@@ -93,6 +93,7 @@ kotlin {
                 api("io.github.xxfast:kstore-file:$kstoreVersion")
                 api("org.jetbrains.kotlinx:atomicfu:${rootProject.extra["kotlin.atomicfu.version"]}")
                 api("com.squareup.okio:okio:3.4.0")
+                api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core") {
                     version {
                         strictly(coroutinesVersion)
@@ -149,14 +150,20 @@ kotlin {
             dependsOn(skiaMain)
             dependencies {
                 api("io.ktor:ktor-client-darwin:${ktorVersion}")
-                api("com.rickclephas.kmp:nsexception-kt-bugsnag:0.1.8")
+                api("com.rickclephas.kmp:nsexception-kt-bugsnag:0.1.9")
                 api("com.rickclephas.kmp:nserror-kt:0.1.0")
             }
         }
 
-        val iosX64Main by getting
-        val iosArm64Main by getting
-        val iosSimulatorArm64Main by getting
+        val iosX64Main by getting {
+            resources.srcDirs("build/generated/moko/iosX64Main/src")
+        }
+        val iosArm64Main by getting {
+            resources.srcDirs("build/generated/moko/iosArm64Main/src")
+        }
+        val iosSimulatorArm64Main by getting {
+            resources.srcDirs("build/generated/moko/iosSimulatorArm64Main/src")
+        }
         val iosMain by creating {
             dependsOn(darwinMain)
             iosX64Main.dependsOn(this)
@@ -178,7 +185,15 @@ android {
     namespace = "dev.zwander.common"
 
     compileSdk = rootProject.extra["compile_sdk"].toString().toInt()
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+
+    @Suppress("UnstableApiUsage")
+    sourceSets {
+        getByName("main") {
+            manifest.srcFile("src/androidMain/AndroidManifest.xml")
+            java.srcDirs("build/generated/moko/androidMain/src")
+        }
+    }
+
     defaultConfig {
         minSdk = rootProject.extra["min_sdk"].toString().toInt()
     }

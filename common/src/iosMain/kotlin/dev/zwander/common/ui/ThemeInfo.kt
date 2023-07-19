@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalObjCRefinement::class)
+@file:OptIn(ExperimentalObjCRefinement::class, ExperimentalForeignApi::class)
 
 package dev.zwander.common.ui
 
@@ -15,6 +15,7 @@ import dev.icerock.moko.resources.compose.colorResource
 import dev.zwander.common.monet.ColorScheme
 import dev.zwander.common.util.TraitEffect
 import dev.zwander.resources.common.MR
+import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.alloc
 import kotlinx.cinterop.memScoped
 import kotlinx.cinterop.ptr

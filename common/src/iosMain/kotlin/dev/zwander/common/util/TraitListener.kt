@@ -3,6 +3,8 @@ package dev.zwander.common.util
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.interop.LocalUIViewController
+import kotlinx.cinterop.BetaInteropApi
+import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.ExportObjCClass
 import kotlinx.cinterop.readValue
 import platform.CoreGraphics.CGRectZero
@@ -30,6 +32,7 @@ fun TraitEffect(
 
 // https://github.com/JetBrains/compose-multiplatform/issues/3213#issuecomment-1572378546
 @ExportObjCClass
+@OptIn(ExperimentalForeignApi::class, BetaInteropApi::class)
 private class TraitView(
     private val onTraitChanged: () -> Unit
 ) : UIView(frame = CGRectZero.readValue()) {
