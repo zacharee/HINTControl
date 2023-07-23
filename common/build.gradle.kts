@@ -52,7 +52,6 @@ kotlin {
             isStatic = true
             export("dev.icerock.moko:resources:${rootProject.extra["moko.resources.version"]}")
         }
-        extraSpecAttributes["resources"] = "['src/commonMain/resources/**', 'src/iosMain/resources/**']"
         pod("Bugsnag")
 
         xcodeConfigurationToNativeBuildType["Debug"] =
