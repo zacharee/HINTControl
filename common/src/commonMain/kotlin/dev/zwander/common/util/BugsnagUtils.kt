@@ -1,6 +1,10 @@
 package dev.zwander.common.util
 
+import dev.zwander.common.exceptions.GatewayTimeoutException
+import dev.zwander.common.exceptions.InvalidJSONException
 import dev.zwander.common.exceptions.NoGatewayFoundException
+import dev.zwander.common.exceptions.TimeoutException
+import dev.zwander.common.exceptions.TooManyRequestsException
 import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.MainModel
 import io.ktor.client.network.sockets.ConnectTimeoutException
@@ -16,6 +20,8 @@ data class ExtraErrorData(
 
 object CrossPlatformBugsnag {
     fun notify(e: Throwable) {
+        e.printStackTrace()
+
         if (e is SocketTimeoutException) {
             return
         }
@@ -40,6 +46,18 @@ object CrossPlatformBugsnag {
             return
         }
 
+        if (e is TimeoutException) {
+            return
+        }
+
+        if (e is TooManyRequestsException) {
+            return
+        }
+
+        if (e is GatewayTimeoutException) {
+            return
+        }
+
         if (e.message?.contains("Failed to connect to /") == true) {
             return
         }
@@ -61,6 +79,27 @@ object CrossPlatformBugsnag {
         }
 
         if (e.message?.contains("Internal Server Error") == true) {
+            return
+        }
+
+        if (e.message?.contains("bad gateway") == true) {
+            return
+        }
+
+        if (e.message?.contains("Fail to lookup ubus id") == true) {
+            return
+        }
+
+        if (e.message?.run { startsWith("<!doctype html>") && contains("<div id=\"root\"></div>") } == true) {
+            // Don't report when the Nokia gateway returns a blank HTML page.
+            return
+        }
+
+        if (e.message?.contains("Enter your RADIUS credentials:") == true) {
+            return
+        }
+
+        if (e is InvalidJSONException && e.message == "Invalid JSON: ") {
             return
         }
 
