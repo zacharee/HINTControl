@@ -103,6 +103,14 @@ object CrossPlatformBugsnag {
             return
         }
 
+        if (e.message?.contains("The Internet connection appears to be offline.") == true) {
+            return
+        }
+
+        if (e.message?.contains("blocked@eero.com") == true) {
+            return
+        }
+
         BugsnagUtils.notify(e)
     }
 
