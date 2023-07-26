@@ -55,7 +55,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -102,9 +101,7 @@ fun App(
 ) {
     val scope = rememberCoroutineScope()
 
-    val isBlockingState by GlobalModel.isBlocking.collectAsState()
-    val httpClient by GlobalModel.httpClient.collectAsState()
-    val httpError by GlobalModel.httpError.collectAsState()
+    val isBlocking by GlobalModel.isBlocking.collectAsState()
     val isLoading by GlobalModel.isLoading.collectAsState()
     val autoRefresh by SettingsModel.enableAutoRefresh.collectAsState()
     val autoRefreshMs by SettingsModel.autoRefreshMs.collectAsState()
@@ -115,12 +112,6 @@ fun App(
     val error by GlobalModel.httpError.collectAsState()
 
     val fuzzerEnabled by SettingsModel.fuzzerEnabled.collectAsState()
-
-    val isBlocking by remember {
-        derivedStateOf {
-            isBlockingState || (httpClient == null && httpError == null)
-        }
-    }
 
     LaunchedEffect(saveSnapshots) {
         if (saveSnapshots) {

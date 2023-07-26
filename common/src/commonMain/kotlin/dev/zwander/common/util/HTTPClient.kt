@@ -423,27 +423,33 @@ object ClientUtils {
             return@coroutineScope ArcadyanSagemcomClient
         }
 
-        val arcadyanExists = async(Dispatchers.Unconfined) { ArcadyanSagemcomClient.exists() }
-        val nokiaExists = async(Dispatchers.Unconfined) { NokiaClient.exists() }
+        GlobalModel.isBlocking.value = true
 
-        if (arcadyanExists.await()) {
-            nokiaExists.cancel()
-            return@coroutineScope ArcadyanSagemcomClient
+        try {
+            val arcadyanExists = async(Dispatchers.Unconfined) { ArcadyanSagemcomClient.exists() }
+            val nokiaExists = async(Dispatchers.Unconfined) { NokiaClient.exists() }
+
+            if (arcadyanExists.await()) {
+                nokiaExists.cancel()
+                return@coroutineScope ArcadyanSagemcomClient
+            }
+
+            if (nokiaExists.await()) {
+                arcadyanExists.cancel()
+                return@coroutineScope NokiaClient
+            }
+
+            GlobalModel.updateHttpError(
+                NoGatewayFoundException(
+                    "No T-Mobile gateway found!",
+                    Exception("${ArcadyanSagemcomClient.testUrl}, ${NokiaClient.testUrl}"),
+                ),
+            )
+
+            null
+        } finally {
+            GlobalModel.isBlocking.value = false
         }
-
-        if (nokiaExists.await()) {
-            arcadyanExists.cancel()
-            return@coroutineScope NokiaClient
-        }
-
-        GlobalModel.updateHttpError(
-            NoGatewayFoundException(
-                "No T-Mobile gateway found!",
-                Exception("${ArcadyanSagemcomClient.testUrl}, ${NokiaClient.testUrl}"),
-            ),
-        )
-
-        null
     }
 }
 
