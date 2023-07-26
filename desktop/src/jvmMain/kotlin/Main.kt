@@ -2,7 +2,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyShortcut
 import androidx.compose.ui.platform.LocalDensity
@@ -18,8 +17,8 @@ import dev.icerock.moko.resources.compose.painterResource
 import dev.zwander.common.App
 import dev.zwander.common.GradleConfig
 import dev.zwander.common.ui.getThemeInfo
-import dev.zwander.common.util.CrossPlatformBugsnag
 import dev.zwander.common.util.BugsnagUtils.bugsnag
+import dev.zwander.common.util.CrossPlatformBugsnag
 import dev.zwander.common.util.LocalFrame
 import dev.zwander.resources.common.MR
 import io.github.mimoguz.custom_window.DwmAttribute
@@ -31,7 +30,6 @@ import java.util.UUID
 
 private const val UUID_KEY = "bugsnag_user_id"
 
-@OptIn(ExperimentalComposeUiApi::class)
 fun main() {
     System.setProperty("apple.laf.useScreenMenuBar", "true")
     System.setProperty("apple.awt.application.appearance", "system")
