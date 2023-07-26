@@ -28,6 +28,7 @@ import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -86,12 +87,18 @@ fun <T> PageGrid(
         }
     }
 
+    val columns by remember(items.size) {
+        derivedStateOf {
+            AdaptiveMod(250.dp, items.size)
+        }
+    }
+
     Box(
         modifier = modifier,
     ) {
         LazyVerticalStaggeredGrid(
             contentPadding = actualContentPadding,
-            columns = AdaptiveMod(250.dp, items.size),
+            columns = columns,
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalItemSpacing = 8.dp,
             modifier = Modifier.matchParentSize(),

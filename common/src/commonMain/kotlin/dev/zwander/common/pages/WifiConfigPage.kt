@@ -66,36 +66,27 @@ fun WifiConfigPage(
         tempState = data
     }
 
-    val items: List<ItemData> = remember(data) {
-        val list = mutableListOf<ItemData>()
-
-        if (data?.twoGig != null && data?.fiveGig != null) {
-            list.add(
-                ItemData(
-                    title = MR.strings.band_mgmnt,
-                    render = {
-                        BandConfigLayout(it)
-                    },
-                    description = {
-                        Text(
-                            text = stringResource(MR.strings.radio_warning),
-                            color = MaterialTheme.colorScheme.error,
-                        )
-                    },
-                )
-            )
-        }
-
-        list.add(
+    val items = remember {
+        listOf(
+            ItemData(
+                title = MR.strings.band_mgmnt,
+                render = {
+                    BandConfigLayout(it)
+                },
+                description = {
+                    Text(
+                        text = stringResource(MR.strings.radio_warning),
+                        color = MaterialTheme.colorScheme.error,
+                    )
+                },
+            ),
             ItemData(
                 title = MR.strings.ssids,
                 render = {
                     SSIDListLayout(it)
                 },
-            )
+            ),
         )
-
-        list
     }
 
     PageGrid(

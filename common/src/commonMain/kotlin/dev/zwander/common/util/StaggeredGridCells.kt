@@ -5,7 +5,7 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-class AdaptiveMod(private val minSize: Dp, private val itemCount: Int) : StaggeredGridCells {
+data class AdaptiveMod(private val minSize: Dp, private val itemCount: Int) : StaggeredGridCells {
     init {
         require(minSize > 0.dp)
     }
