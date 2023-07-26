@@ -24,9 +24,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCompositionContext
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.LocalComposeScene
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -140,7 +140,6 @@ internal fun AbsolutePopup(
     )
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun AbsolutePopup(
     provider: PopupPositionProvider,
@@ -150,8 +149,10 @@ internal fun AbsolutePopup(
     onKeyEvent: (KeyEvent) -> Boolean = { false },
     content: @Composable () -> Unit
 ) {
-    val scene = LocalComposeScene.current
+    val scene = LocalComposeScene.current!!
     val density = LocalDensity.current
+
+    val scope = rememberCoroutineScope()
 
     var popupBounds by remember { mutableStateOf(IntRect.Zero) }
     val focusRequester = remember {
@@ -173,6 +174,7 @@ internal fun AbsolutePopup(
             onPreviewKeyEvent = onPreviewKeyEvent,
             onKeyEvent = onKeyEvent,
             scene = scene,
+            coroutineContext = scope.coroutineContext,
         )
         scene.attach(owner)
 

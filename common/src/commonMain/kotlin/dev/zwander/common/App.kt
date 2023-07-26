@@ -5,7 +5,6 @@ package dev.zwander.common
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.expandIn
 import androidx.compose.animation.expandVertically
@@ -39,7 +38,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -61,7 +59,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.Key
@@ -90,9 +87,6 @@ import kotlinx.coroutines.launch
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class,
-    ExperimentalAnimationApi::class
-)
 @HiddenFromObjC
 @Composable
 fun App(
@@ -248,7 +242,6 @@ fun App(
                                 AppView(
                                     currentPage = currentPage,
                                     sideRail = sideRail,
-                                    pageCount = pages.size,
                                     pages = pages,
                                     onPageChange = { currentPage = it },
                                     modifier = Modifier
@@ -345,7 +338,6 @@ private fun AppView(
     currentPage: Page,
     onPageChange: (Page) -> Unit,
     sideRail: Boolean,
-    pageCount: Int,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -363,7 +355,9 @@ private fun AppView(
         ) {
             val state = rememberPagerState(
                 pages.indexOf(SettingsModel.defaultPage.value)
-            )
+            ) {
+                pages.size
+            }
 
             if (currentPage != Page.Login) {
                 LaunchedEffect(currentPage) {
@@ -383,7 +377,6 @@ private fun AppView(
                 }
                 CrossfadeState.VERTICAL -> {
                     VerticalPager(
-                        pageCount = pageCount,
                         state = state,
                         userScrollEnabled = false,
                         modifier = Modifier.fillMaxSize(),
@@ -401,7 +394,6 @@ private fun AppView(
                 }
                 CrossfadeState.HORIZONTAL -> {
                     HorizontalPager(
-                        pageCount = pageCount,
                         state = state,
                     ) { page ->
                         pages[page].render(Modifier.fillMaxSize())
