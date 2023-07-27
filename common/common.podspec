@@ -6,7 +6,7 @@ Pod::Spec.new do |spec|
     spec.authors                  = ''
     spec.license                  = ''
     spec.summary                  = 'KVD21Control'
-    spec.vendored_frameworks      = 'build/cocoapods/framework/common.framework'
+    spec.vendored_frameworks      = 'build/cocoapods/framework/commonFrameworkOld.framework'
     spec.libraries                = 'c++'
     spec.ios.deployment_target = '14.0'
     spec.osx.deployment_target = '10.13'
@@ -14,7 +14,7 @@ Pod::Spec.new do |spec|
                 
     spec.pod_target_xcconfig = {
         'KOTLIN_PROJECT_PATH' => ':common',
-        'PRODUCT_MODULE_NAME' => 'common',
+        'PRODUCT_MODULE_NAME' => 'commonFrameworkOld',
     }
                 
     spec.script_phases = [
@@ -36,5 +36,5 @@ Pod::Spec.new do |spec|
             SCRIPT
         }
     ]
-    spec.resources = ['build/compose/ios/common/compose-resources']
+    spec.resources = ['build/compose/ios/commonFrameworkOld/compose-resources']
 end

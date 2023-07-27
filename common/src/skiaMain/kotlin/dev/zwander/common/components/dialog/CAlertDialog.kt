@@ -27,6 +27,7 @@ import androidx.compose.runtime.rememberCompositionContext
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.LocalComposeScene
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -37,6 +38,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalDensity
@@ -141,6 +143,7 @@ internal fun AbsolutePopup(
 }
 
 @Composable
+@OptIn(ExperimentalComposeUiApi::class)
 internal fun AbsolutePopup(
     provider: PopupPositionProvider,
     focusable: Boolean = false,
@@ -170,11 +173,13 @@ internal fun AbsolutePopup(
             pointerPositionUpdater = scene.pointerPositionUpdater,
             bounds = popupBounds,
             focusable = focusable,
-            onClickOutside = onDismissRequest,
-            onPreviewKeyEvent = onPreviewKeyEvent,
-            onKeyEvent = onKeyEvent,
             scene = scene,
             coroutineContext = scope.coroutineContext,
+            parentFocusManager = scene.platform.focusManager,
+            initDensity = density,
+            modifier = Modifier.onKeyEvent(onKeyEvent)
+                .onPreviewKeyEvent(onPreviewKeyEvent),
+            onOutsidePointerEvent = { onDismissRequest?.invoke() }
         )
         scene.attach(owner)
 

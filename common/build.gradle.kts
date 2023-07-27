@@ -1,8 +1,7 @@
 @file:Suppress("UNUSED_VARIABLE")
 
-import org.jetbrains.kotlin.gradle.plugin.mpp.Framework
-import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
+import org.jetbrains.compose.experimental.uikit.tasks.SyncComposeResourcesForIosTask
 
 plugins {
     kotlin("multiplatform")
@@ -28,17 +27,31 @@ kotlin {
     val iosX64 = iosX64()
     val iosSimulatorArm64 = iosSimulatorArm64()
 
-    val xcFramework = XCFramework("common")
-    configure(listOf(iosArm64, iosX64, iosSimulatorArm64)) {
-        binaries.withType(Framework::class.java) {
-            isStatic = true
-            baseName = "common"
-            linkerOpts += "-ld64"
-            xcFramework.add(this)
-
-            freeCompilerArgs += listOf("-Xoverride-konan-properties=osVersionMin.ios_arm32=14;osVersionMin.ios_arm64=14;osVersionMin.ios_x64=14")
+    listOf(
+        iosArm64,
+        iosX64,
+        iosSimulatorArm64,
+    ).forEach { iosTarget ->
+        iosTarget.binaries {
+            framework {
+                baseName = "common"
+                isStatic = true
+                export("dev.icerock.moko:resources:${rootProject.extra["moko.resources.version"]}")
+            }
         }
     }
+
+//    val xcFramework = XCFramework("common")
+//    configure(listOf(iosArm64, iosX64, iosSimulatorArm64)) {
+//        binaries.withType(Framework::class.java) {
+//            isStatic = true
+//            baseName = "common"
+//            linkerOpts += "-ld64"
+//            xcFramework.add(this)
+//
+//            freeCompilerArgs += listOf("-Xoverride-konan-properties=osVersionMin.ios_arm32=14;osVersionMin.ios_arm64=14;osVersionMin.ios_x64=14")
+//        }
+//    }
 
     cocoapods {
         version = rootProject.extra["app_version_code"].toString()
@@ -46,16 +59,16 @@ kotlin {
         homepage = "https://zwander.dev"
         ios.deploymentTarget = "14.0"
         osx.deploymentTarget = "10.13"
-        podfile = project.file("../iosApp/Podfile")
         framework {
-            baseName = "common"
-            isStatic = true
-            export("dev.icerock.moko:resources:${rootProject.extra["moko.resources.version"]}")
+            baseName = "commonFrameworkOld"
         }
+//        podfile = project.file("../iosApp/Podfile")
+//        framework {
+//            baseName = "common"
+//            isStatic = true
+//            export("dev.icerock.moko:resources:${rootProject.extra["moko.resources.version"]}")
+//        }
         pod("Bugsnag")
-
-        xcodeConfigurationToNativeBuildType["Debug"] =
-            org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType.RELEASE
     }
 
     sourceSets {
@@ -73,6 +86,7 @@ kotlin {
                 api(compose.runtime)
                 api(compose.foundation)
                 api(compose.material3)
+                api(compose.ui)
 
                 api("dev.icerock.moko:resources:${mokoResourcesVersion}")
                 api("dev.icerock.moko:resources-compose:${mokoResourcesVersion}")
@@ -120,7 +134,7 @@ kotlin {
                 }
                 api("com.bugsnag:bugsnag-android:5.30.0")
                 api("com.getkeepsafe.relinker:relinker:1.4.5")
-                api("androidx.glance:glance-appwidget:1.0.0-beta01")
+                api("androidx.glance:glance-appwidget:1.0.0-rc01")
             }
         }
         val skiaMain by creating {
@@ -230,5 +244,14 @@ buildkonfig {
         buildConfigField(STRING, "versionCode", "${rootProject.extra["app_version_code"]}")
         buildConfigField(STRING, "appName", "${rootProject.extra["app_name"]}")
         buildConfigField(STRING, "packageName", "${rootProject.extra["package_name"]}")
+    }
+}
+
+afterEvaluate {
+    tasks.withType<SyncComposeResourcesForIosTask> {
+        dependsOn(tasks.findByName("generateMRcommonMain"))
+        dependsOn(tasks.findByName("generateMRiosSimulatorArm64Main"))
+        dependsOn(tasks.findByName("generateMRiosArm64Main"))
+        dependsOn(tasks.findByName("generateMRiosX64Main"))
     }
 }

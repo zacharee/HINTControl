@@ -109,16 +109,12 @@ struct HINT_WidgetEntryView : View {
 }
 
 extension RoundedRectangle {
-    func fillCompat() -> RoundedRectangle {
-        if #available(iOS 17.0, *) {
-            fill(.fill.secondary)
-        } else if #available(iOS 15.0, *) {
-            fill(.secondary)
+    func fillCompat() -> some View {
+        if #available(iOS 15.0, *) {
+            return fill(.secondary)
         } else {
-            fill(Color.gray)
+            return fill(Color.gray)
         }
-        
-        return self
     }
 }
 

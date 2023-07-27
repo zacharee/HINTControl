@@ -59,6 +59,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.Key
@@ -89,6 +90,7 @@ import kotlin.native.HiddenFromObjC
 
 @HiddenFromObjC
 @Composable
+@OptIn(ExperimentalComposeUiApi::class)
 fun App(
     modifier: Modifier = Modifier,
     fullPadding: PaddingValues = PaddingValues(0.dp),
