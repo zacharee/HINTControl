@@ -26,48 +26,42 @@ struct Provider: TimelineProvider {
 
     func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) {
         Task {
-            do {
-                let httpClient = try await GlobalModel.shared.updateClient()
-                try await httpClient?.logIn(username: UserModel.shared.username.value as? String ?? "", password: UserModel.shared.password.value as? String ?? "", rememberCredentials: true)
-                let cellData = try await httpClient?.getCellData()
-                let signalData = try await httpClient?.getMainData(unauthed: false)?.signal
-                
-                let entry = SimpleEntry(
-                    date: Date(),
-                    cellData: cellData,
-                    signalData: signalData
-                )
-                completion(entry)
-            } catch {
-                print("Error getting snapshot: \(error)")
-                Bugsnag.notifyError(error)
-            }
+            let entry = await self.getEntry()
+            completion(entry)
         }
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
         Task {
-            do {
-                let httpClient = try await GlobalModel.shared.updateClient()
-                try await httpClient?.logIn(username: UserModel.shared.username.value as? String ?? "", password: UserModel.shared.password.value as? String ?? "", rememberCredentials: true)
-                            
-                let cellData = try await httpClient?.getCellData()
-                let signalData = try await httpClient?.getMainData(unauthed: false)?.signal
-                
-                let date = Date()
-                let entry = SimpleEntry(date: date, cellData: cellData, signalData: signalData)
-                
-                let nextUpdate = Calendar.current.date(byAdding: .second, value: SettingsModel.shared.widgetRefresh.value?.intValue ?? 60, to: date)
-                let timeline = Timeline(
-                    entries: [entry],
-                    policy: .after(nextUpdate ?? date)
-                )
-                
-                completion(timeline)
-            } catch {
-                print("Error getting timeline: \(error)")
-                Bugsnag.notifyError(error)
-            }
+            let date = Date()
+            let entry = await self.getEntry(date: date)
+            
+            let nextUpdate = Calendar.current.date(byAdding: .second, value: SettingsModel.shared.widgetRefresh.value?.intValue ?? 60, to: date)
+            let timeline = Timeline(
+                entries: [entry],
+                policy: .after(nextUpdate ?? date)
+            )
+            
+            completion(timeline)
+        }
+    }
+    
+    private func getEntry(date: Date = Date()) async -> SimpleEntry {
+        do {
+            let httpClient = try await GlobalModel.shared.updateClient()
+            try await httpClient?.logIn(username: UserModel.shared.username.value as? String ?? "", password: UserModel.shared.password.value as? String ?? "", rememberCredentials: true)
+                        
+            let cellData = try await httpClient?.getCellData()
+            let signalData = try await httpClient?.getMainData(unauthed: false)?.signal
+            
+            let entry = SimpleEntry(date: date, cellData: cellData, signalData: signalData)
+            
+            return entry
+        } catch {
+            print("Error getting entry: \(error)")
+            Bugsnag.notifyError(error)
+            
+            return SimpleEntry(date: date, cellData: nil, signalData: nil)
         }
     }
 }
@@ -78,7 +72,7 @@ struct SimpleEntry: TimelineEntry {
     let signalData: SignalData?
 }
 
-struct HINT_WidgetEntryView : View {
+struct HINT_WidgetEntryView: View {
     var entry: Provider.Entry
 
     var body: some View {
@@ -105,20 +99,11 @@ struct HINT_WidgetEntryView : View {
             }.frame(maxWidth: .infinity, maxHeight: .infinity)
                 .padding(.all, 8)
         }.frame(maxWidth: .infinity, maxHeight: .infinity)
+            .widgetBackground(backgroundView: Rectangle().fill(.background))
     }
 }
 
-extension RoundedRectangle {
-    func fillCompat() -> some View {
-        if #available(iOS 15.0, *) {
-            return fill(.secondary)
-        } else {
-            return fill(Color.gray)
-        }
-    }
-}
-
-struct HINT_WidgetEntryItem : View {
+struct HINT_WidgetEntryItem: View {
     var data: BaseCellData?
     var advancedData: BaseAdvancedData?
     
@@ -170,7 +155,7 @@ struct HINT_WidgetEntryItem : View {
     }
 }
 
-struct TwoRowText : View {
+struct TwoRowText: View {
     var label: String
     var value: String
     
@@ -224,7 +209,7 @@ struct HINT_Widget: Widget {
 }
 
 @available(iOS 16.0, macOS 13.0, watchOS 9.0, tvOS 16.0, *)
-struct RefreshIntent : AppIntent {
+struct RefreshIntent: AppIntent {
     static var title: LocalizedStringResource = LocalizedStringResource(stringLiteral: MR.strings.shared.refresh.desc().localized())
     static var description: IntentDescription? = nil
     
@@ -234,9 +219,33 @@ struct RefreshIntent : AppIntent {
     }
 }
 
-#Preview(as: .systemSmall) {
-    HINT_Widget()
-} timeline: {
-    SimpleEntry(date: Date(), cellData: nil, signalData: nil)
-    SimpleEntry(date: Date(), cellData: nil, signalData: nil)
+struct HINT_Widget_Preview: PreviewProvider {
+    static var previews: some View {
+        Group {
+            HINT_WidgetEntryView(entry: SimpleEntry(date: Date(), cellData: nil, signalData: nil))
+                .previewContext(WidgetPreviewContext(family: .systemMedium))
+        }
+    }
+}
+
+extension View {
+    func widgetBackground(backgroundView: some View) -> some View {
+        if #available(iOSApplicationExtension 17.0, *) {
+            return containerBackground(for: .widget) {
+                backgroundView
+            }
+        } else {
+            return background(backgroundView)
+        }
+    }
+}
+
+extension RoundedRectangle {
+    func fillCompat() -> some View {
+        if #available(iOS 15.0, *) {
+            return fill(.tertiary)
+        } else {
+            return fill(Color.gray)
+        }
+    }
 }
