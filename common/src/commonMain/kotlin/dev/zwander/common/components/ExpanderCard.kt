@@ -11,7 +11,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardElevation
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LocalMinimumTouchTargetEnforcement
+import androidx.compose.material3.LocalMinimumInteractiveComponentEnforcement
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -31,7 +31,7 @@ fun ExpanderCard(
     elevation: CardElevation = CardDefaults.outlinedCardElevation(),
 ) {
     CompositionLocalProvider(
-        LocalMinimumTouchTargetEnforcement provides false,
+        LocalMinimumInteractiveComponentEnforcement provides false,
     ) {
         Card(
             onClick = {
