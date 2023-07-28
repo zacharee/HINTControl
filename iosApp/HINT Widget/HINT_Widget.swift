@@ -97,7 +97,6 @@ struct HINT_WidgetEntryView: View {
                 HINT_WidgetEntryItem(data: entry.signalData?.fourG, advancedData: entry.cellData?.cell?.fourG)
                 HINT_WidgetEntryItem(data: entry.signalData?.fiveG, advancedData: entry.cellData?.cell?.fiveG)
             }.frame(maxWidth: .infinity, maxHeight: .infinity)
-                .padding(.all, 8)
         }.frame(maxWidth: .infinity, maxHeight: .infinity)
             .widgetBackground(backgroundView: Rectangle().fill(.background))
     }
@@ -111,7 +110,7 @@ struct HINT_WidgetEntryItem: View {
         ZStack(alignment: Alignment(horizontal: .center, vertical: .center)) {
             RoundedRectangle(cornerSize: CGSize(width: 8, height: 8))
                 .fillCompat()
-                .frame(maxWidth: .infinity, minHeight: 32)
+                .frame(maxWidth: .infinity, minHeight: 32, maxHeight: .infinity)
 
             HStack(alignment: .center, spacing: 8) {
                 if (data != nil || advancedData != nil) {
@@ -151,6 +150,7 @@ struct HINT_WidgetEntryItem: View {
                     Text(verbatim: MR.strings.shared.not_connected.desc().localized())
                 }
             }.frame(maxWidth: .infinity, maxHeight: .infinity)
+                .padding(EdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 0))
         }.frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
