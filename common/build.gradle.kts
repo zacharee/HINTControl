@@ -199,7 +199,6 @@ android {
 
     compileSdk = rootProject.extra["compile_sdk"].toString().toInt()
 
-    @Suppress("UnstableApiUsage")
     sourceSets {
         getByName("main") {
             manifest.srcFile("src/androidMain/AndroidManifest.xml")
@@ -210,9 +209,10 @@ android {
     defaultConfig {
         minSdk = rootProject.extra["min_sdk"].toString().toInt()
     }
+    val compatibility = JavaVersion.toVersion(rootProject.extra["java_version"].toString())
     compileOptions {
-        sourceCompatibility = JavaVersion.toVersion(rootProject.extra["java_version"].toString())
-        targetCompatibility = sourceCompatibility
+        sourceCompatibility = compatibility
+        targetCompatibility = compatibility
     }
     lint {
         abortOnError = false

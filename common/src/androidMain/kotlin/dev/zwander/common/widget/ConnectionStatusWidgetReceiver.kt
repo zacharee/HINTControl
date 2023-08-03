@@ -1,5 +1,6 @@
 package dev.zwander.common.widget
 
+import android.content.ComponentName
 import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -13,6 +14,7 @@ import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
 import androidx.glance.Image
 import androidx.glance.ImageProvider
+import androidx.glance.action.actionStartActivity
 import androidx.glance.action.clickable
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
@@ -32,7 +34,9 @@ import androidx.glance.layout.size
 import androidx.glance.text.Text
 import androidx.glance.text.TextAlign
 import androidx.glance.text.TextStyle
+import androidx.glance.unit.ColorProvider
 import dev.icerock.moko.resources.StringResource
+import dev.zwander.android.MainActivity
 import dev.zwander.common.App
 import dev.zwander.common.R
 import dev.zwander.common.model.GlobalModel
@@ -56,7 +60,11 @@ class ConnectionStatusWidget : GlanceAppWidget() {
                 LocalContext provides context,
             ) {
                 GlanceTheme {
-                    AppWidgetColumn {
+                    AppWidgetColumn(
+                        modifier = GlanceModifier.clickable(
+                            actionStartActivity(ComponentName(context, MainActivity::class.java))
+                        ),
+                    ) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = GlanceModifier.fillMaxWidth(),
@@ -71,8 +79,8 @@ class ConnectionStatusWidget : GlanceAppWidget() {
                             )
 
                             Box(
-                                modifier = GlanceModifier.size(24.dp)
-                                    .cornerRadius(12.dp),
+                                modifier = GlanceModifier.size(32.dp)
+                                    .cornerRadius(16.dp),
                             ) {
                                 Image(
                                     provider = ImageProvider(R.drawable.refresh),
@@ -81,13 +89,13 @@ class ConnectionStatusWidget : GlanceAppWidget() {
                                         scope.launch {
                                             update(context, id)
                                         }
-                                    }.padding(2.dp),
+                                    }.padding(6.dp),
                                     colorFilter = ColorFilter.tint(GlanceTheme.colors.onBackground),
                                 )
                             }
                         }
 
-                        Spacer(GlanceModifier.size(8.dp))
+                        Spacer(GlanceModifier.defaultWeight())
 
                         LazyColumn(
                             modifier = GlanceModifier.fillMaxWidth(),
@@ -112,6 +120,8 @@ class ConnectionStatusWidget : GlanceAppWidget() {
                                 )
                             }
                         }
+
+                        Spacer(GlanceModifier.defaultWeight())
                     }
                 }
             }
@@ -124,15 +134,19 @@ class ConnectionStatusWidget : GlanceAppWidget() {
         advancedData: BaseAdvancedData?,
         modifier: GlanceModifier = GlanceModifier,
     ) {
+        val context = androidx.glance.LocalContext.current
+
         Box(
             modifier = modifier.then(
                 GlanceModifier.cornerRadius(8.dp)
+            ).clickable(
+                actionStartActivity(ComponentName(context, MainActivity::class.java))
             ),
         ) {
             Row(
                 modifier = GlanceModifier
                     .fillMaxWidth()
-                    .background(GlanceTheme.colors.primary)
+                    .background(GlanceTheme.colors.primaryContainer)
                     .padding(4.dp),
                 verticalAlignment = Alignment.Bottom,
             ) {
@@ -178,6 +192,7 @@ class ConnectionStatusWidget : GlanceAppWidget() {
         label: StringResource,
         value: String,
         modifier: GlanceModifier = GlanceModifier.defaultWeight(),
+        textColor: ColorProvider = GlanceTheme.colors.onPrimaryContainer,
     ) {
         Column(
             modifier = modifier,
@@ -185,7 +200,10 @@ class ConnectionStatusWidget : GlanceAppWidget() {
         ) {
             Text(
                 text = value,
-                style = TextStyle(textAlign = TextAlign.Center),
+                style = TextStyle(
+                    textAlign = TextAlign.Center,
+                    color = textColor,
+                ),
                 maxLines = 1,
             )
             Text(
@@ -193,6 +211,7 @@ class ConnectionStatusWidget : GlanceAppWidget() {
                 style = TextStyle(
                     textAlign = TextAlign.Center,
                     fontSize = 10.sp,
+                    color = textColor,
                 ),
                 maxLines = 1,
             )

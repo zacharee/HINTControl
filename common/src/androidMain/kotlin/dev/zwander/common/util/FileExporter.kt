@@ -35,10 +35,12 @@ actual object FileExporter {
                         launcher.launch(fileName)
                     }
 
-                    return context.contentResolver.openOutputStream(
-                        uri,
-                        if (append) "wa" else "w",
-                    )?.sink()?.buffer()
+                    return uri?.let {
+                        context.contentResolver.openOutputStream(
+                            uri,
+                            if (append) "wa" else "w",
+                        )?.sink()?.buffer()
+                    }
                 }
             }
         }

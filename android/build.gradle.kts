@@ -21,9 +21,10 @@ android {
         versionCode = rootProject.extra["app_version_code"].toString().toInt()
         versionName = rootProject.extra["app_version_name"].toString()
     }
+    val compatibility = JavaVersion.toVersion(rootProject.extra["java_version"].toString())
     compileOptions {
-        sourceCompatibility = JavaVersion.toVersion(rootProject.extra["java_version"].toString())
-        targetCompatibility = sourceCompatibility
+        sourceCompatibility = compatibility
+        targetCompatibility = compatibility
     }
     buildTypes {
         getByName("release") {
