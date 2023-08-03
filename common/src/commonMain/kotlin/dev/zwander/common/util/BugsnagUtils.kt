@@ -111,6 +111,10 @@ object CrossPlatformBugsnag {
             return
         }
 
+        if (e.message?.contains("Could not connect to the server") == true) {
+            return
+        }
+
         BugsnagUtils.notify(e)
     }
 

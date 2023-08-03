@@ -81,6 +81,8 @@ private object CommonClients {
         install(ContentNegotiation) {
             json()
         }
+
+        followRedirects = true
     }
 }
 
@@ -379,6 +381,7 @@ private object ASClients {
             socketTimeoutMillis = 10000
         }
         this.developmentMode = true
+        followRedirects = true
     }
 }
 
@@ -414,6 +417,7 @@ private object NokiaClients {
                 }
             }
         }
+        followRedirects = true
     }
 }
 
