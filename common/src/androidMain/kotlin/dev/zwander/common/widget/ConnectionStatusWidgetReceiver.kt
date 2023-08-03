@@ -181,6 +181,9 @@ class ConnectionStatusWidget : GlanceAppWidget() {
                 } else {
                     Text(
                         text = dev.icerock.moko.resources.compose.stringResource(MR.strings.not_connected),
+                        style = TextStyle(
+                            color = GlanceTheme.colors.onPrimaryContainer,
+                        ),
                     )
                 }
             }
