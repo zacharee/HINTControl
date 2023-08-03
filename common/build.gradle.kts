@@ -72,8 +72,8 @@ kotlin {
     }
 
     sourceSets {
-        val ktorVersion = "2.3.2"
-        val coroutinesVersion = "1.7.2"
+        val ktorVersion = "2.3.3"
+        val coroutinesVersion = "1.7.3"
         val slf4jVersion = "2.0.7"
         val multiplatformSettingsVersion = "1.0.0"
         val mokoMvvmVersion = "0.16.1"
@@ -132,7 +132,7 @@ kotlin {
                         strictly(coroutinesVersion)
                     }
                 }
-                api("com.bugsnag:bugsnag-android:5.30.0")
+                api("com.bugsnag:bugsnag-android:5.31.0")
                 api("com.getkeepsafe.relinker:relinker:1.4.5")
                 api("androidx.glance:glance-appwidget:1.0.0-rc01")
             }
