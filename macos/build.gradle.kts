@@ -38,7 +38,7 @@ kotlin {
     sourceSets {
         val macosMain by creating {
             dependencies {
-                implementation(project(":common"))
+//                implementation(project(":common"))
             }
         }
 

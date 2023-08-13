@@ -20,8 +20,8 @@ kotlin {
     jvm("desktop") {
         jvmToolchain(rootProject.extra["java_version"].toString().toInt())
     }
-    macosX64()
-    macosArm64()
+//    macosX64()
+//    macosArm64()
 
     val iosArm64 = iosArm64()
     val iosX64 = iosX64()
@@ -106,6 +106,7 @@ kotlin {
                 api("io.github.xxfast:kstore-file:$kstoreVersion")
                 api("org.jetbrains.kotlinx:atomicfu:${rootProject.extra["kotlin.atomicfu.version"]}")
                 api("com.squareup.okio:okio:3.4.0")
+                api("io.github.koalaplot:koalaplot-core:0.4.0-dev1")
                 api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core") {
                     version {
@@ -132,7 +133,7 @@ kotlin {
                         strictly(coroutinesVersion)
                     }
                 }
-                api("com.bugsnag:bugsnag-android:5.31.0")
+                api("com.bugsnag:bugsnag-android:5.31.1")
                 api("com.getkeepsafe.relinker:relinker:1.4.5")
                 api("androidx.glance:glance-appwidget:1.0.0-rc01")
             }
@@ -184,13 +185,13 @@ kotlin {
             iosSimulatorArm64Main.dependsOn(this)
         }
 
-        val macosX64Main by getting
-        val macosArm64Main by getting
-        val macosMain by creating {
-            dependsOn(darwinMain)
-            macosX64Main.dependsOn(this)
-            macosArm64Main.dependsOn(this)
-        }
+//        val macosX64Main by getting
+//        val macosArm64Main by getting
+//        val macosMain by creating {
+//            dependsOn(darwinMain)
+//            macosX64Main.dependsOn(this)
+//            macosArm64Main.dependsOn(this)
+//        }
     }
 }
 
