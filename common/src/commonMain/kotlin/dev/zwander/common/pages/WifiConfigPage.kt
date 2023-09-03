@@ -78,6 +78,10 @@ fun WifiConfigPage(
                         text = stringResource(MR.strings.radio_warning),
                         color = MaterialTheme.colorScheme.error,
                     )
+
+                    Text(
+                        text = stringResource(MR.strings.radio_advice),
+                    )
                 },
             ),
             ItemData(

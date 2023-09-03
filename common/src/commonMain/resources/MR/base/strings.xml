@@ -138,6 +138,7 @@
 
     <string name="radio_warning">Disabling the 2.4GHz and 5GHz radios means your gateway will not broadcast Wi-Fi! Only turn these off if you have a wired connection to your gateway. Otherwise, you won\'t be able to access it without a manual factory reset.</string>
     <string name="radio_disable_confirm">Are you sure you want to disable the Wi-Fi radios? You won\'t be able to connect to the gateway without a wired connection!</string>
+    <string name="radio_advice">To ensure the radios are fully disabled, enable the "Hidden" toggle for every SSID you have set up. If any SSIDs aren\'t hidden, the gateway may still broadcast a signal.</string>
 
     <string name="get">GET</string>
     <string name="post">POST</string>
