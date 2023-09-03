@@ -72,13 +72,13 @@ kotlin {
     }
 
     sourceSets {
-        val ktorVersion = "2.3.3"
+        val ktorVersion = "2.3.4"
         val coroutinesVersion = "1.7.3"
         val slf4jVersion = "2.0.7"
         val multiplatformSettingsVersion = "1.0.0"
         val mokoMvvmVersion = "0.16.1"
         val mokoResourcesVersion = rootProject.extra["moko.resources.version"].toString()
-        val korlibsVersion = "4.0.9"
+        val korlibsVersion = "4.0.10"
         val kstoreVersion = "0.6.0"
 
         val commonMain by getting {
