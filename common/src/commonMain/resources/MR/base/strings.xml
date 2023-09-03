@@ -51,6 +51,7 @@
     <string name="wired">Wired</string>
 
     <string name="band_mgmnt">Band Management</string>
+    <string name="channel_mgmnt">Channel Management</string>
     <string name="twoGig_radio">2.4GHz Radio</string>
     <string name="fiveGig_radio">5GHz Radio</string>
     <string name="band_steering">Band Steering</string>

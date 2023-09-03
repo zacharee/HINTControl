@@ -24,6 +24,7 @@ import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.components.BandConfigLayout
+import dev.zwander.common.components.ChannelConfigLayout
 import dev.zwander.common.components.PageGrid
 import dev.zwander.common.components.SSIDListLayout
 import dev.zwander.common.components.dialog.AlertDialogDef
@@ -38,6 +39,7 @@ private data class ItemData(
     val title: StringResource,
     val render: @Composable (Modifier) -> Unit,
     val description: (@Composable () -> Unit)? = null,
+    val visible: Boolean = true,
 )
 
 @Composable
@@ -66,7 +68,7 @@ fun WifiConfigPage(
         tempState = data
     }
 
-    val items = remember {
+    val items = remember(tempState) {
         listOf(
             ItemData(
                 title = MR.strings.band_mgmnt,
@@ -85,6 +87,14 @@ fun WifiConfigPage(
                 },
             ),
             ItemData(
+                title = MR.strings.channel_mgmnt,
+                render = {
+                    ChannelConfigLayout(it)
+                },
+                visible = tempState?.twoGig?.channel != null &&
+                        tempState?.fiveGig?.channel != null,
+            ),
+            ItemData(
                 title = MR.strings.ssids,
                 render = {
                     SSIDListLayout(it)
@@ -94,7 +104,7 @@ fun WifiConfigPage(
     }
 
     PageGrid(
-        items = items,
+        items = items.filter { it.visible },
         modifier = modifier,
         renderItemTitle = {
             Text(
