@@ -170,7 +170,6 @@ internal fun AbsolutePopup(
     val (owner, composition) = remember {
         val owner = SkiaBasedOwner(
             platform = scene.platform,
-            pointerPositionUpdater = scene.pointerPositionUpdater,
             bounds = popupBounds,
             focusable = focusable,
             scene = scene,
