@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
     spec.name                     = 'common'
-    spec.version                  = '21'
+    spec.version                  = '22'
     spec.homepage                 = 'https://zwander.dev'
     spec.source                   = { :http=> ''}
     spec.authors                  = ''
