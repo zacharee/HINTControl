@@ -31,7 +31,7 @@ private data class SSIDItem(
     val data: SSIDConfig?,
 )
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 @HiddenFromObjC
 fun SSIDListLayout(
