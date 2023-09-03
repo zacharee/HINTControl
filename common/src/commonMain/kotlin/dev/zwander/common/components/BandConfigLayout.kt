@@ -64,30 +64,32 @@ fun BandConfigLayout(
             },
         )
 
-        ChannelSelector(
-            whichBand = Band.TwoGig,
-            currentValue = tempState?.twoGig?.channel ?: "Auto",
-            onValueChange = {
-                tempState = tempState?.copy(
-                    twoGig = tempState?.twoGig?.copy(
-                        channel = it,
-                    ),
-                )
-            },
-            modifier = Modifier.fillMaxWidth(),
-        )
+        if (tempState?.twoGig?.channel != null && tempState?.fiveGig?.channel != null) {
+            ChannelSelector(
+                whichBand = Band.TwoGig,
+                currentValue = tempState?.twoGig?.channel ?: "Auto",
+                onValueChange = {
+                    tempState = tempState?.copy(
+                        twoGig = tempState?.twoGig?.copy(
+                            channel = it,
+                        ),
+                    )
+                },
+                modifier = Modifier.fillMaxWidth(),
+            )
 
-        ChannelSelector(
-            whichBand = Band.FiveGig,
-            currentValue = tempState?.fiveGig?.channel ?: "Auto",
-            onValueChange = {
-                tempState = tempState?.copy(
-                    fiveGig = tempState?.fiveGig?.copy(
-                        channel = it,
-                    ),
-                )
-            },
-            modifier = Modifier.fillMaxWidth(),
-        )
+            ChannelSelector(
+                whichBand = Band.FiveGig,
+                currentValue = tempState?.fiveGig?.channel ?: "Auto",
+                onValueChange = {
+                    tempState = tempState?.copy(
+                        fiveGig = tempState?.fiveGig?.copy(
+                            channel = it,
+                        ),
+                    )
+                },
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
     }
 }
