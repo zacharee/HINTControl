@@ -59,6 +59,7 @@
     <string name="advanced">Advanced</string>
 
     <string name="bandwidth">Bandwidth</string>
+    <string name="bandwidth_format">%s Bandwidth</string>
     <string name="mcc">MCC</string>
     <string name="mnc">MNC</string>
     <string name="plmn">PLMN</string>

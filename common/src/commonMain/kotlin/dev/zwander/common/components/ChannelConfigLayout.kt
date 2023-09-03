@@ -11,6 +11,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
+import dev.zwander.common.data.WiFiBand
 import dev.zwander.common.model.MainModel
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
@@ -27,7 +28,7 @@ fun ChannelConfigLayout(
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         ChannelSelector(
-            whichBand = Band.TwoGig,
+            whichBand = WiFiBand.TwoGig,
             currentValue = tempState?.twoGig?.channel ?: "Auto",
             onValueChange = {
                 tempState = tempState?.copy(
@@ -39,13 +40,39 @@ fun ChannelConfigLayout(
             modifier = Modifier.fillMaxWidth(),
         )
 
+        BandwidthSelector(
+            whichBand = WiFiBand.TwoGig,
+            currentValue = tempState?.twoGig?.channelBandwidth ?: "Auto",
+            onValueChange = {
+                tempState = tempState?.copy(
+                    twoGig = tempState?.twoGig?.copy(
+                        channelBandwidth = it,
+                    ),
+                )
+            },
+            modifier = Modifier.fillMaxWidth(),
+        )
+
         ChannelSelector(
-            whichBand = Band.FiveGig,
+            whichBand = WiFiBand.FiveGig,
             currentValue = tempState?.fiveGig?.channel ?: "Auto",
             onValueChange = {
                 tempState = tempState?.copy(
                     fiveGig = tempState?.fiveGig?.copy(
                         channel = it,
+                    ),
+                )
+            },
+            modifier = Modifier.fillMaxWidth(),
+        )
+
+        BandwidthSelector(
+            whichBand = WiFiBand.FiveGig,
+            currentValue = tempState?.fiveGig?.channelBandwidth ?: "Auto",
+            onValueChange = {
+                tempState = tempState?.copy(
+                    fiveGig = tempState?.fiveGig?.copy(
+                        channelBandwidth = it,
                     ),
                 )
             },

@@ -17,14 +17,14 @@ import kotlin.native.HiddenFromObjC
 
 @Composable
 @HiddenFromObjC
-fun ChannelSelector(
+fun BandwidthSelector(
     whichBand: WiFiBand,
     currentValue: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val actualList = remember(whichBand) {
-        arrayOf("Auto") + whichBand.possibleBands
+        arrayOf("Auto") + whichBand.possibleBandwidths
     }
 
     var dropdownExpanded by remember {
@@ -33,7 +33,7 @@ fun ChannelSelector(
 
     LabeledDropdown(
         label = stringResource(
-            MR.strings.channel,
+            MR.strings.bandwidth_format,
             stringResource(whichBand.labelRes),
         ),
         expanded = dropdownExpanded,
@@ -41,13 +41,13 @@ fun ChannelSelector(
         modifier = modifier,
         selectedValue = currentValue,
     ) {
-        actualList.forEach { channel ->
+        actualList.forEach { bandwidth ->
             DropdownMenuItem(
                 text = {
-                    Text(text = channel)
+                    Text(text = bandwidth)
                 },
                 onClick = {
-                    onValueChange(channel)
+                    onValueChange(bandwidth)
                     dropdownExpanded = false
                 },
             )
