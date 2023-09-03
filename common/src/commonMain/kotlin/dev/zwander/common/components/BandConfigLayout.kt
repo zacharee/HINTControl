@@ -4,6 +4,7 @@ package dev.zwander.common.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
@@ -61,6 +62,32 @@ fun BandConfigLayout(
                     )
                 )
             },
+        )
+
+        ChannelSelector(
+            whichBand = Band.TwoGig,
+            currentValue = tempState?.twoGig?.channel ?: "Auto",
+            onValueChange = {
+                tempState = tempState?.copy(
+                    twoGig = tempState?.twoGig?.copy(
+                        channel = it,
+                    ),
+                )
+            },
+            modifier = Modifier.fillMaxWidth(),
+        )
+
+        ChannelSelector(
+            whichBand = Band.FiveGig,
+            currentValue = tempState?.fiveGig?.channel ?: "Auto",
+            onValueChange = {
+                tempState = tempState?.copy(
+                    fiveGig = tempState?.fiveGig?.copy(
+                        channel = it,
+                    ),
+                )
+            },
+            modifier = Modifier.fillMaxWidth(),
         )
     }
 }

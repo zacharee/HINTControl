@@ -93,7 +93,7 @@
     <string name="encryption_mode">Encryption Mode</string>
     <string name="guest">Guest</string>
     <string name="hidden">Hidden</string>
-    <string name="channel">Channel</string>
+    <string name="channel">%s Channel</string>
 
     <string name="remember_credentials">Remember Credentials</string>
     <string name="no_clients">No Clients</string>

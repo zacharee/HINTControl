@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.MenuItemColors
@@ -60,6 +61,7 @@ fun <T> LabeledDropdown(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
                         .heightIn(min = 36.dp)
+                        .widthIn(min = 64.dp)
                         .padding(8.dp)
                         .animateContentWidth(),
                 ) {
