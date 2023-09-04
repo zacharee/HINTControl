@@ -11,8 +11,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
 import dev.icerock.moko.resources.compose.stringResource
-import dev.zwander.common.components.DropdownMenuItem
 import dev.zwander.common.components.LabeledDropdown
+import dev.zwander.common.components.SelectableDropdownMenuItem
 import dev.zwander.common.data.Page
 import dev.zwander.common.model.SettingsModel
 import dev.zwander.resources.common.MR
@@ -41,7 +41,7 @@ fun ColumnScope.DefaultPage() {
         valueToString = { stringResource(selectedOption.titleRes) }
     ) {
         validOptions.forEach { option ->
-            DropdownMenuItem(
+            SelectableDropdownMenuItem(
                 text = {
                     Text(text = stringResource(option.titleRes))
                 },
@@ -49,6 +49,7 @@ fun ColumnScope.DefaultPage() {
                     selectedOption = option
                     menuExpanded = false
                 },
+                isSelected = selectedOption == option,
             )
         }
     }

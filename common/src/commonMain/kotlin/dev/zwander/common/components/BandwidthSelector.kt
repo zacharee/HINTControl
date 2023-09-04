@@ -42,7 +42,7 @@ fun BandwidthSelector(
         selectedValue = currentValue,
     ) {
         actualList.forEach { bandwidth ->
-            DropdownMenuItem(
+            SelectableDropdownMenuItem(
                 text = {
                     Text(text = bandwidth)
                 },
@@ -50,6 +50,7 @@ fun BandwidthSelector(
                     onValueChange(bandwidth)
                     dropdownExpanded = false
                 },
+                isSelected = currentValue == bandwidth,
             )
         }
     }

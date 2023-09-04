@@ -42,7 +42,7 @@ fun ChannelSelector(
         selectedValue = currentValue,
     ) {
         actualList.forEach { channel ->
-            DropdownMenuItem(
+            SelectableDropdownMenuItem(
                 text = {
                     Text(text = channel)
                 },
@@ -50,6 +50,7 @@ fun ChannelSelector(
                     onValueChange(channel)
                     dropdownExpanded = false
                 },
+                isSelected = currentValue == channel,
             )
         }
     }
