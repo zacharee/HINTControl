@@ -4,6 +4,8 @@ package dev.zwander.common.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
@@ -39,6 +41,25 @@ fun BandConfigLayout(
             },
         )
 
+        tempState?.twoGig?.transmissionPower?.let { transmissionPower ->
+            SliderWithTitle(
+                title = stringResource(MR.strings.twoGig_transmission_power),
+                minValue = 50,
+                maxValue = 100,
+                currentValue = transmissionPower.replace("%", "").toInt(),
+                onValueChange = {
+                    tempState = tempState?.copy(
+                        twoGig = tempState?.twoGig?.copy(
+                            transmissionPower = "${it.toInt()}%",
+                        ),
+                    )
+                },
+                unit = "%",
+                modifier = Modifier.fillMaxWidth()
+                    .padding(horizontal = 8.dp),
+            )
+        }
+
         TextSwitch(
             text = stringResource(MR.strings.fiveGig_radio),
             checked = (tempState?.fiveGig?.isRadioEnabled ?: false),
@@ -50,6 +71,25 @@ fun BandConfigLayout(
                 )
             },
         )
+
+        tempState?.fiveGig?.transmissionPower?.let { transmissionPower ->
+            SliderWithTitle(
+                title = stringResource(MR.strings.fiveGig_transmission_power),
+                minValue = 50,
+                maxValue = 100,
+                currentValue = transmissionPower.replace("%", "").toInt(),
+                onValueChange = {
+                    tempState = tempState?.copy(
+                        fiveGig = tempState?.fiveGig?.copy(
+                            transmissionPower = "${it.toInt()}%",
+                        ),
+                    )
+                },
+                unit = "%",
+                modifier = Modifier.fillMaxWidth()
+                    .padding(horizontal = 8.dp),
+            )
+        }
 
         TextSwitch(
             text = stringResource(MR.strings.band_steering),
