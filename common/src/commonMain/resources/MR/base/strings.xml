@@ -58,8 +58,8 @@
     <string name="save">Save</string>
     <string name="advanced">Advanced</string>
 
-    <string name="twoGig_transmission_power">2.4GHz Transmission Power</string>
-    <string name="fiveGig_transmission_power">5GHz Transmission Power</string>
+    <string name="twoGig_transmission_power">2.4GHz Power</string>
+    <string name="fiveGig_transmission_power">5GHz Power</string>
 
     <string name="bandwidth">Bandwidth</string>
     <string name="bandwidth_format">%s Bandwidth</string>
