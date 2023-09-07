@@ -2,9 +2,8 @@ package dev.zwander.common.util
 
 import dev.zwander.common.exceptions.NoGatewayFoundException
 import dev.zwander.common.exceptions.pickExceptionForStatus
+import dev.zwander.common.model.Endpoint
 import dev.zwander.common.model.Endpoints
-import dev.zwander.common.model.Endpoints.createFullUrl
-import dev.zwander.common.model.Endpoints.createNokiaUrl
 import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.TEST_TOKEN
 import dev.zwander.common.model.UserModel
@@ -90,8 +89,8 @@ private object ASClients {
     val mockEngine = MockEngine { request ->
         respond(
             content = ByteReadChannel(
-                when (request.url.fullPath.replace("/TMI/v1/", "")) {
-                    Endpoints.authURL -> {
+                when (Endpoint.CommonApiEndpoint(request.url.fullPath.replace("/TMI/v1/", ""))) {
+                    Endpoints.CommonApiV1.auth -> {
                         """
                                 {
                                   "auth": {
@@ -104,7 +103,7 @@ private object ASClients {
                             """.trimIndent()
                     }
 
-                    Endpoints.gateWayURL -> {
+                    Endpoints.CommonApiV1.gatewayInfo -> {
                         """
                             {
                               "device": {
@@ -167,7 +166,7 @@ private object ASClients {
                         """.trimIndent()
                     }
 
-                    Endpoints.getWifiConfigURL -> {
+                    Endpoints.CommonApiV1.getWifiConfig -> {
                         """
                             {
                               "2.4ghz": {
@@ -211,7 +210,7 @@ private object ASClients {
                         """.trimIndent()
                     }
 
-                    Endpoints.getDevicesURL -> {
+                    Endpoints.CommonApiV1.getDevices -> {
                         """
                             {
                               "clients": {
@@ -233,7 +232,7 @@ private object ASClients {
                         """.trimIndent()
                     }
 
-                    Endpoints.getCellURL -> {
+                    Endpoints.CommonApiV1.getCellInfo -> {
                         """
                             {
                               "cell": {
@@ -316,7 +315,7 @@ private object ASClients {
                         """.trimIndent()
                     }
 
-                    Endpoints.getSimURL -> {
+                    Endpoints.CommonApiV1.getSimInfo -> {
                         """
                             {
                               "sim": {
@@ -330,15 +329,15 @@ private object ASClients {
                         """.trimIndent()
                     }
 
-                    Endpoints.setWifiConfigURL -> {
+                    Endpoints.CommonApiV1.setWifiConfig -> {
                         ""
                     }
 
-                    Endpoints.resetURL -> {
+                    Endpoints.CommonApiV1.reset -> {
                         ""
                     }
 
-                    Endpoints.rebootURL -> {
+                    Endpoints.CommonApiV1.reboot -> {
                         ""
                     }
 
@@ -586,7 +585,7 @@ interface HTTPClient {
 }
 
 private object NokiaClient : HTTPClient {
-    override val testUrl: String = Endpoints.nokiaDeviceStatus.createNokiaUrl()
+    override val testUrl: String = Endpoints.NokiaApi.deviceStatus.createFullUrl()
 
     override val httpClient: HttpClient
         get() = NokiaClients.httpClient
@@ -604,7 +603,7 @@ private object NokiaClient : HTTPClient {
         withLoader(true) {
             val response = unauthedClient.handleCatch {
                 submitForm(
-                    url = Endpoints.nokiaLogin.createNokiaUrl(),
+                    url = Endpoints.NokiaApi.login.createFullUrl(),
                     formParameters = parameters {
                         append("name", UserModel.username.value)
                         append("pswd", UserModel.password.value ?: "")
@@ -635,17 +634,17 @@ private object NokiaClient : HTTPClient {
         return withLoader {
             val nokiaDeviceData = json.decodeFromString<DeviceInfoStatus>(
                 (if (unauthed) unauthedClient else httpClient).handleCatch(!unauthed, !unauthed) {
-                    get(Endpoints.nokiaDeviceInfoStatus.createNokiaUrl())
+                    get(Endpoints.NokiaApi.deviceInfoStatus.createFullUrl())
                 }?.bodyAsText()
             )
             val cellStatus = json.decodeFromString<CellStatus>(
                 (if (unauthed) unauthedClient else httpClient).handleCatch(!unauthed, !unauthed) {
-                    get(Endpoints.nokiaCellStatus.createNokiaUrl())
+                    get(Endpoints.NokiaApi.cellStatus.createFullUrl())
                 }?.bodyAsText()
             )
             val connectionStatus = json.decodeFromString<ConnectionStatus>(
                 (if (unauthed) unauthedClient else httpClient).handleCatch(!unauthed, !unauthed) {
-                    get(Endpoints.nokiaRadioStatus.createNokiaUrl())
+                    get(Endpoints.NokiaApi.radioStatus.createFullUrl())
                 }?.bodyAsText()
             )
 
@@ -711,7 +710,7 @@ private object NokiaClient : HTTPClient {
         return withLoader {
             val wifiListing = json.decodeFromString<WifiListing>(
                 httpClient.handleCatch {
-                    get(Endpoints.nokiaWifiListing.createNokiaUrl())
+                    get(Endpoints.NokiaApi.wifiListing.createFullUrl())
                 }?.bodyAsText()
             )
 
@@ -742,7 +741,7 @@ private object NokiaClient : HTTPClient {
         return withLoader {
             val deviceInfo = json.decodeFromString<DeviceInfoStatus>(
                 httpClient.handleCatch {
-                    get(Endpoints.nokiaDeviceInfoStatus.createNokiaUrl())
+                    get(Endpoints.NokiaApi.deviceInfoStatus.createFullUrl())
                 }?.bodyAsText()
             )
 
@@ -785,12 +784,12 @@ private object NokiaClient : HTTPClient {
         return withLoader {
             val connectionStatus = json.decodeFromString<ConnectionStatus>(
                 httpClient.handleCatch {
-                    get(Endpoints.nokiaRadioStatus.createNokiaUrl())
+                    get(Endpoints.NokiaApi.radioStatus.createFullUrl())
                 }?.bodyAsText()
             )
             val cellStatus = json.decodeFromString<CellStatus>(
                 httpClient.handleCatch {
-                    get(Endpoints.nokiaCellStatus.createNokiaUrl())
+                    get(Endpoints.NokiaApi.cellStatus.createFullUrl())
                 }?.bodyAsText()
             )
 
@@ -845,7 +844,7 @@ private object NokiaClient : HTTPClient {
         return withLoader {
             val statistics = json.decodeFromString<StatisticsInfo>(
                 httpClient.handleCatch {
-                    get(Endpoints.nokiaStatisticsStatus.createNokiaUrl())
+                    get(Endpoints.NokiaApi.statisticsStatus.createFullUrl())
                 }?.bodyAsText()
             )
 
@@ -879,7 +878,7 @@ private object NokiaClient : HTTPClient {
             )
 
             val response = httpClient.handleCatch {
-                post(Endpoints.nokiaServiceFunction.createNokiaUrl()) {
+                post(Endpoints.NokiaApi.serviceFunction.createFullUrl()) {
                     contentType(ContentType.parse("application/json"))
                     setBody(nokiaConfig)
                 }
@@ -889,7 +888,7 @@ private object NokiaClient : HTTPClient {
                 delay(10000L)
 
                 waitForLive {
-                    httpClient.get(Endpoints.nokiaWifiListing.createNokiaUrl())
+                    httpClient.get(Endpoints.NokiaApi.wifiListing.createFullUrl())
                     true
                 }
             }
@@ -904,7 +903,7 @@ private object NokiaClient : HTTPClient {
         withLoader(true) {
             httpClient.handleCatch {
                 submitForm(
-                    url = Endpoints.nokiaLogin.createNokiaUrl(),
+                    url = Endpoints.NokiaApi.login.createFullUrl(),
                     formParameters = parameters {
                         append("action", "Reboot")
                     },
@@ -915,7 +914,7 @@ private object NokiaClient : HTTPClient {
 
     override suspend fun exists(): Boolean {
         return try {
-            unauthedClient.get(Endpoints.nokiaDeviceStatus.createNokiaUrl()).status.isSuccess()
+            unauthedClient.get(testUrl).status.isSuccess()
         } catch (e: Exception) {
             CrossPlatformBugsnag.notify(e)
             false
@@ -930,7 +929,7 @@ private object ArcadyanSagemcomClient : HTTPClient {
     override val httpClient: HttpClient
         get() = if (UserModel.isTest.value) ASClients.mockClient else ASClients.httpClient
 
-    override val testUrl = Endpoints.getWifiConfigURL.createFullUrl()
+    override val testUrl = Endpoints.CommonApiV1.gatewayInfo.createFullUrl()
 
     private val json = Json {
         ignoreUnknownKeys = true
@@ -939,7 +938,7 @@ private object ArcadyanSagemcomClient : HTTPClient {
     override suspend fun logIn(username: String, password: String, rememberCredentials: Boolean) {
         withLoader(true) {
             val response = unauthedClient.handleCatch {
-                post(Endpoints.authURL.createFullUrl()) {
+                post(Endpoints.CommonApiV1.auth.createFullUrl()) {
                     contentType(ContentType.parse("application/json"))
                     setBody(UsernamePassword(username, password))
                 }
@@ -970,7 +969,7 @@ private object ArcadyanSagemcomClient : HTTPClient {
         return withLoader {
             json.decodeFromString(
                 (if (unauthed) unauthedClient else httpClient).handleCatch(!unauthed, !unauthed) {
-                    get(Endpoints.gateWayURL.createFullUrl())
+                    get(Endpoints.CommonApiV1.gatewayInfo.createFullUrl())
                 }?.bodyAsText()
             )
         }
@@ -980,7 +979,7 @@ private object ArcadyanSagemcomClient : HTTPClient {
         return withLoader {
             json.decodeFromString(
                 httpClient.handleCatch {
-                    get(Endpoints.getWifiConfigURL.createFullUrl())
+                    get(Endpoints.CommonApiV1.getWifiConfig.createFullUrl())
                 }?.bodyAsText()
             )
         }
@@ -990,7 +989,7 @@ private object ArcadyanSagemcomClient : HTTPClient {
         return withLoader {
             json.decodeFromString(
                 httpClient.handleCatch {
-                    get(Endpoints.getDevicesURL.createFullUrl())
+                    get(Endpoints.CommonApiV1.getDevices.createFullUrl())
                 }?.bodyAsText()
             )
         }
@@ -1000,7 +999,7 @@ private object ArcadyanSagemcomClient : HTTPClient {
         return withLoader {
             json.decodeFromString(
                 httpClient.handleCatch {
-                    get(Endpoints.getCellURL.createFullUrl())
+                    get(Endpoints.CommonApiV1.getCellInfo.createFullUrl())
                 }?.bodyAsText()
             )
         }
@@ -1010,7 +1009,7 @@ private object ArcadyanSagemcomClient : HTTPClient {
         return withLoader {
             json.decodeFromString(
                 httpClient.handleCatch {
-                    get(Endpoints.getSimURL.createFullUrl())
+                    get(Endpoints.CommonApiV1.getSimInfo.createFullUrl())
                 }?.bodyAsText()
             )
         }
@@ -1019,7 +1018,7 @@ private object ArcadyanSagemcomClient : HTTPClient {
     override suspend fun setWifiData(newData: WifiConfig) {
         withLoader(true) {
             httpClient.handleCatch {
-                post(Endpoints.setWifiConfigURL.createFullUrl()) {
+                post(Endpoints.CommonApiV1.setWifiConfig.createFullUrl()) {
                     contentType(ContentType.parse("application/json"))
                     setBody(newData)
                 }
@@ -1030,7 +1029,7 @@ private object ArcadyanSagemcomClient : HTTPClient {
     override suspend fun setLogin(newUsername: String, newPassword: String) {
         withLoader(true) {
             httpClient.handleCatch {
-                post(Endpoints.resetURL.createFullUrl()) {
+                post(Endpoints.CommonApiV1.reset.createFullUrl()) {
                     contentType(ContentType.parse("application/json"))
                     setBody(SetLoginAction(newUsername, newPassword))
                 }
@@ -1041,14 +1040,14 @@ private object ArcadyanSagemcomClient : HTTPClient {
     override suspend fun reboot() {
         withLoader(true) {
             httpClient.handleCatch {
-                post(Endpoints.rebootURL.createFullUrl())
+                post(Endpoints.CommonApiV1.reboot.createFullUrl())
             }
         }
     }
 
     override suspend fun exists(): Boolean {
         return try {
-            val response = httpClient.get(Endpoints.gateWayURL.createFullUrl())
+            val response = httpClient.get(testUrl)
 
             !intArrayOf(404, 403).contains(response.status.value)
         } catch (e: Exception) {
