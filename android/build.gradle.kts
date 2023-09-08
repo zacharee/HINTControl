@@ -1,5 +1,8 @@
 @file:Suppress("UnstableApiUsage")
 
+import org.jetbrains.kotlin.gradle.plugin.mpp.pm20.util.archivesName
+
+
 plugins {
     id("org.jetbrains.compose")
     id("com.android.application")
@@ -20,6 +23,8 @@ android {
         targetSdk = rootProject.extra["target_sdk"].toString().toInt()
         versionCode = rootProject.extra["app_version_code"].toString().toInt()
         versionName = rootProject.extra["app_version_name"].toString()
+
+        archivesName = "HINT_Control_$versionName"
     }
     val compatibility = JavaVersion.toVersion(rootProject.extra["java_version"].toString())
     compileOptions {
