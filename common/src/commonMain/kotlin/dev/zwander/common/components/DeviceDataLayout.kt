@@ -62,7 +62,7 @@ fun DeviceDataLayout(
         }
     }
 
-    EmptyableContent(
+    EmptiableContent(
         content = {
             InfoRow(
                 items = items,

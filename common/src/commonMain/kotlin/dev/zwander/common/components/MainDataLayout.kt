@@ -35,7 +35,7 @@ fun MainDataLayout(
         }
     }
 
-    EmptyableContent(
+    EmptiableContent(
         content = {
             InfoRow(
                 items = items,

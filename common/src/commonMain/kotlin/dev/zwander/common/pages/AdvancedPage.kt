@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.components.CellBars
-import dev.zwander.common.components.EmptyableContent
+import dev.zwander.common.components.EmptiableContent
 import dev.zwander.common.components.InfoRow
 import dev.zwander.common.components.PageGrid
 import dev.zwander.common.components.generateBasicCellItems
@@ -108,7 +108,7 @@ fun AdvancedPage(
             }
         },
         renderItem = {
-            EmptyableContent(
+            EmptiableContent(
                 content = {
                     InfoRow(
                         items = it.blocks,

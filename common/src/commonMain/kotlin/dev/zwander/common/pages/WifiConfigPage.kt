@@ -142,6 +142,7 @@ fun WifiConfigPage(
             }
         },
         showBottomBarExpander = false,
+        itemIsSelectable = { false },
     )
 
     AlertDialogDef(

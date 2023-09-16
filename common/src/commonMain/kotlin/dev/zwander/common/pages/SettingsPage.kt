@@ -136,7 +136,8 @@ fun SettingsPage(
             modifier = Modifier.fillMaxSize(),
             renderItemDescription = {
                 it.description?.invoke()
-            }
+            },
+            itemIsSelectable = { false },
         )
     }
 }

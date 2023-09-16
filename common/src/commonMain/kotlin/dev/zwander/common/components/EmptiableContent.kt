@@ -13,7 +13,7 @@ import kotlin.native.HiddenFromObjC
 
 @Composable
 @HiddenFromObjC
-fun EmptyableContent(
+fun EmptiableContent(
     content: @Composable ColumnScope.() -> Unit,
     emptyContent: @Composable ColumnScope.() -> Unit,
     isEmpty: Boolean,

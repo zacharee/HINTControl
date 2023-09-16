@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.LocalTextStyle
@@ -63,6 +64,7 @@ fun <T> PageGrid(
     bottomBarContents: (@Composable RowScope.() -> Unit)? = null,
     showBottomBarExpander: Boolean = true,
     id: String? = null,
+    itemIsSelectable: @Composable T.() -> Boolean = { true },
 ) {
     LaunchedEffect(bottomBarContents, id, showBottomBarExpander) {
         if (bottomBarContents != null && id.isNullOrBlank() && showBottomBarExpander) {
@@ -133,7 +135,17 @@ fun <T> PageGrid(
 
                         Spacer(modifier = Modifier.size(8.dp))
 
-                        renderItem(it)
+                        if (itemIsSelectable(it)) {
+                            SelectionContainer {
+                                Column(
+                                    modifier = Modifier.fillMaxWidth(),
+                                ) {
+                                    renderItem(it)
+                                }
+                            }
+                        } else {
+                            renderItem(it)
+                        }
                     }
                 }
             }

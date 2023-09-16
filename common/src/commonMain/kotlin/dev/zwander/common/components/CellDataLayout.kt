@@ -74,7 +74,7 @@ fun CellDataLayout(
         generateAdvancedCellItems(advancedData)
     }
 
-    EmptyableContent(
+    EmptiableContent(
         content = {
             val expandedState = remember(expandedKey) {
                 PersistentMutableStateFlow(expandedKey, false)
