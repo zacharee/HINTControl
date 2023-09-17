@@ -107,7 +107,7 @@ kotlin {
                 api("org.jetbrains.kotlinx:atomicfu:${rootProject.extra["kotlin.atomicfu.version"]}")
                 api("com.squareup.okio:okio:3.4.0")
                 api("io.github.koalaplot:koalaplot-core:0.4.0-dev1")
-                api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+                api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core") {
                     version {
                         strictly(coroutinesVersion)
@@ -135,7 +135,7 @@ kotlin {
                 }
                 api("com.bugsnag:bugsnag-android:5.31.1")
                 api("com.getkeepsafe.relinker:relinker:1.4.5")
-                api("androidx.glance:glance-appwidget:1.0.0-rc01")
+                api("androidx.glance:glance-appwidget:1.0.0")
             }
         }
         val skiaMain by creating {
@@ -155,7 +155,7 @@ kotlin {
                 api("org.slf4j:slf4j-jdk14:${slf4jVersion}")
                 api("com.bugsnag:bugsnag:3.7.0")
                 api("com.github.Dansoftowner:jSystemThemeDetector:3.8")
-                api("com.github.oshi:oshi-core:6.4.4")
+                api("com.github.oshi:oshi-core:6.4.5")
                 api("net.harawata:appdirs:1.2.1")
             }
         }
