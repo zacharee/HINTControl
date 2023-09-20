@@ -1,3 +1,5 @@
+@file:OptIn(kotlinx.cinterop.ExperimentalForeignApi::class)
+
 package dev.zwander.common.util
 
 import cocoapods.Bugsnag.BSGBreadcrumbType
