@@ -73,6 +73,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 
 private object CommonClients {
@@ -931,8 +932,10 @@ private object ArcadyanSagemcomClient : HTTPClient {
 
     override val testUrl = Endpoints.CommonApiV1.gatewayInfo.createFullUrl()
 
+    @OptIn(ExperimentalSerializationApi::class)
     private val json = Json {
         ignoreUnknownKeys = true
+        allowTrailingComma = true
     }
 
     override suspend fun logIn(username: String, password: String, rememberCredentials: Boolean) {
