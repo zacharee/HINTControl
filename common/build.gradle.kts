@@ -72,10 +72,10 @@ kotlin {
     }
 
     sourceSets {
-        val ktorVersion = "2.3.4"
+        val ktorVersion = "2.3.6"
         val coroutinesVersion = "1.7.3"
-        val slf4jVersion = "2.0.7"
-        val multiplatformSettingsVersion = "1.0.0"
+        val slf4jVersion = "2.0.9"
+        val multiplatformSettingsVersion = "1.1.0"
         val mokoMvvmVersion = "0.16.1"
         val mokoResourcesVersion = rootProject.extra["moko.resources.version"].toString()
         val korlibsVersion = "4.0.10"
@@ -123,9 +123,9 @@ kotlin {
             dependsOn(nonAppleMain)
             dependencies {
                 api("androidx.appcompat:appcompat:1.6.1")
-                api("androidx.activity:activity-compose:1.7.2")
-                api("androidx.core:core-ktx:1.10.1")
-                api("com.google.android.material:material:1.9.0")
+                api("androidx.activity:activity-compose:1.8.1")
+                api("androidx.core:core-ktx:1.12.0")
+                api("com.google.android.material:material:1.10.0")
 
                 api("io.ktor:ktor-client-okhttp:${ktorVersion}")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-android") {
@@ -133,7 +133,7 @@ kotlin {
                         strictly(coroutinesVersion)
                     }
                 }
-                api("com.bugsnag:bugsnag-android:5.31.1")
+                api("com.bugsnag:bugsnag-android:6.0.0")
                 api("com.getkeepsafe.relinker:relinker:1.4.5")
                 api("androidx.glance:glance-appwidget:1.0.0")
             }
@@ -153,7 +153,7 @@ kotlin {
                 api("net.java.dev.jna:jna:5.13.0")
                 api("org.slf4j:slf4j-api:${slf4jVersion}")
                 api("org.slf4j:slf4j-jdk14:${slf4jVersion}")
-                api("com.bugsnag:bugsnag:3.7.0")
+                api("com.bugsnag:bugsnag:3.7.1")
                 api("com.github.Dansoftowner:jSystemThemeDetector:3.8")
                 api("com.github.oshi:oshi-core:6.4.5")
                 api("net.harawata:appdirs:1.2.1")

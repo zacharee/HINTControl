@@ -17,17 +17,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.onClick
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCompositionContext
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.LocalComposeScene
+import androidx.compose.ui.InternalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.focus.FocusRequester
@@ -42,8 +39,7 @@ import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.ui.platform.SkiaBasedOwner
-import androidx.compose.ui.platform.setContent
+import androidx.compose.ui.scene.rememberComposeSceneLayer
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.IntSize
@@ -80,8 +76,15 @@ actual fun CAlertDialog(
     if (showing || showingForAnimation) {
         AbsolutePopup(
             alignment = Alignment.Center,
-            onDismissRequest = onDismissRequest,
             focusable = true,
+            onPreviewKeyEvent = {
+                if (it.key == Key.Escape) {
+                    onDismissRequest()
+                    true
+                } else {
+                    false
+                }
+            }
         ) {
             BoxWithConstraints(
                 modifier = Modifier
@@ -120,7 +123,6 @@ internal fun AbsolutePopup(
     alignment: Alignment = Alignment.TopStart,
     offset: IntOffset = IntOffset(0, 0),
     focusable: Boolean = false,
-    onDismissRequest: (() -> Unit)? = null,
     onPreviewKeyEvent: (KeyEvent) -> Boolean = { false },
     onKeyEvent: (KeyEvent) -> Boolean = { false },
     content: @Composable () -> Unit,
@@ -135,27 +137,23 @@ internal fun AbsolutePopup(
     AbsolutePopup(
         provider = popupPositioner,
         focusable = focusable,
-        onDismissRequest = onDismissRequest,
         onPreviewKeyEvent = onPreviewKeyEvent,
         onKeyEvent = onKeyEvent,
         content = content,
     )
 }
 
+@OptIn(InternalComposeUiApi::class)
 @Composable
 internal fun AbsolutePopup(
     provider: PopupPositionProvider,
     focusable: Boolean = false,
-    onDismissRequest: (() -> Unit)? = null,
     onPreviewKeyEvent: ((KeyEvent) -> Boolean) = { false },
     onKeyEvent: (KeyEvent) -> Boolean = { false },
     content: @Composable () -> Unit
 ) {
-    val scene = LocalComposeScene.current!!
-    val density = LocalDensity.current
     val layoutDirection = LocalLayoutDirection.current
-
-    val scope = rememberCoroutineScope()
+    val layer = rememberComposeSceneLayer(focusable = focusable)
 
     var popupBounds by remember { mutableStateOf(IntRect.Zero) }
     val focusRequester = remember {
@@ -166,72 +164,37 @@ internal fun AbsolutePopup(
         focusRequester.requestFocus()
     }
 
-    val parentComposition = rememberCompositionContext()
-    val (owner, composition) = remember {
-        val owner = SkiaBasedOwner(
-            platform = scene.platform,
-            bounds = popupBounds,
-            focusable = focusable,
-            scene = scene,
-            coroutineContext = scope.coroutineContext,
-            parentFocusManager = scene.platform.focusManager,
-            initDensity = density,
-            modifier = Modifier.onKeyEvent(onKeyEvent)
-                .onPreviewKeyEvent(onPreviewKeyEvent),
-            onOutsidePointerEvent = { onDismissRequest?.invoke() },
-            initLayoutDirection = layoutDirection,
+    layer.setContent {
+        Layout(
+            content = content,
+            measurePolicy = { measureables, constraints ->
+                val width = constraints.maxWidth
+                val height = constraints.maxHeight
+
+                layout(constraints.maxWidth, constraints.maxHeight) {
+                    measureables.forEach {
+                        val placeable = it.measure(constraints)
+                        val position = provider.calculatePosition(
+                            anchorBounds = IntRect(0, 0, width, height),
+                            windowSize = IntSize(width, height),
+                            layoutDirection = layoutDirection,
+                            popupContentSize = IntSize(placeable.width, placeable.height)
+                        )
+
+                        popupBounds = IntRect(
+                            position,
+                            IntSize(placeable.width, placeable.height)
+                        )
+
+                        layer.bounds = popupBounds
+                        placeable.place(position.x, position.y)
+                    }
+                }
+            },
+            modifier = Modifier
+                .onPreviewKeyEvent(onPreviewKeyEvent)
+                .onKeyEvent(onKeyEvent)
+                .focusRequester(focusRequester),
         )
-        scene.attach(owner)
-
-        val composition = owner.setContent(parent = parentComposition) {
-            Layout(
-                content = content,
-                measurePolicy = { measureables, constraints ->
-                    val width = constraints.maxWidth
-                    val height = constraints.maxHeight
-
-                    layout(constraints.maxWidth, constraints.maxHeight) {
-                        measureables.forEach {
-                            val placeable = it.measure(constraints)
-                            val position = provider.calculatePosition(
-                                anchorBounds = IntRect(0, 0, width, height),
-                                windowSize = IntSize(width, height),
-                                layoutDirection = layoutDirection,
-                                popupContentSize = IntSize(placeable.width, placeable.height)
-                            )
-
-                            popupBounds = IntRect(
-                                position,
-                                IntSize(placeable.width, placeable.height)
-                            )
-
-                            owner.bounds = popupBounds
-                            placeable.place(position.x, position.y)
-                        }
-                    }
-                },
-                modifier = Modifier
-                    .onPreviewKeyEvent {
-                        if (it.key == Key.Escape) {
-                            onDismissRequest?.invoke()
-                            true
-                        } else {
-                            false
-                        }
-                    }
-                    .focusRequester(focusRequester),
-            )
-        }
-
-        owner to composition
-    }
-
-    owner.density = density
-    DisposableEffect(Unit) {
-        onDispose {
-            scene.detach(owner)
-            composition.dispose()
-            owner.dispose()
-        }
     }
 }
