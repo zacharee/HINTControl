@@ -5,6 +5,7 @@ package dev.zwander.common.components
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -14,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.painterResource
@@ -84,7 +86,8 @@ fun CellDataLayout(
 
             InfoRow(
                 items = basicItems,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth()
+                    .padding(bottom = 4.dp),
             )
 
             AnimatedVisibility(

@@ -18,6 +18,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.ImageResource
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.painterResource
@@ -63,6 +64,7 @@ fun ColumnScope.About() {
 
     FlowRow(
         horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalArrangement = Arrangement.spacedBy(4.dp),
         modifier = Modifier.fillMaxWidth(),
     ) {
         socialIcons.forEach { (img, link, desc) ->

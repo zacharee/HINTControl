@@ -23,6 +23,7 @@ fun InfoRow(
 ) {
     FlowRow(
         horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalArrangement = Arrangement.spacedBy(4.dp),
         modifier = modifier,
     ) {
         items.forEach { (labelRes, value) ->
