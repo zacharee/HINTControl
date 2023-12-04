@@ -1,5 +1,3 @@
-@file:Suppress("UNUSED_VARIABLE")
-
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import org.jetbrains.compose.experimental.uikit.tasks.SyncComposeResourcesForIosTask
 
@@ -106,7 +104,7 @@ kotlin {
                 api("io.github.xxfast:kstore-file:$kstoreVersion")
                 api("org.jetbrains.kotlinx:atomicfu:${rootProject.extra["kotlin.atomicfu.version"]}")
                 api("com.squareup.okio:okio:3.6.0")
-                api("io.github.koalaplot:koalaplot-core:0.4.0-dev1")
+                api("io.github.koalaplot:koalaplot-core:0.4.0")
                 api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core") {
                     version {
@@ -155,8 +153,8 @@ kotlin {
                 api("org.slf4j:slf4j-jdk14:${slf4jVersion}")
                 api("com.bugsnag:bugsnag:3.7.1")
                 api("com.github.Dansoftowner:jSystemThemeDetector:3.8")
-                api("com.github.oshi:oshi-core:6.4.5")
-                api("net.harawata:appdirs:1.2.1")
+                api("com.github.oshi:oshi-core:6.4.8")
+                api("net.harawata:appdirs:1.2.2")
             }
         }
 
@@ -164,7 +162,7 @@ kotlin {
             dependsOn(skiaMain)
             dependencies {
                 api("io.ktor:ktor-client-darwin:${ktorVersion}")
-                api("com.rickclephas.kmp:nsexception-kt-bugsnag:0.1.9")
+                api("com.rickclephas.kmp:nsexception-kt-bugsnag:0.1.16")
                 api("com.rickclephas.kmp:nserror-kt:0.1.0")
             }
         }
