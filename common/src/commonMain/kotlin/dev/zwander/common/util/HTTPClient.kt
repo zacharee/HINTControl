@@ -49,6 +49,7 @@ import io.ktor.client.plugins.auth.providers.bearer
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.cookies.HttpCookies
 import io.ktor.client.plugins.defaultRequest
+import io.ktor.client.plugins.timeout
 import io.ktor.client.request.HttpRequestPipeline
 import io.ktor.client.request.forms.submitForm
 import io.ktor.client.request.get
@@ -915,7 +916,9 @@ private object NokiaClient : HTTPClient {
 
     override suspend fun exists(): Boolean {
         return try {
-            unauthedClient.get(testUrl).status.isSuccess()
+            unauthedClient.get(testUrl) {
+                timeout { this.requestTimeoutMillis = 5000 }
+            }.status.isSuccess()
         } catch (e: Exception) {
             CrossPlatformBugsnag.notify(e)
             false
@@ -1050,7 +1053,9 @@ private object ArcadyanSagemcomClient : HTTPClient {
 
     override suspend fun exists(): Boolean {
         return try {
-            val response = httpClient.get(testUrl)
+            val response = unauthedClient.get(testUrl) {
+                timeout { this.requestTimeoutMillis = 5000 }
+            }
 
             !intArrayOf(404, 403).contains(response.status.value)
         } catch (e: Exception) {
