@@ -6,6 +6,7 @@ import com.rickclephas.kmp.nsexceptionkt.bugsnag.cinterop.BugsnagConfiguration
 import com.rickclephas.kmp.nsexceptionkt.bugsnag.configureBugsnag
 import com.rickclephas.kmp.nsexceptionkt.bugsnag.setBugsnagUnhandledExceptionHook
 import dev.zwander.common.App
+import kotlinx.cinterop.ExperimentalForeignApi
 
 fun MainViewController() = ComposeUIViewController {
     App(
@@ -13,6 +14,7 @@ fun MainViewController() = ComposeUIViewController {
     )
 }
 
+@OptIn(ExperimentalForeignApi::class)
 fun updateBugsnagConfig(config: BugsnagConfiguration) {
     configureBugsnag(config)
 }
