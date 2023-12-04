@@ -77,10 +77,18 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 
+private const val DEFAULT_TIMEOUT_MS = 10_000L
+
 private object CommonClients {
     val unauthedClient = HttpClient {
         install(ContentNegotiation) {
             json()
+        }
+
+        install(HttpTimeout) {
+            requestTimeoutMillis = DEFAULT_TIMEOUT_MS
+            connectTimeoutMillis = DEFAULT_TIMEOUT_MS
+            socketTimeoutMillis = DEFAULT_TIMEOUT_MS
         }
 
         followRedirects = true
@@ -377,9 +385,9 @@ private object ASClients {
             json()
         }
         install(HttpTimeout) {
-            requestTimeoutMillis = 10000
-            connectTimeoutMillis = 10000
-            socketTimeoutMillis = 10000
+            requestTimeoutMillis = DEFAULT_TIMEOUT_MS
+            connectTimeoutMillis = DEFAULT_TIMEOUT_MS
+            socketTimeoutMillis = DEFAULT_TIMEOUT_MS
         }
         this.developmentMode = true
         followRedirects = true
@@ -397,9 +405,9 @@ private object NokiaClients {
             json()
         }
         install(HttpTimeout) {
-            requestTimeoutMillis = 10000
-            connectTimeoutMillis = 10000
-            socketTimeoutMillis = 10000
+            requestTimeoutMillis = DEFAULT_TIMEOUT_MS
+            connectTimeoutMillis = DEFAULT_TIMEOUT_MS
+            socketTimeoutMillis = DEFAULT_TIMEOUT_MS
         }
         defaultRequest {
             headers.appendIfNameAbsent(HttpHeaders.Cookie, UserModel.cookie.value ?: "")
