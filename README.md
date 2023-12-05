@@ -31,6 +31,12 @@ Extract the downloaded ZIP, then right-click the .app file and choose "Open". Th
 
 Native ARM64 binaries for Linux aren't currently available.
 
+# Support
+1. For questions about your T-Mobile Home Internet service, such as outages, speed, or billing, you'll need to contact [T-Mobile support](https://www.t-mobile.com/contact-us).
+2. If there's a bug or a crash in HINT Control, [open a new issue](https://github.com/zacharee/ArcadyanKVD21Control/issues) with as much detail as possible.
+3. If you'd like to request a new feature, please check the open and closed issues before creating a new one. Be aware that it might not be possible to implement.
+4. For anything else, send me an email at <zachary@zwander.dev>.
+
 # Building
 ## Desktop
 HINT Control makes use of [Conveyor](https://www.hydraulic.dev/) to create binaries for different desktop platforms.
