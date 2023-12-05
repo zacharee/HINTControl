@@ -29,6 +29,12 @@ jobs:
           myToken: ${{ secrets.GITHUB_TOKEN }}
           view_top: 1
 
+      - name: Retrieve macOS Certificate
+        env:
+          CERTIFICATE_BASE64: ${{ secrets.MACOS_CERTIFICATE }}
+        run: |
+          echo $CERTIFICATE_BASE64 | base64 --decode > macos.cer
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
@@ -53,6 +59,7 @@ jobs:
           PATH="$PATH:./Conveyor.app/Contents/MacOS"
           conveyor \
             "-Kapp.signing-key=${{ secrets.SIGNING_KEY }}" \
+            "-Kapp.mac.certificate=macos.cer" \
             "-Kapp.mac.notarization.team-id=${{ secrets.MACOS_TEAM_ID }}" \
             "-Kapp.mac.notarization.app-specific-password=${{ secrets.MACOS_APP_PASSWORD }}" \
             "-Kapp.mac.notarization.apple-id=${{ secrets.APPLE_ID }}" \
