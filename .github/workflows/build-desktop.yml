@@ -47,7 +47,8 @@ jobs:
       - name: Create macOS Certificate File
         shell: bash
         run: |
-          echo "${{ secrets.SIGNING_KEY }}" > macos.cer
+          echo "${{ secrets.SIGNING_KEY }}" > macos.cer.b64
+          openssl x509 -outform der -in macos.cer.b64 -out macos.cer
 
       - name: Run Conveyor
         shell: bash
