@@ -44,12 +44,6 @@ jobs:
           wget https://downloads.hydraulic.dev/conveyor/conveyor-12.1-mac-amd64.zip
           unzip conveyor-12.1-mac-amd64.zip
 
-      - name: Create macOS Certificate File
-        shell: bash
-        run: |
-          echo "${{ secrets.SIGNING_KEY }}" > macos.cer.b64
-          openssl x509 -outform der -in macos.cer.b64 -out macos.cer
-
       - name: Run Conveyor
         shell: bash
         env:
@@ -59,7 +53,6 @@ jobs:
           PATH="$PATH:./Conveyor.app/Contents/MacOS"
           conveyor \
             "-Kapp.signing-key=$SIGNING_KEY" \
-            "-Kapp.mac.certificate=./macos.cer" \
             "-Kapp.mac.notarization.team-id=${{ secrets.MACOS_TEAM_ID }}" \
             "-Kapp.mac.notarization.app-specific-password=${{ secrets.MACOS_APP_PASSWORD }}" \
             "-Kapp.mac.notarization.apple-id=${{ secrets.APPLE_ID }}" \
