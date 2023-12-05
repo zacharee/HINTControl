@@ -48,7 +48,7 @@ jobs:
         shell: bash
         run: |
           echo "${{ secrets.SIGNING_KEY }}" > macos.cer.b64
-          base64 decode -i macos.cer.b64 -o macos.cer
+          base64 -d -i macos.cer.b64 -o macos.cer
 
       - name: Run Conveyor
         shell: bash
