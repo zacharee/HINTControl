@@ -52,7 +52,7 @@ jobs:
         run: |
           PATH="$PATH:./Conveyor.app/Contents/MacOS"
           conveyor \
-            "-Kapp.signing-key=$SIGNING_KEY" \
+            "-Kapp.signing-key=${{ secrets.SIGNING_KEY }}" \
             "-Kapp.mac.notarization.team-id=${{ secrets.MACOS_TEAM_ID }}" \
             "-Kapp.mac.notarization.app-specific-password=${{ secrets.MACOS_APP_PASSWORD }}" \
             "-Kapp.mac.notarization.apple-id=${{ secrets.APPLE_ID }}" \
