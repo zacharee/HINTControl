@@ -7,7 +7,7 @@ Check the [Releases page](https://github.com/zacharee/ArcadyanKVD21Control/relea
 ## Android
 The Android version is available on the [Google Play Store](https://play.google.com/store/apps/details?id=dev.zwander.arcadyankvd21control),
 
-Alternatively, you can download `android-release.apk` and install it.
+Alternatively, you can download `HINTControl_Android_<VERSION>.apk` and install it.
 
 ## iOS
 The iOS version is available on the [App Store](https://apps.apple.com/us/app/hint-control/id6449951339).
