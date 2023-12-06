@@ -21,13 +21,11 @@ Native ARM64 Windows builds aren't currently available.
  - On Intel Macs, download the .zip ending in `mac-amd64`.
  - On Apple Silicon Macs, download the .zip ending in `mac-aarch64`.
 
-Extract the downloaded ZIP, then right-click the .app file and choose "Open". The first try will likely result in an error. Close the error dialog and try again and you should see a dialog with an "Open" button show up.
-
 ## Linux
  - On Debian-based systems, download the `.deb` file.
  - On other Linux distros, download the `.tar.gz` file.
 
-Native ARM64 binaries for Linux aren't currently available.
+On x64 Linux, download the `amd64` variant. On ARM64 Linux, choose `aarch64`.
 
 # Support
 1. For questions about your T-Mobile Home Internet service, such as outages, speed, or billing, you'll need to contact [T-Mobile support](https://www.t-mobile.com/contact-us).
