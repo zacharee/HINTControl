@@ -37,6 +37,14 @@ kotlin {
         }
     }
 
+    targets.all {
+        compilations.all {
+            compilerOptions.configure {
+                freeCompilerArgs.add("-Xexpect-actual-classes")
+            }
+        }
+    }
+
     cocoapods {
         version = rootProject.extra["app_version_code"].toString()
         summary = "KVD21Control"
