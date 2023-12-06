@@ -10,9 +10,7 @@ The Android version is available on the [Google Play Store](https://play.google.
 Alternatively, you can download `android-release.apk` and install it.
 
 ## iOS
-The iOS version is available on [TestFlight](https://testflight.apple.com/join/guaoX3zI).
-
-Alternatively, you can download `Hint.Control.ipa` and use something like [Sideloadly](https://sideloadly.io/) or [AltStore](https://altstore.io/) to install it.
+The iOS version is available on the [App Store](https://apps.apple.com/us/app/hint-control/id6449951339).
 
 ## Windows
 Download the .zip ending in `windows-amd64`.
