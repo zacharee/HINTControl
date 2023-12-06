@@ -18,8 +18,6 @@ kotlin {
     jvm("desktop") {
         jvmToolchain(rootProject.extra["java_version"].toString().toInt())
     }
-//    macosX64()
-//    macosArm64()
 
     val iosArm64 = iosArm64()
     val iosX64 = iosX64()
@@ -39,18 +37,6 @@ kotlin {
         }
     }
 
-//    val xcFramework = XCFramework("common")
-//    configure(listOf(iosArm64, iosX64, iosSimulatorArm64)) {
-//        binaries.withType(Framework::class.java) {
-//            isStatic = true
-//            baseName = "common"
-//            linkerOpts += "-ld64"
-//            xcFramework.add(this)
-//
-//            freeCompilerArgs += listOf("-Xoverride-konan-properties=osVersionMin.ios_arm32=14;osVersionMin.ios_arm64=14;osVersionMin.ios_x64=14")
-//        }
-//    }
-
     cocoapods {
         version = rootProject.extra["app_version_code"].toString()
         summary = "KVD21Control"
@@ -60,18 +46,12 @@ kotlin {
         framework {
             baseName = "commonFrameworkOld"
         }
-//        podfile = project.file("../iosApp/Podfile")
-//        framework {
-//            baseName = "common"
-//            isStatic = true
-//            export("dev.icerock.moko:resources:${rootProject.extra["moko.resources.version"]}")
-//        }
         pod("Bugsnag")
     }
 
     sourceSets {
         val ktorVersion = "2.3.6"
-        val coroutinesVersion = "1.7.3"
+        val coroutinesVersion = "1.8.0-RC"
         val slf4jVersion = "2.0.9"
         val multiplatformSettingsVersion = "1.1.0"
         val mokoMvvmVersion = "0.16.1"

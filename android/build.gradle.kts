@@ -2,7 +2,6 @@
 
 import org.jetbrains.kotlin.gradle.plugin.mpp.pm20.util.archivesName
 
-
 plugins {
     id("org.jetbrains.compose")
     id("com.android.application")
