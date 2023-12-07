@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.json.Json
+import okio.Path.Companion.toPath
 
 expect fun pathTo(subPath: String, startingTag: String): String
 
@@ -23,7 +24,7 @@ object Storage {
     val path = pathTo(name, "[]")
 
     val snapshots: KStore<List<HistoricalSnapshot>> = listStoreOf(
-        filePath = path,
+        file = path.toPath(),
         default = listOf(),
         enableCache = false,
         json = Json {

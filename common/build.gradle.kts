@@ -65,7 +65,7 @@ kotlin {
         val mokoMvvmVersion = "0.16.1"
         val mokoResourcesVersion = rootProject.extra["moko.resources.version"].toString()
         val korlibsVersion = "4.0.10"
-        val kstoreVersion = "0.6.0"
+        val kstoreVersion = "0.7.1"
 
         val commonMain by getting {
             dependencies {
