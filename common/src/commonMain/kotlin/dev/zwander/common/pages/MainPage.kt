@@ -33,13 +33,17 @@ import dev.zwander.common.components.DeviceDataLayout
 import dev.zwander.common.components.InfoRow
 import dev.zwander.common.components.MainDataLayout
 import dev.zwander.common.components.PageGrid
+import dev.zwander.common.components.SnapshotChart
 import dev.zwander.common.components.dialog.AlertDialogDef
 import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.MainModel
+import dev.zwander.common.model.SettingsModel
 import dev.zwander.common.model.UserModel
+import dev.zwander.common.util.Storage
 import dev.zwander.common.util.addAll
 import dev.zwander.common.util.buildItemList
 import dev.zwander.resources.common.MR
+import io.github.xxfast.kstore.extensions.updatesOrEmpty
 import kotlinx.coroutines.launch
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
@@ -48,6 +52,8 @@ private data class ItemInfo(
     val title: StringResource,
     val render: @Composable (Modifier) -> Unit,
     val titleAccessory: (@Composable (Modifier) -> Unit)? = null,
+    val selectable: Boolean = true,
+    val visible: @Composable () -> Boolean = { true },
 )
 
 @Composable
@@ -135,6 +141,17 @@ fun MainPage(
                     )
                 },
             ),
+            ItemInfo(
+                title = MR.strings.snapshots,
+                render = {
+                    SnapshotChart(it)
+                },
+                selectable = false,
+                visible = {
+                    SettingsModel.recordSnapshots.value &&
+                            Storage.snapshots.updatesOrEmpty.collectAsState(listOf()).value.isNotEmpty()
+                },
+            ),
         )
     }
 
@@ -147,7 +164,7 @@ fun MainPage(
     ) {
         PageGrid(
             id = "MainPage",
-            items = items,
+            items = items.filter { it.visible() },
             modifier = Modifier.fillMaxSize(),
             renderItemTitle = {
                 Row(
@@ -194,7 +211,10 @@ fun MainPage(
                         text = stringResource(MR.strings.reboot),
                     )
                 }
-            }
+            },
+            itemIsSelectable = {
+                selectable
+            },
         )
     }
 

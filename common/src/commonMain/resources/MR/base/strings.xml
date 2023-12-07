@@ -33,6 +33,7 @@
     <string name="ipv6">IPv6</string>
     <string name="registration">Registration</string>
     <string name="roaming">Roaming</string>
+    <string name="snapshots">Snapshots</string>
 
     <string name="main_data">Main</string>
     <string name="client_data">Clients</string>

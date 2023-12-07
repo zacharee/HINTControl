@@ -5,15 +5,14 @@ import dev.zwander.common.model.MainModel
 import io.github.xxfast.kstore.KStore
 import io.github.xxfast.kstore.file.extensions.listStoreOf
 import kotlinx.atomicfu.atomic
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okio.Path.Companion.toPath
 
@@ -23,6 +22,7 @@ object Storage {
     const val name = "snapshots.json"
     val path = pathTo(name, "[]")
 
+    @OptIn(ExperimentalSerializationApi::class)
     val snapshots: KStore<List<HistoricalSnapshot>> = listStoreOf(
         file = path.toPath(),
         default = listOf(),
@@ -32,6 +32,7 @@ object Storage {
             isLenient = true
             encodeDefaults = true
             coerceInputValues = true
+            allowTrailingComma = true
         },
     )
 
@@ -39,20 +40,36 @@ object Storage {
 
     private val listenJob = atomic<Job?>(initial = null)
 
+    @OptIn(DelicateCoroutinesApi::class)
     suspend fun startListening() = coroutineScope {
         if (listenJob.value != null) {
             return@coroutineScope
         }
 
-        listenJob.value = launch(Dispatchers.IO) {
-            combine(
-                MainModel.currentMainData,
-                MainModel.currentClientData,
-                MainModel.currentCellData,
-                MainModel.currentSimData,
-            ) { (_) ->
-                makeSnapshot()
-            }.collect()
+        listenJob.value = GlobalScope.launch {
+            launch {
+                MainModel.currentMainData.collect {
+                    makeSnapshot()
+                }
+            }
+
+            launch {
+                MainModel.currentClientData.collect {
+                    makeSnapshot()
+                }
+            }
+
+            launch {
+                MainModel.currentCellData.collect {
+                    makeSnapshot()
+                }
+            }
+
+            launch {
+                MainModel.currentSimData.collect {
+                    makeSnapshot()
+                }
+            }
         }
     }
 
@@ -69,6 +86,10 @@ object Storage {
             val (simTime, simData) = MainModel.currentSimData.timestampedValue
 
             val snapshotTime = maxOf(mainTime, clientTime, cellTime, simTime)
+
+            if (snapshotTime == 0L) {
+                return@withLock
+            }
 
             val snapshot = HistoricalSnapshot(
                 timeMillis = snapshotTime,

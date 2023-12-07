@@ -94,6 +94,7 @@ kotlin {
                 api("com.squareup.okio:okio:3.6.0")
                 api("io.github.koalaplot:koalaplot-core:0.4.0")
                 api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
+                api("org.jetbrains.kotlinx:kotlinx-serialization-json-okio:1.6.2")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core") {
                     version {
                         strictly(coroutinesVersion)
