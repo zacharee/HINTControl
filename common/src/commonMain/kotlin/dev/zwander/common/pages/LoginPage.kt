@@ -46,6 +46,7 @@ import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.SettingsModel
 import dev.zwander.common.model.UserModel
 import dev.zwander.common.util.BULLET
+import dev.zwander.common.util.keyboardDismissalNestedScrolling
 import dev.zwander.resources.common.MR
 import kotlinx.coroutines.launch
 import kotlin.experimental.ExperimentalObjCRefinement
@@ -128,7 +129,10 @@ fun LoginPage(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.width(IntrinsicSize.Min)
-                .verticalScroll(rememberScrollState()),
+                .verticalScroll(
+                    state = rememberScrollState(),
+                )
+                .keyboardDismissalNestedScrolling(),
         ) {
             AnimatedVisibility(
                 visible = advanced,
@@ -208,7 +212,7 @@ fun LoginPage(
                         performLogin()
                     }
                 },
-                keyboardType = KeyboardType.Password
+                keyboardType = KeyboardType.Password,
             )
 
             Spacer(modifier = Modifier.size(8.dp))

@@ -1,6 +1,5 @@
 package dev.zwander.common.components.settings
 
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
@@ -13,8 +12,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.text.input.ImeAction
 import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.resources.common.MR
@@ -28,10 +25,6 @@ fun TextFieldSetting(
     enabled: Boolean = true,
     label: (@Composable () -> Unit)? = null,
 ) {
-    val focusRequester = remember {
-        FocusRequester()
-    }
-
     var tempValue by remember(value) {
         mutableStateOf(value)
     }
@@ -39,9 +32,9 @@ fun TextFieldSetting(
     OutlinedTextField(
         value = tempValue,
         onValueChange = { tempValue = it },
-        modifier = modifier.focusRequester(focusRequester),
+        modifier = modifier,
         keyboardOptions = keyboardOptions.copy(
-            imeAction = ImeAction.Done,
+            imeAction = ImeAction.Send,
         ),
         trailingIcon = {
             IconButton(
@@ -58,6 +51,5 @@ fun TextFieldSetting(
         },
         label = label,
         enabled = enabled,
-        keyboardActions = KeyboardActions(onDone = { focusRequester.freeFocus() }),
     )
 }

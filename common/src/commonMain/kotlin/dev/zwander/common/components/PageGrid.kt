@@ -46,6 +46,7 @@ import dev.zwander.common.util.AdaptiveMod
 import dev.zwander.common.util.PersistentMutableStateFlow
 import dev.zwander.common.util.animateContentHeight
 import dev.zwander.common.util.animateContentWidth
+import dev.zwander.common.util.keyboardDismissalNestedScrolling
 import korlibs.memory.Platform
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
@@ -103,7 +104,8 @@ fun <T> PageGrid(
             columns = columns,
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalItemSpacing = 8.dp,
-            modifier = Modifier.matchParentSize(),
+            modifier = Modifier.matchParentSize()
+                .keyboardDismissalNestedScrolling(),
         ) {
             items(items = items, key = key) {
                 ElevatedCard(
