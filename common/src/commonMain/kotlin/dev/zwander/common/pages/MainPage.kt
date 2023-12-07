@@ -43,7 +43,6 @@ import dev.zwander.common.util.Storage
 import dev.zwander.common.util.addAll
 import dev.zwander.common.util.buildItemList
 import dev.zwander.resources.common.MR
-import io.github.xxfast.kstore.extensions.updatesOrEmpty
 import kotlinx.coroutines.launch
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
@@ -149,7 +148,7 @@ fun MainPage(
                 selectable = false,
                 visible = {
                     SettingsModel.recordSnapshots.value &&
-                            Storage.snapshots.updatesOrEmpty.collectAsState(listOf()).value.isNotEmpty()
+                            Storage.snapshots.updates.collectAsState(listOf()).value?.isNotEmpty() == true
                 },
             ),
         )

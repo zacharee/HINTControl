@@ -1,39 +1,123 @@
+@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE", "EXPOSED_PARAMETER_TYPE")
 package dev.zwander.common.util
 
 import dev.zwander.common.data.HistoricalSnapshot
 import dev.zwander.common.model.MainModel
-import io.github.xxfast.kstore.KStore
-import io.github.xxfast.kstore.file.extensions.listStoreOf
+import io.github.xxfast.kstore.Codec
+import io.github.xxfast.kstore.file.FileCodec
+import io.github.xxfast.kstore.utils.StoreDispatcher
 import kotlinx.atomicfu.atomic
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import okio.Path.Companion.toPath
 
 expect fun pathTo(subPath: String, startingTag: String): String
 
+class KStore<T : @Serializable Any>(
+    private val default: T? = null,
+    private val enableCache: Boolean = true,
+    private val codec: Codec<T>,
+) {
+    private val lock: Mutex = Mutex()
+    internal val cache: MutableStateFlow<T?> = MutableStateFlow(default)
+
+    /** Observe store for updates */
+    val updates: Flow<T?>
+        get() = this.cache
+            .onStart {
+                lock.withLock {
+                    read(fromCache = false)
+                }
+            } // updates will always start with a fresh read
+
+    private suspend fun write(value: T?): Unit = withContext(StoreDispatcher) {
+        codec.encode(value)
+        cache.emit(value)
+    }
+
+    private suspend fun read(fromCache: Boolean): T? = withContext(StoreDispatcher) {
+        if (fromCache && cache.value != default) return@withContext cache.value
+        val decoded: T? = codec.decode()
+        val emitted: T? = decoded ?: default
+        cache.emit(emitted)
+        return@withContext emitted
+    }
+
+    /**
+     * Set a value to the store
+     *
+     * @param value to set
+     */
+    suspend fun set(value: T?): Unit = lock.withLock { write(value) }
+
+    /**
+     * Get a value from the store
+     *
+     * @return value stored/cached (if enabled)
+     */
+    suspend fun get(): T? = lock.withLock { read(enableCache) }
+
+    /**
+     * Update a value in a store.
+     * Note: This maintains a single mutex lock for both get and set
+     *
+     * @param operation lambda to update a given value of type [T]
+     */
+    suspend fun update(operation: (T?) -> T?): Unit = lock.withLock {
+        val previous: T? = read(enableCache)
+        val updated: T? = operation(previous)
+        write(updated)
+    }
+
+    /**
+     * Set the value of the store to null
+     */
+    suspend fun delete() {
+        set(null)
+        cache.emit(null)
+    }
+
+    /**
+     * Set the value of the store to the default
+     */
+    suspend fun reset() {
+        set(default)
+        cache.emit(default)
+    }
+}
+
 object Storage {
-    const val name = "snapshots.json"
-    val path = pathTo(name, "[]")
+    const val NAME = "snapshots.json"
+    val path = pathTo(NAME, "[]")
 
     @OptIn(ExperimentalSerializationApi::class)
-    val snapshots: KStore<List<HistoricalSnapshot>> = listStoreOf(
-        file = path.toPath(),
+    val json = Json {
+        ignoreUnknownKeys = true
+        isLenient = true
+        encodeDefaults = true
+        coerceInputValues = true
+        allowTrailingComma = true
+    }
+
+    val snapshots: KStore<List<HistoricalSnapshot>> = KStore(
         default = listOf(),
-        enableCache = false,
-        json = Json {
-            ignoreUnknownKeys = true
-            isLenient = true
-            encodeDefaults = true
-            coerceInputValues = true
-            allowTrailingComma = true
-        },
+        enableCache = true,
+        codec = FileCodec(
+            path.toPath(),
+            json,
+        ),
     )
 
     private val snapshotMutex = Mutex()
@@ -91,6 +175,8 @@ object Storage {
                 return@withLock
             }
 
+            val currentSnapshots = snapshots.get()?.toMutableList() ?: mutableListOf()
+
             val snapshot = HistoricalSnapshot(
                 timeMillis = snapshotTime,
                 cellData = cellData,
@@ -99,9 +185,9 @@ object Storage {
                 simData = simData,
             )
 
-            snapshots.update {
-                (it ?: listOf()) + snapshot
-            }
+            currentSnapshots.add(snapshot)
+
+            snapshots.set(currentSnapshots)
         }
     }
 }

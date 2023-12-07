@@ -26,7 +26,6 @@ import io.github.koalaplot.core.util.ExperimentalKoalaPlotApi
 import io.github.koalaplot.core.xychart.LineStyle
 import io.github.koalaplot.core.xychart.LinearAxisModel
 import io.github.koalaplot.core.xychart.XYChart
-import io.github.xxfast.kstore.extensions.updatesOrEmpty
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
 
@@ -42,20 +41,20 @@ private data class ChartData(
 fun SnapshotChart(
     modifier: Modifier = Modifier,
 ) {
-    val snapshots by Storage.snapshots.updatesOrEmpty.collectAsState(listOf())
+    val snapshots by Storage.snapshots.updates.collectAsState(listOf())
 
-    if (snapshots.isEmpty()) {
+    if (snapshots?.isEmpty() == true) {
         return
     }
 
     val minX by remember {
         derivedStateOf {
-            snapshots.minOf { (it.timeMillis / 1000) }
+            snapshots?.minOf { (it.timeMillis / 1000) } ?: 0
         }
     }
     val maxX by remember {
         derivedStateOf {
-            snapshots.maxOf { (it.timeMillis / 1000) }
+            snapshots?.maxOf { (it.timeMillis / 1000) } ?: 0
         }
     }
 
@@ -73,7 +72,7 @@ fun SnapshotChart(
 
     val yAxisModel by remember {
         derivedStateOf {
-            val minY = snapshots.minOf { snapshot ->
+            val minY = snapshots?.minOf { snapshot ->
                 snapshot.mainData?.signal?.let { signal ->
                     val minFiveG = signal.fiveG?.let {
                         it.rsrp?.let { rsrp ->
@@ -92,9 +91,9 @@ fun SnapshotChart(
 
                     minOf(minFiveG ?: Int.MAX_VALUE, minFourG ?: Int.MAX_VALUE)
                 } ?: 0
-            }
+            } ?: 0
 
-            val maxY = snapshots.maxOf { snapshot ->
+            val maxY = snapshots?.maxOf { snapshot ->
                 snapshot.mainData?.signal?.let { signal ->
                     val minFiveG = signal.fiveG?.let {
                         it.rsrp?.let { rsrp ->
@@ -113,7 +112,7 @@ fun SnapshotChart(
 
                     maxOf(minFiveG ?: Int.MIN_VALUE, minFourG ?: Int.MIN_VALUE)
                 } ?: 0
-            }
+            } ?: 0
 
             LinearAxisModel(
                 range = if (minY == maxY) {
@@ -139,30 +138,30 @@ fun SnapshotChart(
         derivedStateOf {
             listOf(
                 ChartData(
-                    data = snapshots.mapNotNull { snapshot ->
+                    data = snapshots?.mapNotNull { snapshot ->
                         createPoint(snapshot.timeMillis, snapshot.mainData?.signal?.fourG?.rsrp)
-                    },
+                    } ?: listOf(),
                     color = Color.Green,
                     legendLabel = "LTE RSRP (dBm)",
                 ),
                 ChartData(
-                    data = snapshots.mapNotNull { snapshot ->
+                    data = snapshots?.mapNotNull { snapshot ->
                         createPoint(snapshot.timeMillis, snapshot.mainData?.signal?.fiveG?.rsrp)
-                    },
+                    } ?: listOf(),
                     color = Color.Yellow,
                     legendLabel = "5G RSRP (dBm)",
                 ),
                 ChartData(
-                    data = snapshots.mapNotNull { snapshot ->
+                    data = snapshots?.mapNotNull { snapshot ->
                         createPoint(snapshot.timeMillis, snapshot.mainData?.signal?.fourG?.rsrq)
-                    },
+                    } ?: listOf(),
                     color = Color.Red,
                     legendLabel = "LTE RSRQ (dB)",
                 ),
                 ChartData(
-                    data = snapshots.mapNotNull { snapshot ->
+                    data = snapshots?.mapNotNull { snapshot ->
                         createPoint(snapshot.timeMillis, snapshot.mainData?.signal?.fiveG?.rsrq)
-                    },
+                    } ?: listOf(),
                     color = Color.Magenta,
                     legendLabel = "5G RSRQ (dB)",
                 ),

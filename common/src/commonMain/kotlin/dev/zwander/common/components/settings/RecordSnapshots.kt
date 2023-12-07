@@ -59,7 +59,7 @@ fun ColumnScope.RecordSnapshots() {
                     scope.launch(Dispatchers.IO) {
                         try {
                             FILE_SYSTEM.source(Storage.path.toPath()).buffer().use { input ->
-                                sinkCreator(Storage.name)?.use { output ->
+                                sinkCreator(Storage.NAME)?.use { output ->
                                     output.writeAll(input)
                                 }
                             }
