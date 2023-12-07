@@ -33,7 +33,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.9.2</string>
 	<key>CFBundleVersion</key>
-    <string>25</string>
+	<string>25</string>
 	<key>CFBundleLocalizations</key>
 	<array>
 		<string>en</string>
@@ -64,5 +64,6 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>CADisableMinimumFrameDurationOnPhone</key><true/>
 </dict>
 </plist>
