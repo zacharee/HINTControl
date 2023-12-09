@@ -16,7 +16,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.unit.dp
+import dev.icerock.moko.resources.StringResource
+import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.util.Storage
+import dev.zwander.resources.common.MR
 import io.github.koalaplot.core.ChartLayout
 import io.github.koalaplot.core.legend.FlowLegend
 import io.github.koalaplot.core.legend.LegendLocation
@@ -29,10 +32,12 @@ import io.github.koalaplot.core.xychart.XYChart
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
 
+private const val VERTICAL_AXIS_PADDING = 2
+
 private data class ChartData(
     val data: List<Point<Float, Float>>,
     val color: Color,
-    val legendLabel: String,
+    val legendLabel: StringResource,
 )
 
 @OptIn(ExperimentalObjCRefinement::class, ExperimentalKoalaPlotApi::class)
@@ -41,20 +46,25 @@ private data class ChartData(
 fun SnapshotChart(
     modifier: Modifier = Modifier,
 ) {
-    val snapshots by Storage.snapshots.updates.collectAsState(listOf())
+    val fullSnapshots by Storage.snapshots.updates.collectAsState(listOf())
+    val snapshots by remember {
+        derivedStateOf {
+            fullSnapshots?.run { slice((lastIndex - 60).coerceAtLeast(0)..lastIndex) } ?: listOf()
+        }
+    }
 
-    if (snapshots?.isEmpty() == true) {
+    if (snapshots.isEmpty()) {
         return
     }
 
     val minX by remember {
         derivedStateOf {
-            snapshots?.minOf { (it.timeMillis / 1000) } ?: 0
+            (snapshots.firstOrNull()?.timeMillis ?: 0) / 1000
         }
     }
     val maxX by remember {
         derivedStateOf {
-            snapshots?.maxOf { (it.timeMillis / 1000) } ?: 0
+            (snapshots.lastOrNull()?.timeMillis ?: 0) / 1000
         }
     }
 
@@ -72,47 +82,47 @@ fun SnapshotChart(
 
     val yAxisModel by remember {
         derivedStateOf {
-            val minY = snapshots?.minOf { snapshot ->
+            val minY = snapshots.minOf { snapshot ->
                 snapshot.mainData?.signal?.let { signal ->
                     val minFiveG = signal.fiveG?.let {
                         it.rsrp?.let { rsrp ->
                             it.rsrq?.let { rsrq ->
-                                minOf(rsrp, rsrq)
+                                minOf(rsrp, rsrq) - VERTICAL_AXIS_PADDING
                             }
                         }
                     }
                     val minFourG = signal.fourG?.let {
                         it.rsrp?.let { rsrp ->
                             it.rsrq?.let { rsrq ->
-                                minOf(rsrp, rsrq)
+                                minOf(rsrp, rsrq) - VERTICAL_AXIS_PADDING
                             }
                         }
                     }
 
                     minOf(minFiveG ?: Int.MAX_VALUE, minFourG ?: Int.MAX_VALUE)
                 } ?: 0
-            } ?: 0
+            }
 
-            val maxY = snapshots?.maxOf { snapshot ->
+            val maxY = snapshots.maxOf { snapshot ->
                 snapshot.mainData?.signal?.let { signal ->
                     val minFiveG = signal.fiveG?.let {
                         it.rsrp?.let { rsrp ->
                             it.rsrq?.let { rsrq ->
-                                maxOf(rsrp, rsrq)
+                                maxOf(rsrp, rsrq) + VERTICAL_AXIS_PADDING
                             }
                         }
                     }
                     val minFourG = signal.fourG?.let {
                         it.rsrp?.let { rsrp ->
                             it.rsrq?.let { rsrq ->
-                                maxOf(rsrp, rsrq)
+                                maxOf(rsrp, rsrq) + VERTICAL_AXIS_PADDING
                             }
                         }
                     }
 
                     maxOf(minFiveG ?: Int.MIN_VALUE, minFourG ?: Int.MIN_VALUE)
                 } ?: 0
-            } ?: 0
+            }
 
             LinearAxisModel(
                 range = if (minY == maxY) {
@@ -138,32 +148,32 @@ fun SnapshotChart(
         derivedStateOf {
             listOf(
                 ChartData(
-                    data = snapshots?.mapNotNull { snapshot ->
+                    data = snapshots.mapNotNull { snapshot ->
                         createPoint(snapshot.timeMillis, snapshot.mainData?.signal?.fourG?.rsrp)
-                    } ?: listOf(),
+                    },
                     color = Color.Green,
-                    legendLabel = "LTE RSRP (dBm)",
+                    legendLabel = MR.strings.chart_legend_lte_rsrp,
                 ),
                 ChartData(
-                    data = snapshots?.mapNotNull { snapshot ->
+                    data = snapshots.mapNotNull { snapshot ->
                         createPoint(snapshot.timeMillis, snapshot.mainData?.signal?.fiveG?.rsrp)
-                    } ?: listOf(),
+                    },
                     color = Color.Yellow,
-                    legendLabel = "5G RSRP (dBm)",
+                    legendLabel = MR.strings.chart_legend_5g_rsrp,
                 ),
                 ChartData(
-                    data = snapshots?.mapNotNull { snapshot ->
+                    data = snapshots.mapNotNull { snapshot ->
                         createPoint(snapshot.timeMillis, snapshot.mainData?.signal?.fourG?.rsrq)
-                    } ?: listOf(),
+                    },
                     color = Color.Red,
-                    legendLabel = "LTE RSRQ (dB)",
+                    legendLabel = MR.strings.chart_legend_lte_rsrq,
                 ),
                 ChartData(
-                    data = snapshots?.mapNotNull { snapshot ->
+                    data = snapshots.mapNotNull { snapshot ->
                         createPoint(snapshot.timeMillis, snapshot.mainData?.signal?.fiveG?.rsrq)
-                    } ?: listOf(),
+                    },
                     color = Color.Magenta,
-                    legendLabel = "5G RSRQ (dB)",
+                    legendLabel = MR.strings.chart_legend_5g_rsrq,
                 ),
             )
         }
@@ -181,7 +191,7 @@ fun SnapshotChart(
                 },
                 label = {
                     Text(
-                        text = chartDataItems[it].legendLabel,
+                        text = stringResource(chartDataItems[it].legendLabel),
                         style = MaterialTheme.typography.labelSmall,
                     )
                 },

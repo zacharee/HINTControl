@@ -174,4 +174,9 @@
     <string name="record_snapshots_desc">When enabled, each time new data is fetched, it will be appended to a JSON file.</string>
     <string name="export">Export</string>
     <string name="clear">Clear</string>
+
+    <string name="chart_legend_lte_rsrp">LTE RSRP (dBm)</string>
+    <string name="chart_legend_lte_rsrq">LTE RSRQ (dB)</string>
+    <string name="chart_legend_5g_rsrp">5G RSRP (dBm)</string>
+    <string name="chart_legend_5g_rsrq">5G RSRQ (dB)</string>
 </resources>
