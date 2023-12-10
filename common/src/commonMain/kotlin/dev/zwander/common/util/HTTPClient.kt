@@ -65,6 +65,7 @@ import io.ktor.http.fullPath
 import io.ktor.http.headersOf
 import io.ktor.http.isSuccess
 import io.ktor.http.parameters
+import io.ktor.http.userAgent
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.util.appendIfNameAbsent
 import io.ktor.utils.io.ByteReadChannel
@@ -355,7 +356,7 @@ private object ASClients {
                 }
             ),
             status = HttpStatusCode.OK,
-            headers = headersOf(HttpHeaders.ContentType, "application/json")
+            headers = headersOf(HttpHeaders.ContentType, "application/json"),
         )
     }
     val mockClient = HttpClient(mockEngine) {
@@ -371,7 +372,7 @@ private object ASClients {
                     BearerTokens(UserModel.token.value ?: "", "")
                 }
                 refreshTokens {
-                    ArcadyanSagemcomClient.logIn(
+                    UnifiedClient.logIn(
                         UserModel.username.value,
                         UserModel.password.value ?: "",
                         false
@@ -388,6 +389,9 @@ private object ASClients {
             requestTimeoutMillis = DEFAULT_TIMEOUT_MS
             connectTimeoutMillis = DEFAULT_TIMEOUT_MS
             socketTimeoutMillis = DEFAULT_TIMEOUT_MS
+        }
+        defaultRequest {
+            userAgent("homeisp/android/2.12.1")
         }
         this.developmentMode = true
         followRedirects = true
@@ -433,18 +437,18 @@ private object NokiaClients {
 object ClientUtils {
     suspend fun chooseClient(test: Boolean): HTTPClient? = coroutineScope {
         if (test) {
-            return@coroutineScope ArcadyanSagemcomClient
+            return@coroutineScope UnifiedClient
         }
 
         GlobalModel.isBlocking.value = true
 
         try {
-            val arcadyanExists = async(Dispatchers.Unconfined) { ArcadyanSagemcomClient.exists() }
+            val arcadyanExists = async(Dispatchers.Unconfined) { UnifiedClient.exists() }
             val nokiaExists = async(Dispatchers.Unconfined) { NokiaClient.exists() }
 
             if (arcadyanExists.await()) {
                 nokiaExists.cancel()
-                return@coroutineScope ArcadyanSagemcomClient
+                return@coroutineScope UnifiedClient
             }
 
             if (nokiaExists.await()) {
@@ -455,7 +459,7 @@ object ClientUtils {
             GlobalModel.updateHttpError(
                 NoGatewayFoundException(
                     "No T-Mobile gateway found!",
-                    Exception("${ArcadyanSagemcomClient.testUrl}, ${NokiaClient.testUrl}"),
+                    Exception("${UnifiedClient.testUrl}, ${NokiaClient.testUrl}"),
                 ),
             )
 
@@ -934,7 +938,7 @@ private object NokiaClient : HTTPClient {
     }
 }
 
-private object ArcadyanSagemcomClient : HTTPClient {
+private object UnifiedClient : HTTPClient {
     override val unauthedClient: HttpClient
         get() = if (UserModel.isTest.value) ASClients.mockClient else CommonClients.unauthedClient
 
