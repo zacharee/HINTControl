@@ -11,7 +11,6 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import com.github.weisj.darklaf.LafManager
 import com.russhwolf.settings.Settings
 import dev.icerock.moko.resources.compose.painterResource
 import dev.zwander.common.App
@@ -21,8 +20,8 @@ import dev.zwander.common.util.BugsnagUtils.bugsnag
 import dev.zwander.common.util.CrossPlatformBugsnag
 import dev.zwander.common.util.LocalFrame
 import dev.zwander.resources.common.MR
-import io.github.mimoguz.custom_window.DwmAttribute
-import io.github.mimoguz.custom_window.StageOps
+import io.github.mimoguz.customwindow.DwmAttribute
+import io.github.mimoguz.customwindow.WindowHandle
 import org.jetbrains.skiko.OS
 import org.jetbrains.skiko.hostOs
 import java.awt.Dimension
@@ -63,12 +62,6 @@ fun main() {
         }
     }
 
-    LafManager.install(
-        LafManager.themeForPreferredStyle(
-            LafManager.getPreferredThemeStyle()
-        )
-    )
-
     application {
         val windowState = rememberWindowState()
 
@@ -100,23 +93,24 @@ fun main() {
                     val themeInfo = getThemeInfo()
 
                     LaunchedEffect(themeInfo) {
-                        val handle = StageOps.findWindowHandle(window)
-                        StageOps.dwmSetBooleanValue(
-                            handle,
-                            DwmAttribute.DWMWA_USE_IMMERSIVE_DARK_MODE,
-                            false,
-                        )
-                        themeInfo.colors?.background?.let {
-                            StageOps.setCaptionColor(
-                                handle,
-                                it
-                            )
-                        }
-                        themeInfo.colors?.onBackground?.let {
-                            StageOps.setTextColor(
-                                handle,
-                                it
-                            )
+                        try {
+                            val handle = WindowHandle.tryFind(window)
+
+                            handle.dwmSetBooleanValue(DwmAttribute.DWMWA_USE_IMMERSIVE_DARK_MODE, true)
+
+                            themeInfo.colors?.background?.let {
+                                handle.setCaptionColor(it)
+                            }
+
+                            themeInfo.colors?.primary?.let {
+                                handle.setBorderColor(it)
+                            }
+
+                            themeInfo.colors?.onBackground?.let {
+                                handle.setTextColor(it)
+                            }
+                        } catch (e: Throwable) {
+                            e.printStackTrace()
                         }
                     }
                 }

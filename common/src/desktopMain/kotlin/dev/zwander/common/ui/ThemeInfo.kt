@@ -1,4 +1,4 @@
-@file:JvmName("ThemeInfoJVM")
+@file:JvmName("ThemeUtilsJVM")
 
 package dev.zwander.common.ui
 
@@ -10,16 +10,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import com.github.weisj.darklaf.LafManager
-import com.github.weisj.darklaf.theme.spec.ColorToneRule
 import com.jthemedetecor.OsThemeDetector
+import com.sun.jna.platform.win32.Advapi32Util
+import com.sun.jna.platform.win32.WinReg
 import dev.zwander.common.monet.ColorScheme
+import dev.zwander.common.util.UserDefaults
 import korlibs.memory.Platform
+import org.jetbrains.skiko.OS
+import org.jetbrains.skiko.hostOs
 
 @Composable
 actual fun getThemeInfo(): ThemeInfo {
-    val manager = LafManager.getPreferredThemeStyle()
-
     val (osThemeDetector, isSupported) = remember {
         OsThemeDetector.getDetector() to OsThemeDetector.isSupported()
     }
@@ -33,7 +34,7 @@ actual fun getThemeInfo(): ThemeInfo {
             when {
                 Platform.isLinux -> genericDetector.isDark
                 isSupported -> osThemeDetector.isDark
-                else -> manager.colorToneRule == ColorToneRule.DARK
+                else -> true
             }
         )
     }
@@ -58,11 +59,30 @@ actual fun getThemeInfo(): ThemeInfo {
         }
     }
 
+    val accentColor = remember {
+        when (hostOs) {
+            OS.Windows -> {
+                java.awt.Color(
+                    Advapi32Util.registryGetIntValue(
+                        WinReg.HKEY_CURRENT_USER,
+                        "Software\\Microsoft\\Windows\\DWM",
+                        "AccentColor",
+                    )
+                ).rgb
+            }
+            OS.MacOS -> {
+                UserDefaults.standardUserDefaults().getAccentColor().toArgb()
+            }
+            else -> {
+                Color(red = 208, green = 188, blue = 255).toArgb()
+            }
+        }
+    }
+
     return ThemeInfo(
         isDarkMode = dark,
         colors = ColorScheme(
-            manager.accentColorRule?.accentColor?.rgb
-                ?: Color(red = 208, green = 188, blue = 255).toArgb(),
+            accentColor,
             dark
         ).toComposeColorScheme().toNullableColorScheme(),
     )

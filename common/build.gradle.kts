@@ -136,7 +136,6 @@ kotlin {
                 api(compose.desktop.currentOs)
 
                 api("io.ktor:ktor-client-okhttp:${ktorVersion}")
-                api("com.github.weisj:darklaf-core:3.0.2")
                 api("net.java.dev.jna:jna:5.13.0")
                 api("org.slf4j:slf4j-api:${slf4jVersion}")
                 api("org.slf4j:slf4j-jdk14:${slf4jVersion}")
