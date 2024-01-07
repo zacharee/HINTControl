@@ -142,7 +142,7 @@ fun LoginPage(
                 ) {
                     FormField(
                         value = gatewayIpTemp,
-                        onValueChange = { gatewayIpTemp = it },
+                        onValueChange = { gatewayIpTemp = it.replace("\t", "") },
                         focusRequester = gatewayFocusRequester,
                         nextFocus = userFocusRequester,
                         isError = error != null,
@@ -158,7 +158,7 @@ fun LoginPage(
 
                     FormField(
                         value = usernameTemp,
-                        onValueChange = { usernameTemp = it },
+                        onValueChange = { usernameTemp = it.replace("\t", "") },
                         isError = error != null,
                         label = {
                             Text(text = stringResource(MR.strings.gateway_username))
@@ -179,7 +179,7 @@ fun LoginPage(
 
             FormField(
                 value = passwordTemp ?: "",
-                onValueChange = { passwordTemp = it },
+                onValueChange = { passwordTemp = it.replace("\t", "") },
                 visualTransformation = if (showingPassword) {
                     VisualTransformation.None
                 } else {

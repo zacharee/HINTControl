@@ -36,7 +36,8 @@ fun FormField(
         value = value,
         onValueChange = onValueChange,
         isError = isError,
-        modifier = modifier.focusRequester(focusRequester)
+        modifier = modifier
+            .focusRequester(focusRequester)
             .onPreviewKeyEvent { evt ->
                 when (evt.key) {
                     Key.Enter -> {
@@ -49,10 +50,10 @@ fun FormField(
                     }
                     Key.Tab -> {
                         when {
-                            evt.type == KeyEventType.KeyUp && evt.isShiftPressed && previousFocus != null -> {
-                                previousFocus.requestFocus()
-                                true
-                            }
+//                            evt.type == KeyEventType.KeyUp && evt.isShiftPressed && previousFocus != null -> {
+//                                previousFocus.requestFocus()
+//                                true
+//                            }
                             evt.type == KeyEventType.KeyUp && !evt.isShiftPressed && nextFocus != null -> {
                                 nextFocus.requestFocus()
                                 true
@@ -71,7 +72,7 @@ fun FormField(
             autoCorrect = false,
             keyboardType = keyboardType,
             capitalization = KeyboardCapitalization.None,
-            imeAction = ImeAction.Done,
+            imeAction = ImeAction.Default,
         ),
         label = label,
         visualTransformation = visualTransformation,
