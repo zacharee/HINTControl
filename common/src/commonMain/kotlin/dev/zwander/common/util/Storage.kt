@@ -5,6 +5,7 @@ import dev.zwander.common.data.HistoricalSnapshot
 import dev.zwander.common.model.MainModel
 import io.github.xxfast.kstore.Codec
 import io.github.xxfast.kstore.file.FileCodec
+import io.github.xxfast.kstore.file.utils.FILE_SYSTEM
 import io.github.xxfast.kstore.utils.StoreDispatcher
 import kotlinx.atomicfu.atomic
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -19,11 +20,52 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.serializer
+import okio.Path
 import okio.Path.Companion.toPath
 
 expect fun pathTo(subPath: String, startingTag: String): String
+
+class CreatingCodec<T : @Serializable Any>(
+    private val file: Path,
+    private val json: Json,
+    private val serializer: KSerializer<T>,
+    private val wrappedCodec: FileCodec<T> = FileCodec(file, json, serializer),
+) : Codec<T> by wrappedCodec {
+    companion object {
+        inline operator fun <reified T: @Serializable Any> invoke(
+            file: Path,
+            json: Json,
+        ) = CreatingCodec<T>(
+            file = file,
+            json = json,
+            serializer = json.serializersModule.serializer(),
+        )
+    }
+
+    init {
+        ensureCreated()
+    }
+
+    override suspend fun decode(): T? {
+        return wrappedCodec.decode()
+    }
+
+    override suspend fun encode(value: T?) {
+        wrappedCodec.encode(value)
+    }
+
+    private fun ensureCreated() {
+        file.parent?.let {
+            if (!FILE_SYSTEM.exists(it)) {
+                FILE_SYSTEM.createDirectories(it)
+            }
+        }
+    }
+}
 
 class KStore<T : @Serializable Any>(
     private val default: T? = null,
@@ -114,7 +156,7 @@ object Storage {
     val snapshots: KStore<List<HistoricalSnapshot>> = KStore(
         default = listOf(),
         enableCache = true,
-        codec = FileCodec(
+        codec = CreatingCodec(
             path.toPath(),
             json,
         ),
