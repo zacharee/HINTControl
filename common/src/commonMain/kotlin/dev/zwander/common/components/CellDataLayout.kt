@@ -6,6 +6,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -84,20 +85,24 @@ fun CellDataLayout(
 
             var expanded by expandedState.collectAsMutableState()
 
-            InfoRow(
-                items = basicItems,
-                modifier = Modifier.fillMaxWidth()
-                    .padding(bottom = 4.dp),
-            )
+            SelectionContainer {
+                InfoRow(
+                    items = basicItems,
+                    modifier = Modifier.fillMaxWidth()
+                        .padding(bottom = 4.dp),
+                )
+            }
 
             AnimatedVisibility(
                 visible = expanded,
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                InfoRow(
-                    items = advancedItems,
-                    modifier = Modifier.fillMaxWidth(),
-                )
+                SelectionContainer {
+                    InfoRow(
+                        items = advancedItems,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                }
             }
 
             ExpanderCard(
