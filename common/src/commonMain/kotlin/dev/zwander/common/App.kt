@@ -101,6 +101,8 @@ fun App(
     val autoRefreshMs by SettingsModel.autoRefreshMs.collectAsState()
     val isLoggedIn by UserModel.isLoggedIn.collectAsState(false)
     val saveSnapshots by SettingsModel.recordSnapshots.collectAsState()
+    val username by UserModel.username.collectAsState()
+    val password by UserModel.password.collectAsState()
 
     var currentPage by GlobalModel.currentPage.collectAsMutableState()
     val error by GlobalModel.httpError.collectAsState()
@@ -123,7 +125,9 @@ fun App(
     }
 
     LaunchedEffect(null) {
-        GlobalModel.updateClient()
+        if (username.isNotBlank() && !password.isNullOrBlank()) {
+            GlobalModel.updateClient()
+        }
     }
 
     Theme {
