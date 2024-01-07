@@ -13,17 +13,16 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 
 @Composable
-actual fun CAlertDialog(
+internal actual fun PlatformAlertDialog(
     showing: Boolean,
     onDismissRequest: () -> Unit,
-    buttons: @Composable RowScope.() -> Unit,
+    buttons: @Composable() RowScope.() -> Unit,
     modifier: Modifier,
-    title: (@Composable () -> Unit)?,
-    text: (@Composable ColumnScope.() -> Unit)?,
+    title: (@Composable() () -> Unit)?,
+    text: (@Composable() ColumnScope.() -> Unit)?,
     shape: Shape,
     backgroundColor: Color,
-    contentColor: Color,
-    maxWidthPercent: Float,
+    contentColor: Color
 ) {
     if (showing) {
         Dialog(
@@ -37,7 +36,7 @@ actual fun CAlertDialog(
                 buttons,
                 modifier.imePadding()
                     .systemBarsPadding()
-                    .fillMaxWidth(maxWidthPercent),
+                    .fillMaxWidth(0.9f),
                 title,
                 text,
                 shape,

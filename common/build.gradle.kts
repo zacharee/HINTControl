@@ -1,5 +1,5 @@
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
-import org.jetbrains.compose.experimental.uikit.tasks.SyncComposeResourcesForIosTask
+import org.jetbrains.compose.resources.ios.SyncComposeResourcesForIosTask
 
 plugins {
     kotlin("multiplatform")
@@ -20,12 +20,10 @@ kotlin {
     }
 
     val iosArm64 = iosArm64()
-    val iosX64 = iosX64()
     val iosSimulatorArm64 = iosSimulatorArm64()
 
     listOf(
         iosArm64,
-        iosX64,
         iosSimulatorArm64,
     ).forEach { iosTarget ->
         iosTarget.binaries {
@@ -59,7 +57,7 @@ kotlin {
 
     sourceSets {
         val ktorVersion = "2.3.6"
-        val coroutinesVersion = "1.8.0-RC"
+        val coroutinesVersion = "1.8.0-RC2"
         val slf4jVersion = "2.0.9"
         val multiplatformSettingsVersion = "1.1.0"
         val mokoMvvmVersion = "0.16.1"
@@ -155,9 +153,6 @@ kotlin {
             }
         }
 
-        val iosX64Main by getting {
-            resources.srcDirs("build/generated/moko/iosX64Main/src")
-        }
         val iosArm64Main by getting {
             resources.srcDirs("build/generated/moko/iosArm64Main/src")
         }
@@ -166,7 +161,6 @@ kotlin {
         }
         val iosMain by creating {
             dependsOn(darwinMain)
-            iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)
             iosSimulatorArm64Main.dependsOn(this)
         }
@@ -231,6 +225,5 @@ afterEvaluate {
         dependsOn(tasks.findByName("generateMRcommonMain"))
         dependsOn(tasks.findByName("generateMRiosSimulatorArm64Main"))
         dependsOn(tasks.findByName("generateMRiosArm64Main"))
-        dependsOn(tasks.findByName("generateMRiosX64Main"))
     }
 }

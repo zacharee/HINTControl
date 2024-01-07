@@ -70,7 +70,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
 import dev.icerock.moko.resources.compose.stringResource
-import dev.zwander.common.components.dialog.AlertDialogDef
+import dev.zwander.common.components.dialog.InWindowAlertDialog
 import dev.zwander.common.components.pullrefresh.PullRefreshIndicator
 import dev.zwander.common.components.pullrefresh.pullRefresh
 import dev.zwander.common.components.pullrefresh.rememberPullRefreshState
@@ -292,7 +292,7 @@ fun App(
             }
         }
 
-        AlertDialogDef(
+        InWindowAlertDialog(
             showing = error != null,
             title = {
                 Text(

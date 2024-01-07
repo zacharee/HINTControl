@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.sp
 import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.stringResource
-import dev.zwander.common.components.dialog.AlertDialogDef
+import dev.zwander.common.components.dialog.InWindowAlertDialog
 import dev.zwander.common.model.MainModel
 import dev.zwander.common.model.adapters.EncryptionModes
 import dev.zwander.common.model.adapters.EncryptionVersions
@@ -198,7 +198,7 @@ fun SSIDListLayout(
         }
     }
 
-    AlertDialogDef(
+    InWindowAlertDialog(
         showing = editingConfig != null,
         title = {
             Text(

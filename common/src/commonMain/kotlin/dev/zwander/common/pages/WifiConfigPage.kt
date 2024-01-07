@@ -27,7 +27,7 @@ import dev.zwander.common.components.BandConfigLayout
 import dev.zwander.common.components.ChannelConfigLayout
 import dev.zwander.common.components.PageGrid
 import dev.zwander.common.components.SSIDListLayout
-import dev.zwander.common.components.dialog.AlertDialogDef
+import dev.zwander.common.components.dialog.InWindowAlertDialog
 import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.MainModel
 import dev.zwander.resources.common.MR
@@ -145,7 +145,7 @@ fun WifiConfigPage(
         itemIsSelectable = { false },
     )
 
-    AlertDialogDef(
+    InWindowAlertDialog(
         showing = showingRadioWarning,
         title = {
             Text(text = stringResource(MR.strings.save))

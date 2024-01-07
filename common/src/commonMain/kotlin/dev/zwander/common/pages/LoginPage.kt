@@ -41,7 +41,7 @@ import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.components.FormField
 import dev.zwander.common.components.TextSwitch
-import dev.zwander.common.components.dialog.AlertDialogDef
+import dev.zwander.common.components.dialog.InWindowAlertDialog
 import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.SettingsModel
 import dev.zwander.common.model.UserModel
@@ -259,7 +259,7 @@ fun LoginPage(
         }
     }
 
-    AlertDialogDef(
+    InWindowAlertDialog(
         showing = showingHelpDialog,
         onDismissRequest = { showingHelpDialog = false },
         title = {

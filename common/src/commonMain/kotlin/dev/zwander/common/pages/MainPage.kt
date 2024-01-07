@@ -34,7 +34,7 @@ import dev.zwander.common.components.InfoRow
 import dev.zwander.common.components.MainDataLayout
 import dev.zwander.common.components.PageGrid
 import dev.zwander.common.components.SnapshotChart
-import dev.zwander.common.components.dialog.AlertDialogDef
+import dev.zwander.common.components.dialog.InWindowAlertDialog
 import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.MainModel
 import dev.zwander.common.model.SettingsModel
@@ -86,6 +86,7 @@ fun MainPage(
                         modifier = it,
                     )
                 },
+                selectable = false,
             ),
             ItemInfo(
                 title = MR.strings.five_g,
@@ -108,6 +109,7 @@ fun MainPage(
                         modifier = it,
                     )
                 },
+                selectable = false,
             ),
             ItemInfo(
                 title = MR.strings.device,
@@ -217,7 +219,7 @@ fun MainPage(
         )
     }
 
-    AlertDialogDef(
+    InWindowAlertDialog(
         showing = showingRebootConfirmation,
         onDismissRequest = { showingRebootConfirmation = false },
         title = {
