@@ -16,7 +16,7 @@ struct iOSApp: App {
         }
         
         Main_iosKt.updateBugsnagConfig(config: config)
-        Bugsnag.start()
+        Bugsnag.start(with: config)
         Main_iosKt.setupBugsnag()
         
         FlowUtilsKt.asCommonFlow(SettingsModel.shared.widgetRefresh).watch { _ in
