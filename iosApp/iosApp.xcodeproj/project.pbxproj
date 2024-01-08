@@ -139,6 +139,7 @@
 				7555FF7C242A565900829871 /* Products */,
 				FEFF387C0A8D172AA4D59CAE /* Pods */,
 				42799AB246E5F90AF97AA0EF /* Frameworks */,
+				E0E229007ABBB097447EE1CD /* hintcontrol.xcarchive */,
 			);
 			sourceTree = "<group>";
 		};
@@ -181,6 +182,184 @@
 				B65F50D02A60A4EF003D9D48 /* Info.plist */,
 			);
 			path = "HINT Widget";
+			sourceTree = "<group>";
+		};
+		E0E2210E116B6AD482D8F214 /* DWARF */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = DWARF;
+			sourceTree = "<group>";
+		};
+		E0E22151D9701D9CBBD1C403 /* DWARF */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = DWARF;
+			sourceTree = "<group>";
+		};
+		E0E222C12C3F1B0E9A548A6D /* iphoneos */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = iphoneos;
+			sourceTree = "<group>";
+		};
+		E0E2231BA1B01876F5B2D862 /* Bugsnag.framework.dSYM */ = {
+			isa = PBXGroup;
+			children = (
+				E0E22EC6D35504EE1A93BB1B /* Contents */,
+			);
+			path = Bugsnag.framework.dSYM;
+			sourceTree = "<group>";
+		};
+		E0E22350429A846B88760F44 /* dSYMs */ = {
+			isa = PBXGroup;
+			children = (
+				E0E2293E904A0BFDC09E1B2A /* HINT WidgetExtension.appex.dSYM */,
+				E0E2231BA1B01876F5B2D862 /* Bugsnag.framework.dSYM */,
+				E0E22CB7DE0988A02C1AB434 /* HINT Control.app.dSYM */,
+			);
+			path = dSYMs;
+			sourceTree = "<group>";
+		};
+		E0E2247DA719B378C6C3C866 /* SwiftSupport */ = {
+			isa = PBXGroup;
+			children = (
+				E0E222C12C3F1B0E9A548A6D /* iphoneos */,
+			);
+			path = SwiftSupport;
+			sourceTree = "<group>";
+		};
+		E0E22549E481CECA745EA7E4 /* DWARF */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = DWARF;
+			sourceTree = "<group>";
+		};
+		E0E226941529C88860954D57 /* Relocations */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Relocations;
+			sourceTree = "<group>";
+		};
+		E0E2271C4FD3BC69B0A1F37A /* aarch64 */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = aarch64;
+			sourceTree = "<group>";
+		};
+		E0E227CDCD7C228437AEC7A8 /* Relocations */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Relocations;
+			sourceTree = "<group>";
+		};
+		E0E228386F235D57FC4794A7 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				E0E22D7949A51337DD90BED7 /* aarch64 */,
+				E0E227CDCD7C228437AEC7A8 /* Relocations */,
+				E0E22151D9701D9CBBD1C403 /* DWARF */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		E0E229007ABBB097447EE1CD /* hintcontrol.xcarchive */ = {
+			isa = PBXGroup;
+			children = (
+				E0E22350429A846B88760F44 /* dSYMs */,
+				E0E2247DA719B378C6C3C866 /* SwiftSupport */,
+			);
+			name = hintcontrol.xcarchive;
+			path = output/hintcontrol.xcarchive;
+			sourceTree = "<group>";
+		};
+		E0E2293E904A0BFDC09E1B2A /* HINT WidgetExtension.appex.dSYM */ = {
+			isa = PBXGroup;
+			children = (
+				E0E22CEA954F6298CB42FAE8 /* Contents */,
+			);
+			path = "HINT WidgetExtension.appex.dSYM";
+			sourceTree = "<group>";
+		};
+		E0E22A618BB64A707086B3FD /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				E0E22A80042EE5FD34D31780 /* aarch64 */,
+				E0E226941529C88860954D57 /* Relocations */,
+				E0E22549E481CECA745EA7E4 /* DWARF */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		E0E22A80042EE5FD34D31780 /* aarch64 */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = aarch64;
+			path = Relocations/aarch64;
+			sourceTree = "<group>";
+		};
+		E0E22AB17F949564D5D5345B /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				E0E22D018906436F6068AB52 /* Relocations */,
+				E0E2210E116B6AD482D8F214 /* DWARF */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		E0E22CB7DE0988A02C1AB434 /* HINT Control.app.dSYM */ = {
+			isa = PBXGroup;
+			children = (
+				E0E22F20BC0CC11AD40510C0 /* Contents */,
+			);
+			path = "HINT Control.app.dSYM";
+			sourceTree = "<group>";
+		};
+		E0E22CEA954F6298CB42FAE8 /* Contents */ = {
+			isa = PBXGroup;
+			children = (
+				E0E228386F235D57FC4794A7 /* Resources */,
+			);
+			path = Contents;
+			sourceTree = "<group>";
+		};
+		E0E22D018906436F6068AB52 /* Relocations */ = {
+			isa = PBXGroup;
+			children = (
+				E0E2271C4FD3BC69B0A1F37A /* aarch64 */,
+			);
+			path = Relocations;
+			sourceTree = "<group>";
+		};
+		E0E22D7949A51337DD90BED7 /* aarch64 */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = aarch64;
+			path = Relocations/aarch64;
+			sourceTree = "<group>";
+		};
+		E0E22EC6D35504EE1A93BB1B /* Contents */ = {
+			isa = PBXGroup;
+			children = (
+				E0E22AB17F949564D5D5345B /* Resources */,
+			);
+			path = Contents;
+			sourceTree = "<group>";
+		};
+		E0E22F20BC0CC11AD40510C0 /* Contents */ = {
+			isa = PBXGroup;
+			children = (
+				E0E22A618BB64A707086B3FD /* Resources */,
+			);
+			path = Contents;
 			sourceTree = "<group>";
 		};
 		FEFF387C0A8D172AA4D59CAE /* Pods */ = {

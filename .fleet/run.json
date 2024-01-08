@@ -1,0 +1,57 @@
+{
+    "configurations": [
+        {
+            "type": "command",
+            "name": "Build iOS",
+            "workingDir": "iosApp/",
+            "program": "xcodebuild",
+            "args": [
+                "build",
+                "-workspace",
+                "iosApp.xcworkspace",
+                "-scheme",
+                "iosApp (iosApp Workspace)",
+                "-sdk",
+                "iphoneos",
+                "-destination",
+                "generic/platform=iOS",
+            ],
+        },
+        {
+            "type": "command",
+            "name": "Create iOS Archive",
+            "workingDir": "iosApp/",
+            "program": "xcodebuild",
+            "args": [
+                "archive",
+                "-workspace",
+                "iosApp.xcworkspace",
+                "-scheme",
+                "iosApp (iosApp Workspace)",
+                "-sdk",
+                "iphoneos",
+                "-destination",
+                "generic/platform=iOS",
+                "-archivePath",
+                "./output/hintcontrol.xcarchive",
+            ],
+            "dependsOn": ["Build iOS"],
+        },
+        {
+            "type": "command",
+            "name": "Export iOS IPA",
+            "workingDir": "iosApp/",
+            "program": "xcodebuild",
+            "args": [
+                "-exportArchive",
+                "-archivePath",
+                "output/hintcontrol.xcarchive",
+                "-exportOptionsPlist",
+                "ExportOptions.plist",
+                "-exportPath",
+                "./output/",
+            ],
+            "dependsOn": ["Create iOS Archive"],
+        }
+    ]
+}
