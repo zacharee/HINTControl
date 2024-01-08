@@ -1,5 +1,10 @@
 # T-Mobile Home Internet Control
-A cross-platform app using JetBrains Compose to view and control the Arcadyan KVD21, Sagemcom Fast 5688W, and Nokia 5G21 T-Mobile Home Internet gateways.
+A cross-platform app using JetBrains Compose to view and control the following T-Mobile Home Internet gateways:
+- Arcadyan KVD21
+- Arcadyan TMOG4AR
+- Sagemcom Fast 5688W
+- Sercomm TMOG4SE
+- Nokia 5G21
 
 # Installing
 Check the [Releases page](https://github.com/zacharee/ArcadyanKVD21Control/releases) for binaries.
