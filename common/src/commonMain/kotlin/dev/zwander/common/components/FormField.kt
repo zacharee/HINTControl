@@ -1,5 +1,6 @@
 package dev.zwander.common.components
 
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.Composable
@@ -12,6 +13,7 @@ import androidx.compose.ui.input.key.isShiftPressed
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
@@ -32,6 +34,8 @@ fun FormField(
     trailingIcon: (@Composable () -> Unit)? = null,
     keyboardType: KeyboardType = KeyboardType.Text,
 ) {
+    val focusManager = LocalFocusManager.current
+
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
@@ -48,6 +52,7 @@ fun FormField(
                             false
                         }
                     }
+
                     Key.Tab -> {
                         when {
 //                            evt.type == KeyEventType.KeyUp && evt.isShiftPressed && previousFocus != null -> {
@@ -58,11 +63,13 @@ fun FormField(
                                 nextFocus.requestFocus()
                                 true
                             }
+
                             else -> {
                                 false
                             }
                         }
                     }
+
                     else -> {
                         false
                     }
@@ -72,10 +79,26 @@ fun FormField(
             autoCorrect = false,
             keyboardType = keyboardType,
             capitalization = KeyboardCapitalization.None,
-            imeAction = ImeAction.Default,
+            imeAction = if (nextFocus != null) {
+                ImeAction.Next
+            } else {
+                ImeAction.Go
+            },
         ),
         label = label,
         visualTransformation = visualTransformation,
         trailingIcon = trailingIcon,
+        keyboardActions = KeyboardActions(
+            onDone = {
+                focusManager.clearFocus(true)
+            },
+            onGo = {
+                onEnter?.invoke()
+                focusManager.clearFocus(true)
+            },
+            onNext = {
+                nextFocus?.requestFocus()
+            },
+        ),
     )
 }

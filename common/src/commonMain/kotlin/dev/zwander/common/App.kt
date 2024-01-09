@@ -19,16 +19,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.only
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.VerticalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -135,7 +126,8 @@ fun App(
             modifier = Modifier.onPreviewKeyEvent {
                 if (it.key == Key.R && !isBlocking) {
                     if (((Platform.isMac || Platform.isIos) && it.isMetaPressed) ||
-                        (!(Platform.isMac || Platform.isIos) && it.isCtrlPressed)) {
+                        (!(Platform.isMac || Platform.isIos) && it.isCtrlPressed)
+                    ) {
                         scope.launch {
                             handleRefresh(currentPage)
                         }
@@ -193,7 +185,8 @@ fun App(
                         }
                     )
 
-                    val fabVisible = !sideRail && !Platform.isAndroid && !Platform.isIos && currentPage.refreshAction != null
+                    val fabVisible =
+                        !sideRail && !Platform.isAndroid && !Platform.isIos && currentPage.refreshAction != null
 
                     Scaffold(
                         modifier = modifier.fillMaxSize(),
@@ -377,8 +370,18 @@ private fun AppView(
 
             when (it) {
                 CrossfadeState.LOGIN -> {
-                    currentPage.render(Modifier.fillMaxSize())
+                    currentPage.render(
+                        modifier = Modifier.fillMaxSize()
+                            .then(
+                                if (Platform.isIos) {
+                                    Modifier.imePadding()
+                                } else {
+                                    Modifier
+                                }
+                            ),
+                    )
                 }
+
                 CrossfadeState.VERTICAL -> {
                     VerticalPager(
                         state = state,
@@ -388,6 +391,7 @@ private fun AppView(
                         pages[page].render(Modifier.fillMaxSize())
                     }
                 }
+
                 CrossfadeState.CROSSFADE -> {
                     Crossfade(
                         targetState = currentPage,
@@ -396,6 +400,7 @@ private fun AppView(
                         page.render(Modifier.fillMaxSize())
                     }
                 }
+
                 CrossfadeState.HORIZONTAL -> {
                     HorizontalPager(
                         state = state,
