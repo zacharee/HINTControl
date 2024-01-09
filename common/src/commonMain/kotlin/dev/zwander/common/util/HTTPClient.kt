@@ -363,6 +363,7 @@ private object ASClients {
         install(ContentNegotiation) {
             json()
         }
+        install(HttpTimeout)
     }
 
     val httpClient = HttpClient {
