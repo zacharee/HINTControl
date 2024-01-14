@@ -42,6 +42,7 @@ import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.respond
 import io.ktor.client.plugins.HttpRequestRetry
 import io.ktor.client.plugins.HttpRequestTimeoutException
+import io.ktor.client.plugins.HttpSend
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BearerTokens
@@ -79,6 +80,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 
 private const val DEFAULT_TIMEOUT_MS = 10_000L
+private const val MAX_SEND_COUNT = 100
 
 private object CommonClients {
     val unauthedClient = HttpClient {
@@ -90,6 +92,10 @@ private object CommonClients {
             requestTimeoutMillis = DEFAULT_TIMEOUT_MS
             connectTimeoutMillis = DEFAULT_TIMEOUT_MS
             socketTimeoutMillis = DEFAULT_TIMEOUT_MS
+        }
+
+        install(HttpSend) {
+            maxSendCount = MAX_SEND_COUNT
         }
 
         followRedirects = true
@@ -364,6 +370,10 @@ private object ASClients {
             json()
         }
         install(HttpTimeout)
+
+        install(HttpSend) {
+            maxSendCount = MAX_SEND_COUNT
+        }
     }
 
     val httpClient = HttpClient {
@@ -391,6 +401,9 @@ private object ASClients {
             connectTimeoutMillis = DEFAULT_TIMEOUT_MS
             socketTimeoutMillis = DEFAULT_TIMEOUT_MS
         }
+        install(HttpSend) {
+            maxSendCount = MAX_SEND_COUNT
+        }
         defaultRequest {
             userAgent("homeisp/android/2.12.1")
         }
@@ -413,6 +426,9 @@ private object NokiaClients {
             requestTimeoutMillis = DEFAULT_TIMEOUT_MS
             connectTimeoutMillis = DEFAULT_TIMEOUT_MS
             socketTimeoutMillis = DEFAULT_TIMEOUT_MS
+        }
+        install(HttpSend) {
+            maxSendCount = MAX_SEND_COUNT
         }
         defaultRequest {
             headers.appendIfNameAbsent(HttpHeaders.Cookie, UserModel.cookie.value ?: "")
