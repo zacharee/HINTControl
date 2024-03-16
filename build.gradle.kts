@@ -20,9 +20,9 @@ buildscript {
     dependencies {
         classpath("dev.icerock.moko:resources-generator:${rootProject.extra["moko.resources.version"]}")
         classpath("com.bugsnag:bugsnag-android-gradle-plugin:8.1.0")
-        classpath("com.codingfeline.buildkonfig:buildkonfig-gradle-plugin:0.15.0")
+        classpath("com.codingfeline.buildkonfig:buildkonfig-gradle-plugin:0.15.1")
         classpath("org.jetbrains.kotlinx:atomicfu-gradle-plugin:${rootProject.extra["kotlin.atomicfu.version"]}")
-        classpath("dev.hydraulic:gradle-plugin:1.6")
+        classpath("dev.hydraulic:gradle-plugin:1.9")
     }
 }
 
