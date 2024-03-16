@@ -1,6 +1,7 @@
 package dev.zwander.common.data
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -44,7 +45,7 @@ sealed class Page(
         }
     }
 
-    object Login : Page(
+    data object Login : Page(
         MR.strings.log_in,
         LOG_IN_PAGE_KEY,
         { rememberVectorPainter(Icons.Default.Lock) },
@@ -52,7 +53,7 @@ sealed class Page(
         { false },
         { LoginPage(it) }
     )
-    object Main : Page(
+    data object Main : Page(
         MR.strings.main_data,
         MAIN_PAGE_KEY,
         { rememberVectorPainter(Icons.Default.Home) },
@@ -68,17 +69,17 @@ sealed class Page(
         },
         { MainPage(it) }
     )
-    object Clients : Page(
+    data object Clients : Page(
         MR.strings.client_data,
         CLIENTS_PAGE_KEY,
-        { rememberVectorPainter(Icons.Default.List) },
+        { rememberVectorPainter(Icons.AutoMirrored.Filled.List) },
         {
             MainModel.currentClientData.value = GlobalModel.httpClient.value?.getDeviceData()
         },
         { MainModel.currentClientData.value == null },
         { ClientListPage((it)) }
     )
-    object Advanced : Page(
+    data object Advanced : Page(
         MR.strings.advanced,
         ADVANCED_PAGE_KEY,
         { rememberVectorPainter(Icons.Default.Warning) },
@@ -94,7 +95,7 @@ sealed class Page(
         },
         { AdvancedPage(it) }
     )
-    object WifiConfig : Page(
+    data object WifiConfig : Page(
         MR.strings.wifi_data,
         WIFI_PAGE_KEY,
         { painterResource(MR.images.wifi) },
@@ -105,7 +106,7 @@ sealed class Page(
         { WifiConfigPage(it) }
     )
 
-    object SettingsPage : Page(
+    data object SettingsPage : Page(
         MR.strings.settings,
         SETTINGS_PAGE_KEY,
         { rememberVectorPainter(Icons.Default.Settings) },
@@ -114,7 +115,7 @@ sealed class Page(
         { SettingsPage(it) },
     )
 
-    object FuzzerPage : Page(
+    data object FuzzerPage : Page(
         MR.strings.fuzzer,
         FUZZER_PAGE_KEY,
         { rememberVectorPainter(Icons.Default.Lock) },

@@ -126,11 +126,11 @@ fun SelectableDropdownMenuItem(
             } else {
                 colors.textColor(true).value
             },
-            leadingIconColor = colors.leadingIconColor(true).value,
-            trailingIconColor = colors.trailingIconColor(true).value,
+            leadingIconColor = colors.leadingIconColor(true),
+            trailingIconColor = colors.trailingIconColor(true),
             disabledTextColor = colors.textColor(false).value,
-            disabledLeadingIconColor = colors.leadingIconColor(false).value,
-            disabledTrailingIconColor = colors.trailingIconColor(false).value,
+            disabledLeadingIconColor = colors.leadingIconColor(false),
+            disabledTrailingIconColor = colors.trailingIconColor(false),
         ),
         contentPadding = contentPadding,
         interactionSource = interactionSource,

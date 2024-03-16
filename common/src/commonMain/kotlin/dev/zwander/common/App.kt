@@ -371,7 +371,7 @@ private fun AppView(
             when (it) {
                 CrossfadeState.LOGIN -> {
                     currentPage.render(
-                        modifier = Modifier.fillMaxSize()
+                        Modifier.fillMaxSize()
                             .then(
                                 if (Platform.isIos) {
                                     Modifier.imePadding()
