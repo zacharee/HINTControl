@@ -3,6 +3,7 @@
 package dev.zwander.common.components
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Text
@@ -28,15 +29,15 @@ fun FormatText(
         Text(
             text = textFormat,
             textAlign = TextAlign.Center,
+            lineHeight = LocalTextStyle.current.fontSize,
         )
 
         ProvideTextStyle(
-            value = MaterialTheme.typography.bodySmall.copy(
-                baselineShift = BaselineShift.Superscript,
-            )
+            value = MaterialTheme.typography.bodySmall,
         ) {
             Text(
                 text = text,
+                lineHeight = LocalTextStyle.current.fontSize,
             )
         }
     }
