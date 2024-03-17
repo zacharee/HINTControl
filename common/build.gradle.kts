@@ -49,6 +49,7 @@ kotlin {
         homepage = "https://zwander.dev"
         ios.deploymentTarget = "14.0"
         osx.deploymentTarget = "10.13"
+        podfile = project.file("../iosApp/Podfile")
         framework {
             baseName = "commonFrameworkOld"
         }
