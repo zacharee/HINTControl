@@ -10,6 +10,8 @@
 		058557BB273AAA24004C7B11 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557BA273AAA24004C7B11 /* Assets.xcassets */; };
 		058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */; };
 		2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* iOSApp.swift */; };
+		234FF0D383C223F3F5865E55 /* Pods_HINT_WidgetExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D592800F86149BCD1B14998 /* Pods_HINT_WidgetExtension.framework */; };
+		4A869EAF5394A9310F6D2FEF /* Pods_iosApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6F7E5D72BA6AEBC00E7536C /* Pods_iosApp.framework */; };
 		7555FF83242A565900829871 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF82242A565900829871 /* ContentView.swift */; };
 		B65F50C62A60A4ED003D9D48 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B65F50C52A60A4ED003D9D48 /* WidgetKit.framework */; };
 		B65F50C82A60A4ED003D9D48 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B65F50C72A60A4ED003D9D48 /* SwiftUI.framework */; };
@@ -86,6 +88,7 @@
 				B65F50C82A60A4ED003D9D48 /* SwiftUI.framework in Frameworks */,
 				B65F50C62A60A4ED003D9D48 /* WidgetKit.framework in Frameworks */,
 				B6B344BB2A732AD600FBBEAB /* Bugsnag.framework in Frameworks */,
+				234FF0D383C223F3F5865E55 /* Pods_HINT_WidgetExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -96,6 +99,7 @@
 				B67067122A6603F700A64F6E /* SwiftUI.framework in Frameworks */,
 				B6CD7E752A66A87100F3BEA8 /* WidgetKit.framework in Frameworks */,
 				B6B344B72A732AC500FBBEAB /* Bugsnag.framework in Frameworks */,
+				4A869EAF5394A9310F6D2FEF /* Pods_iosApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
