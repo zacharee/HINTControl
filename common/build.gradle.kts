@@ -52,6 +52,7 @@ kotlin {
         podfile = project.file("../iosApp/Podfile")
         framework {
             baseName = "commonFrameworkOld"
+            isStatic = true
         }
         pod("Bugsnag")
     }
