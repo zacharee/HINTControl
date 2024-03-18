@@ -89,7 +89,7 @@ internal actual fun PlatformAlertDialog(
                             Modifier.widthIn(
                                 max = minOf(
                                     constraints.maxWidth.toDp() - 32.dp,
-                                    400.dp
+                                    400.dp,
                                 )
                             ).onClick {
                                 // To prevent the Box's onClick consuming clicks on the dialog itself.
