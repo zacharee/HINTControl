@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
@@ -96,6 +97,8 @@ fun <T> PageGrid(
         }
     }
 
+    val state = rememberLazyStaggeredGridState()
+
     Box(
         modifier = modifier,
     ) {
@@ -105,7 +108,8 @@ fun <T> PageGrid(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalItemSpacing = 8.dp,
             modifier = Modifier.matchParentSize()
-                .keyboardDismissalNestedScrolling(),
+                .keyboardDismissalNestedScrolling(state),
+            state = state,
         ) {
             items(items = items, key = key) {
                 ElevatedCard(

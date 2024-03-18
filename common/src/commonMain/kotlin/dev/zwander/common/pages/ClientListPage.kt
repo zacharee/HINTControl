@@ -5,7 +5,7 @@ package dev.zwander.common.pages
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -89,8 +89,8 @@ private fun ClientList(
                 )
 
                 if (index < datas.lastIndex) {
-                    Divider(
-                        modifier = Modifier.padding(horizontal = 8.dp)
+                    HorizontalDivider(
+                        modifier = Modifier.padding(horizontal = 8.dp),
                     )
                 }
             }

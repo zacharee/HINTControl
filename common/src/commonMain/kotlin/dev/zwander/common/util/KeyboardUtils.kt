@@ -1,13 +1,15 @@
 package dev.zwander.common.util
 
+import androidx.compose.foundation.gestures.ScrollableState
+import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.composed
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.Velocity
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
@@ -16,52 +18,33 @@ import kotlin.native.HiddenFromObjC
 @HiddenFromObjC
 @Composable
 fun Modifier.keyboardDismissalNestedScrolling(
-    wrappedConnection: NestedScrollConnection? = null,
-): Modifier {
-    val focusManager = LocalFocusManager.current
-    val connection = remember {
-        object : NestedScrollConnection {
-            override suspend fun onPreFling(available: Velocity): Velocity {
-                if (available.y > 0) {
-                    focusManager.clearFocus(true)
+    state: ScrollableState,
+): Modifier = composed {
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    then(
+        if (keyboardController != null) {
+            nestedScroll(
+                remember {
+                    object : NestedScrollConnection {
+                        override suspend fun onPreFling(available: Velocity): Velocity {
+                            if (available.y > 0) {
+                                keyboardController.hide()
+                            }
+
+                            return super.onPreFling(available)
+                        }
+                    }
+                },
+            ).pointerInput(null) {
+                detectVerticalDragGestures { _, dragAmount ->
+                    if (dragAmount > 0 && !state.canScrollBackward && !state.canScrollForward) {
+                        keyboardController.hide()
+                    }
                 }
-
-                return wrappedConnection?.onPreFling(available)
-                    ?: super.onPreFling(available)
             }
-
-            override suspend fun onPostFling(consumed: Velocity, available: Velocity): Velocity {
-                return wrappedConnection?.onPostFling(consumed, available)
-                    ?: super.onPostFling(consumed, available)
-            }
-
-            override fun onPostScroll(
-                consumed: Offset,
-                available: Offset,
-                source: NestedScrollSource
-            ): Offset {
-                return wrappedConnection?.onPostScroll(consumed, available, source)
-                    ?: super.onPostScroll(consumed, available, source)
-            }
-
-            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                return wrappedConnection?.onPreScroll(available, source)
-                    ?: super.onPreScroll(available, source)
-            }
-
-            override fun toString(): String {
-                return wrappedConnection?.toString() ?: super.toString()
-            }
-
-            override fun hashCode(): Int {
-                return wrappedConnection?.hashCode() ?: super.hashCode()
-            }
-
-            override fun equals(other: Any?): Boolean {
-                return wrappedConnection?.equals(other) ?: super.equals(other)
-            }
+        } else {
+            Modifier
         }
-    }
-
-    return nestedScroll(connection)
+    )
 }

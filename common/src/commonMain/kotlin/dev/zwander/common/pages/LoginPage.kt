@@ -115,17 +115,19 @@ fun LoginPage(
         }
     }
 
+    val scrollState = rememberScrollState()
+
     Box(
-        modifier = modifier,
+        modifier = modifier
+            .keyboardDismissalNestedScrolling(scrollState),
         contentAlignment = Alignment.Center,
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.width(IntrinsicSize.Min)
                 .verticalScroll(
-                    state = rememberScrollState(),
-                )
-                .keyboardDismissalNestedScrolling(),
+                    state = scrollState,
+                ),
         ) {
             AnimatedVisibility(
                 visible = advanced,
