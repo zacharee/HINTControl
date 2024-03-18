@@ -358,13 +358,13 @@ private fun AppView(
 
             if (currentPage != Page.Login) {
                 LaunchedEffect(currentPage) {
-                    state.animateScrollToPage(pages.indexOf(currentPage))
+                    if (pages[state.targetPage] != currentPage) {
+                        state.animateScrollToPage(pages.indexOf(currentPage))
+                    }
                 }
 
-                LaunchedEffect(state.currentPage, state.isScrollInProgress) {
-                    if (!state.isScrollInProgress && currentPage != pages[state.currentPage]) {
-                        onPageChange(pages[state.currentPage])
-                    }
+                LaunchedEffect(state.targetPage) {
+                    onPageChange(pages[state.targetPage])
                 }
             }
 
