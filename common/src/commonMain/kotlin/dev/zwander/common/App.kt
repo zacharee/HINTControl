@@ -321,11 +321,10 @@ fun App(
     }
 }
 
-private enum class CrossfadeState {
-    LOGIN,
-    VERTICAL,
-    CROSSFADE,
-    HORIZONTAL,
+private sealed class PageTransitionMode {
+    data object Login : PageTransitionMode()
+    data object Vertical : PageTransitionMode()
+    data class Horizontal(val userScrollEnabled: Boolean) : PageTransitionMode()
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -342,11 +341,10 @@ private fun AppView(
     ) {
         Crossfade(
             targetState = when {
-                currentPage == Page.Login -> CrossfadeState.LOGIN
-                sideRail && !Platform.isJvm -> CrossfadeState.VERTICAL
-                sideRail && Platform.isJvm -> CrossfadeState.CROSSFADE
-                !sideRail && Platform.isJvm -> CrossfadeState.CROSSFADE
-                else -> CrossfadeState.HORIZONTAL
+                currentPage == Page.Login -> PageTransitionMode.Login
+                sideRail -> PageTransitionMode.Vertical
+                !sideRail && Platform.isJvm -> PageTransitionMode.Horizontal(false)
+                else -> PageTransitionMode.Horizontal(true)
             },
             modifier = Modifier.fillMaxSize(),
         ) {
@@ -369,7 +367,7 @@ private fun AppView(
             }
 
             when (it) {
-                CrossfadeState.LOGIN -> {
+                PageTransitionMode.Login -> {
                     currentPage.render(
                         Modifier.fillMaxSize()
                             .then(
@@ -382,7 +380,7 @@ private fun AppView(
                     )
                 }
 
-                CrossfadeState.VERTICAL -> {
+                PageTransitionMode.Vertical -> {
                     VerticalPager(
                         state = state,
                         userScrollEnabled = false,
@@ -392,18 +390,10 @@ private fun AppView(
                     }
                 }
 
-                CrossfadeState.CROSSFADE -> {
-                    Crossfade(
-                        targetState = currentPage,
-                        modifier = Modifier.fillMaxSize(),
-                    ) { page ->
-                        page.render(Modifier.fillMaxSize())
-                    }
-                }
-
-                CrossfadeState.HORIZONTAL -> {
+                is PageTransitionMode.Horizontal -> {
                     HorizontalPager(
                         state = state,
+                        userScrollEnabled = it.userScrollEnabled,
                     ) { page ->
                         pages[page].render(Modifier.fillMaxSize())
                     }
