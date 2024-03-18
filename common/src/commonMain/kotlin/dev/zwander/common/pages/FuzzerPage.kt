@@ -25,6 +25,7 @@ import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.components.PageGrid
 import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.SettingsModel
+import dev.zwander.common.util.moveFocusOnTab
 import dev.zwander.resources.common.MR
 import io.ktor.client.request.get
 import io.ktor.client.request.post
@@ -99,6 +100,7 @@ fun FuzzerPage(
                     Text(text = stringResource(MR.strings.url))
                 },
                 modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
             )
 
             OutlinedTextField(
@@ -107,7 +109,7 @@ fun FuzzerPage(
                 label = {
                     Text(text = stringResource(MR.strings.body))
                 },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().moveFocusOnTab(),
             )
 
             Spacer(modifier = Modifier.size(8.dp))

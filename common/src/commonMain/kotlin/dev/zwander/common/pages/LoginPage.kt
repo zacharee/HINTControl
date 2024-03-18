@@ -28,7 +28,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
@@ -60,9 +59,6 @@ fun LoginPage(
     val scope = rememberCoroutineScope()
     val focusManager = LocalFocusManager.current
 
-    val gatewayFocusRequester = remember { FocusRequester() }
-    val userFocusRequester = remember { FocusRequester() }
-    val passFocusRequester = remember { FocusRequester() }
     val loginInteractionSource = remember { MutableInteractionSource() }
 
     var username by UserModel.username.collectAsMutableState()
@@ -143,16 +139,9 @@ fun LoginPage(
                     FormField(
                         value = gatewayIpTemp,
                         onValueChange = { gatewayIpTemp = it.replace("\t", "") },
-                        focusRequester = gatewayFocusRequester,
-                        nextFocus = userFocusRequester,
                         isError = error != null,
                         label = {
                             Text(text = stringResource(MR.strings.gateway_address))
-                        },
-                        onEnter = {
-                            scope.launch {
-                                performLogin()
-                            }
                         },
                     )
 
@@ -162,14 +151,6 @@ fun LoginPage(
                         isError = error != null,
                         label = {
                             Text(text = stringResource(MR.strings.gateway_username))
-                        },
-                        focusRequester = userFocusRequester,
-                        nextFocus = passFocusRequester,
-                        previousFocus = gatewayFocusRequester,
-                        onEnter = {
-                            scope.launch {
-                                performLogin()
-                            }
                         },
                     )
                 }
@@ -204,13 +185,6 @@ fun LoginPage(
                 isError = error != null,
                 label = {
                     Text(text = stringResource(MR.strings.gateway_password))
-                },
-                focusRequester = passFocusRequester,
-                previousFocus = if (advanced) userFocusRequester else null,
-                onEnter = {
-                    scope.launch {
-                        performLogin()
-                    }
                 },
                 keyboardType = KeyboardType.Password,
             )

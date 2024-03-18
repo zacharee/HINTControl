@@ -228,6 +228,7 @@ fun SSIDListLayout(
                     },
                     modifier = Modifier.weight(1f),
                     isError = editingState?.ssidName.isNullOrBlank(),
+                    singleLine = true,
                 )
 
                 OutlinedTextField(
@@ -244,6 +245,7 @@ fun SSIDListLayout(
                     },
                     modifier = Modifier.weight(1f),
                     isError = !validWpaKey,
+                    singleLine = true,
                 )
             }
 

@@ -51,5 +51,6 @@ fun TextFieldSetting(
         },
         label = label,
         enabled = enabled,
+        singleLine = true,
     )
 }
