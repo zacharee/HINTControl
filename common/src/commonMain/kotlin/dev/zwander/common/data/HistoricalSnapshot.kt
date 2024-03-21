@@ -9,8 +9,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class HistoricalSnapshot(
     val timeMillis: Long,
-    val cellData: CellDataRoot?,
-    val clientData: ClientDeviceData?,
-    val mainData: MainData?,
-    val simData: SimDataRoot?,
+    val cellData: CellDataRoot? = null,
+    val clientData: ClientDeviceData? = null,
+    val mainData: MainData? = null,
+    val simData: SimDataRoot? = null,
 )
