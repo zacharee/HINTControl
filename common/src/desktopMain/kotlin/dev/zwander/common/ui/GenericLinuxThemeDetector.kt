@@ -85,7 +85,7 @@ internal class GenericLinuxThemeDetector {
                 BufferedReader(InputStreamReader(monitoringProcess.inputStream)).use { reader ->
                     while (!this.isInterrupted) {
                         //Expected input = gtk-theme: '$GtkThemeName'
-                        val readLine = reader.readLine()
+                        val readLine = reader.readLine() ?: return@use
                         val keyValue =
                             readLine.split("\\s".toRegex()).dropLastWhile { it.isEmpty() }
                                 .toTypedArray()
