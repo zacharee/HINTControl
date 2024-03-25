@@ -79,7 +79,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 
-private const val DEFAULT_TIMEOUT_MS = 10_000L
+private const val DEFAULT_TIMEOUT_MS = 20_000L
 private const val MAX_SEND_COUNT = 100
 
 private object CommonClients {
@@ -558,6 +558,9 @@ interface HTTPClient {
     suspend fun HttpClient.handleCatch(
         showError: Boolean = true,
         reportError: Boolean = true,
+        retryForLive: Boolean = false,
+        maxRetries: Int = 20,
+        retryOnCodes: IntArray = intArrayOf(408),
         methodBlock: suspend HttpClient.() -> HttpResponse,
     ): HttpResponse? {
         this.requestPipeline.intercept(HttpRequestPipeline.Before) {
@@ -570,28 +573,44 @@ interface HTTPClient {
             )
         }
 
-        try {
-            return methodBlock().also { if (showError) it.setError() }
-        } catch (_: CancellationException) {
-        } catch (e: HttpRequestTimeoutException) {
-            Exception(e).printStackTrace()
-            if (!waitForLive()) {
+        suspend fun tryRequest(attempt: Int): HttpResponse? {
+            try {
+                val response = methodBlock()
+
+                if (response.status.isSuccess()) {
+                    return response
+                } else if (retryForLive && retryOnCodes.contains(response.status.value) && attempt < maxRetries) {
+                    tryRequest(attempt + 1)
+                } else {
+                    if (showError) response.setError()
+                }
+            } catch (_: CancellationException) {
+            } catch (e: HttpRequestTimeoutException) {
+                Exception(e).printStackTrace()
+                if (retryForLive && attempt < maxRetries) {
+                    tryRequest(attempt + 1)
+                } else {
+                    if (!waitForLive()) {
+                        if (showError) {
+                            GlobalModel.updateHttpError(e)
+                        } else if (reportError) {
+                            CrossPlatformBugsnag.notify(e)
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                Exception(e).printStackTrace()
                 if (showError) {
                     GlobalModel.updateHttpError(e)
                 } else if (reportError) {
                     CrossPlatformBugsnag.notify(e)
                 }
             }
-        } catch (e: Exception) {
-            Exception(e).printStackTrace()
-            if (showError) {
-                GlobalModel.updateHttpError(e)
-            } else if (reportError) {
-                CrossPlatformBugsnag.notify(e)
-            }
+
+            return null
         }
 
-        return null
+        return tryRequest(1)
     }
 
     suspend fun HttpResponse.setError(): Boolean {
@@ -1013,7 +1032,7 @@ private object UnifiedClient : HTTPClient {
     override suspend fun getWifiData(): WifiConfig? {
         return withLoader {
             json.decodeFromString(
-                httpClient.handleCatch {
+                httpClient.handleCatch(retryForLive = true) {
                     get(Endpoints.CommonApiV1.getWifiConfig.createFullUrl())
                 }?.bodyAsText()
             )
