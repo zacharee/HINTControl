@@ -1,0 +1,91 @@
+[versions]
+androidx-activity-compose = "1.9.0-beta01"
+androidx-appcompat = "1.6.1"
+androidx-core = "1.13.0-beta01"
+androidx-glance-appwidget = "1.1.0-alpha01"
+appdirs = "1.2.2"
+bugsnag-android = "6.2.0"
+bugsnag-android-gradle = "8.1.0"
+bugsnag-jvm = "3.7.1"
+buildkonfig-gradle = "0.15.1"
+compose = "1.6.1"
+conveyor = "1.9"
+google-material = "1.12.0-beta01"
+android-gradle = "8.2.2"
+jna = "5.14.0"
+jsystemthemedetector = "3.8"
+koalaplot = "0.4.0"
+korlibs = "4.0.10"
+kotlin = "1.9.23"
+kotlinx-atomicfu = "0.23.2"
+kotlinx-coroutines = "1.8.0"
+kotlinx-serialization = "1.6.3"
+kstore = "0.7.1"
+ktor = "2.3.9"
+moko-mvvm = "0.16.1"
+moko-resources = "0.23.0"
+multiplatform-settings = "1.1.1"
+nserrorKt = "0.1.0"
+nsexceptionKt = "0.1.16"
+okio = "3.8.0"
+oshi = "6.5.0"
+relinker = "1.4.5"
+slf4j = "2.0.12"
+
+[libraries]
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity-compose" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
+androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
+androidx-glance-appwidget = { module = "androidx.glance:glance-appwidget", version.ref = "androidx-glance-appwidget" }
+appdirs = { module = "net.harawata:appdirs", version.ref = "appdirs" }
+bugsnag-android = { module = "com.bugsnag:bugsnag-android", version.ref = "bugsnag-android" }
+bugsnag-jvm = { module = "com.bugsnag:bugsnag", version.ref = "bugsnag-jvm" }
+google-material = { module = "com.google.android.material:material", version.ref = "google-material" }
+jna = { module = "net.java.dev.jna:jna", version.ref = "jna" }
+jSystemThemeDetector = { module = "com.github.Dansoftowner:jSystemThemeDetector", version.ref = "jsystemthemedetector" }
+koalaplot = { module = "io.github.koalaplot:koalaplot-core", version.ref = "koalaplot" }
+korlibs-klock = { module = "com.soywiz.korlibs.klock:klock", version.ref = "korlibs" }
+korlibs-korio = { module = "com.soywiz.korlibs.korio:korio", version.ref = "korlibs" }
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
+kotlinx-atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "kotlinx-atomicfu" }
+kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+kotlinx-serialization-json-okio = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json-okio", version.ref = "kotlinx-serialization" }
+kstore = { module = "io.github.xxfast:kstore", version.ref = "kstore" }
+kstore-file = { module = "io.github.xxfast:kstore-file", version.ref = "kstore" }
+ktor-client-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
+ktor-client-contentNegotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
+ktor-client-mock = { module = "io.ktor:ktor-client-mock", version.ref = "ktor" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+moko-mvvm-compose = { module = "dev.icerock.moko:mvvm-compose", version.ref = "moko-mvvm" }
+moko-mvvm-flow-compose = { module = "dev.icerock.moko:mvvm-flow-compose", version.ref = "moko-mvvm" }
+moko-resources = { module = "dev.icerock.moko:resources", version.ref = "moko-resources" }
+moko-resources-compose = { module = "dev.icerock.moko:resources-compose", version.ref = "moko-resources" }
+multiplatformSettings = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatform-settings" }
+multiplatformSettings-noArg = { module = "com.russhwolf:multiplatform-settings-no-arg", version.ref = "multiplatform-settings" }
+nserrorKt = { module = "com.rickclephas.kmp:nserror-kt", version.ref = "nserrorKt" }
+nsexceptionKt-bugsnag = { module = "com.rickclephas.kmp:nsexception-kt-bugsnag", version.ref = "nsexceptionKt" }
+okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
+oshi-core = { module = "com.github.oshi:oshi-core", version.ref = "oshi" }
+relinker = { module = "com.getkeepsafe.relinker:relinker", version.ref = "relinker" }
+slf4j = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
+slf4j-jdk14 = { module = "org.slf4j:slf4j-jdk14", version.ref = "slf4j" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "android-gradle" }
+android-library = { id = "com.android.library", version.ref = "android-gradle" }
+bugsnag-android = { id = "com.bugsnag.android.gradle", version.ref = "bugsnag-android-gradle" }
+buildkonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildkonfig-gradle" }
+compose = { id = "org.jetbrains.compose", version.ref = "compose" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-atomicfu = { id = "org.jetbrains.kotlin.plugin.atomicfu", version.ref = "kotlin" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlin-native-cocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+moko-resources = { id = "dev.icerock.mobile.multiplatform-resources", version.ref = "moko-resources" }
+conveyor = { id = "dev.hydraulic.conveyor", version.ref = "conveyor" }

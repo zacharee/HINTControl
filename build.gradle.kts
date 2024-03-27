@@ -16,22 +16,20 @@ buildscript {
         gradlePluginPortal()
         maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     }
-
-    dependencies {
-        classpath("dev.icerock.moko:resources-generator:${rootProject.extra["moko.resources.version"]}")
-        classpath("com.bugsnag:bugsnag-android-gradle-plugin:8.1.0")
-        classpath("com.codingfeline.buildkonfig:buildkonfig-gradle-plugin:0.15.1")
-        classpath("org.jetbrains.kotlinx:atomicfu-gradle-plugin:${rootProject.extra["kotlin.atomicfu.version"]}")
-        classpath("dev.hydraulic:gradle-plugin:1.9")
-    }
 }
 
 plugins {
-    kotlin("multiplatform") apply false
-    kotlin("android") apply false
-    id("com.android.application") apply false
-    id("com.android.library") apply false
-    id("org.jetbrains.compose") apply false
+    alias(libs.plugins.moko.resources) apply false
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.buildkonfig) apply false
+    alias(libs.plugins.kotlin.atomicfu) apply false
+    alias(libs.plugins.kotlin.multiplatform) apply false
+    alias(libs.plugins.kotlin.native.cocoapods) apply false
+    alias(libs.plugins.compose) apply false
+    alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.conveyor) apply false
+    alias(libs.plugins.bugsnag.android) apply false
 }
 
 apply(plugin = "kotlinx-atomicfu")
