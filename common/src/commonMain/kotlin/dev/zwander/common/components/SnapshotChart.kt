@@ -82,7 +82,7 @@ fun SnapshotChart(
 
     val yAxisModel by remember {
         derivedStateOf {
-            val minY = snapshots.minOf { snapshot ->
+            val minY = snapshots.mapNotNull { snapshot ->
                 snapshot.mainData?.signal?.let { signal ->
                     val minFiveG = signal.fiveG?.let {
                         it.rsrp?.let { rsrp ->
@@ -99,20 +99,28 @@ fun SnapshotChart(
                         }
                     }
 
-                    minOf(minFiveG ?: Int.MAX_VALUE, minFourG ?: Int.MAX_VALUE)
-                } ?: 0
-            }
+                    if (minFiveG == null && minFourG != null) {
+                        minFourG
+                    } else if (minFiveG != null && minFourG == null) {
+                        minFiveG
+                    } else if (minFiveG != null && minFourG != null) {
+                        minOf(minFourG, minFiveG)
+                    } else {
+                        null
+                    }
+                }
+            }.minOrNull() ?: 0
 
-            val maxY = snapshots.maxOf { snapshot ->
+            val maxY = snapshots.mapNotNull { snapshot ->
                 snapshot.mainData?.signal?.let { signal ->
-                    val minFiveG = signal.fiveG?.let {
+                    val maxFiveG = signal.fiveG?.let {
                         it.rsrp?.let { rsrp ->
                             it.rsrq?.let { rsrq ->
                                 maxOf(rsrp, rsrq) + VERTICAL_AXIS_PADDING
                             }
                         }
                     }
-                    val minFourG = signal.fourG?.let {
+                    val maxFourG = signal.fourG?.let {
                         it.rsrp?.let { rsrp ->
                             it.rsrq?.let { rsrq ->
                                 maxOf(rsrp, rsrq) + VERTICAL_AXIS_PADDING
@@ -120,9 +128,17 @@ fun SnapshotChart(
                         }
                     }
 
-                    maxOf(minFiveG ?: Int.MIN_VALUE, minFourG ?: Int.MIN_VALUE)
-                } ?: 0
-            }
+                    if (maxFiveG == null && maxFourG != null) {
+                        maxFourG
+                    } else if (maxFiveG != null && maxFourG == null) {
+                        maxFiveG
+                    } else if (maxFiveG != null && maxFourG != null) {
+                        maxOf(maxFourG, maxFiveG)
+                    } else {
+                        null
+                    }
+                }
+            }.minOrNull() ?: 1
 
             LinearAxisModel(
                 range = if (minY == maxY) {
