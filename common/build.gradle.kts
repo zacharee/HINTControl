@@ -30,7 +30,7 @@ kotlin {
             framework {
                 baseName = "common"
                 isStatic = true
-                export("dev.icerock.moko:resources:${rootProject.extra["moko.resources.version"]}")
+                export(libs.moko.resources)
             }
         }
     }
@@ -87,6 +87,7 @@ kotlin {
                 api(libs.kotlinx.serialization.json)
                 api(libs.kotlinx.serialization.json.okio)
                 api(libs.kotlinx.coroutines)
+                api(libs.compose.compiler)
             }
         }
         val nonAppleMain by creating {
@@ -178,10 +179,8 @@ android {
 }
 
 compose {
-    val kotlinVersion = rootProject.extra["kotlin.version"].toString()
-
-    kotlinCompilerPlugin.set("org.jetbrains.compose.compiler:compiler:${rootProject.extra["compose.compiler.version"]}")
-    kotlinCompilerPluginArgs.add("suppressKotlinVersionCompatibilityCheck=${kotlinVersion}")
+    kotlinCompilerPlugin.set("org.jetbrains.compose.compiler:compiler:${libs.versions.compose.compiler.get()}")
+    kotlinCompilerPluginArgs.add("suppressKotlinVersionCompatibilityCheck=${libs.versions.kotlin.get()}")
 }
 
 java {
