@@ -51,7 +51,13 @@ class CreatingCodec<T : @Serializable Any>(
     }
 
     override suspend fun decode(): T? {
-        return wrappedCodec.decode()
+        return try {
+            wrappedCodec.decode()
+        } catch (e: Throwable) {
+            CrossPlatformBugsnag.notify(IllegalStateException("Unable to decode JSON from file, deleting stored data.", e))
+            encode(null)
+            null
+        }
     }
 
     override suspend fun encode(value: T?) {
