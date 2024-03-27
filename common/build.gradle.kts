@@ -122,7 +122,7 @@ kotlin {
                 }
                 api("com.bugsnag:bugsnag-android:6.2.0")
                 api("com.getkeepsafe.relinker:relinker:1.4.5")
-                api("androidx.glance:glance-appwidget:1.0.0")
+                api("androidx.glance:glance-appwidget:1.1.0-alpha01")
             }
         }
         val skiaMain by creating {
