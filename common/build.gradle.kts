@@ -120,7 +120,6 @@ kotlin {
 
                 api(libs.ktor.client.okhttp)
                 api(libs.jna)
-                api(libs.slf4j)
                 api(libs.slf4j.jdk14)
                 api(libs.bugsnag.jvm)
                 api(libs.jSystemThemeDetector)

@@ -73,7 +73,6 @@ nsexceptionKt-bugsnag = { module = "com.rickclephas.kmp:nsexception-kt-bugsnag",
 okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 oshi-core = { module = "com.github.oshi:oshi-core", version.ref = "oshi" }
 relinker = { module = "com.getkeepsafe.relinker:relinker", version.ref = "relinker" }
-slf4j = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
 slf4j-jdk14 = { module = "org.slf4j:slf4j-jdk14", version.ref = "slf4j" }
 
 [plugins]
