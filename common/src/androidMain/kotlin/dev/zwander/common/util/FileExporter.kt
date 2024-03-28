@@ -1,6 +1,5 @@
 package dev.zwander.common.util
 
-import android.annotation.SuppressLint
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -16,7 +15,7 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 actual object FileExporter {
-    @SuppressLint("Recycle")
+    @Suppress("ACTUAL_ANNOTATIONS_NOT_MATCH_EXPECT")
     @Composable
     actual fun rememberBufferedSinkCreator(): BufferedSinkCreator {
         val continuations = ConcurrentLinkedQueue<Continuation<Uri?>>()
