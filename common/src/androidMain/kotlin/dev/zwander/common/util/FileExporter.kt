@@ -15,7 +15,6 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 actual object FileExporter {
-    @Suppress("ACTUAL_ANNOTATIONS_NOT_MATCH_EXPECT")
     @Composable
     actual fun rememberBufferedSinkCreator(): BufferedSinkCreator {
         val continuations = ConcurrentLinkedQueue<Continuation<Uri?>>()

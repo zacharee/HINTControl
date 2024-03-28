@@ -11,7 +11,6 @@ import java.io.File
 import javax.swing.JFileChooser
 
 actual object FileExporter {
-    @Suppress("ACTUAL_ANNOTATIONS_NOT_MATCH_EXPECT")
     @Composable
     actual fun rememberBufferedSinkCreator(): BufferedSinkCreator {
         val frame = LocalFrame.current
