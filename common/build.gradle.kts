@@ -2,12 +2,12 @@ import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import org.jetbrains.compose.resources.ios.SyncComposeResourcesForIosTask
 
 plugins {
+    alias(libs.plugins.kotlin.native.cocoapods)
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.compose)
     alias(libs.plugins.android.library)
     alias(libs.plugins.moko.resources)
-    alias(libs.plugins.kotlin.native.cocoapods)
     alias(libs.plugins.buildkonfig)
 }
 
