@@ -1,5 +1,4 @@
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
-import org.jetbrains.compose.resources.ios.SyncComposeResourcesForIosTask
 
 plugins {
     alias(libs.plugins.kotlin.native.cocoapods)
@@ -123,7 +122,10 @@ kotlin {
                 api(libs.jna)
                 api(libs.slf4j.jdk14)
                 api(libs.bugsnag.jvm)
-                api(libs.jSystemThemeDetector)
+                // https://stackoverflow.com/a/73710583/5496177
+                api(libs.jSystemThemeDetector.get().let { "${it.module}:${it.versionConstraint.requiredVersion}" }) {
+                    exclude("net.java.dev.jna", "jna")
+                }
                 api(libs.oshi.core)
                 api(libs.appdirs)
                 api(libs.kotlinx.coroutines.swing)
@@ -188,7 +190,7 @@ java {
 }
 
 multiplatformResources {
-    multiplatformResourcesPackage = "dev.zwander.resources.common"
+    resourcesPackage.set("dev.zwander.resources.common")
 }
 
 buildkonfig {
@@ -204,10 +206,10 @@ buildkonfig {
     }
 }
 
-afterEvaluate {
-    tasks.withType<SyncComposeResourcesForIosTask> {
-        dependsOn(tasks.findByName("generateMRcommonMain"))
-        dependsOn(tasks.findByName("generateMRiosSimulatorArm64Main"))
-        dependsOn(tasks.findByName("generateMRiosArm64Main"))
-    }
-}
+//afterEvaluate {
+//    tasks.withType<SyncComposeResourcesForIosTask> {
+//        dependsOn(tasks.findByName("generateMRcommonMain"))
+//        dependsOn(tasks.findByName("generateMRiosSimulatorArm64Main"))
+//        dependsOn(tasks.findByName("generateMRiosArm64Main"))
+//    }
+//}

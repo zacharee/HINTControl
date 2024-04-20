@@ -1,12 +1,8 @@
-@file:OptIn(ExperimentalObjCRefinement::class)
-
 package dev.zwander.common.ui
 
 import androidx.compose.material3.ColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import kotlin.experimental.ExperimentalObjCRefinement
-import kotlin.native.HiddenFromObjC
 
 data class ThemeInfo(
     val isDarkMode: Boolean,
@@ -94,5 +90,4 @@ fun ColorScheme.toNullableColorScheme(): NullableColorScheme {
 }
 
 @Composable
-@HiddenFromObjC
 expect fun getThemeInfo(): ThemeInfo
