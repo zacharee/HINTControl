@@ -11,16 +11,16 @@ permissions:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: macos-14
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Set up JDK 17
+      - name: Set up JDK 18
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: '17'
+          java-version: '18'
 
       - name: Get Latest Release
         id: release
@@ -57,8 +57,8 @@ jobs:
       - name: Download Conveyor
         shell: bash
         run: |
-          wget https://downloads.hydraulic.dev/conveyor/conveyor-12.1-mac-amd64.zip
-          unzip conveyor-12.1-mac-amd64.zip
+          wget https://downloads.hydraulic.dev/conveyor/conveyor-14.1-mac-aarch64.zip
+          unzip conveyor-14.1-mac-aarch64.zip
 
       - name: Run Conveyor
         shell: bash
