@@ -18,12 +18,12 @@ import dev.zwander.common.util.Storage
 import dev.zwander.resources.common.MR
 import io.github.koalaplot.core.ChartLayout
 import io.github.koalaplot.core.legend.LegendLocation
-import io.github.koalaplot.core.line.DefaultPoint
-import io.github.koalaplot.core.line.LineChart
+import io.github.koalaplot.core.line.LinePlot
 import io.github.koalaplot.core.util.ExperimentalKoalaPlotApi
-import io.github.koalaplot.core.xychart.CategoryAxisModel
-import io.github.koalaplot.core.xychart.LinearAxisModel
-import io.github.koalaplot.core.xychart.XYChart
+import io.github.koalaplot.core.xygraph.CategoryAxisModel
+import io.github.koalaplot.core.xygraph.DefaultPoint
+import io.github.koalaplot.core.xygraph.FloatLinearAxisModel
+import io.github.koalaplot.core.xygraph.XYGraph
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
 
@@ -99,19 +99,19 @@ private fun LineGraph(
         legend = { },
         legendLocation = LegendLocation.BOTTOM,
     ) {
-        XYChart(
+        XYGraph(
             xAxisModel = CategoryAxisModel(times),
-            yAxisModel = LinearAxisModel(signalRange),
+            yAxisModel = FloatLinearAxisModel(signalRange),
             xAxisLabels = {},
             xAxisTitle = {},
             yAxisLabels = {},
             yAxisTitle = {},
         ) {
-            LineChart(
+            LinePlot(
                 data = fourG.map { DefaultPoint(it.first, it.second) },
             )
 
-            LineChart(
+            LinePlot(
                 data = fiveG.map { DefaultPoint(it.first, it.second) },
             )
         }

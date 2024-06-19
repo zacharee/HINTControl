@@ -14,19 +14,19 @@ google-material = "1.12.0"
 android-gradle = "8.2.2"
 jna = "5.14.0"
 jsystemthemedetector = "7dde337429"
-koalaplot = "0.4.0"
+koalaplot = "0.6.1"
 korlibs = "6.0.0-alpha2"
 kotlin = "2.0.0"
 kotlinx-atomicfu = "0.24.0"
 kotlinx-coroutines = "1.9.0-RC"
 kotlinx-serialization = "1.7.0"
-kstore = "0.7.1"
+kstore = "0.8.0"
 ktor = "2.3.11"
 moko-mvvm = "0.16.1"
 moko-resources = "0.24.0"
 multiplatform-settings = "1.1.1"
-nserrorKt = "0.1.0"
-nsexceptionKt = "0.1.16"
+nserrorKt = "0.2.0"
+nsexceptionKt = "1.0.0-BETA-4"
 okio = "3.9.0"
 oshi = "6.6.1"
 relinker = "1.4.5"
@@ -70,6 +70,7 @@ multiplatformSettings = { module = "com.russhwolf:multiplatform-settings", versi
 multiplatformSettings-noArg = { module = "com.russhwolf:multiplatform-settings-no-arg", version.ref = "multiplatform-settings" }
 nserrorKt = { module = "com.rickclephas.kmp:nserror-kt", version.ref = "nserrorKt" }
 nsexceptionKt-bugsnag = { module = "com.rickclephas.kmp:nsexception-kt-bugsnag", version.ref = "nsexceptionKt" }
+nsexceptionKt-core = { module = "com.rickclephas.kmp:nsexception-kt-core", version.ref = "nsexceptionKt" }
 okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 oshi-core = { module = "com.github.oshi:oshi-core", version.ref = "oshi" }
 relinker = { module = "com.getkeepsafe.relinker:relinker", version.ref = "relinker" }

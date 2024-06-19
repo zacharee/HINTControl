@@ -20,6 +20,8 @@
 		B65F50CF2A60A4EF003D9D48 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B65F50CE2A60A4EF003D9D48 /* Assets.xcassets */; };
 		B65F50D32A60A4EF003D9D48 /* HINT WidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B65F50C42A60A4ED003D9D48 /* HINT WidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B67067122A6603F700A64F6E /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B65F50C72A60A4ED003D9D48 /* SwiftUI.framework */; };
+		B6B072C92C229B4B001BBD69 /* NSExceptionKtBugsnag in Frameworks */ = {isa = PBXBuildFile; productRef = B6B072C82C229B4B001BBD69 /* NSExceptionKtBugsnag */; };
+		B6B072CB2C229EAF001BBD69 /* NSExceptionKtBugsnag in Frameworks */ = {isa = PBXBuildFile; productRef = B6B072CA2C229EAF001BBD69 /* NSExceptionKtBugsnag */; };
 		B6B344B72A732AC500FBBEAB /* Bugsnag.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6B344B62A732AC500FBBEAB /* Bugsnag.framework */; };
 		B6B344BB2A732AD600FBBEAB /* Bugsnag.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6B344BA2A732AD600FBBEAB /* Bugsnag.framework */; };
 		B6CD7E752A66A87100F3BEA8 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B65F50C52A60A4ED003D9D48 /* WidgetKit.framework */; };
@@ -89,6 +91,7 @@
 				B65F50C62A60A4ED003D9D48 /* WidgetKit.framework in Frameworks */,
 				B6B344BB2A732AD600FBBEAB /* Bugsnag.framework in Frameworks */,
 				234FF0D383C223F3F5865E55 /* Pods_HINT_WidgetExtension.framework in Frameworks */,
+				B6B072CB2C229EAF001BBD69 /* NSExceptionKtBugsnag in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,6 +103,7 @@
 				B6CD7E752A66A87100F3BEA8 /* WidgetKit.framework in Frameworks */,
 				B6B344B72A732AC500FBBEAB /* Bugsnag.framework in Frameworks */,
 				4A869EAF5394A9310F6D2FEF /* Pods_iosApp.framework in Frameworks */,
+				B6B072C92C229B4B001BBD69 /* NSExceptionKtBugsnag in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -400,6 +404,9 @@
 				B65F50D22A60A4EF003D9D48 /* PBXTargetDependency */,
 			);
 			name = iosApp;
+			packageProductDependencies = (
+				B6B072C82C229B4B001BBD69 /* NSExceptionKtBugsnag */,
+			);
 			productName = iosApp;
 			productReference = 7555FF7B242A565900829871 /* HINT Control.app */;
 			productType = "com.apple.product-type.application";
@@ -423,6 +430,9 @@
 			dependencies = (
 			);
 			name = "HINT WidgetExtension";
+			packageProductDependencies = (
+				B6B072CA2C229EAF001BBD69 /* NSExceptionKtBugsnag */,
+			);
 			productName = "HINT WidgetExtension";
 			productReference = B65F50C42A60A4ED003D9D48 /* HINT WidgetExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
@@ -454,6 +464,9 @@
 				Base,
 			);
 			mainGroup = 7555FF72242A565900829871;
+			packageReferences = (
+				B6B072C72C229B4B001BBD69 /* XCRemoteSwiftPackageReference "NSExceptionKt" */,
+			);
 			productRefGroup = 7555FF7C242A565900829871 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1126,6 +1139,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		B6B072C72C229B4B001BBD69 /* XCRemoteSwiftPackageReference "NSExceptionKt" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/rickclephas/NSExceptionKt";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B6B072C82C229B4B001BBD69 /* NSExceptionKtBugsnag */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B6B072C72C229B4B001BBD69 /* XCRemoteSwiftPackageReference "NSExceptionKt" */;
+			productName = NSExceptionKtBugsnag;
+		};
+		B6B072CA2C229EAF001BBD69 /* NSExceptionKtBugsnag */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B6B072C72C229B4B001BBD69 /* XCRemoteSwiftPackageReference "NSExceptionKt" */;
+			productName = NSExceptionKtBugsnag;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 7555FF73242A565900829871 /* Project object */;
 }

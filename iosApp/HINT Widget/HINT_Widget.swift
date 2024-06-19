@@ -8,6 +8,7 @@
 
 import AppIntents
 import Bugsnag
+import NSExceptionKtBugsnag
 import WidgetKit
 import SwiftUI
 import common
@@ -185,9 +186,8 @@ struct HINT_Widget: Widget {
             return true
         }
         
-        Main_iosKt.updateBugsnagConfig(config: config)
+        NSExceptionKt.addReporter(.bugsnag(config))
         Bugsnag.start()
-        Main_iosKt.setupBugsnag()
     }
 
     var body: some WidgetConfiguration {

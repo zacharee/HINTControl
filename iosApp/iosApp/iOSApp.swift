@@ -1,4 +1,5 @@
 import Bugsnag
+import NSExceptionKtBugsnag
 import SwiftUI
 import WidgetKit
 import common
@@ -15,9 +16,8 @@ struct iOSApp: App {
             return true
         }
         
-        Main_iosKt.updateBugsnagConfig(config: config)
+        NSExceptionKt.addReporter(.bugsnag(config))
         Bugsnag.start(with: config)
-        Main_iosKt.setupBugsnag()
         
         FlowUtilsKt.asCommonFlow(SettingsModel.shared.widgetRefresh).watch { _ in
             WidgetCenter.shared.reloadTimelines(ofKind: "HINT_Widget")

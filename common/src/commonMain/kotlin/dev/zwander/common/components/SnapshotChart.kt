@@ -23,12 +23,12 @@ import dev.zwander.resources.common.MR
 import io.github.koalaplot.core.ChartLayout
 import io.github.koalaplot.core.legend.FlowLegend
 import io.github.koalaplot.core.legend.LegendLocation
-import io.github.koalaplot.core.line.LineChart
-import io.github.koalaplot.core.line.Point
+import io.github.koalaplot.core.line.LinePlot
+import io.github.koalaplot.core.style.LineStyle
 import io.github.koalaplot.core.util.ExperimentalKoalaPlotApi
-import io.github.koalaplot.core.xychart.LineStyle
-import io.github.koalaplot.core.xychart.LinearAxisModel
-import io.github.koalaplot.core.xychart.XYChart
+import io.github.koalaplot.core.xygraph.FloatLinearAxisModel
+import io.github.koalaplot.core.xygraph.Point
+import io.github.koalaplot.core.xygraph.XYGraph
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
 
@@ -70,7 +70,7 @@ fun SnapshotChart(
 
     val xAxisModel by remember {
         derivedStateOf {
-            LinearAxisModel(
+            FloatLinearAxisModel(
                 range = if (minX == maxX) {
                     0f..1f
                 } else {
@@ -140,7 +140,7 @@ fun SnapshotChart(
                 }
             }.minOrNull() ?: 1
 
-            LinearAxisModel(
+            FloatLinearAxisModel(
                 range = if (minY == maxY) {
                     0f..1f
                 } else {
@@ -216,7 +216,7 @@ fun SnapshotChart(
         legendLocation = LegendLocation.BOTTOM,
         modifier = modifier.aspectRatio(1f),
     ) {
-        XYChart(
+        XYGraph(
             xAxisModel = xAxisModel,
             yAxisModel = yAxisModel,
             modifier = Modifier.height(300.dp),
@@ -226,7 +226,7 @@ fun SnapshotChart(
             panZoomEnabled = false,
         ) {
             chartDataItems.forEach { chartData ->
-                LineChart(
+                LinePlot(
                     data = chartData.data,
                     lineStyle = LineStyle(brush = SolidColor(chartData.color), strokeWidth = 1.dp),
                 )

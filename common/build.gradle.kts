@@ -42,6 +42,8 @@ kotlin {
             baseName = "common"
             isStatic = true
             export(libs.moko.resources)
+            export(libs.nsexceptionKt.core)
+            export(libs.nsexceptionKt.bugsnag)
         }
         pod("Bugsnag")
     }
@@ -123,6 +125,7 @@ kotlin {
             dependencies {
                 api(libs.ktor.client.darwin)
                 api(libs.nsexceptionKt.bugsnag)
+                api(libs.nsexceptionKt.core)
                 api(libs.nserrorKt)
             }
         }
