@@ -117,8 +117,7 @@ fun <T> PageGrid(
         ) {
             items(items = items, key = key) {
                 ElevatedCard(
-                    modifier = Modifier.fillMaxWidth()
-                        .animateItemPlacement(),
+                    modifier = Modifier.fillMaxWidth(),
                 ) {
                     Column(
                         modifier = Modifier
