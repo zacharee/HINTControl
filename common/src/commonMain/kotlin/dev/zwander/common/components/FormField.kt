@@ -25,7 +25,7 @@ fun FormField(
         isError = isError,
         modifier = modifier,
         keyboardOptions = KeyboardOptions(
-            autoCorrect = false,
+            autoCorrectEnabled = false,
             keyboardType = keyboardType,
             capitalization = KeyboardCapitalization.None,
         ),
