@@ -3,16 +3,18 @@ package dev.zwander.android
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Context
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.core.view.WindowCompat
 import dev.zwander.common.App
 import dev.zwander.common.model.SettingsModel
 import dev.zwander.common.widget.ConnectionStatusWidgetReceiver
@@ -21,18 +23,21 @@ class MainActivity : AppCompatActivity() {
     private val appWidgetManager by lazy { getSystemService(Context.APPWIDGET_SERVICE) as AppWidgetManager }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT),
+            navigationBarStyle = SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT),
+        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            window.isNavigationBarContrastEnforced = false
+            window.isStatusBarContrastEnforced = false
+        }
+        window.statusBarColor = Color.TRANSPARENT
+        window.navigationBarColor = Color.TRANSPARENT
         super.onCreate(savedInstanceState)
 
         supportActionBar?.hide()
 
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-
         setContent {
-            WindowCompat.getInsetsController(window, window.decorView).apply {
-                isAppearanceLightStatusBars = !isSystemInDarkTheme()
-                isAppearanceLightNavigationBars = isAppearanceLightStatusBars
-            }
-
             val widgetRefresh by SettingsModel.widgetRefresh.collectAsState()
 
             LaunchedEffect(widgetRefresh) {

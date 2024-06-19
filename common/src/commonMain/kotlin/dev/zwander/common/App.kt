@@ -205,6 +205,7 @@ fun App(
                                 )
                             }
                         },
+                        contentWindowInsets = WindowInsets(0, 0, 0, 0),
                     ) { padding ->
                         Row(
                             modifier = Modifier.fillMaxWidth()
