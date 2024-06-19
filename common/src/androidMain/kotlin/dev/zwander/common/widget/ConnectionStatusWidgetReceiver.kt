@@ -228,12 +228,12 @@ class ConnectionStatusWidgetReceiver : GlanceAppWidgetReceiver() {
     override fun onEnabled(context: Context?) {
         super.onEnabled(context)
 
-        App.instance?.scheduleWidgetRefresh()
+        App.instance.scheduleWidgetRefresh()
     }
 
     override fun onDisabled(context: Context?) {
         super.onDisabled(context)
 
-        App.instance?.cancelWidgetRefresh()
+        App.instance.cancelWidgetRefresh()
     }
 }

@@ -11,7 +11,7 @@ actual object UrlHandler {
      * @param url the URL to open.
      */
     actual fun launchUrl(url: String) {
-        App.instance?.launchUrl(url)
+        App.instance.launchUrl(url)
     }
 
     /**
@@ -21,6 +21,6 @@ actual object UrlHandler {
      * @param content the email body (optional).
      */
     actual fun sendEmail(address: String, subject: String?, content: String?) {
-        App.instance?.launchEmail(address, subject, content)
+        App.instance.launchEmail(address, subject, content)
     }
 }

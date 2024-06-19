@@ -51,10 +51,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateWidgetRefresh() {
-        App.instance?.cancelWidgetRefresh()
+        App.instance.cancelWidgetRefresh()
 
         if (appWidgetManager.getAppWidgetIds(ComponentName(this, ConnectionStatusWidgetReceiver::class.java)).isNotEmpty()) {
-            App.instance?.scheduleWidgetRefresh()
+            App.instance.scheduleWidgetRefresh()
         }
     }
 }

@@ -17,7 +17,7 @@ import kotlinx.coroutines.MainScope
 class App : Application(), CoroutineScope by MainScope() {
     companion object {
         @SuppressLint("StaticFieldLeak")
-        var instance: App? = null
+        lateinit var instance: App
     }
 
     private val jobScheduler by lazy { getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler }
