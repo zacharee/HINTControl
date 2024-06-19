@@ -14,11 +14,11 @@ import dev.zwander.common.model.MainModel
 import dev.zwander.common.util.addAll
 import dev.zwander.common.util.buildItemList
 import dev.zwander.resources.common.MR
-import korlibs.io.lang.format
-import korlibs.memory.toIntFloor
+import korlibs.math.toIntFloor
 import korlibs.time.TimeFormat
 import korlibs.time.days
 import korlibs.time.milliseconds
+import korlibs.util.format
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
 

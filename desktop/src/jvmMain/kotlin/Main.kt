@@ -15,7 +15,7 @@ import com.russhwolf.settings.Settings
 import dev.icerock.moko.resources.compose.painterResource
 import dev.zwander.common.App
 import dev.zwander.common.GradleConfig
-import dev.zwander.common.ui.getThemeInfo
+import dev.zwander.common.ui.rememberThemeInfo
 import dev.zwander.common.util.BugsnagUtils.bugsnag
 import dev.zwander.common.util.CrossPlatformBugsnag
 import dev.zwander.common.util.LocalFrame
@@ -90,7 +90,7 @@ fun main() {
 
             when (hostOs) {
                 OS.Windows -> {
-                    val themeInfo = getThemeInfo()
+                    val themeInfo = rememberThemeInfo()
 
                     LaunchedEffect(themeInfo) {
                         try {
@@ -98,15 +98,15 @@ fun main() {
 
                             handle.dwmSetBooleanValue(DwmAttribute.DWMWA_USE_IMMERSIVE_DARK_MODE, true)
 
-                            themeInfo.colors?.background?.let {
+                            themeInfo.colors.background.let {
                                 handle.setCaptionColor(it)
                             }
 
-                            themeInfo.colors?.primary?.let {
+                            themeInfo.colors.primary.let {
                                 handle.setBorderColor(it)
                             }
 
-                            themeInfo.colors?.onBackground?.let {
+                            themeInfo.colors.onBackground.let {
                                 handle.setTextColor(it)
                             }
                         } catch (e: Throwable) {

@@ -25,7 +25,7 @@ import dev.zwander.common.components.settings.RecordSnapshots
 import dev.zwander.common.components.settings.Supporters
 import dev.zwander.common.components.settings.WidgetRefresh
 import dev.zwander.resources.common.MR
-import korlibs.memory.Platform
+import korlibs.platform.Platform
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
 

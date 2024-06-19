@@ -72,7 +72,7 @@ import dev.zwander.common.model.UserModel
 import dev.zwander.common.ui.Theme
 import dev.zwander.common.util.Storage
 import dev.zwander.resources.common.MR
-import korlibs.memory.Platform
+import korlibs.platform.Platform
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.experimental.ExperimentalObjCRefinement

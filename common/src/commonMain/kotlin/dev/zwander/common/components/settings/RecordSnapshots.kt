@@ -24,7 +24,7 @@ import dev.zwander.common.util.FileExporter
 import dev.zwander.common.util.Storage
 import dev.zwander.resources.common.MR
 import io.github.xxfast.kstore.file.utils.FILE_SYSTEM
-import korlibs.memory.Platform
+import korlibs.platform.Platform
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch

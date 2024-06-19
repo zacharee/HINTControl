@@ -15,51 +15,38 @@ import com.sun.jna.platform.win32.Advapi32Util
 import com.sun.jna.platform.win32.WinReg
 import dev.zwander.common.monet.ColorScheme
 import dev.zwander.common.util.UserDefaults
-import korlibs.memory.Platform
 import org.jetbrains.skiko.OS
 import org.jetbrains.skiko.hostOs
 
 @Composable
-actual fun getThemeInfo(): ThemeInfo {
+actual fun rememberThemeInfo(): ThemeInfo {
     val (osThemeDetector, isSupported) = remember {
-        OsThemeDetector.getDetector() to OsThemeDetector.isSupported()
-    }
-
-    val genericDetector = remember {
-        GenericLinuxThemeDetector()
+        OsThemeDetector.detector to OsThemeDetector.isSupported
     }
 
     var dark by remember {
-        mutableStateOf(
-            when {
-                Platform.isLinux -> genericDetector.isDark
-                isSupported -> osThemeDetector.isDark
-                else -> true
-            }
-        )
+        mutableStateOf(isSupported && osThemeDetector.isDark)
     }
 
-    DisposableEffect(osThemeDetector, isSupported, genericDetector) {
+    DisposableEffect(osThemeDetector, isSupported) {
         val listener = { darkMode: Boolean ->
             dark = darkMode
         }
 
-        if (Platform.isLinux) {
-            genericDetector.registerListener(listener)
-        } else if (isSupported) {
+        if (isSupported) {
             osThemeDetector.registerListener(listener)
         }
 
         onDispose {
-            if (Platform.isLinux) {
-                genericDetector.removeListener(listener)
-            } else if (isSupported) {
+            if (isSupported) {
                 osThemeDetector.removeListener(listener)
             }
         }
     }
 
     val accentColor = remember {
+        val defaultColor = Color(red = 208, green = 188, blue = 255)
+
         when (hostOs) {
             OS.Windows -> {
                 java.awt.Color(
@@ -73,17 +60,23 @@ actual fun getThemeInfo(): ThemeInfo {
             OS.MacOS -> {
                 UserDefaults.standardUserDefaults().getAccentColor().toArgb()
             }
+            OS.Linux -> {
+                (LinuxAccentColorGetter.getAccentColor() ?: defaultColor).toArgb()
+            }
             else -> {
-                Color(red = 208, green = 188, blue = 255).toArgb()
+                defaultColor.toArgb()
             }
         }
     }
 
-    return ThemeInfo(
-        isDarkMode = dark,
-        colors = ColorScheme(
-            accentColor,
-            dark
-        ).toComposeColorScheme().toNullableColorScheme(),
-    )
+    val composeColorScheme = remember(accentColor, dark) {
+        ColorScheme(accentColor, dark).toComposeColorScheme()
+    }
+
+    return remember(composeColorScheme) {
+        ThemeInfo(
+            isDarkMode = dark,
+            colors = composeColorScheme,
+        )
+    }
 }

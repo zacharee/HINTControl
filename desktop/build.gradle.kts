@@ -1,6 +1,8 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
+    alias(libs.plugins.kotlin.atomicfu)
+    alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.compose)
     alias(libs.plugins.conveyor)
@@ -11,7 +13,6 @@ version = rootProject.extra["app_version_code"].toString()
 
 kotlin {
     jvm {
-        jvmToolchain(rootProject.extra["java_version"].toString().toInt())
         withJava()
     }
     sourceSets {
@@ -79,9 +80,4 @@ java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(rootProject.extra["java_version"].toString()))
     }
-}
-
-compose {
-    kotlinCompilerPlugin.set("org.jetbrains.compose.compiler:compiler:${libs.versions.compose.compiler.get()}")
-    kotlinCompilerPluginArgs.add("suppressKotlinVersionCompatibilityCheck=${libs.versions.kotlin.get()}")
 }

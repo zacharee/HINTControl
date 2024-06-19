@@ -2,7 +2,7 @@ package dev.zwander.common.util
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import korlibs.memory.Platform
+import korlibs.platform.Platform
 import okio.BufferedSink
 import okio.buffer
 import okio.sink

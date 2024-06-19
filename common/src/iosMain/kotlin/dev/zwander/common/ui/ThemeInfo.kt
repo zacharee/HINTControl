@@ -30,33 +30,35 @@ import kotlin.experimental.ExperimentalObjCRefinement
 
 @Composable
 @HiddenFromObjC
-actual fun getThemeInfo(): ThemeInfo {
+actual fun rememberThemeInfo(): ThemeInfo {
     val controller = LocalUIViewController.current
     val rootViewController = controller.view.window?.rootViewController
 
     val rootTint = rootViewController?.view?.tintColor
 
-    val (red, green, blue, alpha) = rootTint?.run {
-        memScoped {
-            val red = alloc<CGFloatVar>()
-            val green = alloc<CGFloatVar>()
-            val blue = alloc<CGFloatVar>()
-            val alpha = alloc<CGFloatVar>()
+    val (red, green, blue, alpha) = remember(rootTint) {
+        rootTint?.run {
+            memScoped {
+                val red = alloc<CGFloatVar>()
+                val green = alloc<CGFloatVar>()
+                val blue = alloc<CGFloatVar>()
+                val alpha = alloc<CGFloatVar>()
 
-            val success = getRed(red.ptr, green.ptr, blue.ptr, alpha.ptr)
+                val success = getRed(red.ptr, green.ptr, blue.ptr, alpha.ptr)
 
-            if (success) {
-                arrayOf(
-                    red.value,
-                    green.value,
-                    blue.value,
-                    alpha.value
-                )
-            } else {
-                arrayOfNulls<CGFloat?>(4)
+                if (success) {
+                    arrayOf(
+                        red.value,
+                        green.value,
+                        blue.value,
+                        alpha.value
+                    )
+                } else {
+                    arrayOfNulls<CGFloat?>(4)
+                }
             }
-        }
-    } ?: arrayOfNulls(4)
+        } ?: arrayOfNulls(4)
+    }
 
     var style: UIUserInterfaceStyle by remember {
         mutableStateOf(UITraitCollection.currentTraitCollection.userInterfaceStyle)
@@ -81,7 +83,7 @@ actual fun getThemeInfo(): ThemeInfo {
 
     val colors = ThemeInfo(
         isDarkMode = dark,
-        colors = colorScheme.toNullableColorScheme(),
+        colors = colorScheme,
     )
 
     val backgroundColor = colorScheme.background

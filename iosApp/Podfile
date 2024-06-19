@@ -1,7 +1,7 @@
 target 'iosApp' do
   use_frameworks!
   platform :ios, '14.0'
-#   pod 'common', :path => '../common'
+  pod 'common', :path => '../common'
   pod 'Bugsnag'
   plugin 'cocoapods-bugsnag'
 end
@@ -9,7 +9,7 @@ end
 target 'HINT WidgetExtension' do
   use_frameworks!
   platform :ios, '14.0'
-#   pod 'common', :path => '../common'
+  pod 'common', :path => '../common'
   pod 'Bugsnag'
   plugin 'cocoapods-bugsnag'
 end

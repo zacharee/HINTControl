@@ -1,11 +1,11 @@
 @file:Suppress("UnstableApiUsage")
 
-import org.jetbrains.kotlin.gradle.plugin.mpp.pm20.util.archivesName
-
 plugins {
     alias(libs.plugins.compose)
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.atomicfu)
+    alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.bugsnag.android)
 }
 
@@ -24,7 +24,7 @@ android {
         versionCode = rootProject.extra["app_version_code"].toString().toInt()
         versionName = rootProject.extra["app_version_name"].toString()
 
-        archivesName = "HINT_Control_$versionName"
+        setProperty("archivesBaseName", "HINT_Control_$versionName")
     }
     val compatibility = JavaVersion.toVersion(rootProject.extra["java_version"].toString())
     compileOptions {
@@ -36,9 +36,4 @@ android {
             isMinifyEnabled = false
         }
     }
-}
-
-compose {
-    kotlinCompilerPlugin.set("org.jetbrains.compose.compiler:compiler:${libs.versions.compose.compiler.get()}")
-    kotlinCompilerPluginArgs.add("suppressKotlinVersionCompatibilityCheck=${libs.versions.kotlin.get()}")
 }

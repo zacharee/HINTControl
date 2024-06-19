@@ -48,7 +48,7 @@ import dev.zwander.common.util.PersistentMutableStateFlow
 import dev.zwander.common.util.animateContentHeight
 import dev.zwander.common.util.animateContentWidth
 import dev.zwander.common.util.keyboardDismissalNestedScrolling
-import korlibs.memory.Platform
+import korlibs.platform.Platform
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
 

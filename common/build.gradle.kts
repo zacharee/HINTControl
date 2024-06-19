@@ -2,7 +2,9 @@ import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 
 plugins {
     alias(libs.plugins.kotlin.native.cocoapods)
+    alias(libs.plugins.kotlin.atomicfu)
     alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.compose)
     alias(libs.plugins.android.library)
@@ -14,25 +16,10 @@ version = rootProject.extra["app_version_code"].toString()
 
 kotlin {
     androidTarget()
-    jvm("desktop") {
-        jvmToolchain(rootProject.extra["java_version"].toString().toInt())
-    }
+    jvm("desktop")
 
-    val iosArm64 = iosArm64()
-    val iosSimulatorArm64 = iosSimulatorArm64()
-
-    listOf(
-        iosArm64,
-        iosSimulatorArm64,
-    ).forEach { iosTarget ->
-        iosTarget.binaries {
-            framework {
-                baseName = "common"
-                isStatic = true
-                export(libs.moko.resources)
-            }
-        }
-    }
+    iosArm64()
+    iosSimulatorArm64()
 
     targets.all {
         compilations.all {
@@ -50,8 +37,9 @@ kotlin {
         osx.deploymentTarget = "10.13"
         podfile = project.file("../iosApp/Podfile")
         framework {
-            baseName = "commonFrameworkOld"
+            baseName = "common"
             isStatic = true
+            export(libs.moko.resources)
         }
         pod("Bugsnag")
     }
@@ -86,7 +74,6 @@ kotlin {
                 api(libs.kotlinx.serialization.json)
                 api(libs.kotlinx.serialization.json.okio)
                 api(libs.kotlinx.coroutines)
-                api(libs.compose.compiler)
             }
         }
         val nonAppleMain by creating {
@@ -122,10 +109,7 @@ kotlin {
                 api(libs.jna)
                 api(libs.slf4j.jdk14)
                 api(libs.bugsnag.jvm)
-                // https://stackoverflow.com/a/73710583/5496177
-                api(libs.jSystemThemeDetector.get().let { "${it.module}:${it.versionConstraint.requiredVersion}" }) {
-                    exclude("net.java.dev.jna", "jna")
-                }
+                api(libs.jSystemThemeDetector)
                 api(libs.oshi.core)
                 api(libs.appdirs)
                 api(libs.kotlinx.coroutines.swing)
@@ -178,11 +162,6 @@ android {
     lint {
         abortOnError = false
     }
-}
-
-compose {
-    kotlinCompilerPlugin.set("org.jetbrains.compose.compiler:compiler:${libs.versions.compose.compiler.get()}")
-    kotlinCompilerPluginArgs.add("suppressKotlinVersionCompatibilityCheck=${libs.versions.kotlin.get()}")
 }
 
 java {

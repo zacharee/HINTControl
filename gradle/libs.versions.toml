@@ -1,35 +1,34 @@
 [versions]
 androidx-activity-compose = "1.9.0"
-androidx-appcompat = "1.6.1"
-androidx-core = "1.13.0"
-androidx-glance-appwidget = "1.1.0-beta02"
+androidx-appcompat = "1.7.0"
+androidx-core = "1.13.1"
+androidx-glance-appwidget = "1.1.0"
 appdirs = "1.2.2"
-bugsnag-android = "6.4.0"
+bugsnag-android = "6.5.0"
 bugsnag-android-gradle = "8.1.0"
 bugsnag-jvm = "3.7.1"
 buildkonfig-gradle = "0.15.1"
-compose = "1.6.10-dev1593"
-compose-compiler = "1.5.10.2"
-conveyor = "1.9"
-google-material = "1.12.0-rc01"
+compose = "1.6.20-dev1673"
+conveyor = "1.10"
+google-material = "1.12.0"
 android-gradle = "8.2.2"
 jna = "5.14.0"
-jsystemthemedetector = "3.9.1"
+jsystemthemedetector = "7dde337429"
 koalaplot = "0.4.0"
-korlibs = "4.0.10"
-kotlin = "1.9.23"
-kotlinx-atomicfu = "0.23.2"
-kotlinx-coroutines = "1.8.1-Beta"
-kotlinx-serialization = "1.6.3"
+korlibs = "6.0.0-alpha2"
+kotlin = "2.0.0"
+kotlinx-atomicfu = "0.24.0"
+kotlinx-coroutines = "1.9.0-RC"
+kotlinx-serialization = "1.7.0"
 kstore = "0.7.1"
-ktor = "2.3.10"
+ktor = "2.3.11"
 moko-mvvm = "0.16.1"
-moko-resources = "0.24.0-alpha-5"
+moko-resources = "0.24.0"
 multiplatform-settings = "1.1.1"
 nserrorKt = "0.1.0"
 nsexceptionKt = "0.1.16"
 okio = "3.9.0"
-oshi = "6.6.0"
+oshi = "6.6.1"
 relinker = "1.4.5"
 slf4j = "2.0.13"
 
@@ -41,13 +40,12 @@ androidx-glance-appwidget = { module = "androidx.glance:glance-appwidget", versi
 appdirs = { module = "net.harawata:appdirs", version.ref = "appdirs" }
 bugsnag-android = { module = "com.bugsnag:bugsnag-android", version.ref = "bugsnag-android" }
 bugsnag-jvm = { module = "com.bugsnag:bugsnag", version.ref = "bugsnag-jvm" }
-compose-compiler = { module = "org.jetbrains.compose.compiler:compiler", version.ref = "compose-compiler" }
 google-material = { module = "com.google.android.material:material", version.ref = "google-material" }
 jna = { module = "net.java.dev.jna:jna", version.ref = "jna" }
-jSystemThemeDetector = { module = "com.github.Dansoftowner:jSystemThemeDetector", version.ref = "jsystemthemedetector" }
+jSystemThemeDetector = { module = "com.github.zacharee:jSystemThemeDetector", version.ref = "jsystemthemedetector" }
 koalaplot = { module = "io.github.koalaplot:koalaplot-core", version.ref = "koalaplot" }
-korlibs-klock = { module = "com.soywiz.korlibs.klock:klock", version.ref = "korlibs" }
-korlibs-korio = { module = "com.soywiz.korlibs.korio:korio", version.ref = "korlibs" }
+korlibs-klock = { module = "com.soywiz:korlibs-time", version.ref = "korlibs" }
+korlibs-korio = { module = "com.soywiz:korlibs-io", version.ref = "korlibs" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
 kotlinx-atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "kotlinx-atomicfu" }
 kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
@@ -85,6 +83,7 @@ buildkonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildkonfig-
 compose = { id = "org.jetbrains.compose", version.ref = "compose" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-atomicfu = { id = "org.jetbrains.kotlin.plugin.atomicfu", version.ref = "kotlin" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlin-native-cocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

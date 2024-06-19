@@ -78,7 +78,7 @@ struct HINT_WidgetEntryView: View {
     var body: some View {
         VStack {
             HStack {
-                Text(MR.strings.shared.connection.desc().localized())
+                Text(MR.strings().connection.desc().localized())
                 
                 Spacer()
                 
@@ -117,7 +117,7 @@ struct HINT_WidgetEntryItem: View {
                     Spacer()
                     if let bands = data?.bands {
                         TwoRowText(
-                            label: MR.strings.shared.bands.desc().localized(),
+                            label: MR.strings().bands.desc().localized(),
                             value: bands.joined(separator: ", ")
                         )
                     }
@@ -210,7 +210,7 @@ struct HINT_Widget: Widget {
 
 @available(iOS 16.0, macOS 13.0, watchOS 9.0, tvOS 16.0, *)
 struct RefreshIntent: AppIntent {
-    static var title: LocalizedStringResource = LocalizedStringResource(stringLiteral: MR.strings.shared.refresh.desc().localized())
+    static var title: LocalizedStringResource = LocalizedStringResource(stringLiteral: MR.strings().refresh.desc().localized())
     static var description: IntentDescription? = nil
     
     func perform() async throws -> some IntentResult {
