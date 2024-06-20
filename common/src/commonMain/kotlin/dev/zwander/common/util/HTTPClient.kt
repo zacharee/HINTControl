@@ -580,6 +580,7 @@ interface HTTPClient {
                 if (response.status.isSuccess()) {
                     return response
                 } else if (retryForLive && retryOnCodes.contains(response.status.value) && attempt < maxRetries) {
+                    delay(2000)
                     tryRequest(attempt + 1)
                 } else {
                     if (showError) response.setError()
@@ -588,6 +589,7 @@ interface HTTPClient {
             } catch (e: HttpRequestTimeoutException) {
                 Exception(e).printStackTrace()
                 if (retryForLive && attempt < maxRetries) {
+                    delay(2000)
                     tryRequest(attempt + 1)
                 } else {
                     if (!waitForLive()) {
