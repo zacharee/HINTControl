@@ -1,7 +1,9 @@
 package dev.zwander.common.components.settings
 
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.interaction.Interaction
 import androidx.compose.foundation.interaction.InteractionSource
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -44,37 +46,40 @@ fun TextFieldSetting(
         mutableStateOf(value)
     }
 
-    OutlinedTextFieldDefaults.DecorationBox(
-        value = value,
-        innerTextField = {
-            Text(
-                text = value,
-                modifier = modifier,
-            )
-        },
-        visualTransformation = VisualTransformation.None,
-        singleLine = true,
-        enabled = enabled,
-        label = { Text(text = label) },
-        interactionSource = remember {
-            object : InteractionSource {
-                override val interactions: Flow<Interaction> = emptyFlow()
-            }
-        },
-        trailingIcon = {
-            IconButton(
-                onClick = {
-                    showingDialog = true
-                },
-                enabled = enabled,
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Edit,
-                    contentDescription = stringResource(MR.strings.edit),
+    Column(
+        modifier = modifier,
+    ) {
+        OutlinedTextFieldDefaults.DecorationBox(
+            value = value,
+            innerTextField = {
+                Text(
+                    text = value,
+                    modifier = Modifier.fillMaxWidth(),
                 )
-            }
-        },
-    )
+            },
+            visualTransformation = VisualTransformation.None,
+            singleLine = true,
+            enabled = enabled,
+            label = { Text(text = label) },
+            interactionSource = remember {
+                object : InteractionSource {
+                    override val interactions: Flow<Interaction> = emptyFlow()
+                }
+            },
+            trailingIcon = {
+                IconButton(
+                    onClick = {
+                        showingDialog = true
+                    },
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Edit,
+                        contentDescription = stringResource(MR.strings.edit),
+                    )
+                }
+            },
+        )
+    }
 
     InWindowAlertDialog(
         showing = showingDialog,

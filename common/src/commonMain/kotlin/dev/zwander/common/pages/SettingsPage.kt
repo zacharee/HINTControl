@@ -44,17 +44,6 @@ fun SettingsPage(
     val items = remember {
         listOf(
             SettingsItem(
-                title = MR.strings.auto_refresh,
-                render = {
-                    AutoRefresh()
-                },
-                description = {
-                    Text(
-                        text = stringResource(MR.strings.auto_refresh_desc),
-                    )
-                },
-            ),
-            SettingsItem(
                 title = MR.strings.default_page,
                 render = {
                     DefaultPage()
@@ -62,6 +51,17 @@ fun SettingsPage(
                 description = {
                     Text(
                         text = stringResource(MR.strings.default_page_desc),
+                    )
+                },
+            ),
+            SettingsItem(
+                title = MR.strings.auto_refresh,
+                render = {
+                    AutoRefresh()
+                },
+                description = {
+                    Text(
+                        text = stringResource(MR.strings.auto_refresh_desc),
                     )
                 },
             ),
