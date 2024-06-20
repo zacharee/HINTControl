@@ -6,6 +6,8 @@ import android.content.Context
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
+import android.view.Surface
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -13,17 +15,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.safeContent
-import androidx.compose.foundation.layout.systemBars
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import dev.zwander.common.App
 import dev.zwander.common.model.SettingsModel
+import dev.zwander.common.ui.LocalOrientation
+import dev.zwander.common.ui.Orientation
 import dev.zwander.common.widget.ConnectionStatusWidgetReceiver
 
 class MainActivity : AppCompatActivity() {
@@ -46,15 +49,36 @@ class MainActivity : AppCompatActivity() {
 
         setContent {
             val widgetRefresh by SettingsModel.widgetRefresh.collectAsState()
+            val display = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                display
+            } else {
+                @Suppress("DEPRECATION")
+                windowManager.defaultDisplay
+            }
+            val orientation = display.rotation.run {
+                when (this) {
+                    Surface.ROTATION_0 -> Orientation.PORTRAIT
+                    Surface.ROTATION_90 -> Orientation.LANDSCAPE_90
+                    Surface.ROTATION_270 -> Orientation.LANDSCAPE_270
+                    Surface.ROTATION_180 -> Orientation.PORTRAIT_180
+                    else -> error("Invalid orientation $this")
+                }
+            }
+
+            Log.e("HINTControl", "$orientation, ${resources.configuration.orientation}")
 
             LaunchedEffect(widgetRefresh) {
                 updateWidgetRefresh()
             }
 
-            App(
-                modifier = Modifier.imePadding(),
-                fullPadding = WindowInsets.safeContent.only(WindowInsetsSides.Horizontal).asPaddingValues(),
-            )
+            CompositionLocalProvider(
+                LocalOrientation provides orientation,
+            ) {
+                App(
+                    modifier = Modifier.imePadding(),
+                    fullPadding = WindowInsets.safeContent.only(WindowInsetsSides.Horizontal).asPaddingValues(),
+                )
+            }
         }
     }
 

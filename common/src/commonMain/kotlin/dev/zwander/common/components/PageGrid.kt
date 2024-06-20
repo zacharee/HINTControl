@@ -45,6 +45,8 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
+import dev.zwander.common.ui.LayoutMode
+import dev.zwander.common.ui.LocalLayoutMode
 import dev.zwander.common.util.AdaptiveMod
 import dev.zwander.common.util.PersistentMutableStateFlow
 import dev.zwander.common.util.animateContentHeight
@@ -80,6 +82,7 @@ fun <T> PageGrid(
     }
 
     val systemBarsInsets = WindowInsets.systemBars.asPaddingValues()
+    val layoutMode = LocalLayoutMode.current
 
     val actualContentPadding = (gridContentPadding ?: PaddingValues(8.dp)).run {
         val layoutDirection = LocalLayoutDirection.current
@@ -89,7 +92,13 @@ fun <T> PageGrid(
                 start = calculateStartPadding(layoutDirection),
                 top = calculateTopPadding() + systemBarsInsets.calculateTopPadding(),
                 end = calculateEndPadding(layoutDirection),
-                bottom = calculateBottomPadding() + if (bottomBarContents != null) bottomBarHeight.toDp() else systemBarsInsets.calculateBottomPadding(),
+                bottom = calculateBottomPadding() + if (bottomBarContents != null) {
+                    bottomBarHeight.toDp()
+                } else if (layoutMode != LayoutMode.BOTTOM_BAR) {
+                    systemBarsInsets.calculateBottomPadding()
+                } else {
+                    0.dp
+                },
             )
         }
     }
@@ -173,7 +182,11 @@ fun <T> PageGrid(
                         start = 8.dp,
                         end = 8.dp,
                         top = 8.dp,
-                        bottom = 8.dp + systemBarsInsets.calculateBottomPadding(),
+                        bottom = 8.dp + if (layoutMode != LayoutMode.BOTTOM_BAR) {
+                            systemBarsInsets.calculateBottomPadding()
+                        } else {
+                            0.dp
+                        },
                     )
                     .align(Alignment.BottomCenter),
             ) {

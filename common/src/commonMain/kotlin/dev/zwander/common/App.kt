@@ -42,6 +42,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -69,6 +70,8 @@ import dev.zwander.common.data.Page
 import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.SettingsModel
 import dev.zwander.common.model.UserModel
+import dev.zwander.common.ui.LayoutMode
+import dev.zwander.common.ui.LocalLayoutMode
 import dev.zwander.common.ui.Theme
 import dev.zwander.common.util.Storage
 import dev.zwander.resources.common.MR
@@ -188,89 +191,93 @@ fun App(
                     val fabVisible =
                         !sideRail && !Platform.isAndroid && !Platform.isIos && currentPage.refreshAction != null
 
-                    Scaffold(
-                        modifier = modifier.fillMaxSize(),
-                        bottomBar = {
-                            AnimatedVisibility(
-                                visible = showBottomBar,
-                                enter = fadeIn() + expandVertically(expandFrom = Alignment.Bottom),
-                                exit = fadeOut() + shrinkVertically(shrinkTowards = Alignment.Bottom),
-                                modifier = Modifier.fillMaxWidth(),
-                            ) {
-                                NavBar(
-                                    currentPage = currentPage,
-                                    pages = pages,
-                                    onPageChange = { currentPage = it },
-                                    vertical = false,
-                                )
-                            }
-                        },
-                        contentWindowInsets = WindowInsets(0, 0, 0, 0),
-                    ) { padding ->
-                        Row(
-                            modifier = Modifier.fillMaxWidth()
-                                .padding(padding),
-                        ) {
-                            AnimatedVisibility(
-                                visible = isLoggedIn && sideRail,
-                                enter = fadeIn() + expandHorizontally(expandFrom = Alignment.Start),
-                                exit = fadeOut() + shrinkHorizontally(shrinkTowards = Alignment.Start),
-                            ) {
-                                NavBar(
-                                    currentPage = currentPage,
-                                    onPageChange = { currentPage = it },
-                                    pages = pages,
-                                    vertical = true,
-                                )
-                            }
-
-                            Box(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .then(
-                                        if (!sideRail && currentPage.refreshAction != null) {
-                                            Modifier.pullRefresh(
-                                                state = pullRefreshState
-                                            )
-                                        } else {
-                                            Modifier
-                                        }
-                                    ),
-                            ) {
-                                AppView(
-                                    currentPage = currentPage,
-                                    sideRail = sideRail,
-                                    pages = pages,
-                                    onPageChange = { currentPage = it },
-                                    modifier = Modifier
-                                        .widthIn(max = 1200.dp)
-                                        .fillMaxSize()
-                                        .align(Alignment.TopCenter),
-                                )
-
-                                PullRefreshIndicator(
-                                    refreshing = isLoading,
-                                    state = pullRefreshState,
-                                    modifier = Modifier.align(Alignment.TopCenter),
-                                )
-
-                                androidx.compose.animation.AnimatedVisibility(
-                                    visible = fabVisible,
-                                    enter = fadeIn() + scaleIn(),
-                                    exit = fadeOut() + scaleOut(),
-                                    modifier = Modifier.align(Alignment.BottomEnd).padding(end = 16.dp, bottom = 16.dp),
+                    CompositionLocalProvider(
+                        LocalLayoutMode provides if (sideRail) LayoutMode.SIDE_RAIL else LayoutMode.BOTTOM_BAR,
+                    ) {
+                        Scaffold(
+                            modifier = modifier.fillMaxSize(),
+                            bottomBar = {
+                                AnimatedVisibility(
+                                    visible = showBottomBar,
+                                    enter = fadeIn() + expandVertically(expandFrom = Alignment.Bottom),
+                                    exit = fadeOut() + shrinkVertically(shrinkTowards = Alignment.Bottom),
+                                    modifier = Modifier.fillMaxWidth(),
                                 ) {
-                                    FloatingActionButton(
-                                        onClick = {
-                                            scope.launch {
-                                                handleRefresh(currentPage)
+                                    NavBar(
+                                        currentPage = currentPage,
+                                        pages = pages,
+                                        onPageChange = { currentPage = it },
+                                        vertical = false,
+                                    )
+                                }
+                            },
+                            contentWindowInsets = WindowInsets(0, 0, 0, 0),
+                        ) { padding ->
+                            Row(
+                                modifier = Modifier.fillMaxWidth()
+                                    .padding(padding),
+                            ) {
+                                AnimatedVisibility(
+                                    visible = isLoggedIn && sideRail,
+                                    enter = fadeIn() + expandHorizontally(expandFrom = Alignment.Start),
+                                    exit = fadeOut() + shrinkHorizontally(shrinkTowards = Alignment.Start),
+                                ) {
+                                    NavBar(
+                                        currentPage = currentPage,
+                                        onPageChange = { currentPage = it },
+                                        pages = pages,
+                                        vertical = true,
+                                    )
+                                }
+
+                                Box(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .then(
+                                            if (!sideRail && currentPage.refreshAction != null) {
+                                                Modifier.pullRefresh(
+                                                    state = pullRefreshState
+                                                )
+                                            } else {
+                                                Modifier
                                             }
-                                        },
+                                        ),
+                                ) {
+                                    AppView(
+                                        currentPage = currentPage,
+                                        sideRail = sideRail,
+                                        pages = pages,
+                                        onPageChange = { currentPage = it },
+                                        modifier = Modifier
+                                            .widthIn(max = 1200.dp)
+                                            .fillMaxSize()
+                                            .align(Alignment.TopCenter),
+                                    )
+
+                                    PullRefreshIndicator(
+                                        refreshing = isLoading,
+                                        state = pullRefreshState,
+                                        modifier = Modifier.align(Alignment.TopCenter),
+                                    )
+
+                                    androidx.compose.animation.AnimatedVisibility(
+                                        visible = fabVisible,
+                                        enter = fadeIn() + scaleIn(),
+                                        exit = fadeOut() + scaleOut(),
+                                        modifier = Modifier.align(Alignment.BottomEnd).padding(end = 16.dp, bottom = 16.dp),
                                     ) {
-                                        Icon(
-                                            imageVector = Icons.Default.Refresh,
-                                            contentDescription = stringResource(MR.strings.refresh),
-                                        )
+                                        FloatingActionButton(
+                                            onClick = {
+                                                scope.launch {
+                                                    handleRefresh(currentPage)
+                                                }
+                                            },
+                                        ) {
+                                            Icon(
+                                                imageVector = Icons.Default.Refresh,
+                                                contentDescription = stringResource(MR.strings.refresh),
+                                            )
+                                        }
                                     }
                                 }
                             }
