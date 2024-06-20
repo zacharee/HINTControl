@@ -18,8 +18,17 @@ kotlin {
     androidTarget()
     jvm("desktop")
 
-    iosArm64()
-    iosSimulatorArm64()
+    val iosArm64 = iosArm64()
+    val iosSimulatorArm64 = iosSimulatorArm64()
+
+    listOf(iosArm64, iosSimulatorArm64).forEach {
+        it.compilations.getByName("main") {
+            cinterops.create("BugsnagHINT") {
+                includeDirs("$projectDir/src/nativeInterop/cinterop/Bugsnag")
+                definitionFile.set(file("$projectDir/src/nativeInterop/cinterop/Bugsnag.def"))
+            }
+        }
+    }
 
     targets.all {
         compilations.all {
@@ -43,9 +52,7 @@ kotlin {
             isStatic = true
             export(libs.moko.resources)
             export(libs.nsexceptionKt.core)
-            export(libs.nsexceptionKt.bugsnag)
         }
-        pod("Bugsnag")
     }
 
     sourceSets {

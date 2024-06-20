@@ -2,7 +2,6 @@ package dev.zwander.common.components.settings
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
@@ -22,8 +21,6 @@ fun WidgetRefresh() {
         onValueChange = { it.toLongOrNull()?.let { p -> widgetRefreshMs = p } },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         modifier = Modifier.fillMaxWidth(),
-        label = {
-            Text(text = stringResource(MR.strings.period_ms))
-        },
+        label = stringResource(MR.strings.period_ms),
     )
 }

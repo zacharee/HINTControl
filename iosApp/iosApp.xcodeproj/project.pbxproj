@@ -11,7 +11,6 @@
 		058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */; };
 		2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* iOSApp.swift */; };
 		234FF0D383C223F3F5865E55 /* Pods_HINT_WidgetExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D592800F86149BCD1B14998 /* Pods_HINT_WidgetExtension.framework */; };
-		4A869EAF5394A9310F6D2FEF /* Pods_iosApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6F7E5D72BA6AEBC00E7536C /* Pods_iosApp.framework */; };
 		7555FF83242A565900829871 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF82242A565900829871 /* ContentView.swift */; };
 		B65F50C62A60A4ED003D9D48 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B65F50C52A60A4ED003D9D48 /* WidgetKit.framework */; };
 		B65F50C82A60A4ED003D9D48 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B65F50C72A60A4ED003D9D48 /* SwiftUI.framework */; };
@@ -20,10 +19,12 @@
 		B65F50CF2A60A4EF003D9D48 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B65F50CE2A60A4EF003D9D48 /* Assets.xcassets */; };
 		B65F50D32A60A4EF003D9D48 /* HINT WidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B65F50C42A60A4ED003D9D48 /* HINT WidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B67067122A6603F700A64F6E /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B65F50C72A60A4ED003D9D48 /* SwiftUI.framework */; };
-		B6B072C92C229B4B001BBD69 /* NSExceptionKtBugsnag in Frameworks */ = {isa = PBXBuildFile; productRef = B6B072C82C229B4B001BBD69 /* NSExceptionKtBugsnag */; };
-		B6B072CB2C229EAF001BBD69 /* NSExceptionKtBugsnag in Frameworks */ = {isa = PBXBuildFile; productRef = B6B072CA2C229EAF001BBD69 /* NSExceptionKtBugsnag */; };
-		B6B344B72A732AC500FBBEAB /* Bugsnag.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6B344B62A732AC500FBBEAB /* Bugsnag.framework */; };
-		B6B344BB2A732AD600FBBEAB /* Bugsnag.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6B344BA2A732AD600FBBEAB /* Bugsnag.framework */; };
+		B6B072CD2C23A707001BBD69 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B072CC2C23A707001BBD69 /* AppDelegate.swift */; };
+		B6B072CE2C23A707001BBD69 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B072CC2C23A707001BBD69 /* AppDelegate.swift */; };
+		B6B072D12C23AA55001BBD69 /* NSExceptionKtBugsnag in Frameworks */ = {isa = PBXBuildFile; productRef = B6B072D02C23AA55001BBD69 /* NSExceptionKtBugsnag */; };
+		B6B072DB2C23B233001BBD69 /* Bugsnag in Frameworks */ = {isa = PBXBuildFile; productRef = B6B072D52C23B059001BBD69 /* Bugsnag */; };
+		B6B072E22C23B2A1001BBD69 /* Bugsnag in Frameworks */ = {isa = PBXBuildFile; productRef = B6B072E12C23B2A1001BBD69 /* Bugsnag */; };
+		B6B072E42C23B2B6001BBD69 /* NSExceptionKtBugsnag in Frameworks */ = {isa = PBXBuildFile; productRef = B6B072E32C23B2B6001BBD69 /* NSExceptionKtBugsnag */; };
 		B6CD7E752A66A87100F3BEA8 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B65F50C52A60A4ED003D9D48 /* WidgetKit.framework */; };
 /* End PBXBuildFile section */
 
@@ -66,7 +67,6 @@
 		AB3632DC29227652001CCB65 /* Config.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		B621401D2A65ECB00011586B /* HINT WidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "HINT WidgetExtension.entitlements"; sourceTree = "<group>"; };
 		B621401E2A65ECBA0011586B /* iosApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iosApp.entitlements; sourceTree = "<group>"; };
-		B633591A2A65F77100BCBB06 /* Bugsnag.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bugsnag.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B65F50C42A60A4ED003D9D48 /* HINT WidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "HINT WidgetExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B65F50C52A60A4ED003D9D48 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		B65F50C72A60A4ED003D9D48 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -74,9 +74,7 @@
 		B65F50CC2A60A4ED003D9D48 /* HINT_Widget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HINT_Widget.swift; sourceTree = "<group>"; };
 		B65F50CE2A60A4EF003D9D48 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B65F50D02A60A4EF003D9D48 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B6A2DCD92A678FFA00D2B49C /* common.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = common.xcframework; path = ../common/build/cocoapods/publish/debug/common.xcframework; sourceTree = "<group>"; };
-		B6B344B62A732AC500FBBEAB /* Bugsnag.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bugsnag.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B6B344BA2A732AD600FBBEAB /* Bugsnag.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bugsnag.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B6B072CC2C23A707001BBD69 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B6F7E5D72BA6AEBC00E7536C /* Pods_iosApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_iosApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0E229EB2148322EE2881B08 /* Contents.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Contents.json; path = "Preview Assets.xcassets/Contents.json"; sourceTree = "<group>"; };
 		E4C80F04C1CFF15766C838D7 /* Pods-HINT WidgetExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HINT WidgetExtension.release.xcconfig"; path = "Target Support Files/Pods-HINT WidgetExtension/Pods-HINT WidgetExtension.release.xcconfig"; sourceTree = "<group>"; };
@@ -89,9 +87,9 @@
 			files = (
 				B65F50C82A60A4ED003D9D48 /* SwiftUI.framework in Frameworks */,
 				B65F50C62A60A4ED003D9D48 /* WidgetKit.framework in Frameworks */,
-				B6B344BB2A732AD600FBBEAB /* Bugsnag.framework in Frameworks */,
+				B6B072E22C23B2A1001BBD69 /* Bugsnag in Frameworks */,
+				B6B072E42C23B2B6001BBD69 /* NSExceptionKtBugsnag in Frameworks */,
 				234FF0D383C223F3F5865E55 /* Pods_HINT_WidgetExtension.framework in Frameworks */,
-				B6B072CB2C229EAF001BBD69 /* NSExceptionKtBugsnag in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -99,11 +97,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B6B072DB2C23B233001BBD69 /* Bugsnag in Frameworks */,
 				B67067122A6603F700A64F6E /* SwiftUI.framework in Frameworks */,
 				B6CD7E752A66A87100F3BEA8 /* WidgetKit.framework in Frameworks */,
-				B6B344B72A732AC500FBBEAB /* Bugsnag.framework in Frameworks */,
-				4A869EAF5394A9310F6D2FEF /* Pods_iosApp.framework in Frameworks */,
-				B6B072C92C229B4B001BBD69 /* NSExceptionKtBugsnag in Frameworks */,
+				B6B072D12C23AA55001BBD69 /* NSExceptionKtBugsnag in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -123,10 +120,6 @@
 			isa = PBXGroup;
 			children = (
 				B6F7E5D72BA6AEBC00E7536C /* Pods_iosApp.framework */,
-				B6B344BA2A732AD600FBBEAB /* Bugsnag.framework */,
-				B6B344B62A732AC500FBBEAB /* Bugsnag.framework */,
-				B6A2DCD92A678FFA00D2B49C /* common.xcframework */,
-				B633591A2A65F77100BCBB06 /* Bugsnag.framework */,
 				B65F50C52A60A4ED003D9D48 /* WidgetKit.framework */,
 				B65F50C72A60A4ED003D9D48 /* SwiftUI.framework */,
 				5D592800F86149BCD1B14998 /* Pods_HINT_WidgetExtension.framework */,
@@ -167,6 +160,7 @@
 				7555FF8C242A565B00829871 /* Info.plist */,
 				2152FB032600AC8F00CF470E /* iOSApp.swift */,
 				058557D7273AAEEB004C7B11 /* Preview Content */,
+				B6B072CC2C23A707001BBD69 /* AppDelegate.swift */,
 			);
 			path = iosApp;
 			sourceTree = "<group>";
@@ -395,7 +389,6 @@
 				B6EBA03F2C22903E009A3B98 /* ShellScript */,
 				B67DC2052A317566008FB35B /* ShellScript */,
 				352089910975609D0A648AA6 /* Upload Bugsnag dSYM */,
-				8D6CDF711FFD395A1B00A47E /* [CP] Embed Pods Frameworks */,
 				F10D73DC47BF6D968C5038D8 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
@@ -405,7 +398,8 @@
 			);
 			name = iosApp;
 			packageProductDependencies = (
-				B6B072C82C229B4B001BBD69 /* NSExceptionKtBugsnag */,
+				B6B072D02C23AA55001BBD69 /* NSExceptionKtBugsnag */,
+				B6B072D52C23B059001BBD69 /* Bugsnag */,
 			);
 			productName = iosApp;
 			productReference = 7555FF7B242A565900829871 /* HINT Control.app */;
@@ -431,7 +425,8 @@
 			);
 			name = "HINT WidgetExtension";
 			packageProductDependencies = (
-				B6B072CA2C229EAF001BBD69 /* NSExceptionKtBugsnag */,
+				B6B072E12C23B2A1001BBD69 /* Bugsnag */,
+				B6B072E32C23B2B6001BBD69 /* NSExceptionKtBugsnag */,
 			);
 			productName = "HINT WidgetExtension";
 			productReference = B65F50C42A60A4ED003D9D48 /* HINT WidgetExtension.appex */;
@@ -465,7 +460,8 @@
 			);
 			mainGroup = 7555FF72242A565900829871;
 			packageReferences = (
-				B6B072C72C229B4B001BBD69 /* XCRemoteSwiftPackageReference "NSExceptionKt" */,
+				B6B072CF2C23AA55001BBD69 /* XCRemoteSwiftPackageReference "NSExceptionKt" */,
+				B6B072D42C23B059001BBD69 /* XCRemoteSwiftPackageReference "bugsnag-cocoa" */,
 			);
 			productRefGroup = 7555FF7C242A565900829871 /* Products */;
 			projectDirPath = "";
@@ -566,23 +562,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = "/usr/bin/env ruby";
 			shellScript = "# Set DISABLE_COCOAPODS_BUGSNAG=YES via Xcode's Build Settings, xcconfig or xcodebuild to skip upload\nif ENV['DISABLE_COCOAPODS_BUGSNAG'] == 'YES'\n  puts 'Skipping dSYM upload'\n  return\nend\n\n# Attempt to get the API key from an environment variable (or Xcode build setting)\napi_key = ENV[\"BUGSNAG_API_KEY\"]\n\n# If not present, attempt to lookup the value from the Info.plist\nunless api_key\n  info_plist_path = \"#{ENV[\"BUILT_PRODUCTS_DIR\"]}/#{ENV[\"INFOPLIST_PATH\"]}\"\n  plist_buddy_response = `/usr/libexec/PlistBuddy -c \"print :bugsnag:apiKey\" \"#{info_plist_path}\"`\n  plist_buddy_response = `/usr/libexec/PlistBuddy -c \"print :BugsnagAPIKey\" \"#{info_plist_path}\"` if !$?.success?\n  api_key = plist_buddy_response if $?.success?\nend\n\nfail(\"No Bugsnag API key detected - add your key to your Info.plist or BUGSNAG_API_KEY environment variable\") unless api_key\n\nif ENV['ENABLE_USER_SCRIPT_SANDBOXING'] == 'YES'\n  count = ENV['SCRIPT_INPUT_FILE_COUNT'].to_i\n  abort 'error: dSYMs must be specified as build phase \"Input Files\" because ENABLE_USER_SCRIPT_SANDBOXING is enabled' unless count > 0\n  dsyms = []\n  for i in 0 .. count - 1\n    file = ENV[\"SCRIPT_INPUT_FILE_#{i}\"]\n    next if file.end_with? '.plist'\n    if File.exist? file\n      dsyms.append file\n    else\n      abort \"error: cannot read #{file}\" unless ENV['DEBUG_INFORMATION_FORMAT'] != 'dwarf-with-dsym'\n    end\n  end\nelse\n  dsyms = Dir[\"#{ENV['DWARF_DSYM_FOLDER_PATH']}/*/Contents/Resources/DWARF/*\"]\nend\n\ndsyms.each do |dsym|\n  Process.detach Process.spawn('/usr/bin/curl', '--http1.1',\n    '-F', \"apiKey=#{api_key}\",\n    '-F', \"dsym=@#{dsym}\",\n    '-F', \"projectRoot=#{ENV['PROJECT_DIR']}\",\n    'https://upload.bugsnag.com/',\n    %i[err out] => :close\n  )\nend\n";
-			showEnvVarsInLog = 0;
-		};
-		8D6CDF711FFD395A1B00A47E /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-iosApp/Pods-iosApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-iosApp/Pods-iosApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-iosApp/Pods-iosApp-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		B67DC2052A317566008FB35B /* ShellScript */ = {
@@ -756,6 +735,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B6B072CD2C23A707001BBD69 /* AppDelegate.swift in Sources */,
 				2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */,
 				7555FF83242A565900829871 /* ContentView.swift in Sources */,
 			);
@@ -765,6 +745,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B6B072CE2C23A707001BBD69 /* AppDelegate.swift in Sources */,
 				B65F50CD2A60A4ED003D9D48 /* HINT_Widget.swift in Sources */,
 				B65F50CB2A60A4ED003D9D48 /* HINT_WidgetBundle.swift in Sources */,
 			);
@@ -785,7 +766,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = AB3632DC29227652001CCB65 /* Config.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -817,7 +797,6 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				EXCLUDED_ARCHS = x86_64;
-				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/**";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -845,7 +824,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = AB3632DC29227652001CCB65 /* Config.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -878,7 +856,6 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				EXCLUDED_ARCHS = x86_64;
-				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/**";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -926,8 +903,6 @@
 					"-l\"c++\"",
 					"-l\"z\"",
 					"-framework",
-					"\"Bugsnag\"",
-					"-framework",
 					"\"Foundation\"",
 					"-framework",
 					"\"Security\"",
@@ -973,8 +948,6 @@
 					"$(inherited)",
 					"-l\"c++\"",
 					"-l\"z\"",
-					"-framework",
-					"\"Bugsnag\"",
 					"-framework",
 					"\"Foundation\"",
 					"-framework",
@@ -1029,8 +1002,6 @@
 					"$(inherited)",
 					"-l\"c++\"",
 					"-l\"z\"",
-					"-framework",
-					"\"Bugsnag\"",
 					"-framework",
 					"\"Foundation\"",
 					"-framework",
@@ -1088,8 +1059,6 @@
 					"-l\"c++\"",
 					"-l\"z\"",
 					"-framework",
-					"\"Bugsnag\"",
-					"-framework",
 					"\"Foundation\"",
 					"-framework",
 					"\"Security\"",
@@ -1141,7 +1110,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		B6B072C72C229B4B001BBD69 /* XCRemoteSwiftPackageReference "NSExceptionKt" */ = {
+		B6B072CF2C23AA55001BBD69 /* XCRemoteSwiftPackageReference "NSExceptionKt" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/rickclephas/NSExceptionKt";
 			requirement = {
@@ -1149,17 +1118,35 @@
 				kind = branch;
 			};
 		};
+		B6B072D42C23B059001BBD69 /* XCRemoteSwiftPackageReference "bugsnag-cocoa" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/bugsnag/bugsnag-cocoa";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.29.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		B6B072C82C229B4B001BBD69 /* NSExceptionKtBugsnag */ = {
+		B6B072D02C23AA55001BBD69 /* NSExceptionKtBugsnag */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = B6B072C72C229B4B001BBD69 /* XCRemoteSwiftPackageReference "NSExceptionKt" */;
+			package = B6B072CF2C23AA55001BBD69 /* XCRemoteSwiftPackageReference "NSExceptionKt" */;
 			productName = NSExceptionKtBugsnag;
 		};
-		B6B072CA2C229EAF001BBD69 /* NSExceptionKtBugsnag */ = {
+		B6B072D52C23B059001BBD69 /* Bugsnag */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = B6B072C72C229B4B001BBD69 /* XCRemoteSwiftPackageReference "NSExceptionKt" */;
+			package = B6B072D42C23B059001BBD69 /* XCRemoteSwiftPackageReference "bugsnag-cocoa" */;
+			productName = Bugsnag;
+		};
+		B6B072E12C23B2A1001BBD69 /* Bugsnag */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B6B072D42C23B059001BBD69 /* XCRemoteSwiftPackageReference "bugsnag-cocoa" */;
+			productName = Bugsnag;
+		};
+		B6B072E32C23B2B6001BBD69 /* NSExceptionKtBugsnag */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B6B072CF2C23AA55001BBD69 /* XCRemoteSwiftPackageReference "NSExceptionKt" */;
 			productName = NSExceptionKtBugsnag;
 		};
 /* End XCSwiftPackageProductDependency section */

@@ -1,11 +1,9 @@
 package dev.zwander.common.components.settings
 
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
@@ -19,7 +17,7 @@ import dev.zwander.common.model.SettingsModel
 import dev.zwander.resources.common.MR
 
 @Composable
-fun ColumnScope.AutoRefresh() {
+fun AutoRefresh() {
     var enabled by SettingsModel.enableAutoRefresh.collectAsMutableState()
     var periodMs by SettingsModel.autoRefreshMs.collectAsMutableState()
 
@@ -38,8 +36,6 @@ fun ColumnScope.AutoRefresh() {
         onValueChange = { it.toLongOrNull()?.let { p -> periodMs = p } },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         modifier = Modifier.fillMaxWidth(),
-        label = {
-            Text(text = stringResource(MR.strings.period_ms))
-        },
+        label = stringResource(MR.strings.period_ms),
     )
 }

@@ -2,20 +2,22 @@
 
 package dev.zwander.common.util
 
-import cocoapods.Bugsnag.BSGBreadcrumbType
-import cocoapods.Bugsnag.Bugsnag
+import com.rickclephas.kmp.nsexceptionkt.bugsnag.cinterop.Bugsnag
+import com.rickclephas.kmp.nsexceptionkt.core.InternalNSExceptionKtApi
 import com.rickclephas.kmp.nsexceptionkt.core.asNSException
+import dev.zwander.bugsnag.cinterop.BSGBreadcrumbType
 
 actual object BugsnagUtils {
+    @OptIn(InternalNSExceptionKtApi::class)
     actual fun notify(e: Throwable) {
-        Bugsnag.notify(e.asNSException(true))
+        Bugsnag.notify(e.asNSException(true)) { true }
     }
 
     actual fun addBreadcrumb(
         message: String,
         data: Map<String?, Any?>,
     ) {
-        Bugsnag.leaveBreadcrumbWithMessage(
+        dev.zwander.bugsnag.cinterop.Bugsnag.leaveBreadcrumbWithMessage(
             message,
             data.mapKeys { it.key },
             BSGBreadcrumbType.BSGBreadcrumbTypeRequest,
