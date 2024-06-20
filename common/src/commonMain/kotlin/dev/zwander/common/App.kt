@@ -15,7 +15,6 @@ import androidx.compose.animation.scaleOut
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.animation.shrinkOut
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -335,7 +334,6 @@ private sealed class PageTransitionMode {
     data class Horizontal(val userScrollEnabled: Boolean) : PageTransitionMode()
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun AppView(
     pages: List<Page>,
