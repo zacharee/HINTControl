@@ -26,6 +26,7 @@
 		B6B072E22C23B2A1001BBD69 /* Bugsnag in Frameworks */ = {isa = PBXBuildFile; productRef = B6B072E12C23B2A1001BBD69 /* Bugsnag */; };
 		B6B072E42C23B2B6001BBD69 /* NSExceptionKtBugsnag in Frameworks */ = {isa = PBXBuildFile; productRef = B6B072E32C23B2B6001BBD69 /* NSExceptionKtBugsnag */; };
 		B6CD7E752A66A87100F3BEA8 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B65F50C52A60A4ED003D9D48 /* WidgetKit.framework */; };
+		C31471D79B4366AC8E7AE5F6 /* Pods_iosApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6F7E5D72BA6AEBC00E7536C /* Pods_iosApp.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -101,6 +102,7 @@
 				B67067122A6603F700A64F6E /* SwiftUI.framework in Frameworks */,
 				B6CD7E752A66A87100F3BEA8 /* WidgetKit.framework in Frameworks */,
 				B6B072D12C23AA55001BBD69 /* NSExceptionKtBugsnag in Frameworks */,
+				C31471D79B4366AC8E7AE5F6 /* Pods_iosApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
