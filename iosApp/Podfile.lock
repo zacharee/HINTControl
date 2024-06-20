@@ -1,5 +1,5 @@
 PODS:
-  - common (32)
+  - common (34)
 
 DEPENDENCIES:
   - common (from `../common`)
@@ -9,7 +9,7 @@ EXTERNAL SOURCES:
     :path: "../common"
 
 SPEC CHECKSUMS:
-  common: 42816b4746c262806cd4cfae5a84938e11cd86c2
+  common: 52dc6088371b1352ffc692c70c9ad8c44c764aec
 
 PODFILE CHECKSUM: 6869a7a455115e01e8cca1b54d94dece79f97d48
 

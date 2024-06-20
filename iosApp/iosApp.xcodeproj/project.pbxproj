@@ -21,10 +21,10 @@
 		B67067122A6603F700A64F6E /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B65F50C72A60A4ED003D9D48 /* SwiftUI.framework */; };
 		B6B072CD2C23A707001BBD69 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B072CC2C23A707001BBD69 /* AppDelegate.swift */; };
 		B6B072CE2C23A707001BBD69 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B072CC2C23A707001BBD69 /* AppDelegate.swift */; };
-		B6B072D12C23AA55001BBD69 /* NSExceptionKtBugsnag in Frameworks */ = {isa = PBXBuildFile; productRef = B6B072D02C23AA55001BBD69 /* NSExceptionKtBugsnag */; };
-		B6B072DB2C23B233001BBD69 /* Bugsnag in Frameworks */ = {isa = PBXBuildFile; productRef = B6B072D52C23B059001BBD69 /* Bugsnag */; };
-		B6B072E22C23B2A1001BBD69 /* Bugsnag in Frameworks */ = {isa = PBXBuildFile; productRef = B6B072E12C23B2A1001BBD69 /* Bugsnag */; };
-		B6B072E42C23B2B6001BBD69 /* NSExceptionKtBugsnag in Frameworks */ = {isa = PBXBuildFile; productRef = B6B072E32C23B2B6001BBD69 /* NSExceptionKtBugsnag */; };
+		B6B3C8D02C23F04400865852 /* Bugsnag in Frameworks */ = {isa = PBXBuildFile; productRef = B6B3C8CF2C23F04400865852 /* Bugsnag */; };
+		B6B3C8D22C23F05400865852 /* NSExceptionKtBugsnag in Frameworks */ = {isa = PBXBuildFile; productRef = B6B3C8D12C23F05400865852 /* NSExceptionKtBugsnag */; };
+		B6B3C8D42C23F07500865852 /* Bugsnag in Frameworks */ = {isa = PBXBuildFile; productRef = B6B3C8D32C23F07500865852 /* Bugsnag */; };
+		B6B3C8D62C23F08700865852 /* NSExceptionKtBugsnag in Frameworks */ = {isa = PBXBuildFile; productRef = B6B3C8D52C23F08700865852 /* NSExceptionKtBugsnag */; };
 		B6CD7E752A66A87100F3BEA8 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B65F50C52A60A4ED003D9D48 /* WidgetKit.framework */; };
 		C31471D79B4366AC8E7AE5F6 /* Pods_iosApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6F7E5D72BA6AEBC00E7536C /* Pods_iosApp.framework */; };
 /* End PBXBuildFile section */
@@ -88,9 +88,9 @@
 			files = (
 				B65F50C82A60A4ED003D9D48 /* SwiftUI.framework in Frameworks */,
 				B65F50C62A60A4ED003D9D48 /* WidgetKit.framework in Frameworks */,
-				B6B072E22C23B2A1001BBD69 /* Bugsnag in Frameworks */,
-				B6B072E42C23B2B6001BBD69 /* NSExceptionKtBugsnag in Frameworks */,
+				B6B3C8D42C23F07500865852 /* Bugsnag in Frameworks */,
 				234FF0D383C223F3F5865E55 /* Pods_HINT_WidgetExtension.framework in Frameworks */,
+				B6B3C8D62C23F08700865852 /* NSExceptionKtBugsnag in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,11 +98,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B6B072DB2C23B233001BBD69 /* Bugsnag in Frameworks */,
 				B67067122A6603F700A64F6E /* SwiftUI.framework in Frameworks */,
 				B6CD7E752A66A87100F3BEA8 /* WidgetKit.framework in Frameworks */,
-				B6B072D12C23AA55001BBD69 /* NSExceptionKtBugsnag in Frameworks */,
+				B6B3C8D02C23F04400865852 /* Bugsnag in Frameworks */,
 				C31471D79B4366AC8E7AE5F6 /* Pods_iosApp.framework in Frameworks */,
+				B6B3C8D22C23F05400865852 /* NSExceptionKtBugsnag in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -400,8 +400,8 @@
 			);
 			name = iosApp;
 			packageProductDependencies = (
-				B6B072D02C23AA55001BBD69 /* NSExceptionKtBugsnag */,
-				B6B072D52C23B059001BBD69 /* Bugsnag */,
+				B6B3C8CF2C23F04400865852 /* Bugsnag */,
+				B6B3C8D12C23F05400865852 /* NSExceptionKtBugsnag */,
 			);
 			productName = iosApp;
 			productReference = 7555FF7B242A565900829871 /* HINT Control.app */;
@@ -427,8 +427,8 @@
 			);
 			name = "HINT WidgetExtension";
 			packageProductDependencies = (
-				B6B072E12C23B2A1001BBD69 /* Bugsnag */,
-				B6B072E32C23B2B6001BBD69 /* NSExceptionKtBugsnag */,
+				B6B3C8D32C23F07500865852 /* Bugsnag */,
+				B6B3C8D52C23F08700865852 /* NSExceptionKtBugsnag */,
 			);
 			productName = "HINT WidgetExtension";
 			productReference = B65F50C42A60A4ED003D9D48 /* HINT WidgetExtension.appex */;
@@ -1131,22 +1131,22 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		B6B072D02C23AA55001BBD69 /* NSExceptionKtBugsnag */ = {
+		B6B3C8CF2C23F04400865852 /* Bugsnag */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B6B072D42C23B059001BBD69 /* XCRemoteSwiftPackageReference "bugsnag-cocoa" */;
+			productName = Bugsnag;
+		};
+		B6B3C8D12C23F05400865852 /* NSExceptionKtBugsnag */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = B6B072CF2C23AA55001BBD69 /* XCRemoteSwiftPackageReference "NSExceptionKt" */;
 			productName = NSExceptionKtBugsnag;
 		};
-		B6B072D52C23B059001BBD69 /* Bugsnag */ = {
+		B6B3C8D32C23F07500865852 /* Bugsnag */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = B6B072D42C23B059001BBD69 /* XCRemoteSwiftPackageReference "bugsnag-cocoa" */;
 			productName = Bugsnag;
 		};
-		B6B072E12C23B2A1001BBD69 /* Bugsnag */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = B6B072D42C23B059001BBD69 /* XCRemoteSwiftPackageReference "bugsnag-cocoa" */;
-			productName = Bugsnag;
-		};
-		B6B072E32C23B2B6001BBD69 /* NSExceptionKtBugsnag */ = {
+		B6B3C8D52C23F08700865852 /* NSExceptionKtBugsnag */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = B6B072CF2C23AA55001BBD69 /* XCRemoteSwiftPackageReference "NSExceptionKt" */;
 			productName = NSExceptionKtBugsnag;

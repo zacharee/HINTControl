@@ -22,7 +22,7 @@
     {
       "identity" : "bugsnag-cocoa",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/bugsnag/bugsnag-cocoa.git",
+      "location" : "https://github.com/bugsnag/bugsnag-cocoa",
       "state" : {
         "revision" : "cd3a27c2d7ad344c102bd7ec168c0584939ab7b1",
         "version" : "6.29.0"
