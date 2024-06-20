@@ -1,5 +1,5 @@
 {
-  "originHash" : "c6d51a2678ff17e6ffeba5ab0551f7ca84dbcbecfa65813b85bea608338eb87b",
+  "originHash" : "fb467ab35a0427623393f3b6df0699a8264ae5a7a1513c5c1911363f5600c364",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/bugsnag/bugsnag-cocoa.git",
       "state" : {
-        "revision" : "16b9145fc66e5296f16e733f6feb5d0e450574e8",
-        "version" : "6.28.1"
+        "revision" : "cd3a27c2d7ad344c102bd7ec168c0584939ab7b1",
+        "version" : "6.29.0"
       }
     },
     {
