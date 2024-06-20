@@ -79,15 +79,17 @@ fun <T> PageGrid(
         mutableStateOf(0)
     }
 
+    val systemBarsInsets = WindowInsets.systemBars.asPaddingValues()
+
     val actualContentPadding = (gridContentPadding ?: PaddingValues(8.dp)).run {
         val layoutDirection = LocalLayoutDirection.current
 
         with (LocalDensity.current) {
             PaddingValues(
                 start = calculateStartPadding(layoutDirection),
-                top = calculateTopPadding() + WindowInsets.systemBars.asPaddingValues().calculateTopPadding(),
+                top = calculateTopPadding() + systemBarsInsets.calculateTopPadding(),
                 end = calculateEndPadding(layoutDirection),
-                bottom = calculateBottomPadding() + bottomBarHeight.toDp(),
+                bottom = calculateBottomPadding() + if (bottomBarContents != null) bottomBarHeight.toDp() else systemBarsInsets.calculateBottomPadding(),
             )
         }
     }
@@ -167,8 +169,13 @@ fun <T> PageGrid(
                 modifier = Modifier.fillMaxWidth()
                     .background(MaterialTheme.colorScheme.background.copy(alpha = 0.75f))
                     .onSizeChanged { bottomBarHeight = it.height }
-                    .padding(8.dp)
-                    .align(Alignment.BottomCenter)
+                    .padding(
+                        start = 8.dp,
+                        end = 8.dp,
+                        top = 8.dp,
+                        bottom = 8.dp + systemBarsInsets.calculateBottomPadding(),
+                    )
+                    .align(Alignment.BottomCenter),
             ) {
                 if (showBottomBarExpander) {
                     ExpanderCard(
