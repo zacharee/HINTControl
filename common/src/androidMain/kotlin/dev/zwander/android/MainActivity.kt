@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.Display
 import android.view.Surface
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
@@ -49,13 +50,13 @@ class MainActivity : AppCompatActivity() {
 
         setContent {
             val widgetRefresh by SettingsModel.widgetRefresh.collectAsState()
-            val display = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val display: Display? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 display
             } else {
                 @Suppress("DEPRECATION")
                 windowManager.defaultDisplay
             }
-            val orientation = display.rotation.run {
+            val orientation = display?.rotation.run {
                 when (this) {
                     Surface.ROTATION_0 -> Orientation.PORTRAIT
                     Surface.ROTATION_90 -> Orientation.LANDSCAPE_90
