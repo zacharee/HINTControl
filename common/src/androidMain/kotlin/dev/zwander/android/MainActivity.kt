@@ -6,7 +6,6 @@ import android.content.Context
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.Display
 import android.view.Surface
 import androidx.activity.SystemBarStyle
@@ -65,8 +64,6 @@ class MainActivity : AppCompatActivity() {
                     else -> error("Invalid orientation $this")
                 }
             }
-
-            Log.e("HINTControl", "$orientation, ${resources.configuration.orientation}")
 
             LaunchedEffect(widgetRefresh) {
                 updateWidgetRefresh()
