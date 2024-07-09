@@ -1,29 +1,29 @@
 [versions]
+android-gradle = "8.2.2"
 androidx-activity-compose = "1.9.0"
 androidx-appcompat = "1.7.0"
 androidx-core = "1.13.1"
 androidx-glance-appwidget = "1.1.0"
 appdirs = "1.2.2"
-bugsnag-android = "6.5.0"
+bugsnag-android = "6.6.1"
 bugsnag-android-gradle = "8.1.0"
 bugsnag-jvm = "3.7.1"
 buildkonfig-gradle = "0.15.1"
-compose = "1.7.0-dev1686"
+compose = "1.7.0-alpha01"
 conveyor = "1.10"
 google-material = "1.12.0"
-android-gradle = "8.2.2"
 jna = "5.14.0"
 jsystemthemedetector = "7dde337429"
 koalaplot = "0.6.1"
-korlibs = "6.0.0-alpha2"
+korlibs = "6.0.0-alpha9"
 kotlin = "2.0.0"
-kotlinx-atomicfu = "0.24.0"
+kotlinx-atomicfu = "0.25.0"
 kotlinx-coroutines = "1.9.0-RC"
-kotlinx-serialization = "1.7.0"
+kotlinx-serialization = "1.7.1"
 kstore = "0.8.0"
-ktor = "2.3.11"
+ktor = "2.3.12"
 moko-mvvm = "0.16.1"
-moko-resources = "0.24.0"
+moko-resources = "0.24.1"
 multiplatform-settings = "1.1.1"
 nserrorKt = "0.2.0"
 nsexceptionKt = "1.0.0-BETA-4"
@@ -41,8 +41,8 @@ appdirs = { module = "net.harawata:appdirs", version.ref = "appdirs" }
 bugsnag-android = { module = "com.bugsnag:bugsnag-android", version.ref = "bugsnag-android" }
 bugsnag-jvm = { module = "com.bugsnag:bugsnag", version.ref = "bugsnag-jvm" }
 google-material = { module = "com.google.android.material:material", version.ref = "google-material" }
-jna = { module = "net.java.dev.jna:jna", version.ref = "jna" }
 jSystemThemeDetector = { module = "com.github.zacharee:jSystemThemeDetector", version.ref = "jsystemthemedetector" }
+jna = { module = "net.java.dev.jna:jna", version.ref = "jna" }
 koalaplot = { module = "io.github.koalaplot:koalaplot-core", version.ref = "koalaplot" }
 korlibs-klock = { module = "com.soywiz:korlibs-time", version.ref = "korlibs" }
 korlibs-korio = { module = "com.soywiz:korlibs-io", version.ref = "korlibs" }
@@ -82,6 +82,7 @@ android-library = { id = "com.android.library", version.ref = "android-gradle" }
 bugsnag-android = { id = "com.bugsnag.android.gradle", version.ref = "bugsnag-android-gradle" }
 buildkonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildkonfig-gradle" }
 compose = { id = "org.jetbrains.compose", version.ref = "compose" }
+conveyor = { id = "dev.hydraulic.conveyor", version.ref = "conveyor" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-atomicfu = { id = "org.jetbrains.kotlin.plugin.atomicfu", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
@@ -89,4 +90,3 @@ kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref 
 kotlin-native-cocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 moko-resources = { id = "dev.icerock.mobile.multiplatform-resources", version.ref = "moko-resources" }
-conveyor = { id = "dev.hydraulic.conveyor", version.ref = "conveyor" }
