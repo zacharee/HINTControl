@@ -721,7 +721,7 @@ private object NokiaClient : HTTPClient {
                 signal = SignalData(
                     fourG = if (lteConnected) {
                         CellDataLTE(
-                            eNBID = cellStatus?.cellStatLte?.firstOrNull()?.enbid?.toLongOrNull(),
+                            nbid = cellStatus?.cellStatLte?.firstOrNull()?.enbid?.toLongOrNull(),
                             rssi = cellStatus?.cellStatLte?.firstOrNull()?.rssi,
                             bands = cellStatus?.cellStatLte?.firstOrNull()?.band?.let { listOf(it) },
                             bars = cellStatus?.cellStatLte?.firstOrNull()?.rsrpStrengthIndex?.toDouble(),
@@ -734,7 +734,7 @@ private object NokiaClient : HTTPClient {
                     },
                     fiveG = if (fiveGConnected) {
                         CellData5G(
-                            gNBID = cellStatus?.cellStat5G?.firstOrNull()?.enbid?.toLongOrNull(),
+                            nbid = cellStatus?.cellStat5G?.firstOrNull()?.enbid?.toLongOrNull(),
                             rssi = cellStatus?.cellStat5G?.firstOrNull()?.rssi,
                             bands = cellStatus?.cellStat5G?.firstOrNull()?.band?.let { listOf(it) },
                             bars = cellStatus?.cellStat5G?.firstOrNull()?.rsrpStrengthIndex?.toDouble(),

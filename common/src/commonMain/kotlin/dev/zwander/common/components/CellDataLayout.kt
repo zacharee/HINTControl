@@ -155,11 +155,11 @@ fun generateBasicCellItems(data: BaseCellData?): List<Pair<StringResource, Any?>
 
         when (data) {
             is CellDataLTE -> add(
-                MR.strings.enbid to data.eNBID
+                MR.strings.enbid to data.nbid
             )
 
             is CellData5G -> add(
-                MR.strings.gnbid to data.gNBID
+                MR.strings.gnbid to data.nbid
             )
         }
     }
