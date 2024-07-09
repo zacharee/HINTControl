@@ -127,6 +127,7 @@ fun <T> PageGrid(
                 ElevatedCard(
                     modifier = Modifier.fillMaxWidth()
                         .animateItem(),
+                    colors = CardDefaults.cardColors(),
                 ) {
                     Column(
                         modifier = Modifier

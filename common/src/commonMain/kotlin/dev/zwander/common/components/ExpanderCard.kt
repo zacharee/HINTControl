@@ -9,29 +9,28 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardElevation
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LocalMinimumInteractiveComponentEnforcement
+import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.resources.common.MR
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExpanderCard(
     expanded: Boolean,
     onExpandChange: (Boolean) -> Unit,
     inverted: Boolean = false,
-    colors: CardColors = CardDefaults.outlinedCardColors(),
+    colors: CardColors = CardDefaults.cardColors(),
     elevation: CardElevation = CardDefaults.outlinedCardElevation(),
 ) {
     CompositionLocalProvider(
-        LocalMinimumInteractiveComponentEnforcement provides false,
+        LocalMinimumInteractiveComponentSize provides 0.dp,
     ) {
         Card(
             onClick = {
