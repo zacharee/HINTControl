@@ -376,7 +376,7 @@ class ColorScheme(
         }
     }
 
-    internal fun Color.setLuminance(newLuminance: Float): Color {
+    private fun Color.setLuminance(newLuminance: Float): Color {
         if ((newLuminance < 0.0001) or (newLuminance > 99.9999)) {
             // aRGBFromLstar() from monet ColorUtil.java
             val y = 100 * labInvf((newLuminance + 16) / 116)
