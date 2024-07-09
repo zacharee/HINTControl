@@ -80,7 +80,6 @@ kotlin {
                 api(libs.multiplatformSettings.noArg)
                 api(libs.kstore)
                 api(libs.kstore.file)
-                api(libs.kotlinx.atomicfu)
                 api(libs.okio)
                 api(libs.koalaplot)
                 api(libs.kotlinx.serialization.json)

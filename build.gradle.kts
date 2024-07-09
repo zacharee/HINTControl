@@ -1,23 +1,3 @@
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
-        maven("https://oss.sonatype.org/content/repositories/snapshots/")
-        maven("https://maven.pkg.jetbrains.space/public/p/ktor/eap")
-        maven("https://jitpack.io")
-    }
-}
-
-buildscript {
-    repositories {
-        google()
-        mavenCentral()
-        gradlePluginPortal()
-        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
-    }
-}
-
 plugins {
     alias(libs.plugins.kotlin.native.cocoapods) apply false
     alias(libs.plugins.moko.resources) apply false
@@ -32,8 +12,6 @@ plugins {
     alias(libs.plugins.conveyor) apply false
     alias(libs.plugins.bugsnag.android) apply false
 }
-
-apply(plugin = "kotlinx-atomicfu")
 
 tasks.register("clearIOSOutput") {
     doLast {
