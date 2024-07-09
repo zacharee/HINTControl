@@ -124,11 +124,11 @@ fun SelectableDropdownMenuItem(
             textColor = if (isSelected) {
                 MaterialTheme.colorScheme.onSecondaryContainer
             } else {
-                colors.textColor(true).value
+                colors.textColor(true)
             },
             leadingIconColor = colors.leadingIconColor(true),
             trailingIconColor = colors.trailingIconColor(true),
-            disabledTextColor = colors.textColor(false).value,
+            disabledTextColor = colors.textColor(false),
             disabledLeadingIconColor = colors.leadingIconColor(false),
             disabledTrailingIconColor = colors.trailingIconColor(false),
         ),

@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardElevation
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -19,7 +18,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnimatedCard(
     onClick: () -> Unit,
@@ -34,7 +32,6 @@ fun AnimatedCard(
 ) {
     val color by animateColorAsState(colors.containerColor(enabled))
     val contentColor by animateColorAsState(colors.contentColor(enabled))
-    val tonalElevation by animateDpAsState(elevation.tonalElevation(enabled))
     val shadowElevation by animateDpAsState(elevation.shadowElevation(enabled, interactionSource).value)
 
     Surface(
@@ -44,7 +41,6 @@ fun AnimatedCard(
         shape = shape,
         color = color,
         contentColor = contentColor,
-        tonalElevation = tonalElevation,
         shadowElevation = shadowElevation,
         border = border,
         interactionSource = interactionSource,
