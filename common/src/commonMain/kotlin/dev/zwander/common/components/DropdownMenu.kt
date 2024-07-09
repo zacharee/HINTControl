@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.LocalShapes
@@ -61,6 +62,7 @@ fun <T> LabeledDropdown(
                     onExpandChange(!expanded)
                 },
                 enabled = !expanded,
+                colors = CardDefaults.outlinedCardColors(),
             ) {
                 Box(
                     contentAlignment = Alignment.Center,
