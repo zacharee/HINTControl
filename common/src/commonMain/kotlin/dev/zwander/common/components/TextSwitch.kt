@@ -9,6 +9,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
@@ -24,7 +25,10 @@ fun TextSwitch(
 ) {
     AnimatedCard(
         onClick = { onCheckedChange(!checked) },
-        colors = CardDefaults.cardColors(),
+        colors = CardDefaults.outlinedCardColors().copy(
+            containerColor = Color.Transparent,
+            disabledContentColor = Color.Transparent,
+        ),
         border = null,
         modifier = modifier,
         enabled = enabled,
