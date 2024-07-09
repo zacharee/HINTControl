@@ -24,7 +24,7 @@ fun TextSwitch(
 ) {
     AnimatedCard(
         onClick = { onCheckedChange(!checked) },
-        colors = CardDefaults.outlinedCardColors(),
+        colors = CardDefaults.cardColors(),
         border = null,
         modifier = modifier,
         enabled = enabled,
