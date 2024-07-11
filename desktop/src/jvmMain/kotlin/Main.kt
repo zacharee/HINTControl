@@ -1,7 +1,10 @@
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyShortcut
 import androidx.compose.ui.platform.LocalDensity
@@ -12,9 +15,12 @@ import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import com.russhwolf.settings.Settings
+import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
 import dev.icerock.moko.resources.compose.painterResource
 import dev.zwander.common.App
 import dev.zwander.common.GradleConfig
+import dev.zwander.common.data.Page
+import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.ui.rememberThemeInfo
 import dev.zwander.common.util.BugsnagUtils.bugsnag
 import dev.zwander.common.util.CrossPlatformBugsnag
@@ -24,6 +30,7 @@ import io.github.mimoguz.customwindow.DwmAttribute
 import io.github.mimoguz.customwindow.WindowHandle
 import org.jetbrains.skiko.OS
 import org.jetbrains.skiko.hostOs
+import java.awt.Desktop
 import java.awt.Dimension
 import java.util.UUID
 
@@ -64,6 +71,21 @@ fun main() {
 
     application {
         val windowState = rememberWindowState()
+        var currentPage by GlobalModel.currentPage.collectAsMutableState()
+
+        DisposableEffect(null) {
+            if (Desktop.getDesktop().isSupported(Desktop.Action.APP_ABOUT)) {
+                Desktop.getDesktop().setAboutHandler {
+                    currentPage = Page.SettingsPage
+                }
+            }
+
+            onDispose {
+                if (Desktop.getDesktop().isSupported(Desktop.Action.APP_ABOUT)) {
+                    Desktop.getDesktop().setAboutHandler(null)
+                }
+            }
+        }
 
         Window(
             onCloseRequest = ::exitApplication,
