@@ -32,6 +32,7 @@ fun TextSwitch(
         border = null,
         modifier = modifier,
         enabled = enabled,
+        elevation = CardDefaults.outlinedCardElevation(),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth()
