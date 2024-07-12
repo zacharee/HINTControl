@@ -1,0 +1,3 @@
+files:
+  - source: /common/src/commonMain/moko-resources/base/strings.xml
+    translation: /src/commonMain/moko-resources/%android_code%/strings.xml
