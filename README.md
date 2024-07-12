@@ -6,6 +6,11 @@ A cross-platform app using JetBrains Compose to view and control the following T
 - Sercomm TMOG4SE
 - Nokia 5G21
 
+# Translating
+HINT Control uses Crowdin to manage translations. [Help translate to your language here](https://crowdin.com/project/hint-control)!
+
+[![Crowdin](https://badges.crowdin.net/hint-control/localized.svg)](https://crowdin.com/project/hint-control)
+
 # Installing
 Check the [Releases page](https://github.com/zacharee/ArcadyanKVD21Control/releases) for binaries.
 
