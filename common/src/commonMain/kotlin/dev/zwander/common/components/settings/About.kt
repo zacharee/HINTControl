@@ -3,10 +3,10 @@ package dev.zwander.common.components.settings
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -36,7 +36,7 @@ private data class SocialIconData(
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun ColumnScope.About() {
+fun About() {
     val socialIcons = remember {
         listOf(
             SocialIconData(
@@ -59,6 +59,11 @@ fun ColumnScope.About() {
                 link = "https://zwander.dev",
                 desc = MR.strings.website,
             ),
+            SocialIconData(
+                img = MR.images.translate,
+                link = "https://crowdin.com/project/hint-control",
+                desc = MR.strings.translate,
+            ),
         )
     }
 
@@ -72,10 +77,12 @@ fun ColumnScope.About() {
                 onClick = {
                     UrlHandler.launchUrl(link)
                 },
+                modifier = Modifier.size(48.dp),
             ) {
                 Icon(
                     painter = painterResource(img),
                     contentDescription = stringResource(desc),
+                    modifier = Modifier.size(24.dp),
                 )
             }
         }
