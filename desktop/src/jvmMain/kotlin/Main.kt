@@ -20,6 +20,7 @@ import dev.icerock.moko.resources.compose.painterResource
 import dev.zwander.common.App
 import dev.zwander.common.GradleConfig
 import dev.zwander.common.data.Page
+import dev.zwander.common.locals.LocalMenuBarHeight
 import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.ui.rememberThemeInfo
 import dev.zwander.common.util.BugsnagUtils.bugsnag
@@ -173,6 +174,7 @@ fun main() {
 
             CompositionLocalProvider(
                 LocalFrame provides window,
+                LocalMenuBarHeight provides menuBarHeight,
             ) {
                 App(
                     fullPadding = PaddingValues(

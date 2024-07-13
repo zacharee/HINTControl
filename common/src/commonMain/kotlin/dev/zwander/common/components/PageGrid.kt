@@ -70,6 +70,7 @@ fun <T> PageGrid(
     showBottomBarExpander: Boolean = true,
     id: String? = null,
     itemIsSelectable: @Composable T.() -> Boolean = { true },
+    itemModifier: @Composable T.() -> Modifier = { Modifier },
 ) {
     LaunchedEffect(bottomBarContents, id, showBottomBarExpander) {
         if (bottomBarContents != null && id.isNullOrBlank() && showBottomBarExpander) {
@@ -131,6 +132,7 @@ fun <T> PageGrid(
                 ) {
                     Column(
                         modifier = Modifier
+                            .then(itemModifier(it))
                             .animateContentHeight()
                             .then(if (Platform.isAndroid || Platform.isIos) {
                                 Modifier.animateContentWidth()

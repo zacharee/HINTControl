@@ -34,9 +34,11 @@ import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
+import dev.zwander.common.locals.LocalMenuBarHeight
 import kotlin.jvm.JvmName
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
@@ -50,11 +52,12 @@ internal actual fun PlatformAlertDialog(
     text: (@Composable ColumnScope.() -> Unit)?,
     shape: Shape,
     backgroundColor: Color,
-    contentColor: Color
+    contentColor: Color,
+    maxWidth: Dp,
 ) {
     val alpha by animateFloatAsState(
         if (showing) 1f else 0f,
-        spring(stiffness = Spring.StiffnessMediumLow)
+        spring(stiffness = Spring.StiffnessMediumLow),
     )
     val showingForAnimation by derivedStateOf {
         alpha > 0f
@@ -87,7 +90,7 @@ internal actual fun PlatformAlertDialog(
                     .background(Color.Black.copy(alpha = 0.7f * alpha))
                     .fillMaxSize()
                     .onClick { onDismissRequest() }
-                    .padding(top = 16.dp, bottom = 16.dp)
+                    .padding(top = 16.dp + LocalMenuBarHeight.current, bottom = 16.dp)
                     .alpha(alpha)
                     .onPreviewKeyEvent {
                         if (it.key == Key.Escape) {
@@ -99,7 +102,7 @@ internal actual fun PlatformAlertDialog(
                     }
                     .focusable(true)
                     .focusRequester(focusRequester),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center,
             ) {
                 with(LocalDensity.current) {
                     AlertDialogContents(
@@ -108,17 +111,17 @@ internal actual fun PlatformAlertDialog(
                             Modifier.widthIn(
                                 max = minOf(
                                     constraints.maxWidth.toDp() - 32.dp,
-                                    400.dp,
+                                    maxWidth,
                                 )
                             ).onClick {
                                 // To prevent the Box's onClick consuming clicks on the dialog itself.
-                            }.animateContentSize()
+                            }.animateContentSize(),
                         ),
                         title,
                         text,
                         shape,
                         backgroundColor,
-                        contentColor
+                        contentColor,
                     )
                 }
             }

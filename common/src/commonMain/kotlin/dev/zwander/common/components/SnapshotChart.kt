@@ -2,8 +2,6 @@ package dev.zwander.common.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -214,12 +212,12 @@ fun SnapshotChart(
             )
         },
         legendLocation = LegendLocation.BOTTOM,
-        modifier = modifier.aspectRatio(1f),
+        modifier = modifier,
     ) {
         XYGraph(
             xAxisModel = xAxisModel,
             yAxisModel = yAxisModel,
-            modifier = Modifier.height(300.dp),
+            modifier = Modifier,
             xAxisLabels = { "" },
             verticalMinorGridLineStyle = null,
             horizontalMinorGridLineStyle = null,

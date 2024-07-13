@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 /**
@@ -28,9 +29,10 @@ internal fun InWindowAlertDialog(
     text: (@Composable ColumnScope.() -> Unit)?,
     shape: Shape = MaterialTheme.shapes.extraLarge,
     backgroundColor: Color = MaterialTheme.colorScheme.surface,
-    contentColor: Color = contentColorFor(backgroundColor)
+    contentColor: Color = contentColorFor(backgroundColor),
+    maxWidth: Dp = 400.dp,
 ) {
-    PlatformAlertDialog(showing, onDismissRequest, buttons, modifier, title, text, shape, backgroundColor, contentColor)
+    PlatformAlertDialog(showing, onDismissRequest, buttons, modifier, title, text, shape, backgroundColor, contentColor, maxWidth)
 }
 
 /**
@@ -47,6 +49,7 @@ internal expect fun PlatformAlertDialog(
     shape: Shape,
     backgroundColor: Color,
     contentColor: Color,
+    maxWidth: Dp,
 )
 
 @Composable
@@ -63,7 +66,7 @@ internal fun AlertDialogContents(
         shape = shape,
         modifier = modifier,
         color = backgroundColor,
-        contentColor = contentColor
+        contentColor = contentColor,
     ) {
         Column(
             modifier = Modifier.fillMaxWidth()
@@ -87,7 +90,7 @@ internal fun AlertDialogContents(
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Spacer(Modifier.weight(1f))
 

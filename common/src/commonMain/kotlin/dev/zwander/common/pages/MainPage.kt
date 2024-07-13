@@ -2,6 +2,7 @@
 
 package dev.zwander.common.pages
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -25,6 +26,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.components.CellBars
@@ -53,6 +56,8 @@ private data class ItemInfo(
     val titleAccessory: (@Composable (Modifier) -> Unit)? = null,
     val selectable: Boolean = true,
     val visible: @Composable () -> Boolean = { true },
+    val dialogContent: (@Composable (Modifier) -> Unit)? = null,
+    val dialogMaxWidth: Dp = 400.dp,
 )
 
 @Composable
@@ -145,13 +150,17 @@ fun MainPage(
             ItemInfo(
                 title = MR.strings.snapshots,
                 render = {
-                    SnapshotChart(it)
+                    SnapshotChart(it.aspectRatio(1f))
                 },
                 selectable = false,
                 visible = {
                     SettingsModel.recordSnapshots.value &&
                             Storage.snapshots.updates.collectAsState(listOf()).value?.isNotEmpty() == true
                 },
+                dialogContent = {
+                    SnapshotChart(it)
+                },
+                dialogMaxWidth = 1000.dp,
             ),
         )
     }
@@ -216,6 +225,36 @@ fun MainPage(
             itemIsSelectable = {
                 selectable
             },
+            itemModifier = {
+                var showingDialog by remember {
+                    mutableStateOf(false)
+                }
+
+                InWindowAlertDialog(
+                    showing = showingDialog,
+                    onDismissRequest = { showingDialog = false },
+                    title = { Text(text = stringResource(title)) },
+                    text = {
+                        dialogContent?.invoke(Modifier.fillMaxSize())
+                    },
+                    buttons = {
+                        TextButton(
+                            onClick = { showingDialog = false },
+                        ) {
+                            Text(text = stringResource(MR.strings.ok))
+                        }
+                    },
+                    maxWidth = dialogMaxWidth,
+                )
+
+                Modifier.then(dialogContent.let { content ->
+                    if (content != null) Modifier.clickable {
+                        showingDialog = true
+                    } else {
+                        Modifier
+                    }
+                })
+            }
         )
     }
 
