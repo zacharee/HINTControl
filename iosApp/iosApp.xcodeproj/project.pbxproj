@@ -1465,7 +1465,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 110EABE0CD4646D7BAFB312F /* Pods-iosApp.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = iosApp/iosApp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -1489,7 +1488,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5ACA1BDB4CF9823BBE5E24AC /* Pods-iosApp.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = iosApp/iosApp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
