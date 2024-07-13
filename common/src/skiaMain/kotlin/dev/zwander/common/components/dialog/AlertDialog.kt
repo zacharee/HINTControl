@@ -10,12 +10,7 @@ import androidx.compose.animation.core.spring
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
-import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.onClick
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -34,6 +29,7 @@ import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
@@ -69,6 +65,11 @@ internal actual fun PlatformAlertDialog(
         usePlatformInsets = false,
     )
     val focusRequester = remember { FocusRequester() }
+    val safeAreaInsets = WindowInsets.safeContent.asPaddingValues()
+    val layoutDirection = LocalLayoutDirection.current
+
+    val safeAreaStart = safeAreaInsets.calculateStartPadding(layoutDirection)
+    val safeAreaEnd = safeAreaInsets.calculateEndPadding(layoutDirection)
 
     LaunchedEffect(showing, alpha, showingForAnimation, focusRequester.focusRequesterNodes.size) {
         if (showing && alpha == 1f && focusRequester.focusRequesterNodes.isNotEmpty()) {
@@ -90,7 +91,12 @@ internal actual fun PlatformAlertDialog(
                     .background(Color.Black.copy(alpha = 0.7f * alpha))
                     .fillMaxSize()
                     .onClick { onDismissRequest() }
-                    .padding(top = 16.dp + LocalMenuBarHeight.current, bottom = 16.dp)
+                    .padding(
+                        start = safeAreaStart,
+                        top = safeAreaInsets.calculateTopPadding().takeIf { it > 0.dp } ?: (16.dp + LocalMenuBarHeight.current),
+                        end = safeAreaEnd,
+                        bottom = safeAreaInsets.calculateBottomPadding().takeIf { it > 0.dp } ?: 16.dp,
+                    )
                     .alpha(alpha)
                     .onPreviewKeyEvent {
                         if (it.key == Key.Escape) {
@@ -110,7 +116,7 @@ internal actual fun PlatformAlertDialog(
                         modifier.then(
                             Modifier.widthIn(
                                 max = minOf(
-                                    constraints.maxWidth.toDp() - 32.dp,
+                                    constraints.maxWidth.toDp() - (32.dp.takeIf { safeAreaStart <= 0.dp && safeAreaEnd <= 0.dp } ?: 0.dp),
                                     maxWidth,
                                 )
                             ).onClick {
