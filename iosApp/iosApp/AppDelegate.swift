@@ -1,11 +1,3 @@
-//
-//  AppDelegate.swift
-//  iosApp
-//
-//  Created by Zachary Wander on 6/19/24.
-//  Copyright © 2024 orgName. All rights reserved.
-//
-
 import Foundation
 import Bugsnag
 import NSExceptionKtBugsnag

@@ -47,7 +47,6 @@ kotlin {
         ios.deploymentTarget = "14.0"
         osx.deploymentTarget = "10.13"
         podfile = project.file("../iosApp/Podfile")
-        pod("Bugsnag")
         framework {
             baseName = "common"
             isStatic = true

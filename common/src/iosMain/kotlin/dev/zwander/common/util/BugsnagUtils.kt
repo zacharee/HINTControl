@@ -1,12 +1,12 @@
-@file:OptIn(kotlinx.cinterop.ExperimentalForeignApi::class)
-
 package dev.zwander.common.util
 
 import com.rickclephas.kmp.nsexceptionkt.bugsnag.cinterop.Bugsnag
 import com.rickclephas.kmp.nsexceptionkt.core.InternalNSExceptionKtApi
 import com.rickclephas.kmp.nsexceptionkt.core.asNSException
 import dev.zwander.bugsnag.cinterop.BSGBreadcrumbType
+import kotlinx.cinterop.ExperimentalForeignApi
 
+@OptIn(ExperimentalForeignApi::class)
 actual object BugsnagUtils {
     @OptIn(InternalNSExceptionKtApi::class)
     actual fun notify(e: Throwable) {

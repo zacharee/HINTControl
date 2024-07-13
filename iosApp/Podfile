@@ -1,3 +1,5 @@
+source 'https://cdn.cocoapods.org'
+
 target 'iosApp' do
   use_frameworks!
   platform :ios, '14.0'

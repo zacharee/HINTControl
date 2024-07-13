@@ -1,23 +1,16 @@
 PODS:
-  - Bugsnag (6.28.1)
-  - common (35):
-    - Bugsnag
+  - common (35)
 
 DEPENDENCIES:
   - common (from `../common`)
-
-SPEC REPOS:
-  trunk:
-    - Bugsnag
 
 EXTERNAL SOURCES:
   common:
     :path: "../common"
 
 SPEC CHECKSUMS:
-  Bugsnag: 4be659f4ecc3f9648125ba0de69cb5a158d1c956
-  common: 1830c01f6251807cd3084e0902e495cb0550fd63
+  common: 872f13a5e98193c1b7cb07934621a38d48805380
 
-PODFILE CHECKSUM: 6869a7a455115e01e8cca1b54d94dece79f97d48
+PODFILE CHECKSUM: a47b08111a9360f17f5d8c42d2f8fe74051ea06f
 
 COCOAPODS: 1.15.2
