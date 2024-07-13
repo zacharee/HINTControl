@@ -1,11 +1,3 @@
-//
-//  HINT_Widget.swift
-//  HINT Widget
-//
-//  Created by Zachary Wander on 7/13/23.
-//  Copyright © 2023 orgName. All rights reserved.
-//
-
 import AppIntents
 import Bugsnag
 import NSExceptionKtBugsnag
