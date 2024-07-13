@@ -2,7 +2,10 @@ package dev.zwander.common.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -10,10 +13,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.util.Storage
@@ -158,6 +164,9 @@ fun SnapshotChart(
         }
     }
 
+    val isLightText = LocalContentColor.current.luminance() > 0.5f
+    val brightness = 0.8f
+
     val chartDataItems by remember {
         derivedStateOf {
             listOf(
@@ -165,28 +174,37 @@ fun SnapshotChart(
                     data = snapshots.mapNotNull { snapshot ->
                         createPoint(snapshot.timeMillis, snapshot.mainData?.signal?.fourG?.rsrp)
                     },
-                    color = Color.Green,
+                    color = if (isLightText) Color.Green else Color.Green.copy(green = brightness),
                     legendLabel = MR.strings.chart_legend_lte_rsrp,
                 ),
                 ChartData(
                     data = snapshots.mapNotNull { snapshot ->
                         createPoint(snapshot.timeMillis, snapshot.mainData?.signal?.fiveG?.rsrp)
                     },
-                    color = Color.Yellow,
+                    color = if (isLightText) Color.Yellow else Color.Cyan.copy(
+                        green = brightness,
+                        blue = brightness
+                    ),
                     legendLabel = MR.strings.chart_legend_5g_rsrp,
                 ),
                 ChartData(
                     data = snapshots.mapNotNull { snapshot ->
                         createPoint(snapshot.timeMillis, snapshot.mainData?.signal?.fourG?.rsrq)
                     },
-                    color = Color.Red,
+                    color = if (isLightText) Color.Red else Color.Red.copy(
+                        red = brightness + 0.1f,
+                        green = 0.3f
+                    ),
                     legendLabel = MR.strings.chart_legend_lte_rsrq,
                 ),
                 ChartData(
                     data = snapshots.mapNotNull { snapshot ->
                         createPoint(snapshot.timeMillis, snapshot.mainData?.signal?.fiveG?.rsrq)
                     },
-                    color = Color.Magenta,
+                    color = if (isLightText) Color.Magenta else Color.Magenta.copy(
+                        red = brightness,
+                        blue = brightness
+                    ),
                     legendLabel = MR.strings.chart_legend_5g_rsrq,
                 ),
             )
@@ -227,6 +245,26 @@ fun SnapshotChart(
                 LinePlot(
                     data = chartData.data,
                     lineStyle = LineStyle(brush = SolidColor(chartData.color), strokeWidth = 1.dp),
+                    symbol = {
+                        Box(
+                            modifier = Modifier
+                                .size(24.dp)
+                                .hoverableElement {
+                                    Box(
+                                        modifier = Modifier
+                                            .background(MaterialTheme.colorScheme.surfaceVariant, CircleShape)
+                                            .padding(4.dp),
+                                        contentAlignment = Alignment.Center,
+                                    ) {
+                                        Text(
+                                            text = it.y.toString(),
+                                            fontSize = 12.sp,
+                                            lineHeight = 12.sp,
+                                        )
+                                    }
+                                },
+                        )
+                    },
                 )
             }
         }
