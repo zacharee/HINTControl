@@ -5,9 +5,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.PlainTooltip
 import androidx.compose.material3.Text
+import androidx.compose.material3.TooltipBox
+import androidx.compose.material3.TooltipDefaults
+import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
@@ -33,6 +38,7 @@ import io.github.koalaplot.core.util.ExperimentalKoalaPlotApi
 import io.github.koalaplot.core.xygraph.FloatLinearAxisModel
 import io.github.koalaplot.core.xygraph.Point
 import io.github.koalaplot.core.xygraph.XYGraph
+import korlibs.platform.Platform
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
 
@@ -44,7 +50,9 @@ private data class ChartData(
     val legendLabel: StringResource,
 )
 
-@OptIn(ExperimentalObjCRefinement::class, ExperimentalKoalaPlotApi::class)
+@OptIn(ExperimentalObjCRefinement::class, ExperimentalKoalaPlotApi::class,
+    ExperimentalMaterial3Api::class
+)
 @HiddenFromObjC
 @Composable
 fun SnapshotChart(
@@ -246,24 +254,42 @@ fun SnapshotChart(
                     data = chartData.data,
                     lineStyle = LineStyle(brush = SolidColor(chartData.color), strokeWidth = 1.dp),
                     symbol = {
-                        Box(
-                            modifier = Modifier
-                                .size(24.dp)
-                                .hoverableElement {
-                                    Box(
-                                        modifier = Modifier
-                                            .background(MaterialTheme.colorScheme.surfaceVariant, CircleShape)
-                                            .padding(4.dp),
-                                        contentAlignment = Alignment.Center,
-                                    ) {
-                                        Text(
-                                            text = it.y.toString(),
-                                            fontSize = 12.sp,
-                                            lineHeight = 12.sp,
-                                        )
-                                    }
-                                },
-                        )
+                        TooltipBox(
+                            positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(
+                                spacingBetweenTooltipAndAnchor = 4.dp,
+                            ),
+                            state = rememberTooltipState(),
+                            tooltip = {
+                                PlainTooltip(caretSize = TooltipDefaults.caretSize) {
+                                    Text(
+                                        text = it.y.toString(),
+                                        fontSize = 12.sp,
+                                        lineHeight = 12.sp,
+                                    )
+                                }
+                            },
+                            enableUserInput = Platform.isAndroid || Platform.isIos,
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .size(6.dp)
+                                    .background(color = chartData.color, CircleShape)
+                                    .hoverableElement {
+                                        Box(
+                                            modifier = Modifier
+                                                .background(MaterialTheme.colorScheme.surfaceVariant, CircleShape)
+                                                .padding(4.dp),
+                                            contentAlignment = Alignment.Center,
+                                        ) {
+                                            Text(
+                                                text = it.y.toString(),
+                                                fontSize = 12.sp,
+                                                lineHeight = 12.sp,
+                                            )
+                                        }
+                                    },
+                            )
+                        }
                     },
                 )
             }
