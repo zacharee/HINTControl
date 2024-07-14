@@ -32,7 +32,10 @@ kotlin {
             framework {
                 isStatic = true
                 binaryOption("bundleVersion", rootProject.extra["app_version_code"].toString())
-                binaryOption("bundleShortVersionString", rootProject.extra["app_version_name"].toString())
+                binaryOption(
+                    "bundleShortVersionString",
+                    rootProject.extra["app_version_name"].toString(),
+                )
                 binaryOption("bundleId", rootProject.extra["package_name"].toString())
             }
         }
@@ -62,7 +65,10 @@ kotlin {
             export(libs.nsexceptionKt.core)
 
             binaryOption("bundleVersion", rootProject.extra["app_version_code"].toString())
-            binaryOption("bundleShortVersionString", rootProject.extra["app_version_name"].toString())
+            binaryOption(
+                "bundleShortVersionString",
+                rootProject.extra["app_version_name"].toString(),
+            )
             binaryOption("bundleId", rootProject.extra["package_name"].toString())
         }
     }
@@ -209,11 +215,31 @@ buildkonfig {
 }
 
 afterEvaluate {
-    exec {
-        commandLine("plutil", "-replace", "CFBundleShortVersionString", "-string", "${rootProject.extra["app_version_name"]}", "../iosApp/iosApp/Info.plist")
+    try {
+        exec {
+            commandLine(
+                "plutil",
+                "-replace",
+                "CFBundleShortVersionString",
+                "-string",
+                "${rootProject.extra["app_version_name"]}",
+                "../iosApp/iosApp/Info.plist",
+            )
+        }
+    } catch (_: Throwable) {
     }
 
-    exec {
-        commandLine("plutil", "-replace", "CFBundleVersion", "-string", "${rootProject.extra["app_version_code"]}", "../iosApp/iosApp/Info.plist")
+    try {
+        exec {
+            commandLine(
+                "plutil",
+                "-replace",
+                "CFBundleVersion",
+                "-string",
+                "${rootProject.extra["app_version_code"]}",
+                "../iosApp/iosApp/Info.plist",
+            )
+        }
+    } catch (_: Throwable) {
     }
 }
