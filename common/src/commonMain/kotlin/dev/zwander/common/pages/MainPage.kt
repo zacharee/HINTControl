@@ -66,6 +66,7 @@ fun MainPage(
     modifier: Modifier = Modifier,
 ) {
     val httpClient by GlobalModel.httpClient.collectAsState()
+    val showSnapshots by SettingsModel.recordSnapshots.collectAsState()
     val scope = rememberCoroutineScope()
 
     val items = remember {
@@ -153,10 +154,7 @@ fun MainPage(
                     SnapshotChart(it.aspectRatio(1f))
                 },
                 selectable = false,
-                visible = {
-                    SettingsModel.recordSnapshots.value &&
-                            Storage.snapshots.updates.collectAsState(listOf()).value?.isNotEmpty() == true
-                },
+                visible = { showSnapshots },
                 dialogContent = {
                     SnapshotChart(it)
                 },

@@ -12,9 +12,7 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -92,8 +90,8 @@ class KStore<T : @Serializable Any>(
     private val default: T? = null,
     private val enableCache: Boolean = true,
     private val codec: Codec<T>,
+    private val lock: Mutex = Mutex(),
 ) {
-    private val lock: Mutex = Mutex()
     internal val cache: MutableStateFlow<T?> = MutableStateFlow(default)
 
     /** Observe store for updates */
@@ -183,8 +181,6 @@ object Storage {
         ),
     )
 
-    private val snapshotMutex = Mutex()
-
     private val listenJob = atomic<Job?>(initial = null)
 
     @OptIn(DelicateCoroutinesApi::class)
@@ -194,28 +190,13 @@ object Storage {
         }
 
         listenJob.value = GlobalScope.launch {
-            launch {
-                MainModel.currentMainData.collect {
-                    makeSnapshot()
-                }
-            }
-
-            launch {
-                MainModel.currentClientData.collect {
-                    makeSnapshot()
-                }
-            }
-
-            launch {
-                MainModel.currentCellData.collect {
-                    makeSnapshot()
-                }
-            }
-
-            launch {
-                MainModel.currentSimData.collect {
-                    makeSnapshot()
-                }
+            merge(
+                MainModel.currentMainData,
+                MainModel.currentClientData,
+                MainModel.currentCellData,
+                MainModel.currentSimData,
+            ).collect {
+                makeSnapshot()
             }
         }
     }
@@ -226,19 +207,18 @@ object Storage {
     }
 
     private suspend fun makeSnapshot() {
-        snapshotMutex.withLock {
+        snapshots.update {
             val (mainTime, mainData) = MainModel.currentMainData.timestampedValue
             val (clientTime, clientData) = MainModel.currentClientData.timestampedValue
             val (cellTime, cellData) = MainModel.currentCellData.timestampedValue
             val (simTime, simData) = MainModel.currentSimData.timestampedValue
 
             val snapshotTime = maxOf(mainTime, clientTime, cellTime, simTime)
+            val currentSnapshots = it?.toMutableList() ?: mutableListOf()
 
             if (snapshotTime == 0L) {
-                return@withLock
+                return@update currentSnapshots
             }
-
-            val currentSnapshots = snapshots.get()?.toMutableList() ?: mutableListOf()
 
             val snapshot = HistoricalSnapshot(
                 timeMillis = snapshotTime,
@@ -250,7 +230,7 @@ object Storage {
 
             currentSnapshots.add(snapshot)
 
-            snapshots.set(currentSnapshots)
+            currentSnapshots
         }
     }
 }
