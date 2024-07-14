@@ -143,7 +143,6 @@ fun SnapshotChart(
     }
 
     val isLightText = LocalContentColor.current.luminance() > 0.5f
-    val brightness = 0.8f
 
     val chartDataItems by remember {
         derivedStateOf {
