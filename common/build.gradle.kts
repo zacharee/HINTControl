@@ -1,5 +1,4 @@
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
-import dev.icerock.gradle.tasks.CopyFrameworkResourcesToAppTask
 
 plugins {
     alias(libs.plugins.kotlin.native.cocoapods)
@@ -218,11 +217,3 @@ afterEvaluate {
         commandLine("plutil", "-replace", "CFBundleVersion", "-string", "${rootProject.extra["app_version_code"]}", "../iosApp/iosApp/Info.plist")
     }
 }
-
-//afterEvaluate {
-//    tasks.withType<SyncComposeResourcesForIosTask> {
-//        dependsOn(tasks.findByName("generateMRcommonMain"))
-//        dependsOn(tasks.findByName("generateMRiosSimulatorArm64Main"))
-//        dependsOn(tasks.findByName("generateMRiosArm64Main"))
-//    }
-//}
