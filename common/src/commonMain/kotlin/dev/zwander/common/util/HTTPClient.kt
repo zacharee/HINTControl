@@ -71,6 +71,8 @@ import io.ktor.http.userAgent
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.util.appendIfNameAbsent
 import io.ktor.utils.io.ByteReadChannel
+import korlibs.time.Date
+import korlibs.time.DateTime
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -79,6 +81,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
+import kotlin.random.Random
+import kotlin.random.nextInt
 
 private const val DEFAULT_TIMEOUT_MS = 20_000L
 private const val MAX_SEND_COUNT = 100
@@ -106,7 +110,19 @@ private object CommonClients {
 private object ASClients {
     val mockEngine = MockEngine { request ->
         respond(
-            content = ByteReadChannel(
+            content = run {
+              val rsrp4g = Random.nextInt(-120, -80)
+              val rssi4g = rsrp4g - Random.nextInt(5, 10)
+              val rsrq4g = Random.nextInt(-12, 5)
+              val sinr4g = Random.nextInt(-2, 20)
+
+              val rsrp5g = rsrp4g - Random.nextInt(-10, 12)
+              val rssi5g = rsrp5g - Random.nextInt(5, 10)
+              val rsrq5g = rsrq4g - Random.nextInt(-4, 4)
+              val sinr5g = sinr4g - Random.nextInt(-3, 7)
+
+
+              ByteReadChannel(
                 when (Endpoint.CommonApiEndpoint(request.url.fullPath.replace("/TMI/v1/", ""))) {
                     Endpoints.CommonApiV1.auth -> {
                         """
@@ -148,10 +164,10 @@ private object ASClients {
                                   "bars": 2.0,
                                   "cid": 12,
                                   "eNBID": 310463,
-                                  "rsrp": -112,
-                                  "rsrq": -8,
-                                  "rssi": -104,
-                                  "sinr": 5
+                                  "rsrp": ${rsrp4g},
+                                  "rsrq": ${rsrq4g},
+                                  "rssi": ${rssi4g},
+                                  "sinr": $sinr4g
                                 },
                                 "5g": {
                                   "bands": [
@@ -160,10 +176,10 @@ private object ASClients {
                                   "bars": 4.0,
                                   "cid": 0,
                                   "gNBID": 0,
-                                  "rsrp": -96,
-                                  "rsrq": -2,
-                                  "rssi": -94,
-                                  "sinr": 22
+                                  "rsrp": ${rsrp5g},
+                                  "rsrq": ${rsrq5g},
+                                  "rssi": ${rssi5g},
+                                  "sinr": $sinr5g
                                 },
                                 "generic": {
                                   "apn": "FBB.HOME",
@@ -270,10 +286,10 @@ private object ASClients {
                                     "bars": 2.0,
                                     "cid": 12,
                                     "eNBID": 310463,
-                                    "rsrp": -113,
-                                    "rsrq": -7,
-                                    "rssi": -105,
-                                    "sinr": 6
+                                    "rsrp": ${rsrp4g},
+                                    "rsrq": ${rsrq4g},
+                                    "rssi": ${rssi4g},
+                                    "sinr": $sinr4g
                                   },
                                   "status": true,
                                   "supportedBands": [
@@ -304,10 +320,10 @@ private object ASClients {
                                     "bars": 4.0,
                                     "cid": 0,
                                     "gNBID": 0,
-                                    "rsrp": -96,
-                                    "rsrq": -2,
-                                    "rssi": -93,
-                                    "sinr": 23
+                                    "rsrp": ${rsrp5g},
+                                    "rsrq": ${rsrq5g},
+                                    "rssi": ${rssi5g},
+                                    "sinr": $sinr5g
                                   },
                                   "status": true,
                                   "supportedBands": [
@@ -361,7 +377,8 @@ private object ASClients {
 
                     else -> "Unsupported!"
                 }
-            ),
+              )
+            },
             status = HttpStatusCode.OK,
             headers = headersOf(HttpHeaders.ContentType, "application/json"),
         )
