@@ -36,3 +36,11 @@ fun buildItemList(block: MutableList<Pair<StringResource, Any?>>.() -> Unit): Li
 
     return list.filterBlanks()
 }
+
+fun nullableMinOf(vararg numbers: Int?, defaultMin: Int? = null): Int? {
+    return numbers.filterNotNull().minOrNull() ?: defaultMin
+}
+
+fun nullableMaxOf(vararg numbers: Int?, defaultMax: Int? = null): Int? {
+    return numbers.filterNotNull().maxOrNull() ?: defaultMax
+}

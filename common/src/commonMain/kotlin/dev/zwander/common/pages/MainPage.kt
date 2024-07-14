@@ -42,7 +42,6 @@ import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.MainModel
 import dev.zwander.common.model.SettingsModel
 import dev.zwander.common.model.UserModel
-import dev.zwander.common.util.Storage
 import dev.zwander.common.util.addAll
 import dev.zwander.common.util.buildItemList
 import dev.zwander.resources.common.MR
@@ -168,7 +167,7 @@ fun MainPage(
     }
 
     Box(
-        modifier = modifier
+        modifier = modifier,
     ) {
         PageGrid(
             id = "MainPage",
@@ -252,7 +251,7 @@ fun MainPage(
                         Modifier
                     }
                 })
-            }
+            },
         )
     }
 

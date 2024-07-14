@@ -178,6 +178,10 @@
 
     <string name="chart_legend_lte_rsrp">LTE RSRP (dBm)</string>
     <string name="chart_legend_lte_rsrq">LTE RSRQ (dB)</string>
+    <string name="chart_legend_lte_rssi">LTE RSSI (dBm)</string>
+    <string name="chart_legend_lte_sinr">LTE SiNR (dB)</string>
     <string name="chart_legend_5g_rsrp">5G RSRP (dBm)</string>
     <string name="chart_legend_5g_rsrq">5G RSRQ (dB)</string>
+    <string name="chart_legend_5g_rssi">5G RSSI (dBm)</string>
+    <string name="chart_legend_5g_sinr">5G SiNR (dB)</string>
 </resources>

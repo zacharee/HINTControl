@@ -28,6 +28,8 @@ import androidx.compose.ui.unit.sp
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.util.Storage
+import dev.zwander.common.util.nullableMaxOf
+import dev.zwander.common.util.nullableMinOf
 import dev.zwander.resources.common.MR
 import io.github.koalaplot.core.ChartLayout
 import io.github.koalaplot.core.legend.FlowLegend
@@ -95,61 +97,29 @@ fun SnapshotChart(
     val yAxisModel by remember {
         derivedStateOf {
             val minY = snapshots.mapNotNull { snapshot ->
-                snapshot.mainData?.signal?.let { signal ->
-                    val minFiveG = signal.fiveG?.let {
-                        it.rsrp?.let { rsrp ->
-                            it.rsrq?.let { rsrq ->
-                                minOf(rsrp, rsrq) - VERTICAL_AXIS_PADDING
-                            }
-                        }
-                    }
-                    val minFourG = signal.fourG?.let {
-                        it.rsrp?.let { rsrp ->
-                            it.rsrq?.let { rsrq ->
-                                minOf(rsrp, rsrq) - VERTICAL_AXIS_PADDING
-                            }
-                        }
-                    }
-
-                    if (minFiveG == null && minFourG != null) {
-                        minFourG
-                    } else if (minFiveG != null && minFourG == null) {
-                        minFiveG
-                    } else if (minFiveG != null && minFourG != null) {
-                        minOf(minFourG, minFiveG)
-                    } else {
-                        null
-                    }
-                }
+                nullableMinOf(
+                    snapshot.mainData?.signal?.fiveG?.rsrp,
+                    snapshot.mainData?.signal?.fiveG?.rsrq,
+                    snapshot.mainData?.signal?.fiveG?.rssi,
+                    snapshot.mainData?.signal?.fiveG?.sinr,
+                    snapshot.mainData?.signal?.fourG?.rsrp,
+                    snapshot.mainData?.signal?.fourG?.rsrq,
+                    snapshot.mainData?.signal?.fourG?.rssi,
+                    snapshot.mainData?.signal?.fourG?.sinr,
+                )?.let { it - VERTICAL_AXIS_PADDING }
             }.minOrNull() ?: 0
 
             val maxY = snapshots.mapNotNull { snapshot ->
-                snapshot.mainData?.signal?.let { signal ->
-                    val maxFiveG = signal.fiveG?.let {
-                        it.rsrp?.let { rsrp ->
-                            it.rsrq?.let { rsrq ->
-                                maxOf(rsrp, rsrq) + VERTICAL_AXIS_PADDING
-                            }
-                        }
-                    }
-                    val maxFourG = signal.fourG?.let {
-                        it.rsrp?.let { rsrp ->
-                            it.rsrq?.let { rsrq ->
-                                maxOf(rsrp, rsrq) + VERTICAL_AXIS_PADDING
-                            }
-                        }
-                    }
-
-                    if (maxFiveG == null && maxFourG != null) {
-                        maxFourG
-                    } else if (maxFiveG != null && maxFourG == null) {
-                        maxFiveG
-                    } else if (maxFiveG != null && maxFourG != null) {
-                        maxOf(maxFourG, maxFiveG)
-                    } else {
-                        null
-                    }
-                }
+                nullableMaxOf(
+                    snapshot.mainData?.signal?.fiveG?.rsrp,
+                    snapshot.mainData?.signal?.fiveG?.rsrq,
+                    snapshot.mainData?.signal?.fiveG?.rssi,
+                    snapshot.mainData?.signal?.fiveG?.sinr,
+                    snapshot.mainData?.signal?.fourG?.rsrp,
+                    snapshot.mainData?.signal?.fourG?.rsrq,
+                    snapshot.mainData?.signal?.fourG?.rssi,
+                    snapshot.mainData?.signal?.fourG?.sinr,
+                )?.let { it + VERTICAL_AXIS_PADDING }
             }.minOrNull() ?: 1
 
             FloatLinearAxisModel(
@@ -180,40 +150,59 @@ fun SnapshotChart(
             listOf(
                 ChartData(
                     data = snapshots.mapNotNull { snapshot ->
-                        createPoint(snapshot.timeMillis, snapshot.mainData?.signal?.fourG?.rsrp)
-                    },
-                    color = if (isLightText) Color.Green else Color.Green.copy(green = brightness),
-                    legendLabel = MR.strings.chart_legend_lte_rsrp,
-                ),
-                ChartData(
-                    data = snapshots.mapNotNull { snapshot ->
                         createPoint(snapshot.timeMillis, snapshot.mainData?.signal?.fiveG?.rsrp)
                     },
-                    color = if (isLightText) Color.Yellow else Color.Cyan.copy(
-                        green = brightness,
-                        blue = brightness
-                    ),
+                    color = if (isLightText) Color(0xffbc8f8f) else Color(0xff3cb371),
                     legendLabel = MR.strings.chart_legend_5g_rsrp,
-                ),
-                ChartData(
-                    data = snapshots.mapNotNull { snapshot ->
-                        createPoint(snapshot.timeMillis, snapshot.mainData?.signal?.fourG?.rsrq)
-                    },
-                    color = if (isLightText) Color.Red else Color.Red.copy(
-                        red = brightness + 0.1f,
-                        green = 0.3f
-                    ),
-                    legendLabel = MR.strings.chart_legend_lte_rsrq,
                 ),
                 ChartData(
                     data = snapshots.mapNotNull { snapshot ->
                         createPoint(snapshot.timeMillis, snapshot.mainData?.signal?.fiveG?.rsrq)
                     },
-                    color = if (isLightText) Color.Magenta else Color.Magenta.copy(
-                        red = brightness,
-                        blue = brightness
-                    ),
+                    color = if (isLightText) Color(0xff32cd32) else Color(0xff000080),
                     legendLabel = MR.strings.chart_legend_5g_rsrq,
+                ),
+                ChartData(
+                    data = snapshots.mapNotNull { snapshot ->
+                        createPoint(snapshot.timeMillis, snapshot.mainData?.signal?.fiveG?.rssi)
+                    },
+                    color = if (isLightText) Color(0xffff4500) else Color(0xffbc8f8f),
+                    legendLabel = MR.strings.chart_legend_5g_rssi,
+                ),
+                ChartData(
+                    data = snapshots.mapNotNull { snapshot ->
+                        createPoint(snapshot.timeMillis, snapshot.mainData?.signal?.fiveG?.sinr)
+                    },
+                    color = if (isLightText) Color(0xffffd700) else Color(0xffb03060),
+                    legendLabel = MR.strings.chart_legend_5g_sinr,
+                ),
+                ChartData(
+                    data = snapshots.mapNotNull { snapshot ->
+                        createPoint(snapshot.timeMillis, snapshot.mainData?.signal?.fourG?.rsrp)
+                    },
+                    color = if (isLightText) Color(0xff00ffff) else Color(0xffff0000),
+                    legendLabel = MR.strings.chart_legend_lte_rsrp,
+                ),
+                ChartData(
+                    data = snapshots.mapNotNull { snapshot ->
+                        createPoint(snapshot.timeMillis, snapshot.mainData?.signal?.fourG?.rsrq)
+                    },
+                    color = if (isLightText) Color(0xffa020f0) else Color(0xff2e8b57),
+                    legendLabel = MR.strings.chart_legend_lte_rsrq,
+                ),
+                ChartData(
+                    data = snapshots.mapNotNull { snapshot ->
+                        createPoint(snapshot.timeMillis, snapshot.mainData?.signal?.fourG?.rssi)
+                    },
+                    color = if (isLightText) Color(0xff1e90ff) else Color(0xffb03060),
+                    legendLabel = MR.strings.chart_legend_lte_rssi,
+                ),
+                ChartData(
+                    data = snapshots.mapNotNull { snapshot ->
+                        createPoint(snapshot.timeMillis, snapshot.mainData?.signal?.fourG?.sinr)
+                    },
+                    color = if (isLightText) Color(0xffff1493) else Color(0xff00bfff),
+                    legendLabel = MR.strings.chart_legend_lte_sinr,
                 ),
             )
         }
