@@ -61,6 +61,7 @@ fun WifiConfigPage(
                 GlobalModel.httpClient.value?.setWifiData(it)
             }
             MainModel.currentWifiData.value = GlobalModel.httpClient.value?.getWifiData()
+            MainModel.currentClientData.value = GlobalModel.httpClient.value?.getDeviceData()
         }
     }
 

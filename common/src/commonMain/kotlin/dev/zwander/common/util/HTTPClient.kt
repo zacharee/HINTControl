@@ -126,15 +126,15 @@ private object ASClients {
                 when (Endpoint.CommonApiEndpoint(request.url.fullPath.replace("/TMI/v1/", ""))) {
                     Endpoints.CommonApiV1.auth -> {
                         """
-                                {
-                                  "auth": {
-                                    "expiration": 1685324186,
-                                    "refreshCountLeft": 4,
-                                    "refreshCountMax": 4,
-                                    "token": "$TEST_TOKEN"
-                                  }
-                                }
-                            """.trimIndent()
+                            {
+                              "auth": {
+                                "expiration": 1685324186,
+                                "refreshCountLeft": 4,
+                                "refreshCountMax": 4,
+                                "token": "$TEST_TOKEN"
+                              }
+                            }
+                        """.trimIndent()
                     }
 
                     Endpoints.CommonApiV1.gatewayInfo -> {
