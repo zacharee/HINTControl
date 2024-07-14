@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 class TimestampedMutableStateFlow<T>(
     initialState: T,
 ) : MutableStateFlow<T> {
-    private val wrapped = MutableStateFlow(0L to initialState)
+    val wrapped = MutableStateFlow(0L to initialState)
 
     override val replayCache: List<T>
         get() = wrapped.replayCache.map { it.second }

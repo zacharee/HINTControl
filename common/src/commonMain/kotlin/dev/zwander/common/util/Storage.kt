@@ -3,6 +3,10 @@ package dev.zwander.common.util
 
 import dev.zwander.common.data.HistoricalSnapshot
 import dev.zwander.common.model.MainModel
+import dev.zwander.common.model.adapters.CellDataRoot
+import dev.zwander.common.model.adapters.ClientDeviceData
+import dev.zwander.common.model.adapters.MainData
+import dev.zwander.common.model.adapters.SimDataRoot
 import io.github.xxfast.kstore.Codec
 import io.github.xxfast.kstore.file.FileCodec
 import io.github.xxfast.kstore.file.utils.FILE_SYSTEM
@@ -11,7 +15,6 @@ import kotlinx.atomicfu.atomic
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
@@ -92,7 +95,7 @@ class KStore<T : @Serializable Any>(
     private val codec: Codec<T>,
     private val lock: Mutex = Mutex(),
 ) {
-    internal val cache: MutableStateFlow<T?> = MutableStateFlow(default)
+    private val cache: MutableStateFlow<T?> = MutableStateFlow(default)
 
     /** Observe store for updates */
     val updates: Flow<T?>
@@ -174,7 +177,7 @@ object Storage {
 
     val snapshots: KStore<List<HistoricalSnapshot>> = KStore(
         default = listOf(),
-        enableCache = true,
+        enableCache = false,
         codec = CreatingCodec(
             path.toPath(),
             json,
@@ -184,19 +187,28 @@ object Storage {
     private val listenJob = atomic<Job?>(initial = null)
 
     @OptIn(DelicateCoroutinesApi::class)
-    suspend fun startListening() = coroutineScope {
+    fun startListening() {
         if (listenJob.value != null) {
-            return@coroutineScope
+            return
         }
 
         listenJob.value = GlobalScope.launch {
-            merge(
-                MainModel.currentMainData,
-                MainModel.currentClientData,
-                MainModel.currentCellData,
-                MainModel.currentSimData,
-            ).collect {
-                makeSnapshot()
+            combine(
+                MainModel.currentMainData.wrapped,
+                MainModel.currentClientData.wrapped,
+                MainModel.currentCellData.wrapped,
+                MainModel.currentSimData.wrapped,
+            ) { (mainData, clientData, cellData, simData) ->
+                val snapshotTime = maxOf(mainData.first, clientData.first, cellData.first, simData.first)
+                arrayOf(snapshotTime, mainData.second, clientData.second, cellData.second, simData.second)
+            }.collect { (snapshotTime, mainData, clientData, cellData, simData) ->
+                makeSnapshot(
+                    snapshotTime = snapshotTime as Long,
+                    mainData = mainData as MainData?,
+                    clientData = clientData as ClientDeviceData?,
+                    cellData = cellData as CellDataRoot?,
+                    simData = simData as SimDataRoot?,
+                )
             }
         }
     }
@@ -206,14 +218,14 @@ object Storage {
         listenJob.value = null
     }
 
-    private suspend fun makeSnapshot() {
+    private suspend fun makeSnapshot(
+        snapshotTime: Long,
+        mainData: MainData?,
+        clientData: ClientDeviceData?,
+        cellData: CellDataRoot?,
+        simData: SimDataRoot?,
+    ) {
         snapshots.update {
-            val (mainTime, mainData) = MainModel.currentMainData.timestampedValue
-            val (clientTime, clientData) = MainModel.currentClientData.timestampedValue
-            val (cellTime, cellData) = MainModel.currentCellData.timestampedValue
-            val (simTime, simData) = MainModel.currentSimData.timestampedValue
-
-            val snapshotTime = maxOf(mainTime, clientTime, cellTime, simTime)
             val currentSnapshots = it?.toMutableList() ?: mutableListOf()
 
             if (snapshotTime == 0L) {
