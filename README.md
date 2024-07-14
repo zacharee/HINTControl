@@ -37,6 +37,18 @@ Native ARM64 Windows builds aren't currently available.
 
 On x64 Linux, download the `amd64` variant. On ARM64 Linux, choose `aarch64`.
 
+# Usage Notes
+## iOS
+On iOS, when you enable Snapshots from the Settings page, the stored snapshots will be available in a JSON file from the Files app.
+
+To access the JSON:
+1. Open the Files app.
+2. Tap the "Browse" tab in the bottom right.
+3. Tap the "Browse" tab again to back out of "iCloud Drive".
+4. Choose "On My iPhone".
+5. Tap "HINT Control".
+6. Copy or share `snapshots.json` as needed.
+
 # Support
 1. For questions about your T-Mobile Home Internet service, such as outages, speed, or billing, you'll need to contact [T-Mobile support](https://www.t-mobile.com/contact-us).
 2. If there's a bug or a crash in HINT Control, [open a new issue](https://github.com/zacharee/ArcadyanKVD21Control/issues) with as much detail as possible.
