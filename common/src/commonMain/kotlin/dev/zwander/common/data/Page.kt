@@ -26,7 +26,6 @@ sealed class Page(
         const val LOG_IN_PAGE_KEY = "log_in_page"
         const val MAIN_PAGE_KEY = "main_page"
         const val CLIENTS_PAGE_KEY = "clients_page"
-        const val ADVANCED_PAGE_KEY = "advanced_page"
         const val WIFI_PAGE_KEY = "wifi_page"
         const val SETTINGS_PAGE_KEY = "settings_page"
         const val FUZZER_PAGE_KEY = "fuzzer_page"
@@ -36,7 +35,6 @@ sealed class Page(
                 LOG_IN_PAGE_KEY -> Login
                 MAIN_PAGE_KEY -> Main
                 CLIENTS_PAGE_KEY -> Clients
-                ADVANCED_PAGE_KEY -> Advanced
                 WIFI_PAGE_KEY -> WifiConfig
                 SETTINGS_PAGE_KEY -> SettingsPage
                 FUZZER_PAGE_KEY -> FuzzerPage
@@ -78,22 +76,6 @@ sealed class Page(
         },
         { MainModel.currentClientData.value == null },
         { ClientListPage((it)) }
-    )
-    data object Advanced : Page(
-        MR.strings.advanced,
-        ADVANCED_PAGE_KEY,
-        { rememberVectorPainter(Icons.Default.Warning) },
-        {
-            MainModel.currentCellData.value = GlobalModel.httpClient.value?.getCellData()
-            MainModel.currentSimData.value = GlobalModel.httpClient.value?.getSimData()
-            MainModel.currentMainData.value = GlobalModel.httpClient.value?.getMainData()
-        },
-        {
-            MainModel.currentCellData.value == null ||
-                    MainModel.currentSimData.value == null ||
-                    MainModel.currentMainData.value == null
-        },
-        { AdvancedPage(it) }
     )
     data object WifiConfig : Page(
         MR.strings.wifi_data,

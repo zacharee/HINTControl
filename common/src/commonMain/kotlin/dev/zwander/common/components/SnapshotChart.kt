@@ -41,6 +41,7 @@ import io.github.koalaplot.core.xygraph.FloatLinearAxisModel
 import io.github.koalaplot.core.xygraph.Point
 import io.github.koalaplot.core.xygraph.XYGraph
 import korlibs.platform.Platform
+import korlibs.time.DateTime
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
 
@@ -63,7 +64,11 @@ fun SnapshotChart(
     val fullSnapshots by Storage.snapshots.updates.collectAsState(listOf())
     val snapshots by remember {
         derivedStateOf {
-            fullSnapshots?.run { slice((lastIndex - 60).coerceAtLeast(0)..lastIndex) } ?: listOf()
+            val currentTime = DateTime.nowUnixMillisLong()
+            fullSnapshots?.run {
+                val firstIndex = this.indexOfFirst { it.timeMillis >= (currentTime - 60000) }.coerceAtLeast(0)
+                slice(firstIndex..lastIndex)
+            } ?: listOf()
         }
     }
 
@@ -73,12 +78,12 @@ fun SnapshotChart(
 
     val minX by remember {
         derivedStateOf {
-            (snapshots.firstOrNull()?.timeMillis ?: 0) / 1000
+            (snapshots.firstOrNull()?.timeMillis ?: 0)
         }
     }
     val maxX by remember {
         derivedStateOf {
-            (snapshots.lastOrNull()?.timeMillis ?: 0) / 1000
+            (snapshots.lastOrNull()?.timeMillis ?: 0)
         }
     }
 
@@ -120,7 +125,7 @@ fun SnapshotChart(
                     snapshot.mainData?.signal?.fourG?.rssi,
                     snapshot.mainData?.signal?.fourG?.sinr,
                 )?.let { it + VERTICAL_AXIS_PADDING }
-            }.minOrNull() ?: 1
+            }.maxOrNull() ?: 1
 
             FloatLinearAxisModel(
                 range = if (minY == maxY) {
@@ -137,7 +142,7 @@ fun SnapshotChart(
             if (value == null) {
                 null
             } else {
-                Point((time / 1000 - minX).toFloat(), value.toFloat())
+                Point((time - minX).toFloat(), value.toFloat())
             }
         }
     }

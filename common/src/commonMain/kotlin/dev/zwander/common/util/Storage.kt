@@ -193,22 +193,40 @@ object Storage {
         }
 
         listenJob.value = GlobalScope.launch {
-            combine(
-                MainModel.currentMainData.wrapped,
-                MainModel.currentClientData.wrapped,
-                MainModel.currentCellData.wrapped,
-                MainModel.currentSimData.wrapped,
-            ) { (mainData, clientData, cellData, simData) ->
-                val snapshotTime = maxOf(mainData.first, clientData.first, cellData.first, simData.first)
-                arrayOf(snapshotTime, mainData.second, clientData.second, cellData.second, simData.second)
-            }.collect { (snapshotTime, mainData, clientData, cellData, simData) ->
-                makeSnapshot(
-                    snapshotTime = snapshotTime as Long,
-                    mainData = mainData as MainData?,
-                    clientData = clientData as ClientDeviceData?,
-                    cellData = cellData as CellDataRoot?,
-                    simData = simData as SimDataRoot?,
-                )
+            launch {
+                MainModel.currentMainData.wrapped.collect { (time, data) ->
+                    makeSnapshot(
+                        snapshotTime = time,
+                        mainData = data,
+                    )
+                }
+            }
+
+            launch {
+                MainModel.currentClientData.wrapped.collect { (time, data) ->
+                    makeSnapshot(
+                        snapshotTime = time,
+                        clientData = data,
+                    )
+                }
+            }
+
+            launch {
+                MainModel.currentCellData.wrapped.collect { (time, data) ->
+                    makeSnapshot(
+                        snapshotTime = time,
+                        cellData = data,
+                    )
+                }
+            }
+
+            launch {
+                MainModel.currentSimData.wrapped.collect { (time, data) ->
+                    makeSnapshot(
+                        snapshotTime = time,
+                        simData = data,
+                    )
+                }
             }
         }
     }
@@ -220,10 +238,10 @@ object Storage {
 
     private suspend fun makeSnapshot(
         snapshotTime: Long,
-        mainData: MainData?,
-        clientData: ClientDeviceData?,
-        cellData: CellDataRoot?,
-        simData: SimDataRoot?,
+        mainData: MainData? = null,
+        clientData: ClientDeviceData? = null,
+        cellData: CellDataRoot? = null,
+        simData: SimDataRoot? = null,
     ) {
         snapshots.update {
             val currentSnapshots = it?.toMutableList() ?: mutableListOf()
