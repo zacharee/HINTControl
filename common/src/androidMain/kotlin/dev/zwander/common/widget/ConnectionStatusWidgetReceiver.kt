@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -58,6 +59,7 @@ class ConnectionStatusWidget : GlanceAppWidget() {
 
             CompositionLocalProvider(
                 LocalContext provides context,
+                LocalConfiguration provides context.resources.configuration,
             ) {
                 GlanceTheme {
                     AppWidgetColumn(
