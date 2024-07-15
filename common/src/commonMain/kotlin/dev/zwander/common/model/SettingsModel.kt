@@ -9,7 +9,7 @@ object SettingsModel {
     val autoRefreshMs = PersistentMutableStateFlow(SettingsManager.Keys.AUTO_REFRESH_PERIOD_MS, 5000L)
     val fuzzerEnabled = PersistentMutableStateFlow(SettingsManager.Keys.FUZZER_ENABLED, false)
     val defaultPage = PersistentMutableStateFlow<Page>(SettingsManager.Keys.DEFAULT_PAGE, Page.Main)
-    val gatewayIp = PersistentMutableStateFlow<String>(SettingsManager.Keys.GATEWAY_IP, "192.168.12.1")
+    val gatewayIp = PersistentMutableStateFlow<String>(SettingsManager.Keys.GATEWAY_IP, "192.168.12.1:8080")
     val widgetRefresh = PersistentMutableStateFlow(SettingsManager.Keys.WIDGET_REFRESH_PERIOD, 60L)
     val recordSnapshots = PersistentMutableStateFlow(SettingsManager.Keys.RECORD_SNAPSHOTS, false)
 }

@@ -53,6 +53,7 @@ import io.ktor.client.plugins.cookies.HttpCookies
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.timeout
 import io.ktor.client.request.HttpRequestPipeline
+import io.ktor.client.request.accept
 import io.ktor.client.request.forms.submitForm
 import io.ktor.client.request.get
 import io.ktor.client.request.post
@@ -71,8 +72,6 @@ import io.ktor.http.userAgent
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.util.appendIfNameAbsent
 import io.ktor.utils.io.ByteReadChannel
-import korlibs.time.Date
-import korlibs.time.DateTime
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -82,7 +81,6 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlin.random.Random
-import kotlin.random.nextInt
 
 private const val DEFAULT_TIMEOUT_MS = 20_000L
 private const val MAX_SEND_COUNT = 100
@@ -1019,6 +1017,7 @@ private object UnifiedClient : HTTPClient {
             val response = unauthedClient.handleCatch {
                 post(Endpoints.CommonApiV1.auth.createFullUrl()) {
                     contentType(ContentType.parse("application/json"))
+                    accept(ContentType.parse("application/json"))
                     setBody(UsernamePassword(username, password))
                 }
             }
