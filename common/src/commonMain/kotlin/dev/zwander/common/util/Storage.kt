@@ -259,7 +259,7 @@ object Storage {
             )
 
             currentSnapshots.add(snapshot)
-
+            currentSnapshots.sortBy { snap -> snap.timeMillis }
             currentSnapshots
         }
     }
