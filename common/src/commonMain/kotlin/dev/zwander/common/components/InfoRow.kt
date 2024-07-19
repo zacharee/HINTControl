@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.StringResource
 import dev.zwander.common.data.InfoItem
+import dev.zwander.common.util.animatePlacement
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
 
@@ -28,7 +29,7 @@ fun InfoRow(
     ) {
         items.forEach { (_, info) ->
             info?.let {
-                info.Render(Modifier.padding(horizontal = 4.dp))
+                info.Render(Modifier.padding(horizontal = 4.dp).animatePlacement())
             }
         }
     }

@@ -26,6 +26,7 @@ import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.GradleConfig
 import dev.zwander.common.model.SettingsModel
 import dev.zwander.common.util.UrlHandler
+import dev.zwander.common.util.animatePlacement
 import dev.zwander.resources.common.MR
 
 private data class SocialIconData(
@@ -77,7 +78,7 @@ fun About() {
                 onClick = {
                     UrlHandler.launchUrl(link)
                 },
-                modifier = Modifier.size(48.dp),
+                modifier = Modifier.size(48.dp).animatePlacement(),
             ) {
                 Icon(
                     painter = painterResource(img),
