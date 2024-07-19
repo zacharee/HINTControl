@@ -38,12 +38,12 @@ import dev.zwander.common.components.MainDataLayout
 import dev.zwander.common.components.PageGrid
 import dev.zwander.common.components.SnapshotChart
 import dev.zwander.common.components.dialog.InWindowAlertDialog
+import dev.zwander.common.data.rememberInfoList
+import dev.zwander.common.data.set
 import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.MainModel
 import dev.zwander.common.model.SettingsModel
 import dev.zwander.common.model.UserModel
-import dev.zwander.common.util.addAll
-import dev.zwander.common.util.buildItemList
 import dev.zwander.resources.common.MR
 import kotlinx.coroutines.launch
 import kotlin.experimental.ExperimentalObjCRefinement
@@ -129,16 +129,13 @@ fun MainPage(
                 render = {
                     val simData by MainModel.currentSimData.collectAsState()
 
-                    val items = remember(simData) {
-                        buildItemList {
-                            addAll(
-                                MR.strings.iccid to simData?.sim?.iccId,
-                                MR.strings.imei to simData?.sim?.imei,
-                                MR.strings.imsi to simData?.sim?.imsi,
-                                MR.strings.msisdn to simData?.sim?.msisdn,
-                                MR.strings.status to simData?.sim?.status,
-                            )
-                        }
+                    val items = rememberInfoList {
+                        this[MR.strings.iccid] = simData?.sim?.iccId
+                        this[MR.strings.iccid] = simData?.sim?.iccId
+                        this[MR.strings.imei] = simData?.sim?.imei
+                        this[MR.strings.imsi] = simData?.sim?.imsi
+                        this[MR.strings.msisdn] = simData?.sim?.msisdn
+                        this[MR.strings.status] = simData?.sim?.status?.toString()
                     }
 
                     InfoRow(

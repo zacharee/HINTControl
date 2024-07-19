@@ -9,7 +9,9 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -18,10 +20,11 @@ import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.components.InfoRow
 import dev.zwander.common.components.PageGrid
+import dev.zwander.common.data.InfoItem
+import dev.zwander.common.data.rememberInfoList
+import dev.zwander.common.data.set
 import dev.zwander.common.model.MainModel
 import dev.zwander.common.model.adapters.BaseClientData
-import dev.zwander.common.util.addAll
-import dev.zwander.common.util.buildItemList
 import dev.zwander.common.util.bulletedList
 import dev.zwander.resources.common.MR
 import kotlin.experimental.ExperimentalObjCRefinement
@@ -108,15 +111,11 @@ private fun ClientItem(
     data: BaseClientData,
     modifier: Modifier = Modifier,
 ) {
-    val items = remember(data) {
-        buildItemList {
-            addAll(
-                MR.strings.connected to data.connected,
-                MR.strings.ipv4 to data.ipv4,
-                MR.strings.ipv6 to data.ipv6?.bulletedList(),
-                MR.strings.mac to data.mac,
-            )
-        }
+    val items = rememberInfoList {
+        this[MR.strings.connected] = data.connected.toString()
+        this[MR.strings.ipv4] = data.ipv4
+        this[MR.strings.ipv6] = data.ipv6?.bulletedList()
+        this[MR.strings.mac] = data.mac
     }
 
     Column(modifier = modifier) {

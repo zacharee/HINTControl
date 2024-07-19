@@ -18,17 +18,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
-import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
+import dev.zwander.common.data.rememberInfoList
+import dev.zwander.common.data.set
 import dev.zwander.common.model.adapters.AdvancedDataLTE
 import dev.zwander.common.model.adapters.BaseAdvancedData
 import dev.zwander.common.model.adapters.BaseCellData
-import dev.zwander.common.model.adapters.CellData5G
 import dev.zwander.common.model.adapters.CellDataLTE
 import dev.zwander.common.util.PersistentMutableStateFlow
-import dev.zwander.common.util.addAll
-import dev.zwander.common.util.buildItemList
 import dev.zwander.common.util.bulletedList
 import dev.zwander.resources.common.MR
 import kotlin.experimental.ExperimentalObjCRefinement
@@ -69,12 +67,28 @@ fun CellDataLayout(
     expandedKey: String,
     modifier: Modifier = Modifier,
 ) {
-    val basicItems = remember(data) {
-        generateBasicCellItems(data)
+    val basicItems = rememberInfoList {
+        this[MR.strings.bands] = data?.bands?.bulletedList()
+        this[MR.strings.rsrp] = Triple(data?.rsrp, -120, -90)
+        this[MR.strings.rsrq] = Triple(data?.rsrq, -13, -6)
+        this[MR.strings.rssi] = Triple(data?.rssi, -95, -65)
+        this[MR.strings.sinr] = Triple(data?.sinr, 0, 15)
+        this[MR.strings.cid] = data?.cid?.toString()
+        this[if (data is CellDataLTE?) MR.strings.enbid else MR.strings.gnbid] = data?.nbid?.toString()
     }
 
-    val advancedItems = remember(advancedData) {
-        generateAdvancedCellItems(advancedData)
+    val advancedItems = rememberInfoList {
+        this[MR.strings.bandwidth] = advancedData?.bandwidth
+        this[MR.strings.mcc] = advancedData?.mcc
+        this[MR.strings.mnc] = advancedData?.mnc
+        this[MR.strings.plmn] = advancedData?.plmn
+        this[MR.strings.status] = advancedData?.cqi?.toString()
+        this[(if (advancedData is AdvancedDataLTE?) MR.strings.earfcn else MR.strings.nrarfcn)] = advancedData?.earfcn
+        this[(if (advancedData is AdvancedDataLTE?) MR.strings.nrarfcn else MR.strings.earfcn)] = null as? String?
+        this[MR.strings.ecgi] = advancedData?.ecgi
+        this[MR.strings.pci] = advancedData?.pci
+        this[MR.strings.tac] = advancedData?.tac
+        this[MR.strings.supportedBands] = advancedData?.supportedBands?.bulletedList()
     }
 
     EmptiableContent(
@@ -120,47 +134,4 @@ fun CellDataLayout(
         isEmpty = basicItems.isEmpty(),
         modifier = modifier,
     )
-}
-
-private fun generateAdvancedCellItems(
-    data: BaseAdvancedData?,
-): List<Pair<StringResource, Any?>> {
-    return buildItemList {
-        addAll(
-            MR.strings.bandwidth to data?.bandwidth,
-            MR.strings.mcc to data?.mcc,
-            MR.strings.mnc to data?.mnc,
-            MR.strings.plmn to data?.plmn,
-            MR.strings.status to data?.status,
-            MR.strings.cqi to data?.cqi,
-            (if (data is AdvancedDataLTE?) MR.strings.earfcn else MR.strings.nrarfcn) to data?.earfcn,
-            MR.strings.ecgi to data?.ecgi,
-            MR.strings.pci to data?.pci,
-            MR.strings.tac to data?.tac,
-            MR.strings.supportedBands to data?.supportedBands?.bulletedList(),
-        )
-    }
-}
-
-fun generateBasicCellItems(data: BaseCellData?): List<Pair<StringResource, Any?>> {
-    return buildItemList {
-        addAll(
-            MR.strings.bands to data?.bands?.bulletedList(),
-            MR.strings.rsrp to data?.rsrp,
-            MR.strings.rsrq to data?.rsrq,
-            MR.strings.rssi to data?.rssi,
-            MR.strings.sinr to data?.sinr,
-            MR.strings.cid to data?.cid,
-        )
-
-        when (data) {
-            is CellDataLTE -> add(
-                MR.strings.enbid to data.nbid
-            )
-
-            is CellData5G -> add(
-                MR.strings.gnbid to data.nbid
-            )
-        }
-    }
 }

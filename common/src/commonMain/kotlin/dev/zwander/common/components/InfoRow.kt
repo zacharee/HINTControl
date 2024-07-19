@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.StringResource
-import dev.icerock.moko.resources.compose.stringResource
+import dev.zwander.common.data.InfoItem
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
 
@@ -18,7 +18,7 @@ import kotlin.native.HiddenFromObjC
 @Composable
 @HiddenFromObjC
 fun InfoRow(
-    items: List<Pair<StringResource, Any?>>,
+    items: Map<StringResource, InfoItem<*>?>,
     modifier: Modifier = Modifier,
 ) {
     FlowRow(
@@ -26,18 +26,10 @@ fun InfoRow(
         verticalArrangement = Arrangement.spacedBy(4.dp),
         modifier = modifier,
     ) {
-        items.forEach { (labelRes, value) ->
-            val valueString = if (value is StringResource) {
-                stringResource(value)
-            } else {
-                value.toString()
+        items.forEach { (_, info) ->
+            info?.let {
+                info.Render(Modifier.padding(horizontal = 4.dp))
             }
-
-            FormatText(
-                text = stringResource(labelRes),
-                textFormat = valueString,
-                modifier = Modifier.padding(horizontal = 4.dp),
-            )
         }
     }
 }

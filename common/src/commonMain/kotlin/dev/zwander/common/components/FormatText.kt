@@ -10,7 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.BaselineShift
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
@@ -19,17 +19,19 @@ import kotlin.native.HiddenFromObjC
 @HiddenFromObjC
 fun FormatText(
     text: String,
-    textFormat: String,
+    value: String,
     modifier: Modifier = Modifier,
+    valueColor: Color = Color.Unspecified,
 ) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            text = textFormat,
+            text = value,
             textAlign = TextAlign.Center,
             lineHeight = LocalTextStyle.current.fontSize,
+            color = valueColor,
         )
 
         ProvideTextStyle(
