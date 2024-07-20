@@ -27,7 +27,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.stringResource
+import dev.icerock.moko.resources.desc.desc
+import dev.icerock.moko.resources.format
 import dev.zwander.common.util.Storage
+import dev.zwander.common.util.invoke
 import dev.zwander.common.util.nullableMaxOf
 import dev.zwander.common.util.nullableMinOf
 import dev.zwander.resources.common.MR
@@ -40,9 +43,14 @@ import io.github.koalaplot.core.util.ExperimentalKoalaPlotApi
 import io.github.koalaplot.core.xygraph.FloatLinearAxisModel
 import io.github.koalaplot.core.xygraph.Point
 import io.github.koalaplot.core.xygraph.XYGraph
+import korlibs.math.roundDecimalPlaces
+import korlibs.math.toIntFloor
 import korlibs.platform.Platform
 import korlibs.time.DateTime
+import korlibs.time.seconds
 import kotlin.experimental.ExperimentalObjCRefinement
+import kotlin.math.ceil
+import kotlin.math.roundToInt
 import kotlin.native.HiddenFromObjC
 
 private const val VERTICAL_AXIS_PADDING = 2
@@ -86,6 +94,7 @@ fun SnapshotChart(
             (snapshots.lastOrNull()?.timeMillis ?: 0)
         }
     }
+    val maxXDateTime = DateTime.fromUnixMillis(maxX)
 
     val xAxisModel by remember {
         derivedStateOf {
@@ -237,7 +246,10 @@ fun SnapshotChart(
             xAxisModel = xAxisModel,
             yAxisModel = yAxisModel,
             modifier = Modifier,
-            xAxisLabels = { "" },
+            xAxisLabels = {
+                val seconds = (maxXDateTime - DateTime.fromUnixMillis(it.toLong() + minX)).seconds
+                MR.strings.graph_seconds_format(seconds.roundToInt())
+            },
             verticalMinorGridLineStyle = null,
             horizontalMinorGridLineStyle = null,
             panZoomEnabled = false,

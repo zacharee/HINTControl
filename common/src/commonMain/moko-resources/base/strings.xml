@@ -184,4 +184,7 @@
     <string name="chart_legend_5g_rsrq">5G RSRQ (dB)</string>
     <string name="chart_legend_5g_rssi">5G RSSI (dBm)</string>
     <string name="chart_legend_5g_sinr">5G SiNR (dB)</string>
+
+    <!-- Example: -10s (meaning negative 10 seconds) -->
+    <string name="graph_seconds_format">-%ss</string>
 </resources>
