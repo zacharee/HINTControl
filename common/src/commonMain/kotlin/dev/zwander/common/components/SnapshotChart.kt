@@ -27,8 +27,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.stringResource
-import dev.icerock.moko.resources.desc.desc
-import dev.icerock.moko.resources.format
 import dev.zwander.common.util.Storage
 import dev.zwander.common.util.invoke
 import dev.zwander.common.util.nullableMaxOf
@@ -43,13 +41,11 @@ import io.github.koalaplot.core.util.ExperimentalKoalaPlotApi
 import io.github.koalaplot.core.xygraph.FloatLinearAxisModel
 import io.github.koalaplot.core.xygraph.Point
 import io.github.koalaplot.core.xygraph.XYGraph
-import korlibs.math.roundDecimalPlaces
-import korlibs.math.toIntFloor
+import io.github.koalaplot.core.xygraph.rememberAxisStyle
 import korlibs.platform.Platform
 import korlibs.time.DateTime
 import korlibs.time.seconds
 import kotlin.experimental.ExperimentalObjCRefinement
-import kotlin.math.ceil
 import kotlin.math.roundToInt
 import kotlin.native.HiddenFromObjC
 
@@ -237,6 +233,7 @@ fun SnapshotChart(
                         style = MaterialTheme.typography.labelSmall,
                     )
                 },
+                modifier = Modifier.padding(top = 8.dp),
             )
         },
         legendLocation = LegendLocation.BOTTOM,
@@ -248,11 +245,31 @@ fun SnapshotChart(
             modifier = Modifier,
             xAxisLabels = {
                 val seconds = (maxXDateTime - DateTime.fromUnixMillis(it.toLong() + minX)).seconds
-                MR.strings.graph_seconds_format(seconds.roundToInt())
+                Text(
+                    text = MR.strings.graph_seconds_format(seconds.roundToInt()),
+                    color = MaterialTheme.colorScheme.onBackground,
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        fontSize = 12.sp,
+                        lineHeight = 12.sp,
+                    ),
+                    modifier = Modifier.padding(top = 2.dp),
+                )
             },
+            yAxisLabels = {
+                Text(
+                    text = it.roundToInt().toString(),
+                    color = MaterialTheme.colorScheme.onBackground,
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        fontSize = 12.sp,
+                        lineHeight = 12.sp,
+                    ),
+                )
+            },
+            yAxisTitle = {},
             verticalMinorGridLineStyle = null,
             horizontalMinorGridLineStyle = null,
             panZoomEnabled = false,
+            yAxisStyle = rememberAxisStyle(labelRotation = 90),
         ) {
             chartDataItems.forEach { chartData ->
                 LinePlot(
