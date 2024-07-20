@@ -147,7 +147,7 @@ fun MainPage(
             ItemInfo(
                 title = MR.strings.snapshots,
                 render = {
-                    SnapshotChart(it.aspectRatio(1f))
+                    SnapshotChart(it.fillMaxWidth().aspectRatio(1f))
                 },
                 selectable = false,
                 visible = { showSnapshots },

@@ -242,7 +242,6 @@ fun SnapshotChart(
         XYGraph(
             xAxisModel = xAxisModel,
             yAxisModel = yAxisModel,
-            modifier = Modifier,
             xAxisLabels = {
                 val seconds = (maxXDateTime - DateTime.fromUnixMillis(it.toLong() + minX)).seconds
                 Text(
