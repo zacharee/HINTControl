@@ -1,6 +1,7 @@
 package dev.zwander.common.util
 
 import dev.zwander.common.exceptions.NoGatewayFoundException
+import dev.zwander.common.exceptions.TooManyAttemptsException
 import dev.zwander.common.exceptions.pickExceptionForStatus
 import dev.zwander.common.model.Endpoint
 import dev.zwander.common.model.Endpoints
@@ -631,8 +632,8 @@ interface HTTPClient {
         return tryRequest(1)
     }
 
-    suspend fun HttpResponse.setError(): Boolean {
-        return if (!status.isSuccess()) {
+    suspend fun HttpResponse.setError(resultData: LoginResultData? = null) {
+        if (!status.isSuccess()) {
             val items = mutableListOf(status.description)
 
             items.add(this.formatForReport().map { "${it.key}==${it.value}" }.joinToString("\n", "{", "}"))
@@ -645,9 +646,8 @@ interface HTTPClient {
             val message = items.joinToString("\n")
 
             GlobalModel.updateHttpError(pickExceptionForStatus(status.value, message))
-            true
-        } else {
-            false
+        } else if (resultData != null && resultData.auth?.token == null) {
+            GlobalModel.updateHttpError(TooManyAttemptsException(resultData.result?.message ?: "Too many attempts."))
         }
     }
 }
@@ -1032,12 +1032,13 @@ private object UnifiedClient : HTTPClient {
                 }
 
                 val text = response.bodyAsText()
-                val token = json.decodeFromString<LoginResultData>(text).auth?.token
+                val data = json.decodeFromString<LoginResultData>(text)
+                val token = data.auth?.token
 
                 UserModel.token.value = token
 
                 if (token == null) {
-                    response.setError()
+                    response.setError(data)
                 }
             }
         }

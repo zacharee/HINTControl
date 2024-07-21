@@ -66,6 +66,8 @@ import dev.zwander.common.components.pullrefresh.PullRefreshIndicator
 import dev.zwander.common.components.pullrefresh.pullRefresh
 import dev.zwander.common.components.pullrefresh.rememberPullRefreshState
 import dev.zwander.common.data.Page
+import dev.zwander.common.exceptions.TooManyAttemptsException
+import dev.zwander.common.exceptions.UnauthorizedException
 import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.SettingsModel
 import dev.zwander.common.model.UserModel
@@ -73,6 +75,7 @@ import dev.zwander.common.ui.LayoutMode
 import dev.zwander.common.ui.LocalLayoutMode
 import dev.zwander.common.ui.Theme
 import dev.zwander.common.util.Storage
+import dev.zwander.common.util.invoke
 import dev.zwander.resources.common.MR
 import korlibs.platform.Platform
 import kotlinx.coroutines.delay
@@ -309,11 +312,15 @@ fun App(
                 }
 
                 LaunchedEffect(error) {
-                    localError = error ?: localError
+                    localError = when (error) {
+                        is UnauthorizedException -> MR.strings.unauthorized_error_text()
+                        is TooManyAttemptsException -> MR.strings.too_many_attempts_text()
+                        else -> error?.message ?: localError
+                    }
                 }
 
                 SelectionContainer {
-                    Text(text = error ?: "")
+                    Text(text = localError)
                 }
             },
             onDismissRequest = { GlobalModel.updateHttpError(null) },

@@ -74,7 +74,7 @@ fun LoginPage(
         mutableStateOf(gatewayIp)
     }
 
-    val isBlocking by GlobalModel.isBlocking.collectAsState()
+    var isBlocking by GlobalModel.isBlocking.collectAsMutableState()
     val client by GlobalModel.httpClient.collectAsMutableState()
     val isLoggedIn by UserModel.isLoggedIn.collectAsState(false)
 
@@ -105,8 +105,10 @@ fun LoginPage(
         }
         error = null
         focusManager.clearFocus()
+        isBlocking = true
         actualClient?.getMainData(true)
         actualClient?.logIn(usernameTemp, passwordTemp ?: "", rememberCredentials)
+        isBlocking = false
     }
 
     LaunchedEffect(client) {

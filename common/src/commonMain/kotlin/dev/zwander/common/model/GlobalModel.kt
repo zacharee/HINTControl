@@ -10,13 +10,12 @@ object GlobalModel {
     val isBlocking = MutableStateFlow(false)
     val isLoading = MutableStateFlow(false)
     val currentPage = MutableStateFlow<Page>(Page.Login)
-    val httpError = MutableStateFlow<String?>(null)
+    val httpError = MutableStateFlow<Throwable?>(null)
 
     val httpClient = MutableStateFlow<HTTPClient?>(null)
 
     fun updateHttpError(error: Throwable?) {
-        httpError.value = null
-        httpError.value = error?.message
+        httpError.value = error
 
         error?.let { CrossPlatformBugsnag.notify(it) }
     }

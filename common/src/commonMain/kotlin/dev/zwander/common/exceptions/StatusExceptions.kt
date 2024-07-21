@@ -62,6 +62,12 @@ class TooManyRequestsException : Exception {
     constructor(cause: Throwable?) : super(cause)
 }
 
+class TooManyAttemptsException : Exception {
+    constructor(message: String) : super(message)
+    constructor(message: String, cause: Throwable?) : super(message, cause)
+    constructor(cause: Throwable?) : super(cause)
+}
+
 fun pickExceptionForStatus(code: Int, message: String, cause: Throwable? = null): Exception {
     return when (code) {
         401 -> UnauthorizedException(message, cause)
