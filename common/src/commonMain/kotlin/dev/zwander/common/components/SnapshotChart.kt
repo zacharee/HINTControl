@@ -82,12 +82,12 @@ fun SnapshotChart(
 
     val minX by remember {
         derivedStateOf {
-            (snapshots.firstOrNull()?.timeMillis ?: 0)
+            (snapshots.minByOrNull { it.timeMillis }?.timeMillis ?: 0)
         }
     }
     val maxX by remember {
         derivedStateOf {
-            (snapshots.lastOrNull()?.timeMillis ?: 0)
+            (snapshots.maxByOrNull { it.timeMillis }?.timeMillis ?: 0)
         }
     }
     val maxXDateTime = DateTime.fromUnixMillis(maxX)
