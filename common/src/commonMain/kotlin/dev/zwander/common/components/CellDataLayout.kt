@@ -69,10 +69,10 @@ fun CellDataLayout(
 ) {
     val basicItems = rememberInfoList {
         this[MR.strings.bands] = data?.bands?.bulletedList()
-        this[MR.strings.rsrp] = Triple(data?.rsrp, -120, -90)
-        this[MR.strings.rsrq] = Triple(data?.rsrq, -13, -6)
+        this[MR.strings.rsrp] = Triple(data?.rsrp, -115, -77)
+        this[MR.strings.rsrq] = Triple(data?.rsrq, -25, -9)
         this[MR.strings.rssi] = Triple(data?.rssi, -95, -65)
-        this[MR.strings.sinr] = Triple(data?.sinr, 0, 15)
+        this[MR.strings.sinr] = Triple(data?.sinr, 2, 19)
         this[MR.strings.cid] = data?.cid?.toString()
         this[if (data is CellDataLTE?) MR.strings.enbid else MR.strings.gnbid] = data?.nbid?.toString()
     }
@@ -82,7 +82,8 @@ fun CellDataLayout(
         this[MR.strings.mcc] = advancedData?.mcc
         this[MR.strings.mnc] = advancedData?.mnc
         this[MR.strings.plmn] = advancedData?.plmn
-        this[MR.strings.status] = advancedData?.cqi?.toString()
+        this[MR.strings.status] = advancedData?.status?.toString()
+        this[MR.strings.cqi] = Triple(advancedData?.cqi, 0, 12)
         this[(if (advancedData is AdvancedDataLTE?) MR.strings.earfcn else MR.strings.nrarfcn)] = advancedData?.earfcn
         this[(if (advancedData is AdvancedDataLTE?) MR.strings.nrarfcn else MR.strings.earfcn)] = null as? String?
         this[MR.strings.ecgi] = advancedData?.ecgi
