@@ -74,6 +74,11 @@ fun SnapshotChart(
     modifier: Modifier = Modifier,
 ) {
     val fullSnapshots by Storage.snapshots.updates.collectAsState(listOf())
+
+    if (fullSnapshots.isNullOrEmpty()) {
+        return
+    }
+
     val snapshots by remember {
         derivedStateOf {
             val currentTime = DateTime.nowUnixMillisLong()
