@@ -57,6 +57,14 @@ private data class ChartData(
     val legendLabel: StringResource,
 )
 
+private fun createPoint(time: Long, value: Number?, minX: Long): Point<Float, Float>? {
+    return if (value == null) {
+        null
+    } else {
+        Point((time - minX).toFloat(), value.toFloat())
+    }
+}
+
 @OptIn(ExperimentalObjCRefinement::class, ExperimentalKoalaPlotApi::class,
     ExperimentalMaterial3Api::class
 )
@@ -104,9 +112,9 @@ fun SnapshotChart(
         }
     }
 
-    val yAxisModel by remember {
+    val minY by remember {
         derivedStateOf {
-            val minY = snapshots.mapNotNull { snapshot ->
+            snapshots.mapNotNull { snapshot ->
                 nullableMinOf(
                     snapshot.mainData?.signal?.fiveG?.rsrp,
                     snapshot.mainData?.signal?.fiveG?.rsrq,
@@ -118,8 +126,12 @@ fun SnapshotChart(
                     snapshot.mainData?.signal?.fourG?.sinr,
                 )?.let { it - VERTICAL_AXIS_PADDING }
             }.minOrNull() ?: 0
+        }
+    }
 
-            val maxY = snapshots.mapNotNull { snapshot ->
+    val maxY by remember {
+        derivedStateOf {
+            snapshots.mapNotNull { snapshot ->
                 nullableMaxOf(
                     snapshot.mainData?.signal?.fiveG?.rsrp,
                     snapshot.mainData?.signal?.fiveG?.rsrq,
@@ -131,7 +143,11 @@ fun SnapshotChart(
                     snapshot.mainData?.signal?.fourG?.sinr,
                 )?.let { it + VERTICAL_AXIS_PADDING }
             }.maxOrNull() ?: 1
+        }
+    }
 
+    val yAxisModel by remember {
+        derivedStateOf {
             FloatLinearAxisModel(
                 range = if (minY == maxY) {
                     0f..1f
@@ -142,80 +158,107 @@ fun SnapshotChart(
         }
     }
 
-    val createPoint: (time: Long, value: Number?) -> Point<Float, Float>? = remember {
-        { time, value ->
-            if (value == null) {
-                null
-            } else {
-                Point((time - minX).toFloat(), value.toFloat())
+    val isLightText = LocalContentColor.current.luminance() > 0.5f
+
+    val fiveGRsrp by remember {
+        derivedStateOf {
+            snapshots.mapNotNull { snapshot ->
+                createPoint(snapshot.timeMillis, snapshot.mainData?.signal?.fiveG?.rsrp, minX)
+            }
+        }
+    }
+    val fiveGRsrq by remember {
+        derivedStateOf {
+            snapshots.mapNotNull { snapshot ->
+                createPoint(snapshot.timeMillis, snapshot.mainData?.signal?.fiveG?.rsrq, minX)
+            }
+        }
+    }
+    val fiveGRssi by remember {
+        derivedStateOf {
+            snapshots.mapNotNull { snapshot ->
+                createPoint(snapshot.timeMillis, snapshot.mainData?.signal?.fiveG?.rssi, minX)
+            }
+        }
+    }
+    val fiveGSinr by remember {
+        derivedStateOf {
+            snapshots.mapNotNull { snapshot ->
+                createPoint(snapshot.timeMillis, snapshot.mainData?.signal?.fiveG?.sinr, minX)
+            }
+        }
+    }
+    val fourGRsrp by remember {
+        derivedStateOf {
+            snapshots.mapNotNull { snapshot ->
+                createPoint(snapshot.timeMillis, snapshot.mainData?.signal?.fourG?.rsrp, minX)
+            }
+        }
+    }
+    val fourGRsrq by remember {
+        derivedStateOf {
+            snapshots.mapNotNull { snapshot ->
+                createPoint(snapshot.timeMillis, snapshot.mainData?.signal?.fourG?.rsrq, minX)
+            }
+        }
+    }
+    val fourGRssi by remember {
+        derivedStateOf {
+            snapshots.mapNotNull { snapshot ->
+                createPoint(snapshot.timeMillis, snapshot.mainData?.signal?.fourG?.rssi, minX)
+            }
+        }
+    }
+    val fourGSinr by remember {
+        derivedStateOf {
+            snapshots.mapNotNull { snapshot ->
+                createPoint(snapshot.timeMillis, snapshot.mainData?.signal?.fourG?.sinr, minX)
             }
         }
     }
 
-    val isLightText = LocalContentColor.current.luminance() > 0.5f
-
-    val chartDataItems by remember {
-        derivedStateOf {
-            listOf(
-                ChartData(
-                    data = snapshots.mapNotNull { snapshot ->
-                        createPoint(snapshot.timeMillis, snapshot.mainData?.signal?.fiveG?.rsrp)
-                    },
-                    color = if (isLightText) Color(0xffbc8f8f) else Color(0xff3cb371),
-                    legendLabel = MR.strings.chart_legend_5g_rsrp,
-                ),
-                ChartData(
-                    data = snapshots.mapNotNull { snapshot ->
-                        createPoint(snapshot.timeMillis, snapshot.mainData?.signal?.fiveG?.rsrq)
-                    },
-                    color = if (isLightText) Color(0xff32cd32) else Color(0xff000080),
-                    legendLabel = MR.strings.chart_legend_5g_rsrq,
-                ),
-                ChartData(
-                    data = snapshots.mapNotNull { snapshot ->
-                        createPoint(snapshot.timeMillis, snapshot.mainData?.signal?.fiveG?.rssi)
-                    },
-                    color = if (isLightText) Color(0xffff4500) else Color(0xffbc8f8f),
-                    legendLabel = MR.strings.chart_legend_5g_rssi,
-                ),
-                ChartData(
-                    data = snapshots.mapNotNull { snapshot ->
-                        createPoint(snapshot.timeMillis, snapshot.mainData?.signal?.fiveG?.sinr)
-                    },
-                    color = if (isLightText) Color(0xffffd700) else Color(0xffb03060),
-                    legendLabel = MR.strings.chart_legend_5g_sinr,
-                ),
-                ChartData(
-                    data = snapshots.mapNotNull { snapshot ->
-                        createPoint(snapshot.timeMillis, snapshot.mainData?.signal?.fourG?.rsrp)
-                    },
-                    color = if (isLightText) Color(0xff00ffff) else Color(0xffff0000),
-                    legendLabel = MR.strings.chart_legend_lte_rsrp,
-                ),
-                ChartData(
-                    data = snapshots.mapNotNull { snapshot ->
-                        createPoint(snapshot.timeMillis, snapshot.mainData?.signal?.fourG?.rsrq)
-                    },
-                    color = if (isLightText) Color(0xffa020f0) else Color(0xff2e8b57),
-                    legendLabel = MR.strings.chart_legend_lte_rsrq,
-                ),
-                ChartData(
-                    data = snapshots.mapNotNull { snapshot ->
-                        createPoint(snapshot.timeMillis, snapshot.mainData?.signal?.fourG?.rssi)
-                    },
-                    color = if (isLightText) Color(0xff1e90ff) else Color(0xffb03060),
-                    legendLabel = MR.strings.chart_legend_lte_rssi,
-                ),
-                ChartData(
-                    data = snapshots.mapNotNull { snapshot ->
-                        createPoint(snapshot.timeMillis, snapshot.mainData?.signal?.fourG?.sinr)
-                    },
-                    color = if (isLightText) Color(0xffff1493) else Color(0xff00bfff),
-                    legendLabel = MR.strings.chart_legend_lte_sinr,
-                ),
-            )
-        }
-    }
+    val chartDataItems = listOf(
+        ChartData(
+            data = fiveGRsrp,
+            color = if (isLightText) Color(0xffbc8f8f) else Color(0xff3cb371),
+            legendLabel = MR.strings.chart_legend_5g_rsrp,
+        ),
+        ChartData(
+            data = fiveGRsrq,
+            color = if (isLightText) Color(0xff32cd32) else Color(0xff000080),
+            legendLabel = MR.strings.chart_legend_5g_rsrq,
+        ),
+        ChartData(
+            data = fiveGRssi,
+            color = if (isLightText) Color(0xffff4500) else Color(0xffbc8f8f),
+            legendLabel = MR.strings.chart_legend_5g_rssi,
+        ),
+        ChartData(
+            data = fiveGSinr,
+            color = if (isLightText) Color(0xffffd700) else Color(0xffb03060),
+            legendLabel = MR.strings.chart_legend_5g_sinr,
+        ),
+        ChartData(
+            data = fourGRsrp,
+            color = if (isLightText) Color(0xff00ffff) else Color(0xffff0000),
+            legendLabel = MR.strings.chart_legend_lte_rsrp,
+        ),
+        ChartData(
+            data = fourGRsrq,
+            color = if (isLightText) Color(0xffa020f0) else Color(0xff2e8b57),
+            legendLabel = MR.strings.chart_legend_lte_rsrq,
+        ),
+        ChartData(
+            data = fourGRssi,
+            color = if (isLightText) Color(0xff1e90ff) else Color(0xffb03060),
+            legendLabel = MR.strings.chart_legend_lte_rssi,
+        ),
+        ChartData(
+            data = fourGSinr,
+            color = if (isLightText) Color(0xffff1493) else Color(0xff00bfff),
+            legendLabel = MR.strings.chart_legend_lte_sinr,
+        ),
+    )
 
     ChartLayout(
         legend = {
