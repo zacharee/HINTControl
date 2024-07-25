@@ -30,6 +30,7 @@ okio = "3.9.0"
 oshi = "6.6.1"
 relinker = "1.4.5"
 slf4j = "2.0.13"
+taskerpluginlibrary = "0.4.10"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity-compose" }
@@ -73,6 +74,7 @@ okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 oshi-core = { module = "com.github.oshi:oshi-core", version.ref = "oshi" }
 relinker = { module = "com.getkeepsafe.relinker:relinker", version.ref = "relinker" }
 slf4j-jdk14 = { module = "org.slf4j:slf4j-jdk14", version.ref = "slf4j" }
+taskerpluginlibrary = { module = "com.joaomgcd:taskerpluginlibrary", version.ref = "taskerpluginlibrary" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle" }

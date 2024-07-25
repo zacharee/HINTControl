@@ -121,6 +121,8 @@ kotlin {
                 api(libs.bugsnag.android)
                 api(libs.relinker)
                 api(libs.androidx.glance.appwidget)
+
+                api(libs.taskerpluginlibrary)
             }
         }
         val skiaMain by creating {

@@ -3,45 +3,8 @@
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
-            android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:label="@string/app_name"
             android:icon="@mipmap/ic_launcher"
-            android:roundIcon="@mipmap/ic_launcher_round"
-            android:usesCleartextTraffic="true"
-            android:name="dev.zwander.common.App">
-        <activity android:name="dev.zwander.android.MainActivity" android:exported="true"
-                  android:configChanges="colorMode
-                  |density
-                  |fontScale
-                  |fontWeightAdjustment
-                  |keyboard
-                  |keyboardHidden
-                  |layoutDirection
-                  |locale
-                  |mcc
-                  |mnc
-                  |navigation
-                  |orientation
-                  |screenLayout
-                  |screenSize
-                  |smallestScreenSize
-                  |touchscreen
-                  |uiMode"
-        >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
-
-        <service android:name="dev.zwander.common.widget.WidgetUpdaterService"
-            android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE"
-            />
-
-        <meta-data
-            android:name="com.bugsnag.android.API_KEY"
-            android:value="462792f423289145bdd224a4450373ef"/>
-    </application>
+            android:roundIcon="@mipmap/ic_launcher_round" />
 </manifest>

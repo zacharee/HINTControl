@@ -1,6 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-    <application>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+    <application
+        android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
+        android:name="dev.zwander.common.App">
+        <!--suppress AndroidDomInspection -->
+        <activity android:name="dev.zwander.android.MainActivity" android:exported="true"
+            android:configChanges="colorMode
+                  |density
+                  |fontScale
+                  |fontWeightAdjustment
+                  |keyboard
+                  |keyboardHidden
+                  |layoutDirection
+                  |locale
+                  |mcc
+                  |mnc
+                  |navigation
+                  |orientation
+                  |screenLayout
+                  |screenSize
+                  |smallestScreenSize
+                  |touchscreen
+                  |uiMode"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name="dev.zwander.android.tasker.RebootActionConfig"
+            android:exported="true"
+            android:label="@string/reboot">
+            <intent-filter>
+                <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING" />
+            </intent-filter>
+        </activity>
+
         <receiver android:name=".widget.ConnectionStatusWidgetReceiver"
             android:exported="true">
             <intent-filter>
@@ -11,5 +50,14 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/connection_status_widget" />
         </receiver>
+
+        <service android:name="dev.zwander.common.widget.WidgetUpdaterService"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            />
+
+        <meta-data
+            android:name="com.bugsnag.android.API_KEY"
+            android:value="462792f423289145bdd224a4450373ef"/>
     </application>
 </manifest>
