@@ -4,7 +4,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.client.utils.*
-import io.ktor.util.*
+import io.ktor.utils.io.InternalAPI
 import io.ktor.utils.io.core.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -15,7 +15,7 @@ import kotlinx.serialization.json.Json
 @Serializable
 data class SupporterInfo(
     val name: String,
-    val link: String
+    val link: String,
 )
 
 class PatreonSupportersParser private constructor() {
