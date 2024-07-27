@@ -202,8 +202,9 @@ struct HINT_Widget: Widget {
 
 @available(iOS 16.0, macOS 13.0, watchOS 9.0, tvOS 16.0, *)
 struct RefreshIntent: AppIntent {
-    static var title: LocalizedStringResource = LocalizedStringResource(stringLiteral: MR.strings().refresh.desc().localized())
+    static var title: LocalizedStringResource = "refresh"
     static var description: IntentDescription? = nil
+    static var isDiscoverable: Bool = false
     
     func perform() async throws -> some IntentResult {
         WidgetCenter.shared.reloadTimelines(ofKind: "HINT_Widget")

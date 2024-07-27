@@ -20,8 +20,11 @@
 		B65F50CF2A60A4EF003D9D48 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B65F50CE2A60A4EF003D9D48 /* Assets.xcassets */; };
 		B65F50D32A60A4EF003D9D48 /* HINT WidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B65F50C42A60A4ED003D9D48 /* HINT WidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B67067122A6603F700A64F6E /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B65F50C72A60A4ED003D9D48 /* SwiftUI.framework */; };
+		B67B0C2C2C5571770026E1B1 /* AppShortcuts.strings in Resources */ = {isa = PBXBuildFile; fileRef = B67B0C2A2C5571770026E1B1 /* AppShortcuts.strings */; };
+		B68BCFB82C5532B900F2889C /* AppIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68BCFB72C5532B900F2889C /* AppIntents.swift */; };
+		B68BCFBA2C5567A000F2889C /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = B68BCFB92C5567A000F2889C /* Localizable.xcstrings */; };
+		B68BCFBB2C5567A000F2889C /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = B68BCFB92C5567A000F2889C /* Localizable.xcstrings */; };
 		B6B072CD2C23A707001BBD69 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B072CC2C23A707001BBD69 /* AppDelegate.swift */; };
-		B6B072CE2C23A707001BBD69 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B072CC2C23A707001BBD69 /* AppDelegate.swift */; };
 		B6B3C8D02C23F04400865852 /* Bugsnag in Frameworks */ = {isa = PBXBuildFile; productRef = B6B3C8CF2C23F04400865852 /* Bugsnag */; };
 		B6B3C8D22C23F05400865852 /* NSExceptionKtBugsnag in Frameworks */ = {isa = PBXBuildFile; productRef = B6B3C8D12C23F05400865852 /* NSExceptionKtBugsnag */; };
 		B6B3C8D42C23F07500865852 /* Bugsnag in Frameworks */ = {isa = PBXBuildFile; productRef = B6B3C8D32C23F07500865852 /* Bugsnag */; };
@@ -283,6 +286,9 @@
 		B65F50CC2A60A4ED003D9D48 /* HINT_Widget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HINT_Widget.swift; sourceTree = "<group>"; };
 		B65F50CE2A60A4EF003D9D48 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B65F50D02A60A4EF003D9D48 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B67B0C292C5571770026E1B1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/AppShortcuts.strings; sourceTree = "<group>"; };
+		B68BCFB72C5532B900F2889C /* AppIntents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIntents.swift; sourceTree = "<group>"; };
+		B68BCFB92C5567A000F2889C /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		B6B072CC2C23A707001BBD69 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B6F7E5D72BA6AEBC00E7536C /* Pods_iosApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_iosApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0E229EB2148322EE2881B08 /* Contents.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Contents.json; path = "Preview Assets.xcassets/Contents.json"; sourceTree = "<group>"; };
@@ -342,6 +348,8 @@
 		7555FF72242A565900829871 = {
 			isa = PBXGroup;
 			children = (
+				B67B0C2B2C5571770026E1B1 /* AppShortcutsStrings */,
+				B68BCFB92C5567A000F2889C /* Localizable.xcstrings */,
 				B621401D2A65ECB00011586B /* HINT WidgetExtension.entitlements */,
 				AB1DB47929225F7C00F7AF9C /* Configuration */,
 				7555FF7D242A565900829871 /* iosApp */,
@@ -372,6 +380,7 @@
 				2152FB032600AC8F00CF470E /* iOSApp.swift */,
 				058557D7273AAEEB004C7B11 /* Preview Content */,
 				B6B072CC2C23A707001BBD69 /* AppDelegate.swift */,
+				B68BCFB72C5532B900F2889C /* AppIntents.swift */,
 			);
 			path = iosApp;
 			sourceTree = "<group>";
@@ -771,6 +780,14 @@
 			path = "HINT Widget";
 			sourceTree = "<group>";
 		};
+		B67B0C2B2C5571770026E1B1 /* AppShortcutsStrings */ = {
+			isa = PBXGroup;
+			children = (
+				B67B0C2A2C5571770026E1B1 /* AppShortcuts.strings */,
+			);
+			path = AppShortcutsStrings;
+			sourceTree = "<group>";
+		};
 		E0E2210E116B6AD482D8F214 /* DWARF */ = {
 			isa = PBXGroup;
 			children = (
@@ -1065,8 +1082,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B67B0C2C2C5571770026E1B1 /* AppShortcuts.strings in Resources */,
 				058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */,
 				058557BB273AAA24004C7B11 /* Assets.xcassets in Resources */,
+				B68BCFBA2C5567A000F2889C /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1074,6 +1093,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B68BCFBB2C5567A000F2889C /* Localizable.xcstrings in Resources */,
 				B65F50CF2A60A4EF003D9D48 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1323,6 +1343,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B6B072CD2C23A707001BBD69 /* AppDelegate.swift in Sources */,
+				B68BCFB82C5532B900F2889C /* AppIntents.swift in Sources */,
 				2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */,
 				7555FF83242A565900829871 /* ContentView.swift in Sources */,
 			);
@@ -1332,7 +1353,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B6B072CE2C23A707001BBD69 /* AppDelegate.swift in Sources */,
 				B65F50CD2A60A4ED003D9D48 /* HINT_Widget.swift in Sources */,
 				B65F50CB2A60A4ED003D9D48 /* HINT_WidgetBundle.swift in Sources */,
 			);
@@ -1347,6 +1367,17 @@
 			targetProxy = B65F50D12A60A4EF003D9D48 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		B67B0C2A2C5571770026E1B1 /* AppShortcuts.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B67B0C292C5571770026E1B1 /* en */,
+			);
+			name = AppShortcuts.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		7555FFA3242A565B00829871 /* Debug */ = {
@@ -1402,11 +1433,13 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -1460,11 +1493,13 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};
 			name = Release;
