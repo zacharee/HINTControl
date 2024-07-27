@@ -1,3 +1,8 @@
 files:
   - source: /common/src/commonMain/moko-resources/base/strings.xml
     translation: /src/commonMain/moko-resources/%android_code%/strings.xml
+  - source: /iosApp/Localizable.xcstrings
+    translation: /iosApp/Localizable.xcstrings
+    multilingual: 1
+  - source: /iosApp/AppShortcutsStrings/en.lproj/AppShortcuts.strings
+    translation: /iosApp/AppShortcutsStrings/%osx_locale%.lproj/AppShortcuts.strings
