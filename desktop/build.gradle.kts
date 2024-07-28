@@ -8,8 +8,16 @@ plugins {
     alias(libs.plugins.conveyor)
 }
 
-group = "dev.zwander"
-version = rootProject.extra["app_version_code"].toString()
+val appVersionCode: Int by rootProject.extra
+
+val appVersionName: String by rootProject.extra
+val appPackageName: String by rootProject.extra
+val appGroup: String by rootProject.extra
+
+val javaVersion: JavaVersion by rootProject.extra
+
+group = appGroup
+version = appVersionCode.toString()
 
 kotlin {
     jvm {
@@ -28,7 +36,7 @@ compose.desktop {
     application {
         mainClass = "MainKt"
 
-        val pkg = rootProject.extra["package_name"].toString()
+        val pkg = appPackageName
 
         nativeDistributions {
             includeAllModules = true
@@ -52,7 +60,7 @@ compose.desktop {
             }
 
             packageName = pkg
-            packageVersion = rootProject.extra["app_version_name"].toString()
+            packageVersion = appVersionName
 
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Exe)
         }
@@ -78,6 +86,6 @@ configurations.all {
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(rootProject.extra["java_version"].toString()))
+        languageVersion.set(JavaLanguageVersion.of(javaVersion.toString()))
     }
 }

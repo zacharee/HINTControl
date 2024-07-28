@@ -12,7 +12,16 @@ plugins {
     alias(libs.plugins.buildkonfig)
 }
 
-version = rootProject.extra["app_version_code"].toString()
+val appVersionCode: Int by rootProject.extra
+val androidMinSdk: Int by rootProject.extra
+val androidCompileSdk: Int by rootProject.extra
+
+val appVersionName: String by rootProject.extra
+val appPackageName: String by rootProject.extra
+
+val javaVersion: JavaVersion by rootProject.extra
+
+version = appVersionCode
 
 kotlin {
     androidTarget()
@@ -31,12 +40,12 @@ kotlin {
         it.binaries {
             framework {
                 isStatic = true
-                binaryOption("bundleVersion", rootProject.extra["app_version_code"].toString())
+                binaryOption("bundleVersion", appVersionCode.toString())
                 binaryOption(
                     "bundleShortVersionString",
-                    rootProject.extra["app_version_name"].toString(),
+                    appVersionName,
                 )
-                binaryOption("bundleId", rootProject.extra["package_name"].toString())
+                binaryOption("bundleId", appPackageName)
             }
         }
     }
@@ -52,7 +61,7 @@ kotlin {
     }
 
     cocoapods {
-        version = rootProject.extra["app_version_code"].toString()
+        version = appVersionCode.toString()
         summary = "KVD21Control"
         homepage = "https://zwander.dev"
         ios.deploymentTarget = "14.0"
@@ -64,12 +73,12 @@ kotlin {
             export(libs.moko.resources)
             export(libs.nsexceptionKt.core)
 
-            binaryOption("bundleVersion", rootProject.extra["app_version_code"].toString())
+            binaryOption("bundleVersion", appVersionCode.toString())
             binaryOption(
                 "bundleShortVersionString",
-                rootProject.extra["app_version_name"].toString(),
+                appVersionName,
             )
-            binaryOption("bundleId", rootProject.extra["package_name"].toString())
+            binaryOption("bundleId", appPackageName)
         }
     }
 
@@ -173,7 +182,7 @@ kotlin {
 android {
     namespace = "dev.zwander.common"
 
-    compileSdk = rootProject.extra["compile_sdk"].toString().toInt()
+    compileSdk = androidCompileSdk
 
     sourceSets {
         getByName("main") {
@@ -183,12 +192,11 @@ android {
     }
 
     defaultConfig {
-        minSdk = rootProject.extra["min_sdk"].toString().toInt()
+        minSdk = androidMinSdk
     }
-    val compatibility = JavaVersion.toVersion(rootProject.extra["java_version"].toString())
     compileOptions {
-        sourceCompatibility = compatibility
-        targetCompatibility = compatibility
+        sourceCompatibility = javaVersion
+        targetCompatibility = javaVersion
     }
     lint {
         abortOnError = false
@@ -196,7 +204,7 @@ android {
 }
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(rootProject.extra["java_version"].toString()))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(javaVersion.toString()))
 }
 
 multiplatformResources {
@@ -209,10 +217,9 @@ buildkonfig {
     exposeObjectWithName = objectName
 
     defaultConfigs {
-        buildConfigField(STRING, "versionName", "${rootProject.extra["app_version_name"]}")
-        buildConfigField(STRING, "versionCode", "${rootProject.extra["app_version_code"]}")
-        buildConfigField(STRING, "appName", "${rootProject.extra["app_name"]}")
-        buildConfigField(STRING, "packageName", "${rootProject.extra["package_name"]}")
+        buildConfigField(STRING, "versionName", appVersionName)
+        buildConfigField(STRING, "versionCode", "$appVersionCode")
+        buildConfigField(STRING, "packageName", appPackageName)
     }
 }
 
@@ -224,7 +231,7 @@ afterEvaluate {
                 "-replace",
                 "CFBundleShortVersionString",
                 "-string",
-                "${rootProject.extra["app_version_name"]}",
+                appVersionName,
                 "../iosApp/iosApp/Info.plist",
             )
         }
@@ -238,7 +245,7 @@ afterEvaluate {
                 "-replace",
                 "CFBundleVersion",
                 "-string",
-                "${rootProject.extra["app_version_code"]}",
+                "$appVersionCode",
                 "../iosApp/iosApp/Info.plist",
             )
         }

@@ -9,27 +9,36 @@ plugins {
     alias(libs.plugins.bugsnag.android)
 }
 
+val appVersionCode: Int by rootProject.extra
+val androidMinSdk: Int by rootProject.extra
+val androidTargetSdk: Int by rootProject.extra
+val androidCompileSdk: Int by rootProject.extra
+
+val appVersionName: String by rootProject.extra
+val appPackageName: String by rootProject.extra
+
+val javaVersion: JavaVersion by rootProject.extra
+
 dependencies {
     implementation(project(":common"))
 }
 
 android {
-    namespace = rootProject.extra["package_name"].toString()
+    namespace = appPackageName
 
-    compileSdk = rootProject.extra["compile_sdk"].toString().toInt()
+    compileSdk = androidCompileSdk
     defaultConfig {
-        applicationId = rootProject.extra["package_name"].toString()
-        minSdk = rootProject.extra["min_sdk"].toString().toInt()
-        targetSdk = rootProject.extra["target_sdk"].toString().toInt()
-        versionCode = rootProject.extra["app_version_code"].toString().toInt()
-        versionName = rootProject.extra["app_version_name"].toString()
+        applicationId = appPackageName
+        minSdk = androidMinSdk
+        targetSdk = androidTargetSdk
+        versionCode = appVersionCode
+        versionName = appVersionName
 
         setProperty("archivesBaseName", "HINT_Control_$versionName")
     }
-    val compatibility = JavaVersion.toVersion(rootProject.extra["java_version"].toString())
     compileOptions {
-        sourceCompatibility = compatibility
-        targetCompatibility = compatibility
+        sourceCompatibility = javaVersion
+        targetCompatibility = javaVersion
     }
     buildTypes {
         getByName("release") {

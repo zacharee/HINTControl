@@ -1,3 +1,14 @@
+val androidCompileSdk by extra(34)
+val androidTargetSdk by extra(34)
+val androidMinSdk by extra(24)
+val javaVersion by extra(JavaVersion.VERSION_17)
+
+val appVersionCode by extra(41)
+val appVersionName by extra("1.12.0")
+
+val appGroup by extra("dev.zwander")
+val appPackageName by extra("dev.zwander.arcadyankvd21control")
+
 plugins {
     alias(libs.plugins.kotlin.native.cocoapods) apply false
     alias(libs.plugins.moko.resources) apply false
