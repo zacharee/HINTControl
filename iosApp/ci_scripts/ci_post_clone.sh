@@ -9,6 +9,10 @@ curl -s "https://get.sdkman.io" | bash
 . "$HOME/.sdkman/bin/sdkman-init.sh"
 sdk install java 17.0.7-ms
 
+cd ../ && chmod +x gradlew && ./gradlew common:podInstall
+
+cd iosApp || exit 100
+
 pod install
 
 # Actually has to be set in the Environment Variables section in Xcode Cloud
