@@ -9,9 +9,9 @@ curl -s "https://get.sdkman.io" | bash
 . "$HOME/.sdkman/bin/sdkman-init.sh"
 sdk install java 17.0.7-ms
 
-cd ../ && chmod +x gradlew && ./gradlew common:podInstall
+cd ../../ && chmod +x gradlew && ./gradlew common:podInstall
 
-cd iosApp || exit 100
+cd iosApp/ci_scripts || exit 100
 
 pod install
 
