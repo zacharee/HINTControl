@@ -9,8 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import dev.icerock.moko.resources.StringResource
-import dev.zwander.common.data.InfoItem
+import dev.zwander.common.data.InfoMap
 import dev.zwander.common.util.animatePlacement
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
@@ -19,7 +18,7 @@ import kotlin.native.HiddenFromObjC
 @Composable
 @HiddenFromObjC
 fun InfoRow(
-    items: Map<StringResource, InfoItem<*>?>,
+    items: InfoMap,
     modifier: Modifier = Modifier,
 ) {
     FlowRow(

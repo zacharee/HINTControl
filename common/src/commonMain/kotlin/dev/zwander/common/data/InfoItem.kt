@@ -2,10 +2,8 @@ package dev.zwander.common.data
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.material3.LocalContentColor
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateMapOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
@@ -14,27 +12,28 @@ import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.components.FormatText
 
-@Composable
-fun rememberInfoList(block: @Composable MutableMap<StringResource, InfoItem<*>?>.() -> Unit): Map<StringResource, InfoItem<*>?> {
-    val mapState = remember {
-        mutableStateMapOf<StringResource, InfoItem<*>?>()
-    }
+typealias InfoMap = Map<StringResource, InfoItem<*>?>
+typealias MutableInfoMap = MutableMap<StringResource, InfoItem<*>?>
 
-    mapState.block()
+@Composable
+fun generateInfoList(vararg dataKeys: Any?, block: MutableInfoMap.() -> Unit): InfoMap {
+    val mapState = rememberSaveable(dataKeys) {
+        LinkedHashMap<StringResource, InfoItem<*>?>().also(block)
+    }
 
     return mapState
 }
 
-inline operator fun MutableMap<StringResource, InfoItem<*>?>.set(key: StringResource, value: String?) {
+inline operator fun MutableInfoMap.set(key: StringResource, value: String?) {
     this[key] = value?.let { InfoItem.StringItem(key, it) }
 }
 
-inline operator fun MutableMap<StringResource, InfoItem<*>?>.set(key: StringResource, value: StringResource?) {
+inline operator fun MutableInfoMap.set(key: StringResource, value: StringResource?) {
     this[key] = value?.let { InfoItem.StringResourceItem(key, it) }
 }
 
 // Triple: <value, min, max>
-inline operator fun MutableMap<StringResource, InfoItem<*>?>.set(key: StringResource, value: Triple<Int?, Int, Int>) {
+inline operator fun MutableInfoMap.set(key: StringResource, value: Triple<Int?, Int, Int>) {
     this[key] = value.first?.let { InfoItem.ColorGradientItem(key, it, value.second, value.third) }
 }
 

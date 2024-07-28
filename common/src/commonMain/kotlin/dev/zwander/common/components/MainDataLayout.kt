@@ -9,7 +9,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import dev.icerock.moko.resources.compose.stringResource
-import dev.zwander.common.data.rememberInfoList
+import dev.zwander.common.data.generateInfoList
 import dev.zwander.common.data.set
 import dev.zwander.common.model.MainModel
 import dev.zwander.resources.common.MR
@@ -23,7 +23,7 @@ fun MainDataLayout(
 ) {
     val data by MainModel.currentMainData.collectAsState()
 
-    val items = rememberInfoList {
+    val items = generateInfoList(data) {
         this[MR.strings.apn] = data?.signal?.generic?.apn
         this[MR.strings.ipv6] = data?.signal?.generic?.hasIPv6?.toString()
         this[MR.strings.registration] = data?.signal?.generic?.registration

@@ -10,7 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import dev.icerock.moko.resources.compose.stringResource
-import dev.zwander.common.data.rememberInfoList
+import dev.zwander.common.data.generateInfoList
 import dev.zwander.common.data.set
 import dev.zwander.common.model.MainModel
 import dev.zwander.resources.common.MR
@@ -34,7 +34,7 @@ fun DeviceDataLayout(
         TimeFormat("HH'h' mm'm' ss's'")
     }
     
-    val items = rememberInfoList {
+    val items = generateInfoList(deviceData, data) {
         this[MR.strings.friendly_name] = deviceData?.friendlyName
         this[MR.strings.name] = deviceData?.name
         this[MR.strings.softwareVersion] = deviceData?.softwareVersion

@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
-import dev.zwander.common.data.rememberInfoList
+import dev.zwander.common.data.generateInfoList
 import dev.zwander.common.data.set
 import dev.zwander.common.model.adapters.AdvancedDataLTE
 import dev.zwander.common.model.adapters.BaseAdvancedData
@@ -67,7 +67,7 @@ fun CellDataLayout(
     expandedKey: String,
     modifier: Modifier = Modifier,
 ) {
-    val basicItems = rememberInfoList {
+    val basicItems = generateInfoList(data) {
         this[MR.strings.bands] = data?.bands?.bulletedList()
         this[MR.strings.rsrp] = Triple(data?.rsrp, -115, -77)
         this[MR.strings.rsrq] = Triple(data?.rsrq, -25, -9)
@@ -77,7 +77,7 @@ fun CellDataLayout(
         this[if (data is CellDataLTE?) MR.strings.enbid else MR.strings.gnbid] = data?.nbid?.toString()
     }
 
-    val advancedItems = rememberInfoList {
+    val advancedItems = generateInfoList(advancedData) {
         this[MR.strings.bandwidth] = advancedData?.bandwidth
         this[MR.strings.mcc] = advancedData?.mcc
         this[MR.strings.mnc] = advancedData?.mnc

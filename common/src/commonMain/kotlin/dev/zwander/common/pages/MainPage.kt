@@ -38,7 +38,7 @@ import dev.zwander.common.components.MainDataLayout
 import dev.zwander.common.components.PageGrid
 import dev.zwander.common.components.SnapshotChart
 import dev.zwander.common.components.dialog.InWindowAlertDialog
-import dev.zwander.common.data.rememberInfoList
+import dev.zwander.common.data.generateInfoList
 import dev.zwander.common.data.set
 import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.MainModel
@@ -129,7 +129,7 @@ fun MainPage(
                 render = {
                     val simData by MainModel.currentSimData.collectAsState()
 
-                    val items = rememberInfoList {
+                    val items = generateInfoList(simData) {
                         this[MR.strings.iccid] = simData?.sim?.iccId
                         this[MR.strings.iccid] = simData?.sim?.iccId
                         this[MR.strings.imei] = simData?.sim?.imei
