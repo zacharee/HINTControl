@@ -3,6 +3,7 @@ package dev.zwander.common.components
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.Card
@@ -38,6 +39,7 @@ fun ExpanderCard(
             },
             colors = colors,
             elevation = elevation,
+            modifier = Modifier.padding(top = 8.dp),
         ) {
             Box(
                 modifier = Modifier.fillMaxWidth(),
