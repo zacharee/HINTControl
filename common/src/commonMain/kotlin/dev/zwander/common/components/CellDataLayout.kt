@@ -2,22 +2,15 @@
 
 package dev.zwander.common.components
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.data.generateInfoList
@@ -26,7 +19,6 @@ import dev.zwander.common.model.adapters.AdvancedDataLTE
 import dev.zwander.common.model.adapters.BaseAdvancedData
 import dev.zwander.common.model.adapters.BaseCellData
 import dev.zwander.common.model.adapters.CellDataLTE
-import dev.zwander.common.util.PersistentMutableStateFlow
 import dev.zwander.common.util.bulletedList
 import dev.zwander.resources.common.MR
 import kotlin.experimental.ExperimentalObjCRefinement
@@ -94,36 +86,14 @@ fun CellDataLayout(
 
     EmptiableContent(
         content = {
-            val expandedState = remember(expandedKey) {
-                PersistentMutableStateFlow(expandedKey, false)
-            }
-
-            var expanded by expandedState.collectAsMutableState()
-
             SelectionContainer {
                 InfoRow(
                     items = basicItems,
-                    modifier = Modifier.fillMaxWidth()
-                        .padding(bottom = 4.dp),
+                    modifier = Modifier.fillMaxWidth(),
+                    advancedItems = advancedItems,
+                    expandedKey = expandedKey,
                 )
             }
-
-            AnimatedVisibility(
-                visible = expanded,
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                SelectionContainer {
-                    InfoRow(
-                        items = advancedItems,
-                        modifier = Modifier.fillMaxWidth(),
-                    )
-                }
-            }
-
-            ExpanderCard(
-                expanded = expanded,
-                onExpandChange = { expanded = it },
-            )
         },
         emptyContent = {
             Text(
