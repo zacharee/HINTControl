@@ -82,6 +82,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlin.random.Random
+import kotlin.random.nextInt
 
 private const val DEFAULT_TIMEOUT_MS = 20_000L
 private const val MAX_SEND_COUNT = 100
@@ -110,21 +111,22 @@ private object ASClients {
     val mockEngine = MockEngine { request ->
         respond(
             content = run {
-              val rsrp4g = Random.nextInt(-120, -80)
-              val rssi4g = rsrp4g - Random.nextInt(5, 10)
-              val rsrq4g = Random.nextInt(-12, 5)
-              val sinr4g = Random.nextInt(-2, 20)
+                val rsrp4g = Random.nextInt(-120, -80)
+                val rssi4g = rsrp4g - Random.nextInt(5, 10)
+                val rsrq4g = Random.nextInt(-12, 5)
+                val sinr4g = Random.nextInt(-2, 20)
 
-              val rsrp5g = rsrp4g - Random.nextInt(-10, 12)
-              val rssi5g = rsrp5g - Random.nextInt(5, 10)
-              val rsrq5g = rsrq4g - Random.nextInt(-4, 4)
-              val sinr5g = sinr4g - Random.nextInt(-3, 7)
+                val rsrp5g = rsrp4g - Random.nextInt(-10, 12)
+                val rssi5g = rsrp5g - Random.nextInt(5, 10)
+                val rsrq5g = rsrq4g - Random.nextInt(-4, 4)
+                val sinr5g = sinr4g - Random.nextInt(-3, 7)
 
+                val bars = Random.nextInt(0..5)
 
-              ByteReadChannel(
-                when (Endpoint.CommonApiEndpoint(request.url.fullPath.replace("/TMI/v1/", ""))) {
-                    Endpoints.CommonApiV1.auth -> {
-                        """
+                ByteReadChannel(
+                    when (Endpoint.CommonApiEndpoint(request.url.fullPath.replace("/TMI/v1/", ""))) {
+                        Endpoints.CommonApiV1.auth -> {
+                            """
                             {
                               "auth": {
                                 "expiration": 1685324186,
@@ -134,10 +136,10 @@ private object ASClients {
                               }
                             }
                         """.trimIndent()
-                    }
+                        }
 
-                    Endpoints.CommonApiV1.gatewayInfo -> {
-                        """
+                        Endpoints.CommonApiV1.gatewayInfo -> {
+                            """
                             {
                               "device": {
                                 "friendlyName": "5G Gateway",
@@ -160,7 +162,7 @@ private object ASClients {
                                   "bands": [
                                     "b2"
                                   ],
-                                  "bars": 2.0,
+                                  "bars": ${bars},
                                   "cid": 12,
                                   "eNBID": 310463,
                                   "rsrp": ${rsrp4g},
@@ -172,7 +174,7 @@ private object ASClients {
                                   "bands": [
                                     "n41"
                                   ],
-                                  "bars": 4.0,
+                                  "bars": ${bars},
                                   "cid": 0,
                                   "gNBID": 0,
                                   "rsrp": ${rsrp5g},
@@ -197,10 +199,10 @@ private object ASClients {
                               }
                             }
                         """.trimIndent()
-                    }
+                        }
 
-                    Endpoints.CommonApiV1.getWifiConfig -> {
-                        """
+                        Endpoints.CommonApiV1.getWifiConfig -> {
+                            """
                             {
                               "2.4ghz": {
                                 "airtimeFairness": true,
@@ -241,10 +243,10 @@ private object ASClients {
                               ]
                             }
                         """.trimIndent()
-                    }
+                        }
 
-                    Endpoints.CommonApiV1.getDevices -> {
-                        """
+                        Endpoints.CommonApiV1.getDevices -> {
+                            """
                             {
                               "clients": {
                                 "2.4ghz": [],
@@ -263,10 +265,10 @@ private object ASClients {
                               }
                             }
                         """.trimIndent()
-                    }
+                        }
 
-                    Endpoints.CommonApiV1.getCellInfo -> {
-                        """
+                        Endpoints.CommonApiV1.getCellInfo -> {
+                            """
                             {
                               "cell": {
                                 "4g": {
@@ -346,10 +348,10 @@ private object ASClients {
                               }
                             }
                         """.trimIndent()
-                    }
+                        }
 
-                    Endpoints.CommonApiV1.getSimInfo -> {
-                        """
+                        Endpoints.CommonApiV1.getSimInfo -> {
+                            """
                             {
                               "sim": {
                                 "iccId": "1856372956105738573",
@@ -360,23 +362,23 @@ private object ASClients {
                               }
                             }
                         """.trimIndent()
-                    }
+                        }
 
-                    Endpoints.CommonApiV1.setWifiConfig -> {
-                        ""
-                    }
+                        Endpoints.CommonApiV1.setWifiConfig -> {
+                            ""
+                        }
 
-                    Endpoints.CommonApiV1.reset -> {
-                        ""
-                    }
+                        Endpoints.CommonApiV1.reset -> {
+                            ""
+                        }
 
-                    Endpoints.CommonApiV1.reboot -> {
-                        ""
-                    }
+                        Endpoints.CommonApiV1.reboot -> {
+                            ""
+                        }
 
-                    else -> "Unsupported!"
-                }
-              )
+                        else -> "Unsupported!"
+                    }
+                )
             },
             status = HttpStatusCode.OK,
             headers = headersOf(HttpHeaders.ContentType, "application/json"),
@@ -564,7 +566,8 @@ interface HTTPClient {
                 } else if (condition()) {
                     return true
                 }
-            } catch (_: Exception) {}
+            } catch (_: Exception) {
+            }
 
             delay(1000L)
         }
@@ -815,7 +818,8 @@ private object NokiaClient : HTTPClient {
 
             val wiredClients = deviceInfo?.deviceConfig?.filter { it.interfaceType == "Ethernet" }
             val twoGigClients = deviceInfo?.deviceConfig?.filter { it.interfaceType == "802.11" }
-            val fiveGigClients = deviceInfo?.deviceConfig?.filter { it.interfaceType == "802.11ac" || it.interfaceType == "802.11ax" }
+            val fiveGigClients =
+                deviceInfo?.deviceConfig?.filter { it.interfaceType == "802.11ac" || it.interfaceType == "802.11ax" }
 
             ClientDeviceData(
                 clients = ClientsData(
