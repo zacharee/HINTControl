@@ -73,12 +73,8 @@ import io.ktor.http.userAgent
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.util.appendIfNameAbsent
 import io.ktor.utils.io.ByteReadChannel
-import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
+import korlibs.io.async.launch
+import kotlinx.coroutines.*
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlin.random.Random
@@ -457,7 +453,7 @@ private object NokiaClients {
                 response.status.value.let { it == 403 || it in 500..599 }
             }
             this.modifyRequest {
-                runBlocking {
+                launch(Dispatchers.IO) {
                     NokiaClient.logIn(
                         UserModel.username.value,
                         UserModel.password.value ?: "",
