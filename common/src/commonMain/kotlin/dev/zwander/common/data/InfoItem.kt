@@ -3,7 +3,6 @@ package dev.zwander.common.data
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
@@ -17,7 +16,7 @@ typealias MutableInfoMap = MutableMap<StringResource, InfoItem<*>?>
 
 @Composable
 fun generateInfoList(vararg dataKeys: Any?, block: MutableInfoMap.() -> Unit): InfoMap {
-    val mapState = rememberSaveable(dataKeys) {
+    val mapState = remember(dataKeys) {
         LinkedHashMap<StringResource, InfoItem<*>?>().also(block)
     }
 
