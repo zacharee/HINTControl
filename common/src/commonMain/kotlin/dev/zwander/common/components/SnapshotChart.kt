@@ -13,11 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TooltipBox
 import androidx.compose.material3.TooltipDefaults
 import androidx.compose.material3.rememberTooltipState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.stringResource
+import dev.zwander.common.data.HistoricalSnapshot
 import dev.zwander.common.util.Storage
 import dev.zwander.common.util.invoke
 import dev.zwander.common.util.nullableMaxOf
@@ -65,7 +62,8 @@ private fun createPoint(time: Long, value: Number?, minX: Long): Point<Float, Fl
     }
 }
 
-@OptIn(ExperimentalObjCRefinement::class, ExperimentalKoalaPlotApi::class,
+@OptIn(
+    ExperimentalObjCRefinement::class, ExperimentalKoalaPlotApi::class,
     ExperimentalMaterial3Api::class
 )
 @HiddenFromObjC
@@ -79,14 +77,16 @@ fun SnapshotChart(
         return
     }
 
-    val snapshots by remember {
-        derivedStateOf {
-            val currentTime = DateTime.nowUnixMillisLong()
-            fullSnapshots?.run {
-                val firstIndex = this.indexOfFirst { it.timeMillis >= (currentTime - 60000) }.coerceAtLeast(0)
-                slice(firstIndex..lastIndex)
-            } ?: listOf()
-        }
+    var snapshots by remember {
+        mutableStateOf(listOf<HistoricalSnapshot>())
+    }
+
+    LaunchedEffect(fullSnapshots) {
+        val currentTime = DateTime.nowUnixMillisLong()
+        snapshots = fullSnapshots?.run {
+            val firstIndex = this.indexOfFirst { it.timeMillis >= (currentTime - 60000) }.coerceAtLeast(0)
+            slice(firstIndex..lastIndex)
+        } ?: listOf()
     }
 
     if (snapshots.isEmpty()) {
