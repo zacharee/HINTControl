@@ -129,7 +129,7 @@ fun MainPage(
                 render = {
                     val simData by MainModel.currentSimData.collectAsState()
 
-                    val items = generateInfoList(simData) {
+                    val items = generateInfoList("SIMData", simData) {
                         this[MR.strings.iccid] = simData?.sim?.iccId
                         this[MR.strings.iccid] = simData?.sim?.iccId
                         this[MR.strings.imei] = simData?.sim?.imei

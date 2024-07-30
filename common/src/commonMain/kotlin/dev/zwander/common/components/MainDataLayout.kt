@@ -23,7 +23,7 @@ fun MainDataLayout(
 ) {
     val data by MainModel.currentMainData.collectAsState()
 
-    val items = generateInfoList(data) {
+    val items = generateInfoList("MainData", data) {
         this[MR.strings.apn] = data?.signal?.generic?.apn
         this[MR.strings.ipv6] = data?.signal?.generic?.hasIPv6?.toString()
         this[MR.strings.registration] = data?.signal?.generic?.registration

@@ -34,7 +34,7 @@ fun DeviceDataLayout(
         TimeFormat("HH'h' mm'm' ss's'")
     }
     
-    val items = generateInfoList(deviceData, data) {
+    val items = generateInfoList("DeviceData", deviceData, data) {
         this[MR.strings.friendly_name] = deviceData?.friendlyName
         this[MR.strings.name] = deviceData?.name
         this[MR.strings.softwareVersion] = deviceData?.softwareVersion

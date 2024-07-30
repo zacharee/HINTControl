@@ -59,7 +59,7 @@ fun CellDataLayout(
     expandedKey: String,
     modifier: Modifier = Modifier,
 ) {
-    val basicItems = generateInfoList(data) {
+    val basicItems = generateInfoList("CellDataBasic", data) {
         this[MR.strings.bands] = data?.bands?.bulletedList()
         this[MR.strings.rsrp] = Triple(data?.rsrp, -115, -77)
         this[MR.strings.rsrq] = Triple(data?.rsrq, -25, -9)
@@ -69,7 +69,7 @@ fun CellDataLayout(
         this[if (data is CellDataLTE?) MR.strings.enbid else MR.strings.gnbid] = data?.nbid?.toString()
     }
 
-    val advancedItems = generateInfoList(advancedData) {
+    val advancedItems = generateInfoList("CellDataAdvanced", advancedData) {
         this[MR.strings.bandwidth] = advancedData?.bandwidth
         this[MR.strings.mcc] = advancedData?.mcc
         this[MR.strings.mnc] = advancedData?.mnc

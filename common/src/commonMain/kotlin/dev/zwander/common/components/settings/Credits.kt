@@ -11,7 +11,7 @@ import dev.zwander.resources.common.MR
 @Composable
 fun Credits() {
     InfoRow(
-        items = generateInfoList {
+        items = generateInfoList("Credits") {
             this[MR.strings.creator] = MR.strings.zachary_wander
             this[MR.strings.nokia_tester] = MR.strings.shad
         },

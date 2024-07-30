@@ -14,10 +14,35 @@ import dev.zwander.common.components.FormatText
 typealias InfoMap = Map<StringResource, InfoItem<*>?>
 typealias MutableInfoMap = MutableMap<StringResource, InfoItem<*>?>
 
+private data class CacheItem(
+    val key: String,
+    val compositionHash: Int,
+    val data: InfoMap,
+)
+
+private val cache = mutableMapOf<String, CacheItem>()
+
 @Composable
-fun generateInfoList(vararg dataKeys: Any?, block: MutableInfoMap.() -> Unit): InfoMap {
-    val mapState = remember(dataKeys) {
-        LinkedHashMap<StringResource, InfoItem<*>?>().also(block)
+fun generateInfoList(key: String, vararg compositionKeys: Any?, block: MutableInfoMap.() -> Unit): InfoMap {
+    var mapState by remember {
+        mutableStateOf(LinkedHashMap(cache[key]?.data ?: mapOf()))
+    }
+
+    LaunchedEffect(compositionKeys) {
+        val currentCache = cache[key]
+        val newHash = compositionKeys.contentDeepHashCode()
+
+        println("$key, ${currentCache?.compositionHash} $newHash")
+
+        if (currentCache == null || compositionKeys.isEmpty() || currentCache.compositionHash != newHash) {
+            val newMap = LinkedHashMap<StringResource, InfoItem<*>?>().apply(block)
+            cache[key] = CacheItem(
+                key = key,
+                compositionHash = newHash,
+                data = newMap,
+            )
+            mapState = newMap
+        }
     }
 
     return mapState

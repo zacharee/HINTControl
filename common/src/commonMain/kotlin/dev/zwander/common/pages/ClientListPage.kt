@@ -108,7 +108,7 @@ private fun ClientItem(
     data: BaseClientData,
     modifier: Modifier = Modifier,
 ) {
-    val items = generateInfoList(data) {
+    val items = generateInfoList("ClientItem-${data.mac}", data) {
         this[MR.strings.connected] = data.connected.toString()
         this[MR.strings.ipv4] = data.ipv4
         this[MR.strings.ipv6] = data.ipv6?.bulletedList()
