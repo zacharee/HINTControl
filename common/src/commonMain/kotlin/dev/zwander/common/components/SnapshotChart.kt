@@ -50,52 +50,52 @@ private data class ChartData(
     val color: Color,
     val legendLabel: StringResource,
 ) {
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun XYGraphScope<Long, Int>.Plot() {
-    LinePlot(
-        data = data,
-        lineStyle = LineStyle(brush = SolidColor(color), strokeWidth = 1.dp),
-        symbol = {
-            TooltipBox(
-                positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(
-                    spacingBetweenTooltipAndAnchor = 4.dp,
-                ),
-                state = rememberTooltipState(),
-                tooltip = {
-                    PlainTooltip(caretSize = TooltipDefaults.caretSize) {
-                        Text(
-                            text = it.y.toString(),
-                            fontSize = 12.sp,
-                            lineHeight = 12.sp,
-                        )
-                    }
-                },
-                enableUserInput = Platform.isAndroid || Platform.isIos,
-            ) {
-                Box(
-                    modifier = Modifier
-                        .size(6.dp)
-                        .background(color = color, CircleShape)
-                        .hoverableElement {
-                            Box(
-                                modifier = Modifier
-                                    .background(MaterialTheme.colorScheme.surfaceVariant, CircleShape)
-                                    .padding(4.dp),
-                                contentAlignment = Alignment.Center,
-                            ) {
-                                Text(
-                                    text = it.y.toString(),
-                                    fontSize = 12.sp,
-                                    lineHeight = 12.sp,
-                                )
-                            }
-                        },
-                )
-            }
-        },
-    )
-}
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    fun XYGraphScope<Long, Int>.Plot() {
+        LinePlot(
+            data = data,
+            lineStyle = LineStyle(brush = SolidColor(color), strokeWidth = 1.dp),
+            symbol = {
+                TooltipBox(
+                    positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(
+                        spacingBetweenTooltipAndAnchor = 4.dp,
+                    ),
+                    state = rememberTooltipState(),
+                    tooltip = {
+                        PlainTooltip(caretSize = TooltipDefaults.caretSize) {
+                            Text(
+                                text = it.y.toString(),
+                                fontSize = 12.sp,
+                                lineHeight = 12.sp,
+                            )
+                        }
+                    },
+                    enableUserInput = Platform.isAndroid || Platform.isIos,
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(6.dp)
+                            .background(color = color, CircleShape)
+                            .hoverableElement {
+                                Box(
+                                    modifier = Modifier
+                                        .background(MaterialTheme.colorScheme.surfaceVariant, CircleShape)
+                                        .padding(4.dp),
+                                    contentAlignment = Alignment.Center,
+                                ) {
+                                    Text(
+                                        text = it.y.toString(),
+                                        fontSize = 12.sp,
+                                        lineHeight = 12.sp,
+                                    )
+                                }
+                            },
+                    )
+                }
+            },
+        )
+    }
 }
 
 private fun createPoint(time: Long, value: Number?, minX: Long): Point<Long, Int>? {
@@ -143,7 +143,7 @@ fun SnapshotChart(
     LaunchedEffect(fullSnapshots) {
         val currentTime = DateTime.nowUnixMillisLong()
         val newSnapshots = fullSnapshots?.sortedBy { it.timeMillis }?.run {
-            val firstIndex = indexOfFirst { it.timeMillis >= (currentTime - (60 * 1000))}.takeIf { it != -1 }
+            val firstIndex = indexOfFirst { it.timeMillis >= (currentTime - (60 * 1000)) }.takeIf { it != -1 }
 
             firstIndex?.let { slice(firstIndex..lastIndex) } ?: takeLast(10)
         } ?: listOf()
@@ -151,29 +151,29 @@ fun SnapshotChart(
         minX = (newSnapshots.minOfOrNull { it.timeMillis } ?: 0)
         maxX = (newSnapshots.maxOfOrNull { it.timeMillis } ?: 0)
         minY = snapshots.mapNotNull { snapshot ->
-                nullableMinOf(
-                    snapshot.mainData?.signal?.fiveG?.rsrp,
-                    snapshot.mainData?.signal?.fiveG?.rsrq,
-                    snapshot.mainData?.signal?.fiveG?.rssi,
-                    snapshot.mainData?.signal?.fiveG?.sinr,
-                    snapshot.mainData?.signal?.fourG?.rsrp,
-                    snapshot.mainData?.signal?.fourG?.rsrq,
-                    snapshot.mainData?.signal?.fourG?.rssi,
-                    snapshot.mainData?.signal?.fourG?.sinr,
-                )?.let { it - VERTICAL_AXIS_PADDING }
-            }.minOrNull() ?: 0
+            nullableMinOf(
+                snapshot.mainData?.signal?.fiveG?.rsrp,
+                snapshot.mainData?.signal?.fiveG?.rsrq,
+                snapshot.mainData?.signal?.fiveG?.rssi,
+                snapshot.mainData?.signal?.fiveG?.sinr,
+                snapshot.mainData?.signal?.fourG?.rsrp,
+                snapshot.mainData?.signal?.fourG?.rsrq,
+                snapshot.mainData?.signal?.fourG?.rssi,
+                snapshot.mainData?.signal?.fourG?.sinr,
+            )?.let { it - VERTICAL_AXIS_PADDING }
+        }.minOrNull() ?: 0
         maxY = snapshots.mapNotNull { snapshot ->
-                nullableMaxOf(
-                    snapshot.mainData?.signal?.fiveG?.rsrp,
-                    snapshot.mainData?.signal?.fiveG?.rsrq,
-                    snapshot.mainData?.signal?.fiveG?.rssi,
-                    snapshot.mainData?.signal?.fiveG?.sinr,
-                    snapshot.mainData?.signal?.fourG?.rsrp,
-                    snapshot.mainData?.signal?.fourG?.rsrq,
-                    snapshot.mainData?.signal?.fourG?.rssi,
-                    snapshot.mainData?.signal?.fourG?.sinr,
-                )?.let { it + VERTICAL_AXIS_PADDING }
-            }.maxOrNull() ?: 1
+            nullableMaxOf(
+                snapshot.mainData?.signal?.fiveG?.rsrp,
+                snapshot.mainData?.signal?.fiveG?.rsrq,
+                snapshot.mainData?.signal?.fiveG?.rssi,
+                snapshot.mainData?.signal?.fiveG?.sinr,
+                snapshot.mainData?.signal?.fourG?.rsrp,
+                snapshot.mainData?.signal?.fourG?.rsrq,
+                snapshot.mainData?.signal?.fourG?.rssi,
+                snapshot.mainData?.signal?.fourG?.sinr,
+            )?.let { it + VERTICAL_AXIS_PADDING }
+        }.maxOrNull() ?: 1
 
         snapshots = newSnapshots
 
@@ -323,7 +323,7 @@ fun SnapshotChart(
             yAxisStyle = rememberAxisStyle(labelRotation = 90),
         ) {
             chartDataItems.values.forEach { item ->
-                with (item) { Plot() }
+                with(item) { Plot() }
             }
         }
     }
