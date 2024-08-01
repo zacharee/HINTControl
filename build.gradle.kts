@@ -3,8 +3,8 @@ val androidTargetSdk by extra(34)
 val androidMinSdk by extra(24)
 val javaVersion by extra(JavaVersion.VERSION_17)
 
-val appVersionCode by extra(43)
-val appVersionName by extra("1.12.2")
+val appVersionCode by extra(44)
+val appVersionName by extra("1.12.3")
 
 val appGroup by extra("dev.zwander")
 val appPackageName by extra("dev.zwander.arcadyankvd21control")
