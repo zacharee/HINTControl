@@ -23,12 +23,15 @@ import dev.zwander.common.data.Page
 import dev.zwander.common.locals.LocalMenuBarHeight
 import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.ui.rememberThemeInfo
+import dev.zwander.common.util.BugsnagUtils
 import dev.zwander.common.util.BugsnagUtils.bugsnag
 import dev.zwander.common.util.CrossPlatformBugsnag
 import dev.zwander.common.util.LocalFrame
 import dev.zwander.resources.common.MR
 import io.github.mimoguz.customwindow.DwmAttribute
 import io.github.mimoguz.customwindow.WindowHandle
+import korlibs.platform.Platform
+import org.jetbrains.skia.DirectContext
 import org.jetbrains.skiko.OS
 import org.jetbrains.skiko.hostOs
 import java.awt.Desktop
@@ -61,12 +64,13 @@ fun main() {
 
     bugsnag.setAutoCaptureSessions(true)
 
-    when (hostOs) {
-        OS.Windows -> {
-            System.setProperty("skiko.renderApi", "OPENGL")
-        }
-        else -> {
-            /* no-op */
+    if (Platform.isLinux) {
+        try {
+            DirectContext.makeGL().flush()
+                .close()
+        } catch (e: Throwable) {
+            BugsnagUtils.notify(IllegalStateException("Unable to flush OpenGL context, using software rendering.", e))
+            System.setProperty("skiko.renderApi", "SOFTWARE")
         }
     }
 
