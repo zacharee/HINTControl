@@ -1,7 +1,7 @@
 val androidCompileSdk by extra(34)
 val androidTargetSdk by extra(34)
 val androidMinSdk by extra(24)
-val javaVersion by extra(JavaVersion.VERSION_17)
+val javaVersion by extra(JavaVersion.VERSION_21)
 
 val appVersionCode by extra(45)
 val appVersionName by extra("1.12.4")
