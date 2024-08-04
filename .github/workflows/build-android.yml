@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Set up JDK 21
         uses: actions/setup-java@v4
@@ -24,10 +24,10 @@ jobs:
 
       - name: Get Latest Release
         id: release
-        uses: InsonusK/get-latest-release@v1.1.0
+        uses: pozetroninc/github-action-get-latest-release@master
         with:
-          myToken: ${{ secrets.GITHUB_TOKEN }}
-          view_top: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
@@ -49,7 +49,7 @@ jobs:
 
       - name: Upload Logs
         if: ${{ always() }}
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: logs
           path: ${{ github.workspace }}/android/build/outputs/logs/
@@ -57,34 +57,42 @@ jobs:
       - name: Check Output Exists
         run: ls -laR ${{ github.workspace }}/android/build/outputs/apk/
 
+      # https://github.com/r0adkll/sign-android-release/issues/84#issuecomment-1889636075
+      - name: Set up build tool version variable
+        shell: bash
+        run: |
+          BUILD_TOOL_VERSION=$(ls /usr/local/lib/android/sdk/build-tools/ | tail -n 1)
+          echo "BUILD_TOOL_VERSION=$BUILD_TOOL_VERSION" >> $GITHUB_ENV
+          echo Last build tool version is: $BUILD_TOOL_VERSION
+
       - name: Sign APK
         id: sign_apk
-        uses: ilharp/sign-android-release@v1
+        uses: filippoLeporati93/android-release-signer@v1
         with:
-          releaseDir: android/build/outputs/apk/release
-          signingKey: ${{ secrets.ANDROID_SIGNING_KEY }}
-          keyAlias: ${{ secrets.ANDROID_SIGNING_KEY_ALIAS }}
+          releaseDirectory: android/build/outputs/apk/release
+          signingKeyBase64: ${{ secrets.ANDROID_SIGNING_KEY }}
+          alias: ${{ secrets.ANDROID_SIGNING_KEY_ALIAS }}
           keyStorePassword: ${{ secrets.ANDROID_SIGNING_KEY_PWD }}
           keyPassword: ${{ secrets.ANDROID_SIGNING_KEY_PWD }}
         env:
-          BUILD_TOOLS_VERSION: "30.0.3"
+          BUILD_TOOLS_VERSION: ${{ env.BUILD_TOOL_VERSION }}
 
       - name: Rename APK
-        run: mv ${{ steps.sign_apk.outputs.signedFile }} ${{ github.workspace }}/android/build/outputs/apk/release/HINTControl_Android_${{ steps.release.outputs.tag_name }}.apk
+        run: mv ${{ steps.sign_apk.outputs.signedFile }} ${{ github.workspace }}/android/build/outputs/apk/release/HINTControl_Android_${{ steps.release.outputs.release }}.apk
 
       - name: Upload APK
         if: ${{ always() }}
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: HINTControl
-          path: ${{ github.workspace }}/android/build/outputs/apk/release/HINTControl_Android_${{ steps.release.outputs.tag_name }}.apk
+          path: ${{ github.workspace }}/android/build/outputs/apk/release/HINTControl_Android_${{ steps.release.outputs.release }}.apk
 
       - name: Upload Release APK
         uses: ncipollo/release-action@v1
         with:
-          artifacts: ${{ github.workspace }}/android/build/outputs/apk/release/HINTControl_Android_${{ steps.release.outputs.tag_name }}.apk
+          artifacts: ${{ github.workspace }}/android/build/outputs/apk/release/HINTControl_Android_${{ steps.release.outputs.release }}.apk
           token: ${{ secrets.GITHUB_TOKEN }}
           allowUpdates: true
           replacesArtifacts: false
           omitBodyDuringUpdate: true
-          tag: ${{ steps.release.outputs.tag_name }}
+          tag: ${{ steps.release.outputs.release }}
