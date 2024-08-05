@@ -34,6 +34,7 @@ import korlibs.platform.Platform
 import org.jetbrains.skia.DirectContext
 import org.jetbrains.skiko.OS
 import org.jetbrains.skiko.hostOs
+import oshi.SystemInfo
 import java.awt.Desktop
 import java.awt.Dimension
 import java.util.UUID
@@ -50,10 +51,19 @@ fun main() {
     val uuid = settings.getStringOrNull(UUID_KEY) ?: UUID.randomUUID().toString().also {
         settings.putString(UUID_KEY, it)
     }
+    val oshiSystemInfo = SystemInfo()
 
     bugsnag.setAppVersion(GradleConfig.versionName)
     bugsnag.addCallback {
         it.setUserId(uuid)
+        it.addToTab("device", "manufacturer", oshiSystemInfo.hardware.computerSystem.manufacturer)
+        it.addToTab("device", "model", oshiSystemInfo.hardware.computerSystem.model)
+        it.addToTab("device", "memory", oshiSystemInfo.hardware.memory.total)
+        it.addToTab("device", "motherboard", oshiSystemInfo.hardware.computerSystem.baseboard.model)
+        it.addToTab("device", "firmwareVersion", oshiSystemInfo.hardware.computerSystem.firmware.version)
+        it.addToTab("device", "processorModel", oshiSystemInfo.hardware.processor.processorIdentifier.model)
+        it.addToTab("device", "processorFamily", oshiSystemInfo.hardware.processor.processorIdentifier.family)
+        it.addToTab("device", "processorName", oshiSystemInfo.hardware.processor.processorIdentifier.name)
         it.addToTab("app", "version_code", GradleConfig.versionCode)
         it.addToTab("app", "jdk_architecture", System.getProperty("sun.arch.data.model"))
 
