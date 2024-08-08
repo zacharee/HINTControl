@@ -422,7 +422,6 @@ private object ASClients {
         defaultRequest {
             userAgent("homeisp/android/2.12.1")
         }
-        this.developmentMode = true
         followRedirects = true
     }
 }

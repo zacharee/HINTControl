@@ -23,16 +23,16 @@ fun generateInfoList(vararg dataKeys: Any?, block: MutableInfoMap.() -> Unit): I
     return mapState
 }
 
-inline operator fun MutableInfoMap.set(key: StringResource, value: String?) {
+operator fun MutableInfoMap.set(key: StringResource, value: String?) {
     this[key] = value?.let { InfoItem.StringItem(key, it) }
 }
 
-inline operator fun MutableInfoMap.set(key: StringResource, value: StringResource?) {
+operator fun MutableInfoMap.set(key: StringResource, value: StringResource?) {
     this[key] = value?.let { InfoItem.StringResourceItem(key, it) }
 }
 
 // Triple: <value, min, max>
-inline operator fun MutableInfoMap.set(key: StringResource, value: Triple<Int?, Int, Int>) {
+operator fun MutableInfoMap.set(key: StringResource, value: Triple<Int?, Int, Int>) {
     this[key] = value.first?.let { InfoItem.ColorGradientItem(key, it, value.second, value.third) }
 }
 
