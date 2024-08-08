@@ -224,6 +224,7 @@ buildkonfig {
         buildConfigField(STRING, "versionName", appVersionName)
         buildConfigField(STRING, "versionCode", "$appVersionCode")
         buildConfigField(STRING, "packageName", appPackageName)
+        buildConfigField(STRING, "appName", "${rootProject.extra["appName"]}")
     }
 }
 

@@ -8,6 +8,7 @@ val appVersionName by extra("1.12.5")
 
 val appGroup by extra("dev.zwander")
 val appPackageName by extra("dev.zwander.arcadyankvd21control")
+val appName by extra("HINT Control")
 
 plugins {
     alias(libs.plugins.kotlin.native.cocoapods) apply false

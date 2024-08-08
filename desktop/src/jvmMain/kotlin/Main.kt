@@ -44,7 +44,7 @@ private const val UUID_KEY = "bugsnag_user_id"
 fun main() {
     System.setProperty("apple.laf.useScreenMenuBar", "true")
     System.setProperty("apple.awt.application.appearance", "system")
-    System.setProperty("apple.awt.application.name", MR.strings.app_name.localized())
+    System.setProperty("apple.awt.application.name", GradleConfig.appName)
 
     val settings = Settings()
 
@@ -104,7 +104,7 @@ fun main() {
 
         Window(
             onCloseRequest = ::exitApplication,
-            title = MR.strings.app_name.localized(),
+            title = GradleConfig.appName,
             state = windowState,
             icon = painterResource(MR.images.icon),
         ) {

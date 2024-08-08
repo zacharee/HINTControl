@@ -67,6 +67,18 @@ compose.desktop {
     }
 }
 
+tasks.named<hydraulic.conveyor.gradle.WriteConveyorConfigTask>("writeConveyorConfig") {
+    dependsOn(tasks.named("build"))
+
+    doLast {
+        val config = StringBuilder()
+        config.appendLine("app.fsname = hintcontrol")
+        config.appendLine("app.display-name = ${project.rootProject.extra["appName"]}")
+        config.appendLine("app.rdns-name = $appPackageName")
+        destination.get().asFile.appendText(config.toString())
+    }
+}
+
 dependencies {
     // Use the configurations created by the Conveyor plugin to tell Gradle/Conveyor where to find the artifacts for each platform.
     linuxAmd64(compose.desktop.linux_x64)
