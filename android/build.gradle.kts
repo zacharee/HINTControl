@@ -21,6 +21,7 @@ val javaVersion: JavaVersion by rootProject.extra
 
 dependencies {
     implementation(project(":common"))
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
 }
 
 android {

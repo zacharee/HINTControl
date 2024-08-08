@@ -201,6 +201,10 @@ android {
     lint {
         abortOnError = false
     }
+
+    dependencies {
+        coreLibraryDesugaring(libs.desugar.jdk.libs)
+    }
 }
 
 java {

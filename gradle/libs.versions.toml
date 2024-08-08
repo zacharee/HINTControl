@@ -11,6 +11,7 @@ bugsnag-jvm = "3.7.1"
 buildkonfig-gradle = "0.15.1"
 compose = "1.7.0-dev1756"
 conveyor = "1.10"
+desugar_jdk_libs = "2.0.4"
 google-material = "1.13.0-alpha04"
 jna = "5.14.0"
 jsystemthemedetector = "7dde337429"
@@ -40,6 +41,7 @@ androidx-glance-appwidget = { module = "androidx.glance:glance-appwidget", versi
 appdirs = { module = "net.harawata:appdirs", version.ref = "appdirs" }
 bugsnag-android = { module = "com.bugsnag:bugsnag-android", version.ref = "bugsnag-android" }
 bugsnag-jvm = { module = "com.bugsnag:bugsnag", version.ref = "bugsnag-jvm" }
+desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
 google-material = { module = "com.google.android.material:material", version.ref = "google-material" }
 jSystemThemeDetector = { module = "com.github.zacharee:jSystemThemeDetector", version.ref = "jsystemthemedetector" }
 jna = { module = "net.java.dev.jna:jna", version.ref = "jna" }
