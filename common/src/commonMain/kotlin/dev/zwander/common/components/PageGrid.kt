@@ -106,7 +106,7 @@ fun <T> PageGrid(
 
     val columns by remember(items.size) {
         derivedStateOf {
-            AdaptiveMod(250.dp, items.size)
+            AdaptiveMod(350.dp, items.size)
         }
     }
 

@@ -8,6 +8,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyShortcut
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.MenuBar
 import androidx.compose.ui.window.Window
@@ -85,7 +86,9 @@ fun main() {
     }
 
     application {
-        val windowState = rememberWindowState()
+        val windowState = rememberWindowState(
+            size = DpSize(900.dp, 600.dp),
+        )
         var currentPage by GlobalModel.currentPage.collectAsMutableState()
 
         DisposableEffect(null) {
