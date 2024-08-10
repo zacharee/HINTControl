@@ -100,10 +100,10 @@ fun LoginPage(
 
         var actualClient = client
 
+        error = null
         if (actualClient == null) {
             actualClient = GlobalModel.updateClient()
         }
-        error = null
         focusManager.clearFocus()
         isBlocking = true
         actualClient?.getMainData(true)

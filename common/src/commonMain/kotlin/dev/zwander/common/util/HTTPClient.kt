@@ -574,6 +574,7 @@ interface HTTPClient {
         showError: Boolean = true,
         reportError: Boolean = true,
         retryForLive: Boolean = false,
+        isLogin: Boolean = false,
         maxRetries: Int = 20,
         retryOnCodes: IntArray = intArrayOf(408),
         methodBlock: suspend HttpClient.() -> HttpResponse,
@@ -606,13 +607,19 @@ interface HTTPClient {
                 if (retryForLive && attempt < maxRetries) {
                     delay(2000)
                     tryRequest(attempt + 1)
-                } else {
+                } else if (!isLogin) {
                     if (!waitForLive()) {
                         if (showError) {
                             GlobalModel.updateHttpError(e)
                         } else if (reportError) {
                             CrossPlatformBugsnag.notify(e)
                         }
+                    }
+                } else {
+                    if (showError) {
+                        GlobalModel.updateHttpError(e)
+                    } else if (reportError) {
+                        CrossPlatformBugsnag.notify(e)
                     }
                 }
             } catch (e: Exception) {
@@ -667,7 +674,7 @@ private object NokiaClient : HTTPClient {
 
     override suspend fun logIn(username: String, password: String, rememberCredentials: Boolean) {
         withLoader(true) {
-            val response = unauthedClient.handleCatch {
+            val response = unauthedClient.handleCatch(isLogin = true) {
                 submitForm(
                     url = Endpoints.NokiaApi.login.createFullUrl(),
                     formParameters = parameters {
@@ -1013,7 +1020,7 @@ private object UnifiedClient : HTTPClient {
 
     override suspend fun logIn(username: String, password: String, rememberCredentials: Boolean) {
         withLoader(true) {
-            val response = unauthedClient.handleCatch {
+            val response = unauthedClient.handleCatch(isLogin = true) {
                 post(Endpoints.CommonApiV1.auth.createFullUrl()) {
                     contentType(ContentType.parse("application/json"))
                     accept(ContentType.parse("application/json"))

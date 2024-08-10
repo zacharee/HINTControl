@@ -5,7 +5,9 @@ sealed class Endpoint(open val url: String) {
     
     data class CommonApiEndpoint(override val url: String) : Endpoint(url) {
         override fun createFullUrl(): String {
-            return "http://${SettingsModel.gatewayIp.value}/${Endpoints.CommonApiV1.BASE_URL}/$url"
+            val address = SettingsModel.gatewayIp.value
+            val port = if (address.contains(Regex(":\\d+.*$"))) "" else ":8080"
+            return "http://$address$port/${Endpoints.CommonApiV1.BASE_URL}/$url"
         }
     }
     
@@ -16,6 +18,7 @@ sealed class Endpoint(open val url: String) {
     }
 }
 
+@Suppress("unused")
 sealed class Endpoints {
     data object CommonApiV1 : Endpoints() {
         const val BASE_URL = "TMI/v1"
