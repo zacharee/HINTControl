@@ -164,14 +164,14 @@ fun main() {
                                 onClick = {
                                     windowState.isMinimized = true
                                 },
-                                shortcut = KeyShortcut(Key.M, meta = true)
+                                shortcut = KeyShortcut(Key.M, meta = true),
                             )
 
                             Item(
                                 text = MR.strings.zoom.localized(),
                                 onClick = {
                                     windowState.placement = WindowPlacement.Maximized
-                                }
+                                },
                             )
 
                             Item(
@@ -179,7 +179,7 @@ fun main() {
                                 onClick = {
                                     exitApplication()
                                 },
-                                shortcut = KeyShortcut(Key.W, meta = true)
+                                shortcut = KeyShortcut(Key.W, meta = true),
                             )
                         }
                     }
