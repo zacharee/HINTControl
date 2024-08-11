@@ -22,7 +22,7 @@ plugins {
     alias(libs.plugins.compose) apply false
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.conveyor) apply false
-    alias(libs.plugins.bugsnag.android) apply false
+    alias(libs.plugins.bugsnag.gradle) apply false
 }
 
 tasks.register("clearIOSOutput") {
