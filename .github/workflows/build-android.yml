@@ -69,7 +69,7 @@ jobs:
         id: sign_apk
         uses: filippoLeporati93/android-release-signer@v1
         with:
-          releaseDirectory: android/build/outputs/apk/release
+          releaseDirectory: android/build/outputs/apk/foss/release
           signingKeyBase64: ${{ secrets.ANDROID_SIGNING_KEY }}
           alias: ${{ secrets.ANDROID_SIGNING_KEY_ALIAS }}
           keyStorePassword: ${{ secrets.ANDROID_SIGNING_KEY_PWD }}
