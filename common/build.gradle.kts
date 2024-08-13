@@ -21,7 +21,7 @@ val appPackageName: String by rootProject.extra
 
 val javaVersion: JavaVersion by rootProject.extra
 
-version = appVersionCode
+version = appVersionName
 
 kotlin {
     androidTarget()
@@ -111,6 +111,7 @@ kotlin {
                 api(libs.kotlinx.serialization.json)
                 api(libs.kotlinx.serialization.json.okio)
                 api(libs.kotlinx.coroutines)
+                api(libs.semver)
             }
         }
         val nonAppleMain by creating {
@@ -132,6 +133,7 @@ kotlin {
                 api(libs.androidx.glance.appwidget)
 
                 api(libs.taskerpluginlibrary)
+                api(libs.github.api)
             }
         }
         val skiaMain by creating {
@@ -152,6 +154,7 @@ kotlin {
                 api(libs.oshi.core)
                 api(libs.appdirs)
                 api(libs.kotlinx.coroutines.swing)
+                api(libs.conveyor.control)
             }
         }
 

@@ -23,7 +23,9 @@ import dev.zwander.common.components.settings.Credits
 import dev.zwander.common.components.settings.DefaultPage
 import dev.zwander.common.components.settings.RecordSnapshots
 import dev.zwander.common.components.settings.Supporters
+import dev.zwander.common.components.settings.Updater
 import dev.zwander.common.components.settings.WidgetRefresh
+import dev.zwander.common.util.UpdateUtil
 import dev.zwander.resources.common.MR
 import korlibs.platform.Platform
 import kotlin.experimental.ExperimentalObjCRefinement
@@ -97,7 +99,18 @@ fun SettingsPage(
                     Credits()
                 },
             ),
-        ) + if (Platform.isAndroid || Platform.isIos) {
+        ) + if (UpdateUtil.supported()) {
+            listOf(
+                SettingsItem(
+                    title = MR.strings.updates,
+                    render = {
+                        Updater()
+                    },
+                ),
+            )
+        } else {
+            listOf()
+        } + if (Platform.isAndroid || Platform.isIos) {
             listOf(
                 SettingsItem(
                     title = MR.strings.widget_refresh,

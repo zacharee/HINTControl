@@ -17,7 +17,7 @@ val appGroup: String by rootProject.extra
 val javaVersion: JavaVersion by rootProject.extra
 
 group = appGroup
-version = appVersionCode.toString()
+version = appVersionName
 
 kotlin {
     jvm {
