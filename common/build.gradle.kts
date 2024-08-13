@@ -205,6 +205,9 @@ android {
     lint {
         abortOnError = false
     }
+    buildFeatures {
+        buildConfig = true
+    }
 
     dependencies {
         coreLibraryDesugaring(libs.desugar.jdk.libs)

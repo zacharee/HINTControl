@@ -1,7 +1,7 @@
 package dev.zwander.common.util
 
 import android.content.Intent
-import android.os.Build
+import android.content.pm.PackageManager
 import androidx.core.content.FileProvider
 import dev.zwander.common.App
 import dev.zwander.common.GradleConfig
@@ -14,6 +14,7 @@ import io.ktor.http.HttpMethod
 import io.ktor.util.cio.use
 import io.ktor.util.cio.writeChannel
 import io.ktor.utils.io.copyTo
+import korlibs.crypto.sha256
 import org.kohsuke.github.GitHub
 import java.io.File
 
@@ -75,11 +76,15 @@ actual object UpdateUtil {
         }
     }
 
+    @Suppress("DEPRECATION")
     actual fun supported(): Boolean {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            App.instance.packageManager.getInstallSourceInfo(App.instance.packageName).installingPackageName
-        } else {
-            App.instance.packageManager.getInstallerPackageName(App.instance.packageName)
-        } != "com.android.vending"
+        val githubSha256 = "58997A7C334D76DCD57FAA918DDA90DA27EDA2E768AED4EB7F110D90C3196D67"
+        val signatures = App.instance.packageManager
+            .getPackageInfo(App.instance.packageName, PackageManager.GET_SIGNATURES).signatures
+        val matchesSignature = signatures.any { signature ->
+            signature.toByteArray().sha256().hexUpper == githubSha256
+        }
+
+        return matchesSignature || dev.zwander.common.BuildConfig.DEBUG
     }
 }
