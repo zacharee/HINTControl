@@ -53,3 +53,5 @@ bin/
 /.idea/deploymentTargetDropDown.xml
 /.kotlin/
 /.idea/appInsightsSettings.xml
+/android/foss/
+/android/play/

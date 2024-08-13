@@ -44,7 +44,7 @@ jobs:
 
       - name: Build with Gradle
         run: |
-          ./gradlew :android:packageRelease
+          ./gradlew :android:packageFossRelease
           ./gradlew --stop
 
       - name: Upload Logs

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
@@ -7,7 +8,10 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:label="@string/app_name"
-        android:name="dev.zwander.common.App">
+        android:name="dev.zwander.common.App"
+        android:theme="@style/AppTheme"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round">
         <!--suppress AndroidDomInspection -->
         <activity android:name="dev.zwander.android.MainActivity" android:exported="true"
             android:configChanges="colorMode

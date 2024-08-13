@@ -37,16 +37,20 @@ android {
 
         setProperty("archivesBaseName", "HINT_Control_$versionName")
     }
+    packaging {
+        resources.excludes.add("META-INF/AL2.0")
+        resources.excludes.add("META-INF/LGPL2.1")
+    }
     compileOptions {
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
     }
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-        }
-    }
     buildFeatures {
         buildConfig = true
+    }
+    flavorDimensions += "version"
+    productFlavors {
+        create("foss")
+        create("play")
     }
 }
