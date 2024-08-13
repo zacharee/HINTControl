@@ -78,7 +78,7 @@ jobs:
           BUILD_TOOLS_VERSION: ${{ env.BUILD_TOOL_VERSION }}
 
       - name: Rename APK
-        run: mv ${{ steps.sign_apk.outputs.signedReleaseFile }} ${{ github.workspace }}/android/build/outputs/apk/release/HINTControl_Android_${{ steps.release.outputs.release }}.apk
+        run: mkdir --parents ${{ github.workspace }}/android/build/outputs/apk/release/ && mv ${{ steps.sign_apk.outputs.signedReleaseFile }} ${{ github.workspace }}/android/build/outputs/apk/release/HINTControl_Android_${{ steps.release.outputs.release }}.apk
 
       - name: Upload APK
         if: ${{ always() }}
