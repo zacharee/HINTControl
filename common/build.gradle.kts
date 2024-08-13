@@ -193,6 +193,7 @@ android {
 
     defaultConfig {
         minSdk = androidMinSdk
+        resValue("string", "app_name", "${rootProject.extra["appName"]}")
     }
     compileOptions {
         sourceCompatibility = javaVersion
