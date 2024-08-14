@@ -46,7 +46,7 @@ fun BandConfigLayout(
                 title = stringResource(MR.strings.twoGig_transmission_power),
                 minValue = 50,
                 maxValue = 100,
-                currentValue = transmissionPower.replace("%", "").toInt(),
+                currentValue = transmissionPower.replace("%", "").toIntOrNull() ?: 100,
                 onValueChange = {
                     tempState = tempState?.copy(
                         twoGig = tempState?.twoGig?.copy(
@@ -77,7 +77,7 @@ fun BandConfigLayout(
                 title = stringResource(MR.strings.fiveGig_transmission_power),
                 minValue = 50,
                 maxValue = 100,
-                currentValue = transmissionPower.replace("%", "").toInt(),
+                currentValue = transmissionPower.replace("%", "").toIntOrNull() ?: 100,
                 onValueChange = {
                     tempState = tempState?.copy(
                         fiveGig = tempState?.fiveGig?.copy(
