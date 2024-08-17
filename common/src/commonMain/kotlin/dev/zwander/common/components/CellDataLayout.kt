@@ -67,6 +67,7 @@ fun CellDataLayout(
         this[MR.strings.sinr] = Triple(data?.sinr, 2, 19)
         this[MR.strings.cid] = data?.cid?.toString()
         this[if (data is CellDataLTE?) MR.strings.enbid else MR.strings.gnbid] = data?.nbid?.toString()
+        this[MR.strings.antenna_used] = data?.antennaUsed
     }
 
     val advancedItems = generateInfoList(advancedData) {

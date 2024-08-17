@@ -45,6 +45,7 @@ interface BaseCellData {
     val cid: Long?
     val rssi: Int?
     val nbid: Long?
+    val antennaUsed: String?
 }
 
 @Serializable
@@ -58,6 +59,7 @@ data class CellDataLTE(
     override val rsrp: Int? = null,
     override val rsrq: Int? = null,
     override val sinr: Int? = null,
+    override val antennaUsed: String? = null,
 ) : BaseCellData
 
 @Serializable
@@ -71,6 +73,7 @@ data class CellData5G(
     override val sinr: Int? = null,
     override val rssi: Int? = null,
     override val cid: Long? = null,
+    override val antennaUsed: String? = null,
 ) : BaseCellData
 
 @Serializable
