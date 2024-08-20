@@ -506,6 +506,8 @@ interface HTTPClient {
     val httpClient: HttpClient
     val unauthedClient: HttpClient
 
+    val isUnifiedApi: Boolean
+
     suspend fun logIn(username: String, password: String, rememberCredentials: Boolean)
     suspend fun getMainData(unauthed: Boolean = false): MainData?
     suspend fun getWifiData(): WifiConfig?
@@ -658,6 +660,8 @@ interface HTTPClient {
 }
 
 private object NokiaClient : HTTPClient {
+    override val isUnifiedApi: Boolean = false
+
     override val testUrl: String = Endpoints.NokiaApi.deviceStatus.createFullUrl()
 
     override val httpClient: HttpClient
@@ -1004,6 +1008,8 @@ private object NokiaClient : HTTPClient {
 }
 
 private object UnifiedClient : HTTPClient {
+    override val isUnifiedApi: Boolean = true
+
     override val unauthedClient: HttpClient
         get() = if (UserModel.isTest.value) ASClients.mockClient else CommonClients.unauthedClient
 

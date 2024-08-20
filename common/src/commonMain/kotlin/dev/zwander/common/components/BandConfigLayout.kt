@@ -6,13 +6,19 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
 import dev.icerock.moko.resources.compose.stringResource
+import dev.zwander.common.components.dialog.InWindowAlertDialog
+import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.MainModel
 import dev.zwander.resources.common.MR
 import kotlin.experimental.ExperimentalObjCRefinement
@@ -24,6 +30,10 @@ fun BandConfigLayout(
     modifier: Modifier = Modifier,
 ) {
     var tempState by MainModel.tempWifiState.collectAsMutableState()
+
+    var showingFiveGigDialog by remember {
+        mutableStateOf(false)
+    }
 
     Column(
         modifier = modifier,
@@ -64,11 +74,15 @@ fun BandConfigLayout(
             text = stringResource(MR.strings.fiveGig_radio),
             checked = (tempState?.fiveGig?.isRadioEnabled ?: false),
             onCheckedChange = { checked ->
-                tempState = tempState?.copy(
-                    fiveGig = tempState?.fiveGig?.copy(
-                        isRadioEnabled = checked,
+                if (!checked && GlobalModel.httpClient.value?.isUnifiedApi == true) {
+                    showingFiveGigDialog = true
+                } else {
+                    tempState = tempState?.copy(
+                        fiveGig = tempState?.fiveGig?.copy(
+                            isRadioEnabled = checked,
+                        )
                     )
-                )
+                }
             },
         )
 
@@ -103,4 +117,18 @@ fun BandConfigLayout(
             },
         )
     }
+
+    InWindowAlertDialog(
+        showing = showingFiveGigDialog,
+        title = { Text(text = stringResource(MR.strings.disable_five_ghz_title)) },
+        text = { Text(text = stringResource(MR.strings.disable_five_ghz_message)) },
+        buttons = {
+            TextButton(
+                onClick = { showingFiveGigDialog = false },
+            ) {
+                Text(text = stringResource(MR.strings.ok))
+            }
+        },
+        onDismissRequest = { showingFiveGigDialog = false },
+    )
 }
