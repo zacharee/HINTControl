@@ -112,6 +112,8 @@ kotlin {
                 api(libs.kotlinx.serialization.json.okio)
                 api(libs.kotlinx.coroutines)
                 api(libs.semver)
+                api(libs.filekit.core)
+                api(libs.filekit.compose)
             }
         }
         val nonAppleMain by creating {

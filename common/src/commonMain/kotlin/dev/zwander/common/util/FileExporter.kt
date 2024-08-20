@@ -1,13 +1,19 @@
 package dev.zwander.common.util
 
-import androidx.compose.runtime.Composable
+import io.github.vinceglb.filekit.core.FileKit
+import io.github.vinceglb.filekit.core.PlatformFile
 import okio.BufferedSink
 
-interface BufferedSinkCreator {
-    suspend operator fun invoke(fileName: String, append: Boolean = false): BufferedSink?
+object FileExporter {
+    suspend fun saveFile(fileName: String, append: Boolean): BufferedSink? {
+        val dotIndex = fileName.lastIndexOf('.')
+        val baseName = fileName.slice(0 until dotIndex)
+        val extension = fileName.slice(dotIndex + 1 until fileName.length)
+
+        val result = FileKit.saveFile(baseName = baseName, extension = extension)
+
+        return result?.bufferedSink(append)
+    }
 }
 
-expect object FileExporter {
-    @Composable
-    fun rememberBufferedSinkCreator(): BufferedSinkCreator
-}
+expect fun PlatformFile.bufferedSink(append: Boolean = false): BufferedSink?
