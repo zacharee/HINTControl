@@ -1,3 +1,5 @@
+@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE", "EXPOSED_PARAMETER_TYPE")
+
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
@@ -28,16 +30,21 @@ import dev.zwander.common.util.BugsnagUtils
 import dev.zwander.common.util.BugsnagUtils.bugsnag
 import dev.zwander.common.util.CrossPlatformBugsnag
 import dev.zwander.common.util.LocalFrame
+import dev.zwander.common.util.jna.Kernel32
 import dev.zwander.resources.common.MR
 import io.github.mimoguz.customwindow.DwmAttribute
 import io.github.mimoguz.customwindow.WindowHandle
 import korlibs.platform.Platform
 import org.jetbrains.skia.DirectContext
+import org.jetbrains.skiko.GraphicsApi
 import org.jetbrains.skiko.OS
+import org.jetbrains.skiko.RenderException
+import org.jetbrains.skiko.SkiaLayer
 import org.jetbrains.skiko.hostOs
 import oshi.SystemInfo
 import java.awt.Desktop
 import java.awt.Dimension
+import java.awt.EventQueue
 import java.util.UUID
 
 private const val UUID_KEY = "bugsnag_user_id"
@@ -75,8 +82,8 @@ fun main() {
 
     bugsnag.setAutoCaptureSessions(true)
 
-    if (Platform.isLinux) {
-        if (Platform.isLinux) {
+    when {
+        Platform.isLinux -> {
             val context = try {
                 DirectContext.makeGL()
             } catch (e: Throwable) {
@@ -86,12 +93,38 @@ fun main() {
             try {
                 context?.flush()
             } catch (e: Throwable) {
-                BugsnagUtils.notify(IllegalStateException("Unable to flush OpenGL context, using software rendering.", e))
-                System.setProperty("skiko.renderApi", "SOFTWARE")
+                BugsnagUtils.notify(
+                    IllegalStateException(
+                        "Unable to flush OpenGL context, using software rendering.",
+                        e
+                    )
+                )
+                System.setProperty("skiko.renderApi", "SOFTWARE_FAST")
             } finally {
                 try {
                     context?.close()
-                } catch (_: Throwable) {}
+                } catch (_: Throwable) {
+                }
+            }
+        }
+
+        Platform.isWindows -> {
+            if (Kernel32.isEmulatedX86()) {
+                EventQueue.invokeAndWait {
+                    val layer = SkiaLayer()
+                    try {
+                        layer.inDrawScope {
+                            throw RenderException()
+                        }
+                    } catch (_: Throwable) {}
+
+                    if (layer.renderApi == GraphicsApi.OPENGL) {
+                        BugsnagUtils.notify(IllegalStateException("Skiko chose OpenGL on ARM, falling back to software rendering."))
+                        System.setProperty("skiko.renderApi", "SOFTWARE_FAST")
+                    }
+
+                    layer.dispose()
+                }
             }
         }
     }
