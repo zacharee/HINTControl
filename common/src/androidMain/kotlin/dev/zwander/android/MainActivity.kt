@@ -28,6 +28,7 @@ import dev.zwander.common.model.SettingsModel
 import dev.zwander.common.ui.LocalOrientation
 import dev.zwander.common.ui.Orientation
 import dev.zwander.common.widget.ConnectionStatusWidgetReceiver
+import io.github.vinceglb.filekit.core.FileKit
 
 class MainActivity : AppCompatActivity() {
     private val appWidgetManager by lazy { getSystemService(Context.APPWIDGET_SERVICE) as AppWidgetManager }
@@ -44,6 +45,8 @@ class MainActivity : AppCompatActivity() {
         window.statusBarColor = Color.TRANSPARENT
         window.navigationBarColor = Color.TRANSPARENT
         super.onCreate(savedInstanceState)
+
+        FileKit.init(this)
 
         supportActionBar?.hide()
 
