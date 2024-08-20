@@ -50,9 +50,9 @@
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.13.0</string>
+	<string>1.13.1</string>
 	<key>CFBundleVersion</key>
-	<string>48</string>
+	<string>49</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
