@@ -11,6 +11,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
@@ -37,6 +38,8 @@ fun ColumnScope.RecordSnapshots() {
     val scope = rememberCoroutineScope()
 
     var enabled by SettingsModel.recordSnapshots.collectAsMutableState()
+
+    val hasSnapshots = !Storage.snapshots.updates.collectAsState(listOf()).value.isNullOrEmpty()
 
     TextSwitch(
         text = stringResource(MR.strings.enabled),
@@ -68,6 +71,7 @@ fun ColumnScope.RecordSnapshots() {
                 }
             },
             modifier = Modifier.weight(1f),
+            enabled = hasSnapshots,
         ) {
             Text(text = stringResource(MR.strings.export))
         }
@@ -82,6 +86,7 @@ fun ColumnScope.RecordSnapshots() {
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.error,
             ),
+            enabled = hasSnapshots,
         ) {
             Text(text = stringResource(MR.strings.clear))
         }
