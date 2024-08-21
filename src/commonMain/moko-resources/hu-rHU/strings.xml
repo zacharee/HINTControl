@@ -172,4 +172,8 @@
     <string name="check_for_updates">Check for updates</string>
     <!-- Label for which antenna the gateway is currently using (internal/external) -->
     <string name="antenna_used">Antenna Used</string>
+    <!-- Title displayed when the user attempts to disable 5GHz WiFi on the newer gateways. -->
+    <string name="disable_five_ghz_title">Unable to Disable 5GHz!</string>
+    <!-- Message displayed when user attempts to disable 5GHz WiFi on the newer gateways. -->
+    <string name="disable_five_ghz_message">Disabling the 5GHz band on your gateway will cause it to hang while booting. Certain functions may continue to work, but you won\'t be able to control many settings again until the gateway is factory reset.</string>
 </resources>
