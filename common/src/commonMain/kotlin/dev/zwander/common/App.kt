@@ -61,7 +61,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
 import dev.icerock.moko.resources.compose.stringResource
-import dev.zwander.common.components.dialog.InWindowAlertDialog
 import dev.zwander.common.components.pullrefresh.PullRefreshIndicator
 import dev.zwander.common.components.pullrefresh.pullRefresh
 import dev.zwander.common.components.pullrefresh.rememberPullRefreshState
@@ -76,6 +75,7 @@ import dev.zwander.common.ui.LocalLayoutMode
 import dev.zwander.common.ui.Theme
 import dev.zwander.common.util.Storage
 import dev.zwander.common.util.invoke
+import dev.zwander.compose.alertdialog.InWindowAlertDialog
 import dev.zwander.resources.common.MR
 import korlibs.platform.Platform
 import kotlinx.coroutines.delay

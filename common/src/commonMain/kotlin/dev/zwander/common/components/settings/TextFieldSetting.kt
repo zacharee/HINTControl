@@ -1,6 +1,5 @@
 package dev.zwander.common.components.settings
 
-import androidx.compose.foundation.focusable
 import androidx.compose.foundation.interaction.Interaction
 import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.foundation.layout.Column
@@ -24,7 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.VisualTransformation
 import dev.icerock.moko.resources.compose.stringResource
-import dev.zwander.common.components.dialog.InWindowAlertDialog
+import dev.zwander.compose.alertdialog.InWindowAlertDialog
 import dev.zwander.resources.common.MR
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow

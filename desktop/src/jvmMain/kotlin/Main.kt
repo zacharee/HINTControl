@@ -10,6 +10,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyShortcut
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.DpRect
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.MenuBar
@@ -23,7 +24,6 @@ import dev.icerock.moko.resources.compose.painterResource
 import dev.zwander.common.App
 import dev.zwander.common.GradleConfig
 import dev.zwander.common.data.Page
-import dev.zwander.common.locals.LocalMenuBarHeight
 import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.ui.rememberThemeInfo
 import dev.zwander.common.util.BugsnagUtils
@@ -31,6 +31,7 @@ import dev.zwander.common.util.BugsnagUtils.bugsnag
 import dev.zwander.common.util.CrossPlatformBugsnag
 import dev.zwander.common.util.LocalFrame
 import dev.zwander.common.util.jna.Kernel32
+import dev.zwander.compose.alertdialog.LocalWindowDecorations
 import dev.zwander.resources.common.MR
 import io.github.mimoguz.customwindow.DwmAttribute
 import io.github.mimoguz.customwindow.WindowHandle
@@ -235,7 +236,7 @@ fun main() {
 
             CompositionLocalProvider(
                 LocalFrame provides window,
-                LocalMenuBarHeight provides menuBarHeight,
+                LocalWindowDecorations provides DpRect(0.dp, menuBarHeight, 0.dp, 0.dp),
             ) {
                 App(
                     fullPadding = PaddingValues(

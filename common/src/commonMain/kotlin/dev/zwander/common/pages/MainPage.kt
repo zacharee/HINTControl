@@ -37,13 +37,13 @@ import dev.zwander.common.components.InfoRow
 import dev.zwander.common.components.MainDataLayout
 import dev.zwander.common.components.PageGrid
 import dev.zwander.common.components.SnapshotChart
-import dev.zwander.common.components.dialog.InWindowAlertDialog
 import dev.zwander.common.data.generateInfoList
 import dev.zwander.common.data.set
 import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.MainModel
 import dev.zwander.common.model.SettingsModel
 import dev.zwander.common.model.UserModel
+import dev.zwander.compose.alertdialog.InWindowAlertDialog
 import dev.zwander.resources.common.MR
 import kotlinx.coroutines.launch
 import kotlin.experimental.ExperimentalObjCRefinement

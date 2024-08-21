@@ -114,6 +114,8 @@ kotlin {
                 api(libs.semver)
                 api(libs.filekit.core)
                 api(libs.filekit.compose)
+
+                api(project(":alertdialog:library"))
             }
         }
         val nonAppleMain by creating {

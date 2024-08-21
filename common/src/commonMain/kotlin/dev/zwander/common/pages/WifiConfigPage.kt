@@ -27,9 +27,9 @@ import dev.zwander.common.components.BandConfigLayout
 import dev.zwander.common.components.ChannelConfigLayout
 import dev.zwander.common.components.PageGrid
 import dev.zwander.common.components.SSIDListLayout
-import dev.zwander.common.components.dialog.InWindowAlertDialog
 import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.MainModel
+import dev.zwander.compose.alertdialog.InWindowAlertDialog
 import dev.zwander.resources.common.MR
 import kotlinx.coroutines.launch
 import kotlin.experimental.ExperimentalObjCRefinement

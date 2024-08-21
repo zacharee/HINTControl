@@ -17,11 +17,11 @@ import androidx.compose.ui.unit.sp
 import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.stringResource
-import dev.zwander.common.components.dialog.InWindowAlertDialog
 import dev.zwander.common.model.MainModel
 import dev.zwander.common.model.adapters.EncryptionModes
 import dev.zwander.common.model.adapters.EncryptionVersions
 import dev.zwander.common.model.adapters.SSIDConfig
+import dev.zwander.compose.alertdialog.InWindowAlertDialog
 import dev.zwander.resources.common.MR
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
