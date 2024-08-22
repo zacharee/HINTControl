@@ -10,6 +10,7 @@ bugsnag-gradle = "0.1.0"
 bugsnag-jvm = "3.7.1"
 buildkonfig-gradle = "0.15.1"
 compose = "1.7.0-alpha03"
+composedialog = "0.1.0"
 conveyor = "1.10"
 conveyor-control = "1.1"
 desugar_jdk_libs = "2.0.4"
@@ -45,6 +46,7 @@ androidx-glance-appwidget = { module = "androidx.glance:glance-appwidget", versi
 appdirs = { module = "net.harawata:appdirs", version.ref = "appdirs" }
 bugsnag-android = { module = "com.bugsnag:bugsnag-android", version.ref = "bugsnag-android" }
 bugsnag-jvm = { module = "com.bugsnag:bugsnag", version.ref = "bugsnag-jvm" }
+composedialog = { module = "dev.zwander:composedialog", version.ref = "composedialog" }
 conveyor-control = { module = "dev.hydraulic.conveyor:conveyor-control", version.ref = "conveyor-control" }
 desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
 filekit-compose = { module = "io.github.vinceglb:filekit-compose", version.ref = "filekitCore" }

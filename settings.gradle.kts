@@ -29,9 +29,3 @@ dependencyResolutionManagement {
 rootProject.name = "ArcadyanKVD21Control"
 
 include(":android", ":desktop", ":common")
-
-include(":alertdialog")
-project(":alertdialog").projectDir = File("./alertdialog")
-
-include(":alertdialog:library")
-project(":alertdialog:library").projectDir = File("./alertdialog/library")
