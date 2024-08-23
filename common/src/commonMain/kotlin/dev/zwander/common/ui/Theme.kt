@@ -2,8 +2,8 @@
 
 package dev.zwander.common.ui
 
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import dev.zwander.compose.DynamicMaterialTheme
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
 
@@ -12,10 +12,5 @@ import kotlin.native.HiddenFromObjC
 fun Theme(
     content: @Composable () -> Unit,
 ) {
-    val themeInfo = rememberThemeInfo()
-
-    MaterialTheme(
-        colorScheme = themeInfo.colors,
-        content = content,
-    )
+    DynamicMaterialTheme(content)
 }

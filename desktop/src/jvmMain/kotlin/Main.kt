@@ -25,13 +25,13 @@ import dev.zwander.common.App
 import dev.zwander.common.GradleConfig
 import dev.zwander.common.data.Page
 import dev.zwander.common.model.GlobalModel
-import dev.zwander.common.ui.rememberThemeInfo
 import dev.zwander.common.util.BugsnagUtils
 import dev.zwander.common.util.BugsnagUtils.bugsnag
 import dev.zwander.common.util.CrossPlatformBugsnag
 import dev.zwander.common.util.LocalFrame
 import dev.zwander.common.util.jna.Kernel32
 import dev.zwander.compose.alertdialog.LocalWindowDecorations
+import dev.zwander.compose.rememberThemeInfo
 import dev.zwander.resources.common.MR
 import io.github.mimoguz.customwindow.DwmAttribute
 import io.github.mimoguz.customwindow.WindowHandle

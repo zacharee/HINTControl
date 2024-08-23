@@ -115,6 +115,7 @@ kotlin {
                 api(libs.filekit.core)
                 api(libs.filekit.compose)
                 api(libs.composedialog)
+                api(libs.zwander.materialyou)
             }
         }
         val nonAppleMain by creating {

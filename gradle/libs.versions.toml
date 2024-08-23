@@ -26,6 +26,7 @@ kotlinx-coroutines = "1.9.0-RC.2"
 kotlinx-serialization = "1.7.1"
 kstore = "0.8.0"
 ktor = "3.0.0-rc-1-eap-999"
+materialyou = "0.1.0"
 moko-mvvm = "0.16.1"
 moko-resources = "0.24.1"
 multiplatform-settings = "1.1.1"
@@ -88,6 +89,7 @@ relinker = { module = "com.getkeepsafe.relinker:relinker", version.ref = "relink
 semver = { module = "io.github.z4kn4fein:semver", version.ref = "semver" }
 slf4j-jdk14 = { module = "org.slf4j:slf4j-jdk14", version.ref = "slf4j" }
 taskerpluginlibrary = { module = "com.joaomgcd:taskerpluginlibrary", version.ref = "taskerpluginlibrary" }
+zwander-materialyou = { module = "dev.zwander:materialyou", version.ref = "materialyou" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle" }
