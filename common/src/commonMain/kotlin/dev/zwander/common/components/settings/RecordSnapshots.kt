@@ -23,15 +23,12 @@ import dev.zwander.common.components.TextSwitch
 import dev.zwander.common.model.SettingsModel
 import dev.zwander.common.util.FileExporter
 import dev.zwander.common.util.Storage
+import dev.zwander.kotlin.file.FileUtils
 import dev.zwander.resources.common.MR
-import io.github.xxfast.kstore.file.utils.FILE_SYSTEM
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
-import okio.FileNotFoundException
-import okio.Path.Companion.toPath
-import okio.buffer
-import okio.use
+import kotlinx.io.files.FileNotFoundException
 
 @Composable
 fun ColumnScope.RecordSnapshots() {
@@ -58,9 +55,9 @@ fun ColumnScope.RecordSnapshots() {
             onClick = {
                 scope.launch(Dispatchers.IO) {
                     try {
-                        FILE_SYSTEM.source(Storage.path.toPath()).buffer().use { input ->
+                        FileUtils.fromString(Storage.path, false)?.openInputStream()?.use { input ->
                             FileExporter.saveFile(Storage.NAME, false)?.use { output ->
-                                output.writeAll(input)
+                                input.transferTo(output)
                             }
                         }
                     } catch (e: FileNotFoundException) {

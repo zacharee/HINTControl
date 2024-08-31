@@ -13,18 +13,19 @@ compose = "1.7.0-alpha03"
 composedialog = "0.1.0"
 conveyor = "1.10"
 conveyor-control = "1.1"
-desugar_jdk_libs = "2.0.4"
+desugar_jdk_libs = "2.1.1"
 filekitCore = "0.8.1"
 githubApi = "1.324"
 google-material = "1.13.0-alpha05"
 jna = "5.14.0"
 jsystemthemedetector = "7dde337429"
+kmpfile = "0.4.0"
 koalaplot = "0.6.3"
 korlibs = "6.0.0"
 kotlin = "2.0.20-361"
 kotlinx-coroutines = "1.9.0-RC.2"
 kotlinx-serialization = "1.7.1"
-kstore = "0.8.0"
+kstore = "0.9.0-SNAPSHOT"
 ktor = "3.0.0-rc-1-eap-1053"
 materialyou = "0.1.0"
 moko-mvvm = "0.16.1"
@@ -32,7 +33,6 @@ moko-resources = "0.24.2"
 multiplatform-settings = "1.1.1"
 nserrorKt = "0.2.0"
 nsexceptionKt = "1.0.0-BETA-6-kotlin-2.0.20-RC2"
-okio = "3.9.0"
 oshi = "6.6.3"
 relinker = "1.4.5"
 semver = "2.0.0"
@@ -56,6 +56,8 @@ github-api = { module = "org.kohsuke:github-api", version.ref = "githubApi" }
 google-material = { module = "com.google.android.material:material", version.ref = "google-material" }
 jSystemThemeDetector = { module = "com.github.zacharee:jSystemThemeDetector", version.ref = "jsystemthemedetector" }
 jna = { module = "net.java.dev.jna:jna", version.ref = "jna" }
+kmpfile = { module = "dev.zwander:kmpfile", version.ref = "kmpfile" }
+kmpfile-filekit = { module = "dev.zwander:kmpfile-filekit", version.ref = "kmpfile" }
 koalaplot = { module = "io.github.koalaplot:koalaplot-core", version.ref = "koalaplot" }
 korlibs-klock = { module = "com.soywiz:korlibs-time", version.ref = "korlibs" }
 korlibs-korio = { module = "com.soywiz:korlibs-io", version.ref = "korlibs" }
@@ -64,7 +66,6 @@ kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core",
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
-kotlinx-serialization-json-okio = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json-okio", version.ref = "kotlinx-serialization" }
 kstore = { module = "io.github.xxfast:kstore", version.ref = "kstore" }
 kstore-file = { module = "io.github.xxfast:kstore-file", version.ref = "kstore" }
 ktor-client-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
@@ -83,7 +84,6 @@ multiplatformSettings-noArg = { module = "com.russhwolf:multiplatform-settings-n
 nserrorKt = { module = "com.rickclephas.kmp:nserror-kt", version.ref = "nserrorKt" }
 nsexceptionKt-bugsnag = { module = "com.rickclephas.kmp:nsexception-kt-bugsnag", version.ref = "nsexceptionKt" }
 nsexceptionKt-core = { module = "com.rickclephas.kmp:nsexception-kt-core", version.ref = "nsexceptionKt" }
-okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 oshi-core = { module = "com.github.oshi:oshi-core", version.ref = "oshi" }
 relinker = { module = "com.getkeepsafe.relinker:relinker", version.ref = "relinker" }
 semver = { module = "io.github.z4kn4fein:semver", version.ref = "semver" }

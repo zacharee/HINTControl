@@ -6,7 +6,7 @@ import common
 import WidgetKit
 
 class AppDelegate: NSObject, UIApplicationDelegate {
-    var watchJob: OkioCloseable? = nil
+    var watchJob: Ktor_ioCloseable? = nil
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         let config = BugsnagConfiguration.loadConfig()
@@ -28,8 +28,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
-        do {
-            try watchJob?.close_()
-        } catch {}
+        watchJob?.close()
     }
 }

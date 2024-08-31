@@ -2,13 +2,13 @@
 
 package dev.zwander.common.util
 
+import io.ktor.utils.io.core.Closeable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import okio.Closeable
 
 // https://stackoverflow.com/a/64223522/5496177
 fun <T> Flow<T>.asCommonFlow(): CommonFlow<T> = CommonFlow(this)

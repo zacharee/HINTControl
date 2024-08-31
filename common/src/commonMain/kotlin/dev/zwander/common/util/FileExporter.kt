@@ -1,13 +1,13 @@
 package dev.zwander.common.util
 
+import dev.zwander.kotlin.file.filekit.toKmpFile
 import io.github.vinceglb.filekit.core.FileKit
-import io.github.vinceglb.filekit.core.PlatformFile
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import okio.BufferedSink
+import kotlinx.io.Sink
 
 object FileExporter {
-    suspend fun saveFile(fileName: String, append: Boolean): BufferedSink? {
+    suspend fun saveFile(fileName: String, append: Boolean): Sink? {
         val dotIndex = fileName.lastIndexOf('.')
         val baseName = fileName.slice(0 until dotIndex)
         val extension = fileName.slice(dotIndex + 1 until fileName.length)
@@ -16,8 +16,6 @@ object FileExporter {
             FileKit.saveFile(baseName = baseName, extension = extension)
         }
 
-        return result?.bufferedSink(append)
+        return result?.toKmpFile()?.openOutputStream(append)
     }
 }
-
-expect fun PlatformFile.bufferedSink(append: Boolean = false): BufferedSink?

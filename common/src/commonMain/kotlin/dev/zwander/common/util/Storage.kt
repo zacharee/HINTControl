@@ -9,7 +9,6 @@ import dev.zwander.common.model.adapters.MainData
 import dev.zwander.common.model.adapters.SimDataRoot
 import io.github.xxfast.kstore.Codec
 import io.github.xxfast.kstore.file.FileCodec
-import io.github.xxfast.kstore.file.utils.FILE_SYSTEM
 import io.github.xxfast.kstore.utils.StoreDispatcher
 import kotlinx.atomicfu.atomic
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -20,13 +19,13 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
+import kotlinx.io.files.Path
+import kotlinx.io.files.SystemFileSystem
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.serializer
-import okio.Path
-import okio.Path.Companion.toPath
 
 expect fun pathTo(subPath: String, startingTag: String): String
 
@@ -82,8 +81,8 @@ class CreatingCodec<T : @Serializable Any>(
 
     private fun ensureCreated() {
         file.parent?.let {
-            if (!FILE_SYSTEM.exists(it)) {
-                FILE_SYSTEM.createDirectories(it)
+            if (!SystemFileSystem.exists(it)) {
+                SystemFileSystem.createDirectories(it)
             }
         }
     }
@@ -179,7 +178,7 @@ object Storage {
         default = listOf(),
         enableCache = false,
         codec = CreatingCodec(
-            path.toPath(),
+            Path(path),
             json,
         ),
     )
