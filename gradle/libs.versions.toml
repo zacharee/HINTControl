@@ -21,10 +21,11 @@ jna = "5.14.0"
 jsystemthemedetector = "7dde337429"
 kmpfile = "0.6.0"
 koalaplot = "0.6.3"
-korlibs = "6.0.0"
+korlibs = "6.0.1"
 kotlin = "2.0.21-RC-409"
 kotlinx-coroutines = "1.9.0-RC.2"
 kotlinx-serialization = "1.7.1"
+kotlinxDatetime = "0.6.1"
 kstore = "0.9.0-SNAPSHOT"
 ktor = "3.0.0-rc-1-eap-1081"
 materialyou = "0.1.0"
@@ -59,12 +60,12 @@ jna = { module = "net.java.dev.jna:jna", version.ref = "jna" }
 kmpfile = { module = "dev.zwander:kmpfile", version.ref = "kmpfile" }
 kmpfile-filekit = { module = "dev.zwander:kmpfile-filekit", version.ref = "kmpfile" }
 koalaplot = { module = "io.github.koalaplot:koalaplot-core", version.ref = "koalaplot" }
-korlibs-klock = { module = "com.soywiz:korlibs-time", version.ref = "korlibs" }
 korlibs-korio = { module = "com.soywiz:korlibs-io", version.ref = "korlibs" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
 kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 kstore = { module = "io.github.xxfast:kstore", version.ref = "kstore" }
 kstore-file = { module = "io.github.xxfast:kstore-file", version.ref = "kstore" }

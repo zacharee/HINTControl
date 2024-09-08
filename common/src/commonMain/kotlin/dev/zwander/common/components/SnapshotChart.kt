@@ -37,10 +37,9 @@ import io.github.koalaplot.core.style.LineStyle
 import io.github.koalaplot.core.util.ExperimentalKoalaPlotApi
 import io.github.koalaplot.core.xygraph.*
 import korlibs.platform.Platform
-import korlibs.time.DateTime
-import korlibs.time.seconds
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 import kotlin.experimental.ExperimentalObjCRefinement
-import kotlin.math.roundToInt
 import kotlin.native.HiddenFromObjC
 
 private const val VERTICAL_AXIS_PADDING = 2
@@ -141,7 +140,7 @@ fun SnapshotChart(
     }
 
     LaunchedEffect(fullSnapshots) {
-        val currentTime = DateTime.nowUnixMillisLong()
+        val currentTime = Clock.System.now().toEpochMilliseconds()
         val newSnapshots = fullSnapshots?.sortedBy { it.timeMillis }?.run {
             val firstIndex = indexOfFirst { it.timeMillis >= (currentTime - (60 * 1000)) }.takeIf { it != -1 }
 
@@ -239,7 +238,7 @@ fun SnapshotChart(
         return
     }
 
-    val maxXDateTime = DateTime.fromUnixMillis(maxX)
+    val maxXDateTime = Instant.fromEpochMilliseconds(maxX)
 
     val xAxisModel by remember {
         derivedStateOf {
@@ -295,9 +294,9 @@ fun SnapshotChart(
             xAxisModel = xAxisModel,
             yAxisModel = yAxisModel,
             xAxisLabels = {
-                val seconds = (maxXDateTime - DateTime.fromUnixMillis(it + minX)).seconds
+                val seconds = (maxXDateTime - Instant.fromEpochMilliseconds(it + minX)).inWholeSeconds
                 Text(
-                    text = MR.strings.graph_seconds_format(seconds.roundToInt()),
+                    text = MR.strings.graph_seconds_format(seconds),
                     color = MaterialTheme.colorScheme.onBackground,
                     style = MaterialTheme.typography.bodySmall.copy(
                         fontSize = 12.sp,

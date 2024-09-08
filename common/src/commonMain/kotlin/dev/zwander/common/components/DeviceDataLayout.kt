@@ -7,20 +7,19 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.common.data.generateInfoList
 import dev.zwander.common.data.set
 import dev.zwander.common.model.MainModel
 import dev.zwander.resources.common.MR
-import korlibs.math.toIntFloor
-import korlibs.time.TimeFormat
-import korlibs.time.days
-import korlibs.time.milliseconds
 import korlibs.util.format
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
+import kotlin.time.Duration.Companion.days
+import kotlin.time.Duration.Companion.hours
+import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.minutes
 
 @Composable
 @HiddenFromObjC
@@ -30,10 +29,6 @@ fun DeviceDataLayout(
     val data by MainModel.currentMainData.collectAsState()
     val deviceData = data?.device
 
-    val timeFormat = remember {
-        TimeFormat("HH'h' mm'm' ss's'")
-    }
-    
     val items = generateInfoList(deviceData, data) {
         this[MR.strings.friendly_name] = deviceData?.friendlyName
         this[MR.strings.name] = deviceData?.name
@@ -49,12 +44,13 @@ fun DeviceDataLayout(
         this[MR.strings.manufacturer] = deviceData?.manufacturer
         this[MR.strings.model] = deviceData?.model
         this[MR.strings.uptime] = data?.time?.upTime?.let { upTime ->
-            val milliseconds = (upTime * 1000).milliseconds
+            val duration = (upTime * 1000).milliseconds
+            val days = duration.inWholeDays
+            val hours = (duration - days.days).inWholeHours
+            val minutes = (duration - days.days - hours.hours).inWholeMinutes
+            val seconds = (duration - days.days - hours.hours - minutes.minutes).inWholeSeconds
 
-            val days = milliseconds.days.toIntFloor()
-            val rest = milliseconds - days.days
-
-            "${"%2".format(days)}d ${timeFormat.format(rest)}"
+            "${"%2".format(days)}d ${"%02".format(hours)}h ${"%02".format(minutes)}m ${"%02".format(seconds)}s"
         }
     }
 

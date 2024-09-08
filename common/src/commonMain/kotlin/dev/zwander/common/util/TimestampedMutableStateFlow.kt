@@ -2,11 +2,11 @@
 
 package dev.zwander.common.util
 
-import korlibs.time.DateTime
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.datetime.Clock
 
 class TimestampedMutableStateFlow<T>(
     initialState: T,
@@ -21,9 +21,10 @@ class TimestampedMutableStateFlow<T>(
     override var value: T
         get() = wrapped.value.second
         set(value) {
-            wrapped.value = DateTime.nowUnixMillisLong() to value
+            wrapped.value = Clock.System.now().toEpochMilliseconds() to value
         }
 
+    @Suppress("unused")
     val timestampedValue: Pair<Long, T>
         get() = wrapped.value
 
@@ -36,7 +37,7 @@ class TimestampedMutableStateFlow<T>(
     override fun compareAndSet(expect: T, update: T): Boolean {
         return wrapped.compareAndSet(
             wrapped.value.first to expect,
-            DateTime.nowUnixMillisLong() to update,
+            Clock.System.now().toEpochMilliseconds() to update,
         )
     }
 
@@ -46,10 +47,10 @@ class TimestampedMutableStateFlow<T>(
     }
 
     override fun tryEmit(value: T): Boolean {
-        return wrapped.tryEmit(DateTime.nowUnixMillisLong() to value)
+        return wrapped.tryEmit(Clock.System.now().toEpochMilliseconds() to value)
     }
 
     override suspend fun emit(value: T) {
-        wrapped.emit(DateTime.nowUnixMillisLong() to value)
+        wrapped.emit(Clock.System.now().toEpochMilliseconds() to value)
     }
 }
