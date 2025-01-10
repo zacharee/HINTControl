@@ -55,3 +55,4 @@ bin/
 /.idea/appInsightsSettings.xml
 /android/foss/
 /android/play/
+/desktop/generated.conveyor.conf
