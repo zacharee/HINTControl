@@ -12,6 +12,7 @@ import androidx.compose.material3.PlainTooltip
 import androidx.compose.material3.Text
 import androidx.compose.material3.TooltipBox
 import androidx.compose.material3.TooltipDefaults
+import androidx.compose.material3.TooltipDefaults.rememberTooltipPositionProvider
 import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -57,7 +58,7 @@ private data class ChartData(
             lineStyle = LineStyle(brush = SolidColor(color), strokeWidth = 1.dp),
             symbol = {
                 TooltipBox(
-                    positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(
+                    positionProvider = rememberTooltipPositionProvider(
                         spacingBetweenTooltipAndAnchor = 4.dp,
                     ),
                     state = rememberTooltipState(),

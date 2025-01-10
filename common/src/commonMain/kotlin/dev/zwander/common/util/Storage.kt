@@ -33,7 +33,7 @@ class CreatingCodec<T : @Serializable Any>(
     private val file: Path,
     private val json: Json,
     private val serializer: KSerializer<T>,
-    private val wrappedCodec: FileCodec<T> = FileCodec(file, json, serializer),
+    private val wrappedCodec: FileCodec<T> = FileCodec(file, Path("$file.temp"), json, serializer),
 ) : Codec<T> by wrappedCodec {
     companion object {
         inline operator fun <reified T: @Serializable Any> invoke(
