@@ -81,10 +81,10 @@ actual object UpdateUtil {
         val githubSha256 = "58997A7C334D76DCD57FAA918DDA90DA27EDA2E768AED4EB7F110D90C3196D67"
         val signatures = App.instance.packageManager
             .getPackageInfo(App.instance.packageName, PackageManager.GET_SIGNATURES).signatures
-        val matchesSignature = signatures.any { signature ->
+        val matchesSignature = signatures?.any { signature ->
             signature.toByteArray().sha256().hexUpper == githubSha256
         }
 
-        return matchesSignature || dev.zwander.common.BuildConfig.DEBUG
+        return matchesSignature == true || dev.zwander.common.BuildConfig.DEBUG
     }
 }
