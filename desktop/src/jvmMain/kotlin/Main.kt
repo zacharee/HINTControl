@@ -37,10 +37,12 @@ import io.github.mimoguz.customwindow.DwmAttribute
 import io.github.mimoguz.customwindow.WindowHandle
 import korlibs.platform.Platform
 import org.jetbrains.skia.DirectContext
+import org.jetbrains.skiko.Arch
 import org.jetbrains.skiko.GraphicsApi
 import org.jetbrains.skiko.OS
 import org.jetbrains.skiko.RenderException
 import org.jetbrains.skiko.SkiaLayer
+import org.jetbrains.skiko.hostArch
 import org.jetbrains.skiko.hostOs
 import oshi.SystemInfo
 import java.awt.Desktop
@@ -110,7 +112,7 @@ fun main() {
         }
 
         Platform.isWindows -> {
-            if (Kernel32.isEmulatedX86()) {
+            if (hostArch == Arch.X64 && Kernel32.isEmulatedX86()) {
                 EventQueue.invokeAndWait {
                     val layer = SkiaLayer()
                     try {

@@ -1,3 +1,4 @@
+import org.jetbrains.compose.compose
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
@@ -20,6 +21,11 @@ group = appGroup
 version = appVersionName
 
 kotlin {
+    jvmToolchain {
+        this.languageVersion.set(JavaLanguageVersion.of(javaVersion.toString().toInt()))
+        this.vendor.set(JvmVendorSpec.MICROSOFT)
+    }
+
     jvm {
         withJava()
     }
@@ -85,6 +91,7 @@ dependencies {
     linuxAarch64(compose.desktop.linux_arm64)
     macAmd64(compose.desktop.macos_x64)
     macAarch64(compose.desktop.macos_arm64)
+    windowsAarch64(compose("org.jetbrains.compose.desktop:desktop-jvm-windows-arm64"))
     windowsAmd64(compose.desktop.windows_x64)
 }
 
@@ -93,11 +100,5 @@ configurations.all {
     attributes {
         // https://github.com/JetBrains/compose-jb/issues/1404#issuecomment-1146894731
         attribute(Attribute.of("ui", String::class.java), "awt")
-    }
-}
-
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(javaVersion.toString()))
     }
 }
