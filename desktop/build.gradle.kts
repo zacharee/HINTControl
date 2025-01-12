@@ -1,4 +1,3 @@
-import org.jetbrains.compose.compose
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
@@ -91,7 +90,7 @@ dependencies {
     linuxAarch64(compose.desktop.linux_arm64)
     macAmd64(compose.desktop.macos_x64)
     macAarch64(compose.desktop.macos_arm64)
-    windowsAarch64(compose("org.jetbrains.compose.desktop:desktop-jvm-windows-arm64"))
+    windowsAarch64(compose.desktop.windows_arm64)
     windowsAmd64(compose.desktop.windows_x64)
 }
 

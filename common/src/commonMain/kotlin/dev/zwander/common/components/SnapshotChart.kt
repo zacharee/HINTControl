@@ -36,7 +36,12 @@ import io.github.koalaplot.core.legend.LegendLocation
 import io.github.koalaplot.core.line.LinePlot
 import io.github.koalaplot.core.style.LineStyle
 import io.github.koalaplot.core.util.ExperimentalKoalaPlotApi
-import io.github.koalaplot.core.xygraph.*
+import io.github.koalaplot.core.xygraph.IntLinearAxisModel
+import io.github.koalaplot.core.xygraph.LongLinearAxisModel
+import io.github.koalaplot.core.xygraph.Point
+import io.github.koalaplot.core.xygraph.XYGraph
+import io.github.koalaplot.core.xygraph.XYGraphScope
+import io.github.koalaplot.core.xygraph.rememberAxisStyle
 import korlibs.platform.Platform
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
@@ -316,15 +321,15 @@ fun SnapshotChart(
                     ),
                 )
             },
-            yAxisTitle = {},
             verticalMinorGridLineStyle = null,
             horizontalMinorGridLineStyle = null,
-            panZoomEnabled = false,
             yAxisStyle = rememberAxisStyle(labelRotation = 90),
-        ) {
-            chartDataItems.values.forEach { item ->
-                with(item) { Plot() }
-            }
-        }
+            content = {
+                chartDataItems.values.forEach { item ->
+                    with(item) { Plot() }
+                }
+            },
+            xAxisTitle = {},
+        )
     }
 }
