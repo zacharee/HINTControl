@@ -155,7 +155,7 @@ fun SnapshotChart(
 
         minX = (newSnapshots.minOfOrNull { it.timeMillis } ?: 0)
         maxX = (newSnapshots.maxOfOrNull { it.timeMillis } ?: 0)
-        minY = snapshots.mapNotNull { snapshot ->
+        minY = newSnapshots.mapNotNull { snapshot ->
             nullableMinOf(
                 snapshot.mainData?.signal?.fiveG?.rsrp,
                 snapshot.mainData?.signal?.fiveG?.rsrq,
@@ -167,7 +167,7 @@ fun SnapshotChart(
                 snapshot.mainData?.signal?.fourG?.sinr,
             )?.let { it - VERTICAL_AXIS_PADDING }
         }.minOrNull() ?: 0
-        maxY = snapshots.mapNotNull { snapshot ->
+        maxY = newSnapshots.mapNotNull { snapshot ->
             nullableMaxOf(
                 snapshot.mainData?.signal?.fiveG?.rsrp,
                 snapshot.mainData?.signal?.fiveG?.rsrq,
