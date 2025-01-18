@@ -1,6 +1,6 @@
 [versions]
 android-gradle = "8.7.3"
-androidx-activity-compose = "1.9.3"
+androidx-activity-compose = "1.10.0"
 androidx-appcompat = "1.7.0"
 androidx-core = "1.15.0"
 androidx-glance-appwidget = "1.1.1"
@@ -9,7 +9,7 @@ bugsnag-android = "6.10.0"
 bugsnag-gradle = "0.1.0"
 bugsnag-jvm = "3.7.2"
 buildkonfig-gradle = "0.15.2"
-compose = "1.8.0+dev1995"
+compose = "1.8.0-alpha02"
 composedialog = "0.1.1"
 conveyor = "1.10"
 conveyor-control = "1.1"
@@ -19,12 +19,12 @@ githubApi = "1.326"
 google-material = "1.13.0-alpha09"
 jna = "5.16.0"
 jsystemthemedetector = "7dde337429"
-kmpfile = "0.6.0"
-koalaplot = "0.8.0"
+kmpfile = "0.7.0"
+koalaplot = "0.9.0"
 korlibs = "6.0.1"
 kotlin = "2.1.0"
 kotlinx-coroutines = "1.10.1"
-kotlinx-serialization = "1.7.3"
+kotlinx-serialization = "1.8.0"
 kotlinxDatetime = "0.6.1"
 kstore = "0.9.1"
 ktor = "3.0.3"
@@ -59,7 +59,7 @@ jSystemThemeDetector = { module = "com.github.zacharee:jSystemThemeDetector", ve
 jna = { module = "net.java.dev.jna:jna", version.ref = "jna" }
 kmpfile = { module = "dev.zwander:kmpfile", version.ref = "kmpfile" }
 kmpfile-filekit = { module = "dev.zwander:kmpfile-filekit", version.ref = "kmpfile" }
-koalaplot = { module = "io.github.koalaplot:koalaplot-core", version.ref = "koalaplot" }
+koalaplot = { module = "dev.zwander:koalaplot", version.ref = "koalaplot" }
 korlibs-korio = { module = "com.soywiz:korlibs-io", version.ref = "korlibs" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
 kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }

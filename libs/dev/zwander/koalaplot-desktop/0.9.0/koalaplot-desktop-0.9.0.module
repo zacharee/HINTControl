@@ -1,0 +1,158 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../koalaplot/0.9.0/koalaplot-0.9.0.module",
+    "group": "dev.zwander",
+    "module": "koalaplot",
+    "version": "0.9.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.10"
+    }
+  },
+  "variants": [
+    {
+      "name": "desktopApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.compose.ui",
+          "module": "ui",
+          "version": {
+            "requires": "1.8.0-alpha02"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.animation",
+          "module": "animation",
+          "version": {
+            "requires": "1.8.0-alpha02"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.1.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "koalaplot-core-desktop-0.9.0-dev.jar",
+          "url": "koalaplot-desktop-0.9.0.jar",
+          "size": 862815,
+          "sha512": "d32314d1e5cb80f88ee97d82722ac3d92e721e4eeb6010acca7b953c7d76a236faa694457199deb6dc2559826a9b4e47b865d9e2c7e663c3eea72b58f098f5f7",
+          "sha256": "30bacb6248def9eeaf11c66466dff2e945c64eacbe51cb233bf45e111b3a2f4c",
+          "sha1": "93f3bda289464e90d6ccb9941f1427b413394d3d",
+          "md5": "946a375cee8ca6245e5e52e058360720"
+        }
+      ]
+    },
+    {
+      "name": "desktopRuntimeElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.compose.ui",
+          "module": "ui",
+          "version": {
+            "requires": "1.8.0-alpha02"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.animation",
+          "module": "animation",
+          "version": {
+            "requires": "1.8.0-alpha02"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.1.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.runtime",
+          "module": "runtime",
+          "version": {
+            "requires": "1.8.0-alpha02"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.foundation",
+          "module": "foundation",
+          "version": {
+            "requires": "1.8.0-alpha02"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.material3",
+          "module": "material3",
+          "version": {
+            "requires": "1.8.0-alpha02"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core",
+          "version": {
+            "requires": "1.10.1"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "koalaplot-core-desktop-0.9.0-dev.jar",
+          "url": "koalaplot-desktop-0.9.0.jar",
+          "size": 862815,
+          "sha512": "d32314d1e5cb80f88ee97d82722ac3d92e721e4eeb6010acca7b953c7d76a236faa694457199deb6dc2559826a9b4e47b865d9e2c7e663c3eea72b58f098f5f7",
+          "sha256": "30bacb6248def9eeaf11c66466dff2e945c64eacbe51cb233bf45e111b3a2f4c",
+          "sha1": "93f3bda289464e90d6ccb9941f1427b413394d3d",
+          "md5": "946a375cee8ca6245e5e52e058360720"
+        }
+      ]
+    },
+    {
+      "name": "desktopSourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "files": [
+        {
+          "name": "koalaplot-core-desktop-0.9.0-dev-sources.jar",
+          "url": "koalaplot-desktop-0.9.0-sources.jar",
+          "size": 105920,
+          "sha512": "5237c96e3670b6dc9e018cfa85016d68816168b5beb20022d243da5dd5bbd943d3fbf5262aa6ad8127207409aa00c3d15ffa1e45ede1752abb8e7a326ea0005d",
+          "sha256": "070edd010c07ed5bc045f1f9d2af873d66b138fe604c1146ea576f5528bd766c",
+          "sha1": "6cc8e79ccd9e506419844a26672908ec8602331e",
+          "md5": "cfc650cc90d98f28db5b089fa7a51d98"
+        }
+      ]
+    }
+  ]
+}
