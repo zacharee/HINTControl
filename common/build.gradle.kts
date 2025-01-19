@@ -46,6 +46,7 @@ kotlin {
                     appVersionName,
                 )
                 binaryOption("bundleId", appPackageName)
+                export(libs.nsexceptionKt.core)
             }
         }
     }
