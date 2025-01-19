@@ -62,7 +62,10 @@ fun <T> LabeledDropdown(
                     onExpandChange(!expanded)
                 },
                 enabled = !expanded,
-                colors = CardDefaults.outlinedCardColors(),
+                colors = CardDefaults.outlinedCardColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                    disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                ),
             ) {
                 Box(
                     contentAlignment = Alignment.Center,
