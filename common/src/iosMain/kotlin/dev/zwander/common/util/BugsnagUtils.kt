@@ -1,9 +1,9 @@
 package dev.zwander.common.util
 
-import com.rickclephas.kmp.nsexceptionkt.bugsnag.cinterop.Bugsnag
 import com.rickclephas.kmp.nsexceptionkt.core.InternalNSExceptionKtApi
 import com.rickclephas.kmp.nsexceptionkt.core.asNSException
 import dev.zwander.bugsnag.cinterop.BSGBreadcrumbType
+import dev.zwander.bugsnag.cinterop.Bugsnag
 import kotlinx.cinterop.ExperimentalForeignApi
 
 @OptIn(ExperimentalForeignApi::class)
@@ -17,7 +17,7 @@ actual object BugsnagUtils {
         message: String,
         data: Map<String?, Any?>,
     ) {
-        dev.zwander.bugsnag.cinterop.Bugsnag.leaveBreadcrumbWithMessage(
+        Bugsnag.leaveBreadcrumbWithMessage(
             message,
             data.mapKeys { it.key },
             BSGBreadcrumbType.BSGBreadcrumbTypeRequest,

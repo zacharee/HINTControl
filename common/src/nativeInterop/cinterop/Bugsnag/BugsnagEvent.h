@@ -1,6 +1,6 @@
 // The following are snippets from the Bugsnag Cocoa SDK used to generate Kotlin stubs.
 //
-// https://github.com/bugsnag/bugsnag-cocoa/blob/6bcd46f5f8dc06ac26537875d501f02b27d219a9/Bugsnag/include/Bugsnag/Bugsnag.h
+// https://github.com/bugsnag/bugsnag-cocoa/blob/6bcd46f5f8dc06ac26537875d501f02b27d219a9/Bugsnag/include/Bugsnag/BugsnagEvent.h
 //
 // Copyright (c) 2012 Bugsnag, https://bugsnag.com/
 //
@@ -15,17 +15,20 @@
 // all copies or substantial portions of the Software.
 
 #import <Foundation/Foundation.h>
-#import <BugsnagBreadcrumb.h>
-#import <BugsnagEvent.h>
+#import <BugsnagError.h>
+#import <BugsnagFeatureFlag.h>
 
-@interface Bugsnag : NSObject
+typedef NS_ENUM(NSUInteger, BSGSeverity) {
+    BSGSeverityError,
+    BSGSeverityWarning,
+    BSGSeverityInfo,
+};
 
-typedef BOOL (^BugsnagOnErrorBlock)(BugsnagEvent *_Nonnull event);
+@interface BugsnagEvent : NSObject
 
-+ (void)leaveBreadcrumbWithMessage:(NSString *_Nonnull)message
-        metadata:(NSDictionary *_Nullable)metadata
-        andType:(BSGBreadcrumbType)type;
-
-+ (void)notify:(NSException *_Nonnull)exception block:(BugsnagOnErrorBlock _Nullable)block;
+@property (readwrite, nonatomic) BSGSeverity severity;
+@property (readwrite, copy, nonnull, nonatomic) NSArray<BugsnagError *> *errors;
+@property (readonly, strong, nonnull, nonatomic) NSArray<BugsnagFeatureFlag *> *featureFlags;
+@property (readwrite, nonatomic) BOOL unhandled;
 
 @end

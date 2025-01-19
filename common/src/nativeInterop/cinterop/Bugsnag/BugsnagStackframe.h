@@ -1,6 +1,6 @@
 // The following are snippets from the Bugsnag Cocoa SDK used to generate Kotlin stubs.
 //
-// https://github.com/bugsnag/bugsnag-cocoa/blob/6bcd46f5f8dc06ac26537875d501f02b27d219a9/Bugsnag/include/Bugsnag/Bugsnag.h
+// https://github.com/bugsnag/bugsnag-cocoa/blob/bd0465cd0e753ca42eef59fef4d5ceda80da1222/Bugsnag/include/Bugsnag/BugsnagStackframe.h
 //
 // Copyright (c) 2012 Bugsnag, https://bugsnag.com/
 //
@@ -15,17 +15,9 @@
 // all copies or substantial portions of the Software.
 
 #import <Foundation/Foundation.h>
-#import <BugsnagBreadcrumb.h>
-#import <BugsnagEvent.h>
 
-@interface Bugsnag : NSObject
+@interface BugsnagStackframe : NSObject
 
-typedef BOOL (^BugsnagOnErrorBlock)(BugsnagEvent *_Nonnull event);
-
-+ (void)leaveBreadcrumbWithMessage:(NSString *_Nonnull)message
-        metadata:(NSDictionary *_Nullable)metadata
-        andType:(BSGBreadcrumbType)type;
-
-+ (void)notify:(NSException *_Nonnull)exception block:(BugsnagOnErrorBlock _Nullable)block;
++ (NSArray<BugsnagStackframe *> *_Nonnull)stackframesWithCallStackReturnAddresses:(NSArray<NSNumber *> *_Nonnull)callStackReturnAddresses;
 
 @end
