@@ -27,7 +27,7 @@ fun ExpanderCard(
     expanded: Boolean,
     onExpandChange: (Boolean) -> Unit,
     inverted: Boolean = false,
-    colors: CardColors = CardDefaults.cardColors(),
+    colors: CardColors = CardDefaults.elevatedCardColors(),
     elevation: CardElevation = CardDefaults.outlinedCardElevation(),
 ) {
     CompositionLocalProvider(
