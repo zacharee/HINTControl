@@ -50,7 +50,7 @@ bugsnag-android = { module = "com.bugsnag:bugsnag-android", version.ref = "bugsn
 bugsnag-jvm = { module = "com.bugsnag:bugsnag", version.ref = "bugsnag-jvm" }
 composedialog = { module = "dev.zwander:composedialog", version.ref = "composedialog" }
 conveyor-control = { module = "dev.hydraulic.conveyor:conveyor-control", version.ref = "conveyor-control" }
-desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
+desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs_nio", version.ref = "desugar_jdk_libs" }
 filekit-compose = { module = "io.github.vinceglb:filekit-compose", version.ref = "filekitCore" }
 filekit-core = { module = "io.github.vinceglb:filekit-core", version.ref = "filekitCore" }
 github-api = { module = "org.kohsuke:github-api", version.ref = "githubApi" }

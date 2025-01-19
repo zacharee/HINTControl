@@ -19,11 +19,6 @@ val appPackageName: String by rootProject.extra
 
 val javaVersion: JavaVersion by rootProject.extra
 
-dependencies {
-    implementation(project(":common"))
-    coreLibraryDesugaring(libs.desugar.jdk.libs)
-}
-
 android {
     namespace = appPackageName
 
@@ -44,6 +39,7 @@ android {
     compileOptions {
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
+        isCoreLibraryDesugaringEnabled = true
     }
     buildFeatures {
         buildConfig = true
@@ -53,4 +49,9 @@ android {
         create("foss")
         create("play")
     }
+}
+
+dependencies {
+    implementation(project(":common"))
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
 }

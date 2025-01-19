@@ -205,16 +205,13 @@ android {
     compileOptions {
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
+        isCoreLibraryDesugaringEnabled = true
     }
     lint {
         abortOnError = false
     }
     buildFeatures {
         buildConfig = true
-    }
-
-    dependencies {
-        coreLibraryDesugaring(libs.desugar.jdk.libs)
     }
 }
 
@@ -237,6 +234,10 @@ buildkonfig {
         buildConfigField(STRING, "packageName", appPackageName)
         buildConfigField(STRING, "appName", "${rootProject.extra["appName"]}")
     }
+}
+
+dependencies {
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
 }
 
 afterEvaluate {
