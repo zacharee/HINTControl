@@ -18,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.resources.common.MR
@@ -27,7 +28,10 @@ fun ExpanderCard(
     expanded: Boolean,
     onExpandChange: (Boolean) -> Unit,
     inverted: Boolean = false,
-    colors: CardColors = CardDefaults.elevatedCardColors(),
+    colors: CardColors = CardDefaults.elevatedCardColors(
+        containerColor = Color.Transparent,
+        disabledContainerColor = Color.Transparent,
+    ),
     elevation: CardElevation = CardDefaults.outlinedCardElevation(),
 ) {
     CompositionLocalProvider(
