@@ -3,14 +3,7 @@
 package dev.zwander.common.pages
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -152,7 +145,7 @@ fun MainPage(
                 selectable = false,
                 visible = { showSnapshots },
                 dialogContent = {
-                    SnapshotChart(it)
+                    SnapshotChart(it.heightIn(min = 400.dp))
                 },
                 dialogMaxWidth = 1000.dp,
             ),
