@@ -58,6 +58,7 @@ import androidx.compose.ui.input.key.isMetaPressed
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
 import dev.icerock.moko.resources.compose.stringResource
@@ -72,6 +73,7 @@ import dev.zwander.common.model.SettingsModel
 import dev.zwander.common.model.UserModel
 import dev.zwander.common.ui.LayoutMode
 import dev.zwander.common.ui.LocalLayoutMode
+import dev.zwander.common.ui.LocalOrientation
 import dev.zwander.common.ui.Theme
 import dev.zwander.common.util.Storage
 import dev.zwander.common.util.invoke
@@ -376,6 +378,10 @@ private fun AppView(
 
                 LaunchedEffect(state.targetPage) {
                     onPageChange(pages[state.targetPage])
+                }
+
+                LaunchedEffect(LocalOrientation.current, LocalWindowInfo.current.containerSize) {
+                    state.scrollToPage(pages.indexOf(currentPage), 0f)
                 }
             }
 

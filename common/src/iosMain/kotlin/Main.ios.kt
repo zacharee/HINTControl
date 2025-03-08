@@ -4,9 +4,10 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.only
-import androidx.compose.foundation.layout.safeContent
-import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.union
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.InternalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -36,7 +37,7 @@ fun MainViewController(): UIViewController {
             App(
                 modifier = Modifier,
                 fullPadding = if (orientation == InterfaceOrientation.LandscapeLeft || orientation == InterfaceOrientation.LandscapeRight) {
-                    WindowInsets.systemBars.only(WindowInsetsSides.Horizontal).asPaddingValues()
+                    WindowInsets.displayCutout.only(WindowInsetsSides.Horizontal).union(displayBottom).asPaddingValues()
                 } else {
                     PaddingValues(0.dp)
                 },
@@ -44,3 +45,17 @@ fun MainViewController(): UIViewController {
         }
     }
 }
+
+val displayBottom: WindowInsets
+    @Composable
+    @OptIn(InternalComposeUiApi::class)
+    get() {
+        val size = 16.dp
+
+        return when (LocalInterfaceOrientation.current) {
+            InterfaceOrientation.Portrait -> WindowInsets(bottom = size)
+            InterfaceOrientation.PortraitUpsideDown -> WindowInsets(top = size)
+            InterfaceOrientation.LandscapeLeft -> WindowInsets(left = size)
+            InterfaceOrientation.LandscapeRight -> WindowInsets(right = size)
+        }
+    }
