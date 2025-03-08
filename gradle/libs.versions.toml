@@ -1,5 +1,5 @@
 [versions]
-android-gradle = "8.7.3"
+android-gradle = "8.8.1"
 androidx-activity-compose = "1.10.1"
 androidx-appcompat = "1.7.0"
 androidx-core = "1.15.0"
