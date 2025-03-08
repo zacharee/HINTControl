@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.safeContent
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.InternalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -35,7 +36,7 @@ fun MainViewController(): UIViewController {
             App(
                 modifier = Modifier,
                 fullPadding = if (orientation == InterfaceOrientation.LandscapeLeft || orientation == InterfaceOrientation.LandscapeRight) {
-                    WindowInsets.safeContent.only(WindowInsetsSides.Horizontal).asPaddingValues()
+                    WindowInsets.systemBars.only(WindowInsetsSides.Horizontal).asPaddingValues()
                 } else {
                     PaddingValues(0.dp)
                 },
