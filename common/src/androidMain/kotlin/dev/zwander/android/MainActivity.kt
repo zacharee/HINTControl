@@ -18,6 +18,8 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.safeContent
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -77,7 +79,7 @@ class MainActivity : AppCompatActivity() {
             ) {
                 App(
                     modifier = Modifier.imePadding(),
-                    fullPadding = WindowInsets.safeContent.only(WindowInsetsSides.Horizontal).asPaddingValues(),
+                    fullPadding = WindowInsets.systemBars.only(WindowInsetsSides.Horizontal).asPaddingValues(),
                 )
             }
         }
