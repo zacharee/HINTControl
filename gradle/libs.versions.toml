@@ -34,7 +34,8 @@ moko-mvvm = "0.16.1"
 moko-resources = "0.24.5"
 multiplatform-settings = "1.3.0"
 nserrorKt = "0.2.0"
-nsexceptionKt = "1.0.0-BETA-10"
+nsexceptionKt = "1.0.0-kotlin-2.2.0-RC"
+nsexceptionKtBugsnag = "1.0.0-BETA-11"
 oshi = "6.8.1"
 relinker = "1.4.5"
 semver = "3.0.0"
@@ -85,7 +86,7 @@ moko-resources-compose = { module = "dev.icerock.moko:resources-compose", versio
 multiplatformSettings = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatform-settings" }
 multiplatformSettings-noArg = { module = "com.russhwolf:multiplatform-settings-no-arg", version.ref = "multiplatform-settings" }
 nserrorKt = { module = "com.rickclephas.kmp:nserror-kt", version.ref = "nserrorKt" }
-nsexceptionKt-bugsnag = { module = "com.rickclephas.kmp:nsexception-kt-bugsnag", version.ref = "nsexceptionKt" }
+nsexceptionKt-bugsnag = { module = "com.rickclephas.kmp:nsexception-kt-bugsnag", version.ref = "nsexceptionKtBugsnag" }
 nsexceptionKt-core = { module = "com.rickclephas.kmp:nsexception-kt-core", version.ref = "nsexceptionKt" }
 oshi-core = { module = "com.github.oshi:oshi-core", version.ref = "oshi" }
 relinker = { module = "com.getkeepsafe.relinker:relinker", version.ref = "relinker" }
