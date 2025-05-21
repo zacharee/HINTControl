@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/bugsnag/bugsnag-cocoa",
       "state" : {
-        "revision" : "a499a57126eb5feb2fc91a1aaf557dbfe04f1bfe",
-        "version" : "6.31.0"
+        "revision" : "a3f56c6191f0d8ae6b2407aad026ce3580298ce1",
+        "version" : "6.32.2"
       }
     },
     {
@@ -115,7 +115,7 @@
       "location" : "https://github.com/rickclephas/NSExceptionKt",
       "state" : {
         "branch" : "master",
-        "revision" : "33e5de6fe7d5dd2d1239b5a38ed5d34a29428900"
+        "revision" : "2159580544f2285d2eea3410c04f685377b1301f"
       }
     },
     {
