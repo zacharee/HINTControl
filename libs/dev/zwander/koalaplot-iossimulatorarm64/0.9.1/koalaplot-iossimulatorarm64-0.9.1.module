@@ -1,0 +1,262 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../koalaplot/0.9.1/koalaplot-0.9.1.module",
+    "group": "dev.zwander",
+    "module": "koalaplot",
+    "version": "0.9.1",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.10"
+    }
+  },
+  "variants": [
+    {
+      "name": "iosSimulatorArm64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "ios_simulator_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.compose.ui",
+          "module": "ui",
+          "version": {
+            "requires": "1.8.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.animation",
+          "module": "animation",
+          "version": {
+            "requires": "1.8.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.1.20"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.runtime",
+          "module": "runtime",
+          "version": {
+            "requires": "1.8.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.foundation",
+          "module": "foundation",
+          "version": {
+            "requires": "1.8.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.material3",
+          "module": "material3",
+          "version": {
+            "requires": "1.8.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core",
+          "version": {
+            "requires": "1.10.1"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "koalaplot-core-iosSimulatorArm64Main-0.9.0-dev.klib",
+          "url": "koalaplot-iossimulatorarm64-0.9.1.klib",
+          "size": 731806,
+          "sha512": "b0d035b388d23a31b6ddeb75c82e97f66bdb0d76f4c0551cedf0c3ad416e57c53a304b1fed637d8d7b4844c0d89f3191a1ab31ae508184c892f46e88e42596b8",
+          "sha256": "16640f4b31153bf0d9dc708475036c5a91b9e7eb83f3c34ed9357449eb97d3b7",
+          "sha1": "70519881ea68d71397a8155713035c67bf1752c5",
+          "md5": "f0c42550983f9d272d01c172270796d7"
+        }
+      ]
+    },
+    {
+      "name": "iosSimulatorArm64SourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.native.target": "ios_simulator_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "files": [
+        {
+          "name": "koalaplot-core-iossimulatorarm64-0.9.0-dev-sources.jar",
+          "url": "koalaplot-iossimulatorarm64-0.9.1-sources.jar",
+          "size": 112990,
+          "sha512": "d72a1e393acb7e7342b0829ac928fd4cc7ece0223d7c5b22345521efd2eae2f5779deed6c2856252814ce113409120709b8a73be14b2a654bb2550e92cc4ce5e",
+          "sha256": "af8cbbf443dd110075d029b37e63adc0bf26844587850ea264d3fad6cff1b27d",
+          "sha1": "86e60a6b355efdae0a1026d3aab531b8ac491dba",
+          "md5": "aabe42abec1e499b58e3b0fbf97a0b82"
+        }
+      ]
+    },
+    {
+      "name": "iosSimulatorArm64ResourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.libraryelements": "kotlin-multiplatformresources",
+        "org.gradle.usage": "kotlin-multiplatformresources",
+        "org.jetbrains.kotlin.native.target": "ios_simulator_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.compose.ui",
+          "module": "ui",
+          "version": {
+            "requires": "1.8.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.animation",
+          "module": "animation",
+          "version": {
+            "requires": "1.8.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.1.20"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.runtime",
+          "module": "runtime",
+          "version": {
+            "requires": "1.8.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.foundation",
+          "module": "foundation",
+          "version": {
+            "requires": "1.8.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.material3",
+          "module": "material3",
+          "version": {
+            "requires": "1.8.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core",
+          "version": {
+            "requires": "1.10.1"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "koalaplot-core-0.9.0-dev.kotlin_resources.zip",
+          "url": "koalaplot-iossimulatorarm64-0.9.1-kotlin_resources.kotlin_resources.zip",
+          "size": 360,
+          "sha512": "c9602ae41bd9650f0ebdd22da569dcf64da88bf3c99c0a7a9a42c9c89f000e52bc062303f3c227d9427f173308dd05c46337bec2b136026c26502caa1e5c02e9",
+          "sha256": "1cec9a30f1e11ffc22d348b61fa0c70047e6f1d41efd7362d6bd0514fba29775",
+          "sha1": "dc25c05325bac39c9d81f23a5e01cf8b539eaa9f",
+          "md5": "9f0e8313cd97427c3b20133fb918d157"
+        }
+      ]
+    },
+    {
+      "name": "iosSimulatorArm64MetadataElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "ios_simulator_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.compose.ui",
+          "module": "ui",
+          "version": {
+            "requires": "1.8.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.animation",
+          "module": "animation",
+          "version": {
+            "requires": "1.8.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.1.20"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.runtime",
+          "module": "runtime",
+          "version": {
+            "requires": "1.8.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.foundation",
+          "module": "foundation",
+          "version": {
+            "requires": "1.8.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.material3",
+          "module": "material3",
+          "version": {
+            "requires": "1.8.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core",
+          "version": {
+            "requires": "1.10.1"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "koalaplot-core-iossimulatorarm64-0.9.0-dev-metadata.jar",
+          "url": "koalaplot-iossimulatorarm64-0.9.1-metadata.jar",
+          "size": 2837,
+          "sha512": "c92994731b80122fcd37134f29e54f6dd997c4d880ee1a9aa853e95fd686f6fc580ff8c24b58aac0a44094fd528064921915f960e99cd614c1139eea165eab91",
+          "sha256": "41735e62274c3d3d60b60596ccadf40a7f8f1a9116ca55fd5ae9350509423a6a",
+          "sha1": "9ed40c319259577a7d4a3cc70a7e997a881d75ca",
+          "md5": "e5ef7ac0c7f151e699748875f5e2da84"
+        }
+      ]
+    }
+  ]
+}

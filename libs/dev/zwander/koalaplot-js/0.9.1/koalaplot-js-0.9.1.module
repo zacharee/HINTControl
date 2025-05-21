@@ -1,0 +1,253 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../koalaplot/0.9.1/koalaplot-0.9.1.module",
+    "group": "dev.zwander",
+    "module": "koalaplot",
+    "version": "0.9.1",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.10"
+    }
+  },
+  "variants": [
+    {
+      "name": "jsApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.js.compiler": "ir",
+        "org.jetbrains.kotlin.platform.type": "js"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-dom-api-compat",
+          "version": {
+            "requires": "2.1.20"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.ui",
+          "module": "ui",
+          "version": {
+            "requires": "1.8.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.animation",
+          "module": "animation",
+          "version": {
+            "requires": "1.8.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.1.20"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "koalaplot-core-js-0.9.0-dev.klib",
+          "url": "koalaplot-js-0.9.1.klib",
+          "size": 4153996,
+          "sha512": "3b9f978632094ed61973ee3b94fa16ccd28aa7d4ad53b414476a51087a01b6d80443b2fa684689543f24fd2e499d5178a6a692ff256336c25ae70d148a026c16",
+          "sha256": "b930954ac0746cd01362fa1983d236725e41481de45f73977adbf3d4a65d4975",
+          "sha1": "58cb0826c85c13fb2dab08258cfefa63847c56c1",
+          "md5": "c2aa9c22265008e99b4241cee5501fa7"
+        }
+      ]
+    },
+    {
+      "name": "jsRuntimeElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.js.compiler": "ir",
+        "org.jetbrains.kotlin.platform.type": "js"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-dom-api-compat",
+          "version": {
+            "requires": "2.1.20"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.ui",
+          "module": "ui",
+          "version": {
+            "requires": "1.8.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.animation",
+          "module": "animation",
+          "version": {
+            "requires": "1.8.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.1.20"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.runtime",
+          "module": "runtime",
+          "version": {
+            "requires": "1.8.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.foundation",
+          "module": "foundation",
+          "version": {
+            "requires": "1.8.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.material3",
+          "module": "material3",
+          "version": {
+            "requires": "1.8.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core",
+          "version": {
+            "requires": "1.10.1"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "koalaplot-core-js-0.9.0-dev.klib",
+          "url": "koalaplot-js-0.9.1.klib",
+          "size": 4153996,
+          "sha512": "3b9f978632094ed61973ee3b94fa16ccd28aa7d4ad53b414476a51087a01b6d80443b2fa684689543f24fd2e499d5178a6a692ff256336c25ae70d148a026c16",
+          "sha256": "b930954ac0746cd01362fa1983d236725e41481de45f73977adbf3d4a65d4975",
+          "sha1": "58cb0826c85c13fb2dab08258cfefa63847c56c1",
+          "md5": "c2aa9c22265008e99b4241cee5501fa7"
+        }
+      ]
+    },
+    {
+      "name": "jsSourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.js.compiler": "ir",
+        "org.jetbrains.kotlin.platform.type": "js"
+      },
+      "files": [
+        {
+          "name": "koalaplot-core-js-0.9.0-dev-sources.jar",
+          "url": "koalaplot-js-0.9.1-sources.jar",
+          "size": 113496,
+          "sha512": "8279ea9763b70351ad9c945bd2c9bd08a7f2413aa33269e87a2a1bbe519a500e648accf4b8c021271d7ecf6c5dcbeaea663d550c4a07aa1306c18937ecbb5e5b",
+          "sha256": "c61e038ba778ab2cf92517aa03cd8ed2fcc1dcdeac82cef00293b0ce1df9e250",
+          "sha1": "4425964b761d6eb7eba370426e27c8daa82dd558",
+          "md5": "6f767b3effa569f31c3a048e36e35fb4"
+        }
+      ]
+    },
+    {
+      "name": "jsResourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.libraryelements": "kotlin-multiplatformresourcesjs",
+        "org.gradle.usage": "kotlin-multiplatformresourcesjs",
+        "org.jetbrains.kotlin.js.compiler": "ir",
+        "org.jetbrains.kotlin.platform.type": "js"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-dom-api-compat",
+          "version": {
+            "requires": "2.1.20"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.ui",
+          "module": "ui",
+          "version": {
+            "requires": "1.8.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.animation",
+          "module": "animation",
+          "version": {
+            "requires": "1.8.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.1.20"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.runtime",
+          "module": "runtime",
+          "version": {
+            "requires": "1.8.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.foundation",
+          "module": "foundation",
+          "version": {
+            "requires": "1.8.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.material3",
+          "module": "material3",
+          "version": {
+            "requires": "1.8.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core",
+          "version": {
+            "requires": "1.10.1"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "koalaplot-core-0.9.0-dev.kotlin_resources.zip",
+          "url": "koalaplot-js-0.9.1-kotlin_resources.kotlin_resources.zip",
+          "size": 360,
+          "sha512": "0adee3ef1c27a69d426c93f93ee4ed2df270bc95d9e8edaf52536f45c1a105c1dee485e6f4a8d531cdc71b1cd97821ae0fea7d37a611e64b78281f05cc695bf2",
+          "sha256": "61011efc0a0f897039725cd0468ef9291b0edbbcef5123e85a4c050cc61d5cc1",
+          "sha1": "6b3b61e9470633df95094f3c16386db6cfb41bae",
+          "md5": "72980902244f5316d571260b11d52d3a"
+        }
+      ]
+    }
+  ]
+}

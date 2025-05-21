@@ -86,10 +86,10 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(compose.runtime)
-                api(compose.foundation)
-                api(compose.material3)
-                api(compose.ui)
+                implementation(compose.runtime)
+                implementation(compose.foundation)
+                implementation(compose.material3)
+                implementation(compose.ui)
 
                 api(libs.moko.resources)
                 api(libs.moko.resources.compose)
@@ -117,6 +117,7 @@ kotlin {
                 api(libs.filekit.compose)
                 api(libs.composedialog)
                 api(libs.zwander.materialyou)
+                api(libs.material.icons.core)
             }
         }
         val nonAppleMain by creating {

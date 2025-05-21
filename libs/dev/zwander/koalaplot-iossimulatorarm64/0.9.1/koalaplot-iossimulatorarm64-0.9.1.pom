@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <!-- This module was also published with a richer model, Gradle metadata,  -->
+  <!-- which should be used instead. Do not delete the following line which  -->
+  <!-- is to indicate to Gradle or any Gradle module metadata file consumer  -->
+  <!-- that they should prefer consuming it instead. -->
+  <!-- do_not_remove: published-with-gradle-metadata -->
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>dev.zwander</groupId>
+  <artifactId>koalaplot-iossimulatorarm64</artifactId>
+  <version>0.9.1</version>
+  <packaging>klib</packaging>
+  <name>koalaplot-core</name>
+  <description>Koala Plot is a Compose Multiplatform based charting and plotting library written in Kotlin</description>
+  <url>https://github.com/KoalaPlot/koalaplot-core</url>
+  <inceptionYear>2025</inceptionYear>
+  <licenses>
+    <license>
+      <name>MIT License</name>
+      <url>https://github.com/zacharee/koalaplot-core/blob/main/LICENSE.txt</url>
+      <distribution>repo</distribution>
+    </license>
+    <license>
+      <name>MIT</name>
+      <url>https://opensource.org/licenses/MIT</url>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>zacharee</id>
+      <name>Zachary Wander</name>
+      <email>zachary@zwander.dev</email>
+    </developer>
+    <developer>
+      <id>gsteckman</id>
+      <name>Greg Steckman</name>
+      <email>27028452+gsteckman@users.noreply.github.com</email>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:github.com/KoalaPlot/koalaplot-core.git</connection>
+    <developerConnection>scm:git:ssf://github.com/KoalaPlot/koalaplot-core.git</developerConnection>
+    <url>https://github.com/KoalaPlot/koalaplot-core</url>
+  </scm>
+  <dependencies>
+    <dependency>
+      <groupId>org.jetbrains.compose.ui</groupId>
+      <artifactId>ui-uikitsimarm64</artifactId>
+      <version>1.8.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.compose.animation</groupId>
+      <artifactId>animation-uikitsimarm64</artifactId>
+      <version>1.8.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib</artifactId>
+      <version>2.1.20</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.compose.runtime</groupId>
+      <artifactId>runtime-uikitsimarm64</artifactId>
+      <version>1.8.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.compose.foundation</groupId>
+      <artifactId>foundation-uikitsimarm64</artifactId>
+      <version>1.8.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.compose.material3</groupId>
+      <artifactId>material3-uikitsimarm64</artifactId>
+      <version>1.8.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlinx</groupId>
+      <artifactId>kotlinx-coroutines-core-iossimulatorarm64</artifactId>
+      <version>1.10.1</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+</project>

@@ -25,9 +25,8 @@ kotlin {
         this.vendor.set(JvmVendorSpec.MICROSOFT)
     }
 
-    jvm {
-        withJava()
-    }
+    jvm()
+
     sourceSets {
         val jvmMain by getting {
             dependencies {
