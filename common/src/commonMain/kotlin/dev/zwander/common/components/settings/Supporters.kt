@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,6 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import dev.zwander.common.components.HybridElevatedCard
 import dev.zwander.common.util.PatreonSupportersParser
 import dev.zwander.common.util.SupporterInfo
 import dev.zwander.common.util.UrlHandler
@@ -40,7 +40,7 @@ fun Supporters() {
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         items(items = supporters, key = { it.hashCode() }) { item ->
-            ElevatedCard(
+            HybridElevatedCard(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
                     UrlHandler.launchUrl(item.link)

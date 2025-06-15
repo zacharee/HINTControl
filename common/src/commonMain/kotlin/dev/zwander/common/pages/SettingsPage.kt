@@ -23,6 +23,7 @@ import dev.zwander.common.components.settings.Credits
 import dev.zwander.common.components.settings.DefaultPage
 import dev.zwander.common.components.settings.RecordSnapshots
 import dev.zwander.common.components.settings.Supporters
+import dev.zwander.common.components.settings.ThemeSelector
 import dev.zwander.common.components.settings.Updater
 import dev.zwander.common.components.settings.WidgetRefresh
 import dev.zwander.common.util.UpdateUtil
@@ -49,6 +50,17 @@ fun SettingsPage(
                 title = MR.strings.default_page,
                 render = {
                     DefaultPage()
+                },
+                description = {
+                    Text(
+                        text = stringResource(MR.strings.default_page_desc),
+                    )
+                },
+            ),
+            SettingsItem(
+                title = MR.strings.theme,
+                render = {
+                    ThemeSelector()
                 },
                 description = {
                     Text(

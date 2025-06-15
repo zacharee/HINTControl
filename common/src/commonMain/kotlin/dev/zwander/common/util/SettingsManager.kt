@@ -15,6 +15,7 @@ object SettingsManager {
         const val GATEWAY_IP = "gateway_ip"
         const val WIDGET_REFRESH_PERIOD = "widget_refresh_period"
         const val RECORD_SNAPSHOTS = "record_snapshots"
+        const val THEME = "select_theme"
     }
 
     val settings = ActualSettings()

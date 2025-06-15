@@ -3,7 +3,9 @@
 package dev.zwander.common.util
 
 import dev.zwander.common.data.Page
+import dev.zwander.common.data.Theme
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.ExperimentalForInheritanceCoroutinesApi
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,6 +27,7 @@ inline fun <reified T : Any> PersistentMutableStateFlow(
     default: T?,
 ) = PersistentMutableStateFlow<T>(key, default ?: NULL, typeOf<T>())
 
+@OptIn(ExperimentalForInheritanceCoroutinesApi::class)
 class PersistentMutableStateFlow<T>(
     private val key: String,
     private val default: Any,
@@ -80,6 +83,7 @@ class PersistentMutableStateFlow<T>(
                     is Boolean -> getBooleanOrNull(key) ?: castedDefault
                     is Double -> getDoubleOrNull(key) ?: castedDefault
                     is Page -> Page.pageFromKey(getStringOrNull(key) ?: castedDefault.key)
+                    is Theme -> getStringOrNull(key)?.let { Theme.valueOf(it) } ?: castedDefault
                     else -> throw IllegalStateException("Invalid type")
                 }
             )
@@ -99,6 +103,7 @@ class PersistentMutableStateFlow<T>(
                     is Boolean -> putBoolean(key, castedValue)
                     is Double -> putDouble(key, castedValue)
                     is Page -> putString(key, castedValue.key)
+                    is Theme -> putString(key, castedValue.name)
                     else -> throw IllegalStateException("Invalid type $typeClass")
                 }
             }

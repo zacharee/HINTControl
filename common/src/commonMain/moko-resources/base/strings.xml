@@ -209,4 +209,12 @@
     <string name="disable_five_ghz_title">Unable to Disable 5GHz!</string>
     <!-- Message displayed when user attempts to disable 5GHz WiFi on the newer gateways. -->
     <string name="disable_five_ghz_message">Disabling the 5GHz band on your gateway will cause it to hang while booting. Certain functions may continue to work, but you won\'t be able to control many settings again until the gateway is factory reset.</string>
+
+    <!-- Title of setting to select app theme. -->
+    <string name="theme">Theme</string>
+    <string name="theme_desc">Select the app theme to use.</string>
+    <string name="theme_system">System</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="theme_black">Black (OLED)</string>
 </resources>
