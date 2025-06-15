@@ -1,6 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Existing colors -->
     <color name="actual_icon_color_one">@color/icon_color_one</color>
     <color name="actual_icon_color_two">@color/icon_color_two</color>
     <color name="icon_foreground_color">@android:color/white</color>
+
+    <!-- OLED Theme Colors -->
+    <!-- Pure black for OLED displays -->
+    <color name="oled_black">#000000</color>
+    
+    <!-- White and gray variations -->
+    <color name="oled_white">#FFFFFF</color>
+    <color name="oled_gray_light">#CCCCCC</color>
+    <color name="oled_gray">#999999</color>
+    <color name="oled_gray_dark">#666666</color>
+    <color name="oled_gray_darker">#333333</color>
+    
+    <!-- Primary colors - you can customize these -->
+    <color name="oled_primary">#BB86FC</color>
+    <color name="oled_primary_variant">#3700B3</color>
+    <color name="oled_on_primary">#000000</color>
+    
+    <!-- Secondary colors -->
+    <color name="oled_secondary">#03DAC6</color>
+    <color name="oled_secondary_variant">#018786</color>
+    <color name="oled_on_secondary">#000000</color>
+    
+    <!-- Surface colors -->
+    <color name="oled_surface_variant">#121212</color>
+    <color name="oled_on_surface_variant">#CCCCCC</color>
+    
+    <!-- Error colors -->
+    <color name="oled_error">#CF6679</color>
+    <color name="oled_on_error">#000000</color>
 </resources>
