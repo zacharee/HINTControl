@@ -1,4 +1,6 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.compose.reload.ComposeHotRun
+import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 
 plugins {
     alias(libs.plugins.kotlin.atomicfu)
@@ -6,9 +8,8 @@ plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.compose)
     alias(libs.plugins.conveyor)
+    alias(libs.plugins.compose.hot.reload)
 }
-
-val appVersionCode: Int by rootProject.extra
 
 val appVersionName: String by rootProject.extra
 val appPackageName: String by rootProject.extra
@@ -99,4 +100,12 @@ configurations.all {
         // https://github.com/JetBrains/compose-jb/issues/1404#issuecomment-1146894731
         attribute(Attribute.of("ui", String::class.java), "awt")
     }
+}
+
+tasks.withType<ComposeHotRun>().configureEach {
+    mainClass.set("MainKt")
+}
+
+composeCompiler {
+    featureFlags.add(ComposeFeatureFlag.OptimizeNonSkippingGroups)
 }
