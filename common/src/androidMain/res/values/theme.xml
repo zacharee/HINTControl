@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Base App Theme -->
     <style name="AppTheme" parent="Theme.Material3.DynamicColors.DayNight">
         <item name="windowActionBar">false</item>
         <item name="android:windowActionBar">false</item>
@@ -8,5 +9,49 @@
 
         <item name="android:enforceNavigationBarContrast">false</item>
         <item name="android:enforceStatusBarContrast">false</item>
+    </style>
+
+    <!-- OLED Theme with pure black background -->
+    <style name="AppTheme.OLED" parent="Theme.Material3.DynamicColors.DayNight">
+        <!-- Inherit base theme properties -->
+        <item name="windowActionBar">false</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowNoTitle">true</item>
+
+        <item name="android:enforceNavigationBarContrast">false</item>
+        <item name="android:enforceStatusBarContrast">false</item>
+        <!-- Window colors -->
+        <item name="android:windowBackground">@color/oled_black</item>
+        <item name="android:navigationBarColor">@color/oled_black</item>
+        <item name="android:statusBarColor">@color/oled_black</item>
+        
+        <!-- Material Design colors -->
+        <item name="colorPrimary">@color/oled_primary</item>
+        <item name="colorPrimaryVariant">@color/oled_primary_variant</item>
+        <item name="colorOnPrimary">@color/oled_on_primary</item>
+        <item name="colorSecondary">@color/oled_secondary</item>
+        <item name="colorSecondaryVariant">@color/oled_secondary_variant</item>
+        <item name="colorOnSecondary">@color/oled_on_secondary</item>
+        
+        <!-- Surface colors -->
+        <item name="colorSurface">@color/oled_black</item>
+        <item name="colorOnSurface">@color/oled_white</item>
+        <item name="colorSurfaceVariant">@color/oled_surface_variant</item>
+        <item name="colorOnSurfaceVariant">@color/oled_on_surface_variant</item>
+        
+        <!-- Background colors -->
+        <item name="android:colorBackground">@color/oled_black</item>
+        <item name="colorOnBackground">@color/oled_white</item>
+        
+        <!-- Text colors -->
+        <item name="android:textColorPrimary">@color/oled_white</item>
+        <item name="android:textColorSecondary">@color/oled_gray_light</item>
+        <item name="android:textColorTertiary">@color/oled_gray</item>
+        
+        <!-- Force dark mode -->
+        <item name="android:forceDarkAllowed">true</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
     </style>
 </resources>
