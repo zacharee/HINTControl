@@ -56,6 +56,11 @@ fun About() {
                 desc = MR.strings.patreon,
             ),
             SocialIconData(
+                img = MR.images.currency_usd,
+                link = "https://www.paypal.com/donate/?hosted_button_id=EWAPDSENZ7U44",
+                desc = MR.strings.donate,
+            ),
+            SocialIconData(
                 img = MR.images.web,
                 link = "https://zwander.dev",
                 desc = MR.strings.website,

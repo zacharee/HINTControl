@@ -217,4 +217,6 @@
     <string name="theme_light">Light</string>
     <string name="theme_dark">Dark</string>
     <string name="theme_black">Black (OLED)</string>
+
+    <string name="donate">Donate</string>
 </resources>
