@@ -1,4 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="CidrRootsConfiguration">
+    <libraryRoots>
+      <file path="$PROJECT_DIR$/iosApp/Pods" />
+    </libraryRoots>
+  </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$" />
@@ -55,5 +61,20 @@
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_21" default="true" project-jdk-name="corretto-21" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
+  </component>
+  <component name="SwiftPackageManagerSettings">
+    <option name="linkedExternalProjectsSettings">
+      <SwiftPackageManagerProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/iosApp" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/iosApp" />
+          </set>
+        </option>
+      </SwiftPackageManagerProjectSettings>
+    </option>
+  </component>
+  <component name="SwiftPackageManagerWorkspace" PROJECT_DIR="$PROJECT_DIR$/iosApp">
+    <contentRoot DIR="$PROJECT_DIR$" />
   </component>
 </project>
