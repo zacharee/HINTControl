@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -120,13 +121,29 @@ fun BandConfigLayout(
 
     InWindowAlertDialog(
         showing = showingFiveGigDialog,
-        title = { Text(text = stringResource(MR.strings.disable_five_ghz_title)) },
+        title = { Text(text = stringResource(MR.strings.warning)) },
         text = { Text(text = stringResource(MR.strings.disable_five_ghz_message)) },
         buttons = {
             TextButton(
                 onClick = { showingFiveGigDialog = false },
             ) {
-                Text(text = stringResource(MR.strings.ok))
+                Text(text = stringResource(MR.strings.no))
+            }
+
+            TextButton(
+                onClick = {
+                    showingFiveGigDialog = false
+                    tempState = tempState?.copy(
+                        fiveGig = tempState?.fiveGig?.copy(
+                            isRadioEnabled = false,
+                        )
+                    )
+                },
+            ) {
+                Text(
+                    text = stringResource(MR.strings.yes),
+                    color = MaterialTheme.colorScheme.error,
+                )
             }
         },
         onDismissRequest = { showingFiveGigDialog = false },
