@@ -1,9 +1,10 @@
 import Foundation
 import Bugsnag
+import BugsnagPerformance
 import NSExceptionKtBugsnag
 import UIKit
-import common
 import WidgetKit
+import common
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     var watchJob: Ktor_ioCloseable? = nil
@@ -20,6 +21,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         
         NSExceptionKt.addReporter(.bugsnag(config))
         Bugsnag.start(with: config)
+        BugsnagPerformance.start()
 
         watchJob = FlowUtilsKt.asCommonFlow(SettingsModel.shared.widgetRefresh).watch { _ in
             WidgetCenter.shared.reloadTimelines(ofKind: "HINT_Widget")
