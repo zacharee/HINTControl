@@ -15,7 +15,10 @@ HINT Control uses Crowdin to manage translations. [Help translate to your langua
 [![Crowdin](https://badges.crowdin.net/hint-control/localized.svg)](https://crowdin.com/project/hint-control)
 
 # Installing
-Check the [Releases page](https://github.com/zacharee/ArcadyanKVD21Control/releases) for binaries.
+For Windows, macOS, and Linux, you can download from https://hintcontrol.zwander.dev.
+Alternatively, you can use the steps below to manually download a release.
+
+Check the [Releases page](https://github.com/zacharee/HINTControl/releases) for binaries.
 
 ## Android
 The Android version is available on the [Google Play Store](https://play.google.com/store/apps/details?id=dev.zwander.arcadyankvd21control),
