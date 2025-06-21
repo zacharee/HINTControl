@@ -26,19 +26,18 @@ Alternatively, you can download `HINTControl_Android_<VERSION>.apk` and install 
 The iOS version is available on the [App Store](https://apps.apple.com/us/app/hint-control/id6449951339).
 
 ## Windows
-Download the .zip ending in `windows-amd64`.
-
-Native ARM64 Windows builds aren't currently available.
+- On Intel or AMD devices, download the .zip ending in `windows-amd64`.
+- On ARM64 devices, download the .zip ending in `windows-aarch64`.
 
 ## macOS
- - On Intel Macs, download the .zip ending in `mac-amd64`.
- - On Apple Silicon Macs, download the .zip ending in `mac-aarch64`.
+- On Intel Macs, download the .zip ending in `mac-amd64`.
+- On Apple Silicon Macs, download the .zip ending in `mac-aarch64`.
 
 ## Linux
- - On Debian-based systems, download the `.deb` file.
- - On other Linux distros, download the `.tar.gz` file.
+- On Debian-based systems, download the `.deb` file.
+- On other Linux distros, download the `.tar.gz` file.
 
-On x64 Linux, download the `amd64` variant. On ARM64 Linux, choose `aarch64`.
+For Intel or AMD devices, download the `amd64` variant. For ARM64 devices, choose `aarch64` or `arm64`.
 
 # Usage Notes
 ## iOS
