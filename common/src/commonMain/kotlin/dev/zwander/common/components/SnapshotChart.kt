@@ -62,8 +62,8 @@ private data class ChartData(
             lineStyle = LineStyle(brush = SolidColor(color), strokeWidth = 1.dp),
             symbol = {
                 TooltipBox(
-                    positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(
-                        spacingBetweenTooltipAndAnchor = 4.dp,
+                    positionProvider = TooltipDefaults.rememberTooltipPositionProvider(
+                        spacingBetweenTooltipAndAnchor = 4.dp
                     ),
                     state = rememberTooltipState(),
                     tooltip = {
