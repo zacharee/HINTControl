@@ -244,7 +244,7 @@ dependencies {
 
 afterEvaluate {
     try {
-        exec {
+        providers.exec {
             commandLine(
                 "plutil",
                 "-replace",
@@ -258,7 +258,7 @@ afterEvaluate {
     }
 
     try {
-        exec {
+        providers.exec {
             commandLine(
                 "plutil",
                 "-replace",

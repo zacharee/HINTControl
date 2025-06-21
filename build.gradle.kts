@@ -38,7 +38,7 @@ tasks.register("buildXCArchive") {
     dependsOn(":clearIOSOutput")
 
     doLast {
-        exec {
+        providers.exec {
             commandLine(
                 "xcodebuild",
                 "archive",
@@ -56,7 +56,7 @@ tasks.register("moveXCArchive") {
     dependsOn(":buildXCArchive")
 
     doLast {
-        exec {
+        providers.exec {
             commandLine(
                 "mv", "iosApp/output/iosApp.xcarchive/Products/Applications/HINT Control.app",
                 "iosApp/output/Payload",
@@ -69,7 +69,7 @@ tasks.register("buildIPA") {
     dependsOn(":moveXCArchive")
 
     doLast {
-        exec {
+        providers.exec {
             setWorkingDir("iosApp/output")
             commandLine(
                 "zip",
