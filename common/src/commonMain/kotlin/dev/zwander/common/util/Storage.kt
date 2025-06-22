@@ -2,6 +2,9 @@
 package dev.zwander.common.util
 
 import dev.zwander.common.data.HistoricalSnapshot
+import dev.zwander.common.database.Database
+import dev.zwander.common.database.SnapshotDao
+import dev.zwander.common.database.getRoomDatabase
 import dev.zwander.common.model.MainModel
 import dev.zwander.common.model.adapters.CellDataRoot
 import dev.zwander.common.model.adapters.ClientDeviceData
@@ -174,6 +177,7 @@ object Storage {
         allowTrailingComma = true
     }
 
+    @Deprecated("Use [snapshotsDb] instead.")
     val snapshots: KStore<List<HistoricalSnapshot>> = KStore(
         default = listOf(),
         enableCache = false,
@@ -182,6 +186,10 @@ object Storage {
             json,
         ),
     )
+
+    val snapshotsDb: Database by lazy {
+        getRoomDatabase()
+    }
 
     private val listenJob = atomic<Job?>(initial = null)
 
@@ -242,24 +250,26 @@ object Storage {
         cellData: CellDataRoot? = null,
         simData: SimDataRoot? = null,
     ) {
-        snapshots.update {
-            val currentSnapshots = it?.toMutableList() ?: mutableListOf()
+        val dao = snapshotsDb.getDao()
 
-            if (snapshotTime == 0L) {
-                return@update currentSnapshots
-            }
-
-            val snapshot = HistoricalSnapshot(
+        dao.insert(
+            HistoricalSnapshot(
                 timeMillis = snapshotTime,
                 cellData = cellData,
                 clientData = clientData,
                 mainData = mainData,
                 simData = simData,
-            )
+            ),
+        )
+    }
 
-            currentSnapshots.add(snapshot)
-            currentSnapshots.sortBy { snap -> snap.timeMillis }
-            currentSnapshots
+    suspend fun migrateSnapshotsIfNeeded() {
+        val snapshotsSnapshot = snapshots.get()
+
+        if (!snapshotsSnapshot.isNullOrEmpty()) {
+            snapshotsDb.getDao().insert(snapshotsSnapshot)
+
+            snapshots.delete()
         }
     }
 }

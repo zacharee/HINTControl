@@ -19,11 +19,14 @@ plugins {
     alias(libs.plugins.kotlin.atomicfu) apply false
     alias(libs.plugins.kotlin.compose) apply false
     alias(libs.plugins.kotlin.multiplatform) apply false
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.compose) apply false
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.conveyor) apply false
     alias(libs.plugins.bugsnag.gradle) apply false
     alias(libs.plugins.compose.hot.reload) apply false
+    alias(libs.plugins.room) apply false
+    alias(libs.plugins.ksp) apply false
 }
 
 tasks.register("clearIOSOutput") {

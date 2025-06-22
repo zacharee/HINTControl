@@ -10,6 +10,8 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.moko.resources)
     alias(libs.plugins.buildkonfig)
+    alias(libs.plugins.room)
+    alias(libs.plugins.ksp)
 }
 
 val appVersionCode: Int by rootProject.extra
@@ -118,6 +120,9 @@ kotlin {
                 api(libs.composedialog)
                 api(libs.zwander.materialyou)
                 api(libs.material.icons.core)
+                api(libs.sqlite)
+                api(libs.sqlite.bundled)
+                api(libs.room.runtime)
             }
         }
         val nonAppleMain by creating {
@@ -240,6 +245,14 @@ buildkonfig {
 
 dependencies {
     coreLibraryDesugaring(libs.desugar.jdk.libs)
+
+    configurations.filter { it.name.startsWith("ksp") }.forEach {
+        add(it.name, libs.room.compiler)
+    }
+}
+
+room {
+    schemaDirectory("$projectDir/schema")
 }
 
 afterEvaluate {

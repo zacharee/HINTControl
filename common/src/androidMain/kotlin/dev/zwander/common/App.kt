@@ -20,7 +20,7 @@ class App : Application(), CoroutineScope by MainScope() {
         lateinit var instance: App
     }
 
-    private val jobScheduler by lazy { getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler }
+    private val jobScheduler by lazy { getSystemService(JOB_SCHEDULER_SERVICE) as JobScheduler }
 
     override fun onCreate() {
         super.onCreate()

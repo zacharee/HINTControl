@@ -80,6 +80,8 @@ import dev.zwander.common.util.invoke
 import dev.zwander.compose.alertdialog.InWindowAlertDialog
 import dev.zwander.resources.common.MR
 import korlibs.platform.Platform
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.experimental.ExperimentalObjCRefinement
@@ -125,6 +127,12 @@ fun App(
     LaunchedEffect(null) {
         if (username.isNotBlank() && !password.isNullOrBlank()) {
             GlobalModel.updateClient()
+        }
+    }
+
+    LaunchedEffect(null) {
+        launch(Dispatchers.IO) {
+            Storage.migrateSnapshotsIfNeeded()
         }
     }
 

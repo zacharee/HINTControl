@@ -27,6 +27,7 @@ kotlin = "2.1.21"
 kotlinx-coroutines = "1.10.2"
 kotlinx-serialization = "1.8.1"
 kotlinxDatetime = "0.6.2"
+ksp = "2.1.21-2.0.1"
 kstore = "1.0.0"
 ktor = "3.2.0"
 material-icons-core = "1.7.3"
@@ -39,8 +40,10 @@ nsexceptionKt = "1.0.0"
 nsexceptionKtBugsnag = "1.0.0-BETA-11"
 oshi = "6.8.2"
 relinker = "1.4.5"
+room = "2.7.2"
 semver = "3.0.0"
 slf4j = "2.0.17"
+sqlite = "2.5.2"
 taskerpluginlibrary = "0.4.10"
 
 [libraries]
@@ -91,8 +94,12 @@ nsexceptionKt-bugsnag = { module = "com.rickclephas.kmp:nsexception-kt-bugsnag",
 nsexceptionKt-core = { module = "com.rickclephas.kmp:nsexception-kt-core", version.ref = "nsexceptionKt" }
 oshi-core = { module = "com.github.oshi:oshi-core", version.ref = "oshi" }
 relinker = { module = "com.getkeepsafe.relinker:relinker", version.ref = "relinker" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 semver = { module = "io.github.z4kn4fein:semver", version.ref = "semver" }
 slf4j-jdk14 = { module = "org.slf4j:slf4j-jdk14", version.ref = "slf4j" }
+sqlite = { module = "androidx.sqlite:sqlite", version.ref = "sqlite" }
+sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
 taskerpluginlibrary = { module = "com.joaomgcd:taskerpluginlibrary", version.ref = "taskerpluginlibrary" }
 zwander-materialyou = { module = "dev.zwander:materialyou", version.ref = "materialyou" }
 
@@ -110,4 +117,6 @@ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlin-native-cocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 moko-resources = { id = "dev.icerock.mobile.multiplatform-resources", version.ref = "moko-resources" }
+room = { id = "androidx.room", version.ref = "room" }

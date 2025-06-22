@@ -23,20 +23,23 @@ import dev.zwander.common.components.TextSwitch
 import dev.zwander.common.model.SettingsModel
 import dev.zwander.common.util.FileExporter
 import dev.zwander.common.util.Storage
-import dev.zwander.kotlin.file.FileUtils
 import dev.zwander.resources.common.MR
+import io.ktor.utils.io.core.toByteArray
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
 import kotlinx.io.files.FileNotFoundException
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.json.io.encodeToSink
 
+@OptIn(ExperimentalSerializationApi::class)
 @Composable
 fun ColumnScope.RecordSnapshots() {
     val scope = rememberCoroutineScope()
 
     var enabled by SettingsModel.recordSnapshots.collectAsMutableState()
 
-    val hasSnapshots = !Storage.snapshots.updates.collectAsState(listOf()).value.isNullOrEmpty()
+    val hasSnapshots = Storage.snapshotsDb.getDao().countAsFlow().collectAsState(0).value > 0
 
     TextSwitch(
         text = stringResource(MR.strings.enabled),
@@ -55,10 +58,20 @@ fun ColumnScope.RecordSnapshots() {
             onClick = {
                 scope.launch(Dispatchers.IO) {
                     try {
-                        FileUtils.fromString(Storage.path, false)?.openInputStream()?.use { input ->
-                            FileExporter.saveFile(Storage.NAME, false)?.use { output ->
-                                input.transferTo(output)
+                        FileExporter.saveFile(Storage.NAME, false)?.use { output ->
+                            output.write("[".toByteArray())
+                            Storage.snapshotsDb.getDao().getIds().apply {
+                                forEachIndexed { index, id ->
+                                    val snapshot = Storage.snapshotsDb.getDao().getById(id)
+
+                                    Storage.json.encodeToSink(snapshot, output)
+
+                                    if (index < lastIndex) {
+                                        output.write(",".toByteArray())
+                                    }
+                                }
                             }
+                            output.write("]".toByteArray())
                         }
                     } catch (e: FileNotFoundException) {
                         e.printStackTrace()
@@ -77,6 +90,7 @@ fun ColumnScope.RecordSnapshots() {
             onClick = {
                 scope.launch {
                     Storage.snapshots.reset()
+                    Storage.snapshotsDb.getDao().deleteAll()
                 }
             },
             modifier = Modifier.weight(1f),
