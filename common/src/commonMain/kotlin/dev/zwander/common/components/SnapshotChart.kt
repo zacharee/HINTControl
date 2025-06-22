@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.stringResource
+import dev.zwander.common.data.HistoricalSnapshot
 import dev.zwander.common.util.Storage
 import dev.zwander.common.util.invoke
 import dev.zwander.common.util.nullableMaxOf
@@ -50,6 +51,7 @@ import io.github.koalaplot.core.xygraph.XYGraph
 import io.github.koalaplot.core.xygraph.XYGraphScope
 import io.github.koalaplot.core.xygraph.rememberAxisStyle
 import korlibs.platform.Platform
+import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
@@ -124,10 +126,34 @@ private fun createPoint(time: Long, value: Number?, minX: Long): Point<Long, Int
 @Composable
 fun SnapshotChart(
     modifier: Modifier = Modifier,
+    autoRefresh: Boolean = true,
+    onlyLastMinute: Boolean = true,
 ) {
     val isLightText = LocalContentColor.current.luminance() > 0.5f
 
-    val sourceSnapshots by Storage.snapshotsDb.getDao().getLast(300).collectAsState(listOf())
+    var wasOnlyLastMinute by remember {
+        mutableStateOf(onlyLastMinute)
+    }
+    var sourceSnapshots by remember {
+        mutableStateOf(listOf<HistoricalSnapshot>())
+    }
+
+    val rememberedCountFlow = remember {
+        Storage.snapshotsDb.getDao().countAsFlow()
+    }
+
+    val snapshotCount by rememberedCountFlow.collectAsState(0)
+
+    LaunchedEffect(autoRefresh, onlyLastMinute, snapshotCount) {
+        if (autoRefresh || sourceSnapshots.isEmpty() || wasOnlyLastMinute != onlyLastMinute) {
+            wasOnlyLastMinute = onlyLastMinute
+            sourceSnapshots = if (onlyLastMinute) {
+                Storage.snapshotsDb.getDao().getSince(Clock.System.now().toEpochMilliseconds() - (60 * 1000))
+            } else {
+                Storage.snapshotsDb.getDao().getLast(300)
+            }
+        }
+    }
 
     if (sourceSnapshots.isEmpty()) {
         return
@@ -248,31 +274,16 @@ fun SnapshotChart(
         }
     }
 
-    var xAxisModel by remember {
-        mutableStateOf(
+    val xAxisModel by remember {
+        derivedStateOf {
             LongLinearAxisModel(
                 range = if (minX == maxX) {
                     0L..1L
                 } else {
                     0L..(maxX - minX)
                 },
-            ),
-        )
-    }
-
-    LaunchedEffect(minX, maxX) {
-        val oldRange = xAxisModel.viewRange.value
-        val shift = oldRange.start - minX
-        val newRange = (oldRange.start + shift)..(oldRange.endInclusive + shift)
-
-        xAxisModel = LongLinearAxisModel(
-            range = if (minX == maxX) {
-                0L..1L
-            } else {
-                0L..(maxX - minX)
-            },
-        ).also {
-            it.setViewRange(newRange)
+                minViewExtent = 1000,
+            )
         }
     }
 
@@ -349,8 +360,8 @@ fun SnapshotChart(
             },
             xAxisTitle = {},
             gestureConfig = GestureConfig(
-                panXEnabled = true,
-                zoomXEnabled = true,
+                panXEnabled = !autoRefresh,
+                zoomXEnabled = !autoRefresh,
             ),
         )
     }

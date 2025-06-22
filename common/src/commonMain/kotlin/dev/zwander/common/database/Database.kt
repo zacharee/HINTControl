@@ -58,7 +58,7 @@ interface SnapshotDao {
     @Query("SELECT * FROM HistoricalSnapshot WHERE timeMillis in (" +
             "SELECT timeMillis FROM HistoricalSnapshot ORDER BY timeMillis DESC LIMIT :count" +
     ") ORDER BY timeMillis ASC")
-    fun getLast(count: Long): Flow<List<HistoricalSnapshot>>
+    suspend fun getLast(count: Long): List<HistoricalSnapshot>
 }
 
 @Suppress("KotlinNoActualForExpect")

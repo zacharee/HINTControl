@@ -140,12 +140,18 @@ fun MainPage(
             ItemInfo(
                 title = MR.strings.snapshots,
                 render = {
-                    SnapshotChart(it.aspectRatio(1f).fillMaxWidth())
+                    SnapshotChart(
+                        it.aspectRatio(1f).fillMaxWidth(),
+                    )
                 },
                 selectable = false,
                 visible = { showSnapshots },
                 dialogContent = {
-                    SnapshotChart(it.heightIn(min = 400.dp))
+                    SnapshotChart(
+                        it.heightIn(min = 400.dp),
+                        autoRefresh = false,
+                        onlyLastMinute = false,
+                    )
                 },
                 dialogMaxWidth = 1000.dp,
             ),
