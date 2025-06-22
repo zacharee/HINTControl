@@ -100,7 +100,6 @@ fun App(
     val autoRefresh by SettingsModel.enableAutoRefresh.collectAsState()
     val autoRefreshMs by SettingsModel.autoRefreshMs.collectAsState()
     val isLoggedIn by UserModel.isLoggedIn.collectAsState(false)
-    val saveSnapshots by SettingsModel.recordSnapshots.collectAsState()
     val username by UserModel.username.collectAsState()
     val password by UserModel.password.collectAsState()
 
@@ -108,14 +107,6 @@ fun App(
     val error by GlobalModel.httpError.collectAsState()
 
     val fuzzerEnabled by SettingsModel.fuzzerEnabled.collectAsState()
-
-    LaunchedEffect(saveSnapshots) {
-        if (saveSnapshots) {
-            Storage.startListening()
-        } else {
-            Storage.stopListening()
-        }
-    }
 
     LaunchedEffect(autoRefresh, currentPage) {
         while (autoRefresh && currentPage.refreshAction != null) {

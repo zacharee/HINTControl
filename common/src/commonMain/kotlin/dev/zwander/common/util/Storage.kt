@@ -3,9 +3,8 @@ package dev.zwander.common.util
 
 import dev.zwander.common.data.HistoricalSnapshot
 import dev.zwander.common.database.Database
-import dev.zwander.common.database.SnapshotDao
 import dev.zwander.common.database.getRoomDatabase
-import dev.zwander.common.model.MainModel
+import dev.zwander.common.model.SettingsModel
 import dev.zwander.common.model.adapters.CellDataRoot
 import dev.zwander.common.model.adapters.ClientDeviceData
 import dev.zwander.common.model.adapters.MainData
@@ -13,12 +12,9 @@ import dev.zwander.common.model.adapters.SimDataRoot
 import io.github.xxfast.kstore.Codec
 import io.github.xxfast.kstore.file.FileCodec
 import io.github.xxfast.kstore.utils.StoreDispatcher
-import kotlinx.atomicfu.atomic
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
@@ -191,76 +187,26 @@ object Storage {
         getRoomDatabase()
     }
 
-    private val listenJob = atomic<Job?>(initial = null)
-
-    @OptIn(DelicateCoroutinesApi::class)
-    fun startListening() {
-        if (listenJob.value != null) {
-            return
-        }
-
-        listenJob.value = GlobalScope.launch {
-            launch {
-                MainModel.currentMainData.wrapped.collect { (time, data) ->
-                    makeSnapshot(
-                        snapshotTime = time,
-                        mainData = data,
-                    )
-                }
-            }
-
-            launch {
-                MainModel.currentClientData.wrapped.collect { (time, data) ->
-                    makeSnapshot(
-                        snapshotTime = time,
-                        clientData = data,
-                    )
-                }
-            }
-
-            launch {
-                MainModel.currentCellData.wrapped.collect { (time, data) ->
-                    makeSnapshot(
-                        snapshotTime = time,
-                        cellData = data,
-                    )
-                }
-            }
-
-            launch {
-                MainModel.currentSimData.wrapped.collect { (time, data) ->
-                    makeSnapshot(
-                        snapshotTime = time,
-                        simData = data,
-                    )
-                }
-            }
-        }
-    }
-
-    fun stopListening() {
-        listenJob.value?.cancel()
-        listenJob.value = null
-    }
-
-    private suspend fun makeSnapshot(
+    suspend fun makeSnapshot(
         snapshotTime: Long,
         mainData: MainData? = null,
         clientData: ClientDeviceData? = null,
         cellData: CellDataRoot? = null,
         simData: SimDataRoot? = null,
     ) {
-        val dao = snapshotsDb.getDao()
+        if (SettingsModel.recordSnapshots.value) {
+            val dao = snapshotsDb.getDao()
 
-        dao.insert(
-            HistoricalSnapshot(
-                timeMillis = snapshotTime,
-                cellData = cellData,
-                clientData = clientData,
-                mainData = mainData,
-                simData = simData,
-            ),
-        )
+            dao.insert(
+                HistoricalSnapshot(
+                    timeMillis = snapshotTime,
+                    cellData = cellData,
+                    clientData = clientData,
+                    mainData = mainData,
+                    simData = simData,
+                ),
+            )
+        }
     }
 
     suspend fun migrateSnapshotsIfNeeded() {

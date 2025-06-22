@@ -12,6 +12,7 @@ import dev.icerock.moko.resources.compose.painterResource
 import dev.zwander.common.model.GlobalModel
 import dev.zwander.common.model.MainModel
 import dev.zwander.common.pages.*
+import dev.zwander.common.util.Storage
 import dev.zwander.resources.common.MR
 
 sealed class Page(
@@ -44,65 +45,77 @@ sealed class Page(
     }
 
     data object Login : Page(
-        MR.strings.log_in,
-        LOG_IN_PAGE_KEY,
-        { rememberVectorPainter(Icons.Default.Lock) },
-        null,
-        { false },
-        { LoginPage(it) }
+        titleRes = MR.strings.log_in,
+        key = LOG_IN_PAGE_KEY,
+        icon = { rememberVectorPainter(Icons.Default.Lock) },
+        refreshAction = null,
+        needsRefresh = { false },
+        render = { LoginPage(it) },
     )
     data object Main : Page(
-        MR.strings.main_data,
-        MAIN_PAGE_KEY,
-        { rememberVectorPainter(Icons.Default.Home) },
-        {
+        titleRes = MR.strings.main_data,
+        key = MAIN_PAGE_KEY,
+        icon = { rememberVectorPainter(Icons.Default.Home) },
+        refreshAction = {
             MainModel.currentCellData.value = GlobalModel.httpClient.value?.getCellData()
             MainModel.currentSimData.value = GlobalModel.httpClient.value?.getSimData()
             MainModel.currentMainData.value = GlobalModel.httpClient.value?.getMainData()
+
+            Storage.makeSnapshot(
+                snapshotTime = MainModel.currentMainData.timestampedValue.first,
+                mainData = MainModel.currentMainData.value,
+                simData = MainModel.currentSimData.value,
+                cellData = MainModel.currentCellData.value,
+            )
         },
-        {
+        needsRefresh = {
             MainModel.currentCellData.value == null ||
                     MainModel.currentSimData.value == null ||
                     MainModel.currentMainData.value == null
         },
-        { MainPage(it) }
+        render = { MainPage(it) },
     )
     data object Clients : Page(
-        MR.strings.client_data,
-        CLIENTS_PAGE_KEY,
-        { rememberVectorPainter(Icons.AutoMirrored.Filled.List) },
-        {
+        titleRes = MR.strings.client_data,
+        key = CLIENTS_PAGE_KEY,
+        icon = { rememberVectorPainter(Icons.AutoMirrored.Filled.List) },
+        refreshAction = {
             MainModel.currentClientData.value = GlobalModel.httpClient.value?.getDeviceData()
+
+            Storage.makeSnapshot(
+                snapshotTime = MainModel.currentClientData.timestampedValue.first,
+                clientData = MainModel.currentClientData.value,
+            )
         },
-        { MainModel.currentClientData.value == null },
-        { ClientListPage((it)) }
+        needsRefresh = { MainModel.currentClientData.value == null },
+        render = { ClientListPage((it)) },
     )
     data object WifiConfig : Page(
-        MR.strings.wifi_data,
-        WIFI_PAGE_KEY,
-        { painterResource(MR.images.wifi) },
-        {
+        titleRes = MR.strings.wifi_data,
+        key = WIFI_PAGE_KEY,
+        icon = { painterResource(MR.images.wifi) },
+        refreshAction = {
             MainModel.currentWifiData.value = GlobalModel.httpClient.value?.getWifiData()
         },
-        { MainModel.currentWifiData.value == null },
-        { WifiConfigPage(it) }
+        needsRefresh = { MainModel.currentWifiData.value == null },
+        render = { WifiConfigPage(it) },
     )
 
     data object SettingsPage : Page(
-        MR.strings.settings,
-        SETTINGS_PAGE_KEY,
-        { rememberVectorPainter(Icons.Default.Settings) },
-        null,
-        null,
-        { SettingsPage(it) },
+        titleRes = MR.strings.settings,
+        key = SETTINGS_PAGE_KEY,
+        icon = { rememberVectorPainter(Icons.Default.Settings) },
+        refreshAction = null,
+        needsRefresh = null,
+        render = { SettingsPage(it) },
     )
 
     data object FuzzerPage : Page(
-        MR.strings.fuzzer,
-        FUZZER_PAGE_KEY,
-        { rememberVectorPainter(Icons.Default.Lock) },
-        null,
-        null,
-        { FuzzerPage(it) }
+        titleRes = MR.strings.fuzzer,
+        key = FUZZER_PAGE_KEY,
+        icon = { rememberVectorPainter(Icons.Default.Lock) },
+        refreshAction = null,
+        needsRefresh = null,
+        render = { FuzzerPage(it) },
     )
 }
