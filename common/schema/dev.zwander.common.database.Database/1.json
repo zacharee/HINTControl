@@ -1,0 +1,57 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "2e2a0a49649ddeb1c42903b3f80328cd",
+    "entities": [
+      {
+        "tableName": "HistoricalSnapshot",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`timeMillis` INTEGER NOT NULL, `cellData` TEXT, `clientData` TEXT, `mainData` TEXT, `simData` TEXT, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "timeMillis",
+            "columnName": "timeMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cellData",
+            "columnName": "cellData",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "clientData",
+            "columnName": "clientData",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "mainData",
+            "columnName": "mainData",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "simData",
+            "columnName": "simData",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        }
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2e2a0a49649ddeb1c42903b3f80328cd')"
+    ]
+  }
+}
