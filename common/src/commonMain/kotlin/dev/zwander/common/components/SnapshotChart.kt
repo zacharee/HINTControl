@@ -283,7 +283,7 @@ fun SnapshotChart(
                 } else {
                     0L..(maxX - minX)
                 },
-                minViewExtent = 1000,
+                minViewExtent = if (maxX - minX > 1000) 1000 else 1,
             )
         }
     }
