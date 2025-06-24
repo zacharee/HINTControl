@@ -51,10 +51,11 @@ import io.github.koalaplot.core.xygraph.XYGraph
 import io.github.koalaplot.core.xygraph.XYGraphScope
 import io.github.koalaplot.core.xygraph.rememberAxisStyle
 import korlibs.platform.Platform
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 private const val VERTICAL_AXIS_PADDING = 2
 
@@ -120,7 +121,7 @@ private fun createPoint(time: Long, value: Number?, minX: Long): Point<Long, Int
 }
 
 @OptIn(
-    ExperimentalObjCRefinement::class, ExperimentalKoalaPlotApi::class,
+    ExperimentalObjCRefinement::class, ExperimentalKoalaPlotApi::class, ExperimentalTime::class,
 )
 @HiddenFromObjC
 @Composable

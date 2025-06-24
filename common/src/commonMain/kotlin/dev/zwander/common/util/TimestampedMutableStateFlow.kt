@@ -6,7 +6,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 class TimestampedMutableStateFlow<T>(
     initialState: T,
@@ -18,6 +19,7 @@ class TimestampedMutableStateFlow<T>(
     override val subscriptionCount: StateFlow<Int>
         get() = wrapped.subscriptionCount
 
+    @OptIn(ExperimentalTime::class)
     override var value: T
         get() = wrapped.value.second
         set(value) {
@@ -34,6 +36,7 @@ class TimestampedMutableStateFlow<T>(
         }
     }
 
+    @OptIn(ExperimentalTime::class)
     override fun compareAndSet(expect: T, update: T): Boolean {
         return wrapped.compareAndSet(
             wrapped.value.first to expect,
@@ -46,10 +49,12 @@ class TimestampedMutableStateFlow<T>(
         wrapped.resetReplayCache()
     }
 
+    @OptIn(ExperimentalTime::class)
     override fun tryEmit(value: T): Boolean {
         return wrapped.tryEmit(Clock.System.now().toEpochMilliseconds() to value)
     }
 
+    @OptIn(ExperimentalTime::class)
     override suspend fun emit(value: T) {
         wrapped.emit(Clock.System.now().toEpochMilliseconds() to value)
     }
