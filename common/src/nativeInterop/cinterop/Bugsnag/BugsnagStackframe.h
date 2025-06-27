@@ -1,23 +1,109 @@
-// The following are snippets from the Bugsnag Cocoa SDK used to generate Kotlin stubs.
 //
-// https://github.com/bugsnag/bugsnag-cocoa/blob/bd0465cd0e753ca42eef59fef4d5ceda80da1222/Bugsnag/include/Bugsnag/BugsnagStackframe.h
+//  BugsnagStackframe.h
+//  Bugsnag
 //
-// Copyright (c) 2012 Bugsnag, https://bugsnag.com/
+//  Created by Jamie Lynch on 01/04/2020.
+//  Copyright © 2020 Bugsnag. All rights reserved.
 //
-// Permission is hereby granted, free of charge, to any person obtaining
-// a copy of this software and associated documentation files (the "Software"),
-// to deal in the Software without restriction, including without limitation
-// the rights to use, copy, modify, merge, publish, distribute, sublicense,
-// and/or sell copies of the Software, and to permit persons to whom the Software
-// is furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
 
 #import <Foundation/Foundation.h>
 
+#import <BugsnagDefines.h>
+
+NS_ASSUME_NONNULL_BEGIN
+
+typedef NSString * BugsnagStackframeType NS_TYPED_ENUM;
+
+BUGSNAG_EXTERN BugsnagStackframeType const BugsnagStackframeTypeCocoa;
+
+/**
+ * Represents a single stackframe from a stacktrace.
+ */
+BUGSNAG_EXTERN
 @interface BugsnagStackframe : NSObject
 
-+ (NSArray<BugsnagStackframe *> *_Nonnull)stackframesWithCallStackReturnAddresses:(NSArray<NSNumber *> *_Nonnull)callStackReturnAddresses;
+/**
+ * The method name of the stackframe
+ */
+@property (copy, nullable, nonatomic) NSString *method;
+
+/**
+ * The Mach-O file used by the stackframe
+ */
+@property (copy, nullable, nonatomic) NSString *machoFile;
+
+/**
+ * A UUID identifying the Mach-O file used by the stackframe
+ */
+@property (copy, nullable, nonatomic) NSString *machoUuid;
+
+/**
+ * The stack frame address
+ */
+@property (strong, nullable, nonatomic) NSNumber *frameAddress;
+
+/**
+ * The Mach-O file's desired base virtual memory address
+ */
+@property (strong, nullable, nonatomic) NSNumber *machoVmAddress;
+
+/**
+ * The address of the stackframe symbol
+ */
+@property (strong, nullable, nonatomic) NSNumber *symbolAddress;
+
+/**
+ * The address at which the Mach-O file is mapped into memory
+ */
+@property (strong, nullable, nonatomic) NSNumber *machoLoadAddress;
+
+/**
+ * True if `frameAddress` is equal to the value of the program counter register.
+ */
+@property (nonatomic) BOOL isPc;
+
+/**
+ * True if `frameAddress` is equal to the value of the link register.
+ */
+@property (nonatomic) BOOL isLr;
+
+/**
+ * The type of the stack frame, if it differs from that of the containing error or event.
+ */
+@property (copy, nullable, nonatomic) BugsnagStackframeType type;
+
+/**
+ * The file of the stackframe
+ */
+@property (copy, nullable, nonatomic) NSString *file;
+
+/**
+ * The line number of the stackframe
+ */
+@property (strong, nullable, nonatomic) NSNumber *lineNumber;
+
+/**
+ * The column number of the stackframe
+ */
+@property (strong, nullable, nonatomic) NSNumber *columnNumber;
+
+/**
+ * Creates an array of stackframe objects representing the provided call stack.
+ *
+ * @param callStackReturnAddresses An array containing the call stack return addresses, as returned by
+ * `NSThread.callStackReturnAddresses` or `NSException.callStackReturnAddresses`.
+ */
++ (NSArray<BugsnagStackframe *> *)stackframesWithCallStackReturnAddresses:(NSArray<NSNumber *> *)callStackReturnAddresses;
+
+/**
+ * Creates an array of stackframe objects representing the provided call stack.
+ *
+ * @param callStackSymbols An array containing the call stack symbols, as returned by `NSThread.callStackSymbols`.
+ * Each element should be in a format determined by the `backtrace_symbols()` function.
+
+ */
++ (nullable NSArray<BugsnagStackframe *> *)stackframesWithCallStackSymbols:(NSArray<NSString *> *)callStackSymbols;
 
 @end
+
+NS_ASSUME_NONNULL_END

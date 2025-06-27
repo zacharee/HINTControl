@@ -41,11 +41,9 @@ struct Provider: TimelineProvider {
     
     private func getEntry(date: Date = Date()) async -> SimpleEntry {
         do {
-            let httpClient = try await GlobalModel.shared.updateClient()
-            try await httpClient?.logIn(username: UserModel.shared.username.value as? String ?? "", password: UserModel.shared.password.value as? String ?? "", rememberCredentials: true)
-                        
-            let cellData = try await httpClient?.getCellData()
-            let signalData = try await httpClient?.getMainData(unauthed: false)?.signal
+            let data = try await TimelineProviderUtils.shared.updateCellAndSignalData()
+            let cellData = data.first
+            let signalData = data.second
             
             let entry = SimpleEntry(date: date, cellData: cellData, signalData: signalData)
             
@@ -169,17 +167,10 @@ struct HINT_Widget: Widget {
     let kind: String = "HINT_Widget"
     
     init() {
-        let config = BugsnagConfiguration.loadConfig()
-        
-        config.addOnSendError { event in
-            CrossPlatformBugsnag.shared.generateExtraErrorData().forEach { data in
-                event.addMetadata(data.value, key: data.key, section: data.tabName)
-            }
-            return true
-        }
+        let config = BugsnagDelegate.shared.createBugsnagConfig()
         
         NSExceptionKt.addReporter(.bugsnag(config))
-        Bugsnag.start()
+        Bugsnag.start(with: config)
     }
 
     var body: some WidgetConfiguration {

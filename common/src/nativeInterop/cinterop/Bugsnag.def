@@ -1,3 +1,26 @@
 language = Objective-C
 package = dev.zwander.bugsnag.cinterop
-headers = Bugsnag.h BugsnagBreadcrumb.h BugsnagEvent.h BugsnagError.h BugsnagStackframe.h BugsnagFeatureFlag.h
+headers = BSG_KSCrashReportWriter.h \
+    Bugsnag.h \
+    BugsnagApp.h \
+    BugsnagAppWithState.h \
+    BugsnagBreadcrumb.h \
+    BugsnagClient.h \
+    BugsnagConfiguration.h \
+    BugsnagDefines.h \
+    BugsnagDevice.h \
+    BugsnagDeviceWithState.h \
+    BugsnagEndpointConfiguration.h \
+    BugsnagError.h \
+    BugsnagErrorTypes.h \
+    BugsnagEvent.h \
+    BugsnagFeatureFlag.h \
+    BugsnagFeatureFlagStore.h \
+    BugsnagLastRunInfo.h \
+    BugsnagMetadata.h \
+    BugsnagMetadataStore.h \
+    BugsnagPlugin.h \
+    BugsnagSession.h \
+    BugsnagStackframe.h \
+    BugsnagThread.h \
+    BugsnagUser.h \

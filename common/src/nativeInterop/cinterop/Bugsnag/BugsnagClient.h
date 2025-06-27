@@ -1,5 +1,5 @@
 //
-//  Bugsnag.h
+//  BugsnagMetaData.m
 //
 //  Created by Conrad Irwin on 2014-10-01.
 //
@@ -23,122 +23,43 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
+
 #import <Foundation/Foundation.h>
 
-#import <BugsnagApp.h>
-#import <BugsnagAppWithState.h>
-#import <BugsnagClient.h>
 #import <BugsnagConfiguration.h>
 #import <BugsnagDefines.h>
-#import <BugsnagDevice.h>
-#import <BugsnagDeviceWithState.h>
-#import <BugsnagEndpointConfiguration.h>
-#import <BugsnagError.h>
-#import <BugsnagErrorTypes.h>
-#import <BugsnagEvent.h>
-#import <BugsnagFeatureFlag.h>
 #import <BugsnagLastRunInfo.h>
+#import <BugsnagFeatureFlagStore.h>
 #import <BugsnagMetadata.h>
-#import <BugsnagPlugin.h>
-#import <BugsnagSession.h>
-#import <BugsnagStackframe.h>
-#import <BugsnagThread.h>
+#import <BugsnagMetadataStore.h>
+
+@class BugsnagSessionTracker;
 
 /**
- * Static access to a Bugsnag Client, the easiest way to use Bugsnag in your app.
+ * The BugsnagClient is not intended to be used directly.
+ * 
+ * Use the static access provided by the Bugsnag class instead.
  */
 BUGSNAG_EXTERN
-@interface Bugsnag : NSObject <BugsnagClassLevelMetadataStore>
+@interface BugsnagClient : NSObject<BugsnagFeatureFlagStore, BugsnagMetadataStore>
 
 /**
- * All Bugsnag access is class-level.  Prevent the creation of instances.
+ * Initializes the client with the provided configuration.
  */
-- (instancetype _Nonnull )init NS_UNAVAILABLE NS_SWIFT_UNAVAILABLE("Use class methods to initialise Bugsnag.");
-
-/**
- * Start listening for crashes.
- *
- * This method initializes Bugsnag with the configuration set in your Info.plist.
- *
- * If a Bugsnag apiKey string has not been added to your Info.plist or is empty, an
- * NSException will be thrown to indicate that the configuration is not valid.
- *
- * Once successfully initialized, NSExceptions, C++ exceptions, Mach exceptions and
- * signals will be logged to disk before your app crashes. The next time your app
- * launches, these reports will be sent to your Bugsnag dashboard.
- */
-+ (BugsnagClient *_Nonnull)start;
-
-/**
- * Start listening for crashes.
- *
- * This method initializes Bugsnag with the default configuration and the provided
- * apiKey.
- *
- * If apiKey is nil or is empty, an NSException will be thrown to indicate that the
- * configuration is not valid.
- *
- * Once successfully initialized, NSExceptions, C++ exceptions, Mach exceptions and
- * signals will be logged to disk before your app crashes. The next time your app
- * launches, these reports will be sent to your Bugsnag dashboard.
- *
- * @param apiKey  The API key from your Bugsnag dashboard.
- */
-+ (BugsnagClient *_Nonnull)startWithApiKey:(NSString *_Nonnull)apiKey;
-
-/**
- * Start listening for crashes.
- *
- * This method initializes Bugsnag with the provided configuration object.
- *
- * If the configuration's apiKey is nil or is empty, an NSException will be thrown
- * to indicate that the configuration is not valid.
- *
- * Once successfully initialized, NSExceptions, C++ exceptions, Mach exceptions and
- * signals will be logged to disk before your app crashes. The next time your app
- * launches, these reports will be sent to your Bugsnag dashboard.
- *
- * @param configuration  The configuration to use.
- */
-+ (BugsnagClient *_Nonnull)startWithConfiguration:(BugsnagConfiguration *_Nonnull)configuration;
-
-/**
- * @return YES if Bugsnag has been started and the previous launch crashed
- */
-+ (BOOL)appDidCrashLastLaunch BUGSNAG_DEPRECATED_WITH_REPLACEMENT("lastRunInfo.crashed");
-
-/**
- * @return YES if and only if a Bugsnag.start() has been called
- * and Bugsnag has initialized such that any calls to the Bugsnag methods can succeed
- */
-+ (BOOL)isStarted;
-
-/**
- * Information about the last run of the app, and whether it crashed.
- */
-@property (class, readonly, nullable, nonatomic) BugsnagLastRunInfo *lastRunInfo;
-
-/**
- * Tells Bugsnag that your app has finished launching.
- *
- * Errors reported after calling this method will have the `BugsnagAppWithState.isLaunching`
- * property set to false.
- */
-+ (void)markLaunchCompleted;
+- (instancetype _Nonnull)initWithConfiguration:(BugsnagConfiguration *_Nonnull)configuration;
 
 // =============================================================================
 // MARK: - Notify
 // =============================================================================
 
-/**
- * Send a custom or caught exception to Bugsnag.
+/** Send a custom or caught exception to Bugsnag.
  *
  * The exception will be sent to Bugsnag in the background allowing your
  * app to continue running.
  *
  * @param exception  The exception.
  */
-+ (void)notify:(NSException *_Nonnull)exception;
+- (void)notify:(NSException *_Nonnull)exception;
 
 /**
  *  Send a custom or caught exception to Bugsnag
@@ -146,7 +67,7 @@ BUGSNAG_EXTERN
  *  @param exception The exception
  *  @param block     A block for optionally configuring the error report
  */
-+ (void)notify:(NSException *_Nonnull)exception
+- (void)notify:(NSException *_Nonnull)exception
          block:(BugsnagOnErrorBlock _Nullable)block;
 
 /**
@@ -154,7 +75,7 @@ BUGSNAG_EXTERN
  *
  *  @param error The error
  */
-+ (void)notifyError:(NSError *_Nonnull)error;
+- (void)notifyError:(NSError *_Nonnull)error;
 
 /**
  *  Send an error to Bugsnag
@@ -162,7 +83,7 @@ BUGSNAG_EXTERN
  *  @param error The error
  *  @param block A block for optionally configuring the error report
  */
-+ (void)notifyError:(NSError *_Nonnull)error
+- (void)notifyError:(NSError *_Nonnull)error
               block:(BugsnagOnErrorBlock _Nullable)block;
 
 // =============================================================================
@@ -175,7 +96,7 @@ BUGSNAG_EXTERN
  *
  * @param message  the log message to leave
  */
-+ (void)leaveBreadcrumbWithMessage:(NSString *_Nonnull)message;
+- (void)leaveBreadcrumbWithMessage:(NSString *_Nonnull)message;
 
 /**
  *  Leave a "breadcrumb" log message each time a notification with a provided
@@ -183,7 +104,7 @@ BUGSNAG_EXTERN
  *
  *  @param notificationName name of the notification to capture
  */
-+ (void)leaveBreadcrumbForNotificationName:(NSString *_Nonnull)notificationName;
+- (void)leaveBreadcrumbForNotificationName:(NSString *_Nonnull)notificationName;
 
 /**
  * Leave a "breadcrumb" log message, representing an action that occurred
@@ -195,25 +116,25 @@ BUGSNAG_EXTERN
  *                 Values should be serializable to JSON with NSJSONSerialization.
  * @param type A BSGBreadcrumbTypeValue denoting the type of breadcrumb.
  */
-+ (void)leaveBreadcrumbWithMessage:(NSString *_Nonnull)message
+- (void)leaveBreadcrumbWithMessage:(NSString *_Nonnull)message
                           metadata:(NSDictionary *_Nullable)metadata
                            andType:(BSGBreadcrumbType)type
-    NS_SWIFT_NAME(leaveBreadcrumb(_:metadata:type:));
+NS_SWIFT_NAME(leaveBreadcrumb(_:metadata:type:));
 
 /**
  * Leave a "breadcrumb" log message representing a completed network request.
  */
-+ (void)leaveNetworkRequestBreadcrumbForTask:(nonnull NSURLSessionTask *)task
+- (void)leaveNetworkRequestBreadcrumbForTask:(nonnull NSURLSessionTask *)task
                                      metrics:(nonnull NSURLSessionTaskMetrics *)metrics
-    API_AVAILABLE(macosx(10.12), ios(10.0), watchos(3.0), tvos(10.0))
-    NS_SWIFT_NAME(leaveNetworkRequestBreadcrumb(task:metrics:));
+API_AVAILABLE(macosx(10.12), ios(10.0), watchos(3.0), tvos(10.0))
+NS_SWIFT_NAME(leaveNetworkRequestBreadcrumb(task:metrics:));
 
 /**
  * Returns the current buffer of breadcrumbs that will be sent with captured events. This
  * ordered list represents the most recent breadcrumbs to be captured up to the limit
  * set in `BugsnagConfiguration.maxBreadcrumbs`
  */
-+ (NSArray<BugsnagBreadcrumb *> *_Nonnull)breadcrumbs;
+- (nonnull NSArray<BugsnagBreadcrumb *> *)breadcrumbs;
 
 // =============================================================================
 // MARK: - Session
@@ -235,7 +156,7 @@ BUGSNAG_EXTERN
  * @see pauseSession:
  * @see resumeSession:
  */
-+ (void)startSession;
+- (void)startSession;
 
 /**
  * Stops tracking a session.
@@ -252,7 +173,7 @@ BUGSNAG_EXTERN
  * @see startSession:
  * @see resumeSession:
  */
-+ (void)pauseSession;
+- (void)pauseSession;
 
 /**
  * Resumes a session which has previously been stopped, or starts a new session if none exists.
@@ -274,61 +195,7 @@ BUGSNAG_EXTERN
  *
  * @return true if a previous session was resumed, false if a new session was started.
  */
-+ (BOOL)resumeSession;
-
-// =============================================================================
-// MARK: - Other methods
-// =============================================================================
-
-/**
- * Retrieves the context - a general summary of what was happening in the application
- */
-+ (void)setContext:(NSString *_Nullable)context;
-
-/**
- * Retrieves the context - a general summary of what was happening in the application
- */
-+ (NSString *_Nullable)context;
-
-// =============================================================================
-// MARK: - User
-// =============================================================================
-
-/**
- * The current user
- */
-+ (BugsnagUser *_Nonnull)user;
-
-/**
- *  Set user metadata
- *
- *  @param userId ID of the user
- *  @param name   Name of the user
- *  @param email  Email address of the user
- *
- *  If user ID is nil, a Bugsnag-generated Device ID is used for the `user.id` property of events and sessions.
- */
-+ (void)setUser:(NSString *_Nullable)userId
-       withEmail:(NSString *_Nullable)email
-       andName:(NSString *_Nullable)name;
-
-// =============================================================================
-// MARK: - Feature flags
-// =============================================================================
-
-+ (void)addFeatureFlagWithName:(nonnull NSString *)name variant:(nullable NSString *)variant
-    NS_SWIFT_NAME(addFeatureFlag(name:variant:));
-
-+ (void)addFeatureFlagWithName:(nonnull NSString *)name
-    NS_SWIFT_NAME(addFeatureFlag(name:));
-
-+ (void)addFeatureFlags:(nonnull NSArray<BugsnagFeatureFlag *> *)featureFlags
-    NS_SWIFT_NAME(addFeatureFlags(_:));
-
-+ (void)clearFeatureFlagWithName:(nonnull NSString *)name
-    NS_SWIFT_NAME(clearFeatureFlag(name:));
-
-+ (void)clearFeatureFlags;
+- (BOOL)resumeSession;
 
 // =============================================================================
 // MARK: - onSession
@@ -341,7 +208,7 @@ BUGSNAG_EXTERN
  *
  *  @returns An opaque reference to the callback which can be passed to `removeOnSession:`
  */
-+ (nonnull BugsnagOnSessionRef)addOnSessionBlock:(nonnull BugsnagOnSessionBlock)block
+- (nonnull BugsnagOnSessionRef)addOnSessionBlock:(nonnull BugsnagOnSessionBlock)block
     NS_SWIFT_NAME(addOnSession(block:));
 
 /**
@@ -349,15 +216,62 @@ BUGSNAG_EXTERN
  *
  * @param callback The opaque reference of the callback, returned by `addOnSessionBlock:`
  */
-+ (void)removeOnSession:(nonnull BugsnagOnSessionRef)callback
+- (void)removeOnSession:(nonnull BugsnagOnSessionRef)callback
     NS_SWIFT_NAME(removeOnSession(_:));
 
 /**
  * Deprecated
  */
-+ (void)removeOnSessionBlock:(BugsnagOnSessionBlock _Nonnull)block
+- (void)removeOnSessionBlock:(BugsnagOnSessionBlock _Nonnull )block
     BUGSNAG_DEPRECATED_WITH_REPLACEMENT("removeOnSession:")
     NS_SWIFT_NAME(removeOnSession(block:));
+
+// =============================================================================
+// MARK: - Other methods
+// =============================================================================
+
+/**
+ * Retrieves the context - a general summary of what was happening in the application
+ */
+ @property (copy, nullable, atomic) NSString *context;
+
+/**
+ * @return YES if Bugsnag has been started and the previous launch crashed
+ */
+- (BOOL)appDidCrashLastLaunch BUGSNAG_DEPRECATED_WITH_REPLACEMENT("lastRunInfo.crashed");
+
+/**
+ * Information about the last run of the app, and whether it crashed.
+ */
+@property (readonly, nullable, nonatomic) BugsnagLastRunInfo *lastRunInfo;
+
+/**
+ * Tells Bugsnag that your app has finished launching.
+ *
+ * Errors reported after calling this method will have the `BugsnagAppWithState.isLaunching`
+ * property set to false.
+ */
+- (void)markLaunchCompleted;
+
+// =============================================================================
+// MARK: - User
+// =============================================================================
+
+/**
+ * The current user
+ */
+- (BugsnagUser *_Nonnull)user;
+
+/**
+ *  Set user metadata
+ *
+ *  @param userId ID of the user
+ *  @param name   Name of the user
+ *  @param email  Email address of the user
+ */
+- (void)setUser:(NSString *_Nullable)userId
+      withEmail:(NSString *_Nullable)email
+        andName:(NSString *_Nullable)name;
 
 // =============================================================================
 // MARK: - onBreadcrumb
@@ -371,7 +285,7 @@ BUGSNAG_EXTERN
  *
  *  @returns An opaque reference to the callback which can be passed to `removeOnBreadcrumb:`
  */
-+ (nonnull BugsnagOnBreadcrumbRef)addOnBreadcrumbBlock:(nonnull BugsnagOnBreadcrumbBlock)block
+- (nonnull BugsnagOnBreadcrumbRef)addOnBreadcrumbBlock:(nonnull BugsnagOnBreadcrumbBlock)block
     NS_SWIFT_NAME(addOnBreadcrumb(block:));
 
 /**
@@ -379,13 +293,13 @@ BUGSNAG_EXTERN
  *
  * @param callback The opaque reference of the callback, returned by `addOnBreadcrumbBlock:`
  */
-+ (void)removeOnBreadcrumb:(nonnull BugsnagOnBreadcrumbRef)callback
+- (void)removeOnBreadcrumb:(nonnull BugsnagOnBreadcrumbRef)callback
     NS_SWIFT_NAME(removeOnBreadcrumb(_:));
 
 /**
  * Deprecated
  */
-+ (void)removeOnBreadcrumbBlock:(BugsnagOnBreadcrumbBlock _Nonnull)block
+- (void)removeOnBreadcrumbBlock:(BugsnagOnBreadcrumbBlock _Nonnull)block
     BUGSNAG_DEPRECATED_WITH_REPLACEMENT("removeOnBreadcrumb:")
     NS_SWIFT_NAME(removeOnBreadcrumb(block:));
 

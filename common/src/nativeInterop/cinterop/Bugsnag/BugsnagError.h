@@ -1,33 +1,51 @@
-// The following are snippets from the Bugsnag Cocoa SDK used to generate Kotlin stubs.
 //
-// https://github.com/bugsnag/bugsnag-cocoa/blob/6bcd46f5f8dc06ac26537875d501f02b27d219a9/Bugsnag/include/Bugsnag/BugsnagError.h
+//  BugsnagError.h
+//  Bugsnag
 //
-// Copyright (c) 2012 Bugsnag, https://bugsnag.com/
+//  Created by Jamie Lynch on 01/04/2020.
+//  Copyright © 2020 Bugsnag. All rights reserved.
 //
-// Permission is hereby granted, free of charge, to any person obtaining
-// a copy of this software and associated documentation files (the "Software"),
-// to deal in the Software without restriction, including without limitation
-// the rights to use, copy, modify, merge, publish, distribute, sublicense,
-// and/or sell copies of the Software, and to permit persons to whom the Software
-// is furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
 
 #import <Foundation/Foundation.h>
-#import <BugsnagStackframe.h>
 
+#import <BugsnagDefines.h>
+
+@class BugsnagStackframe;
+
+/**
+ * Denote which platform or runtime the Error occurred in.
+ */
 typedef NS_OPTIONS(NSUInteger, BSGErrorType) {
-BSGErrorTypeCocoa,
-BSGErrorTypeC,
-BSGErrorTypeReactNativeJs
+    BSGErrorTypeCocoa NS_SWIFT_NAME(cocoa), // Swift won't bring in the zeroeth option by default
+    BSGErrorTypeC NS_SWIFT_NAME(c), // Fix Swift auto-capitalisation
+    BSGErrorTypeReactNativeJs,
+    BSGErrorTypeCSharp,
 };
 
+/**
+ * An Error represents information extracted from an NSError, NSException, or other error source.
+ */
+BUGSNAG_EXTERN
 @interface BugsnagError : NSObject
 
+/**
+ * The class of the error generating the report
+ */
 @property (copy, nullable, nonatomic) NSString *errorClass;
+
+/**
+ * The message of or reason for the error generating the report
+ */
 @property (copy, nullable, nonatomic) NSString *errorMessage;
+
+/**
+ * Sets a representation of this error's stacktrace
+ */
 @property (copy, nonnull, nonatomic) NSArray<BugsnagStackframe *> *stacktrace;
+
+/**
+ * The type of the captured error
+ */
 @property (nonatomic) BSGErrorType type;
 
 @end

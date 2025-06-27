@@ -65,7 +65,7 @@ kotlin {
 
     cocoapods {
         version = appVersionCode.toString()
-        summary = "KVD21Control"
+        summary = "HINTControl"
         homepage = "https://zwander.dev"
         ios.deploymentTarget = "14.0"
         osx.deploymentTarget = "10.13"
