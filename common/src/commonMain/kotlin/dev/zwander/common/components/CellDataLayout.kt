@@ -82,7 +82,7 @@ fun CellDataLayout(
         this[MR.strings.ecgi] = advancedData?.ecgi
         this[MR.strings.pci] = advancedData?.pci
         this[MR.strings.tac] = advancedData?.tac
-        this[MR.strings.supportedBands] = advancedData?.supportedBands?.bulletedList()
+        this[MR.strings.supportedBands] = advancedData?.supportedBands?.takeIf { it.isNotEmpty() }?.bulletedList()
     }
 
     EmptiableContent(

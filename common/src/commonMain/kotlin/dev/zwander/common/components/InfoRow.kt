@@ -55,12 +55,14 @@ fun InfoRow(
             }
 
             advancedItems?.forEach { (_, info) ->
-                AnimatedVisibility(
-                    visible = info != null && expanded,
-                    enter = fadeIn() + expandVertically(expandFrom = Alignment.CenterVertically),
-                    exit = fadeOut() + shrinkVertically(shrinkTowards = Alignment.CenterVertically),
-                ) {
-                    info?.Render(Modifier.padding(horizontal = 4.dp).animatePlacement())
+                if (info != null) {
+                    AnimatedVisibility(
+                        visible = expanded,
+                        enter = fadeIn() + expandVertically(expandFrom = Alignment.CenterVertically),
+                        exit = fadeOut() + shrinkVertically(shrinkTowards = Alignment.CenterVertically),
+                    ) {
+                        info.Render(Modifier.padding(horizontal = 4.dp).animatePlacement())
+                    }
                 }
             }
         }
