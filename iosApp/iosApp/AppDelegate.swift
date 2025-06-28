@@ -10,7 +10,18 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     var watchJob: Ktor_ioCloseable? = nil
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-        let config = BugsnagDelegate.shared.createBugsnagConfig()
+        let config = BugsnagConfiguration.loadConfig()
+
+        config.addOnSendError { event in
+            CrossPlatformBugsnag.shared.generateExtraErrorData().forEach { data in
+                event.addMetadata(
+                    data.value,
+                    key: data.key,
+                    section: data.tabName
+                )
+            }
+            return true
+        }
         
         NSExceptionKt.addReporter(.bugsnag(config))
         Bugsnag.start(with: config)

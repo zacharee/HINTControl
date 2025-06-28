@@ -1,9 +1,9 @@
 @file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE", "EXPOSED_PARAMETER_TYPE")
 package dev.zwander.common.util
 
+import cocoapods.Bugsnag.BSGBreadcrumbType
+import cocoapods.Bugsnag.Bugsnag
 import com.rickclephas.kmp.nsexceptionkt.core.asNSException
-import dev.zwander.bugsnag.cinterop.BSGBreadcrumbType
-import dev.zwander.bugsnag.cinterop.Bugsnag
 import kotlinx.cinterop.ExperimentalForeignApi
 
 @OptIn(ExperimentalForeignApi::class)
