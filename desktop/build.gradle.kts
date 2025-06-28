@@ -105,7 +105,3 @@ configurations.all {
 tasks.withType<ComposeHotRun>().configureEach {
     mainClass.set("MainKt")
 }
-
-composeCompiler {
-    featureFlags.add(ComposeFeatureFlag.OptimizeNonSkippingGroups)
-}
