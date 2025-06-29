@@ -33,6 +33,12 @@ kotlin {
     val iosSimulatorArm64 = iosSimulatorArm64()
 
     listOf(iosArm64, iosSimulatorArm64).forEach {
+        it.compilations.getByName("main") {
+            cinterops.create("BugsnagHINT") {
+                includeDirs("$projectDir/src/nativeInterop/cinterop/Bugsnag")
+                definitionFile.set(file("$projectDir/src/nativeInterop/cinterop/Bugsnag.def"))
+            }
+        }
         it.binaries {
             framework {
                 isStatic = true
@@ -77,7 +83,6 @@ kotlin {
             )
             binaryOption("bundleId", appPackageName)
         }
-        pod("Bugsnag")
     }
 
     sourceSets {
