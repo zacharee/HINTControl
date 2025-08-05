@@ -121,10 +121,18 @@ fun WifiConfigPage(
         bottomBarContents = {
             Button(
                 onClick = {
-                    if (((tempState?.twoGig?.isRadioEnabled == false && tempState?.twoGig?.isRadioEnabled != data?.twoGig?.isRadioEnabled) ||
-                        (tempState?.fiveGig?.isRadioEnabled == false && tempState?.fiveGig?.isRadioEnabled != data?.fiveGig?.isRadioEnabled)) &&
-                        tempState?.sixGig == null
-                    ) {
+                    val isTwoGigDisabled = tempState?.twoGig?.isRadioEnabled == false
+                    val isFiveGigDisabled = tempState?.fiveGig?.isRadioEnabled == false
+                    val isSixGigDisabled = if (data?.sixGig != null) tempState?.sixGig?.isRadioEnabled == false else true
+
+                    val warnTwoGig = isTwoGigDisabled && data?.twoGig?.isRadioEnabled == true &&
+                            (isFiveGigDisabled && isSixGigDisabled)
+                    val warnFiveGig = isFiveGigDisabled && data?.fiveGig?.isRadioEnabled == true &&
+                            (isTwoGigDisabled && isSixGigDisabled)
+                    val warnSixGig = isSixGigDisabled && data?.sixGig?.isRadioEnabled == true &&
+                            (isTwoGigDisabled && isFiveGigDisabled)
+
+                    if (warnTwoGig || warnFiveGig || warnSixGig) {
                         showingRadioWarning = true
                     } else {
                         save()
