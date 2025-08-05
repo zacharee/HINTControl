@@ -9,6 +9,7 @@ actual object BugsnagUtils {
 
     private val breadcrumbs = LinkedHashMap<Long, Pair<String, Map<String?, Any?>>>()
 
+    @Synchronized
     actual fun notify(e: Throwable) {
         val report = bugsnag.buildReport(e)
 
