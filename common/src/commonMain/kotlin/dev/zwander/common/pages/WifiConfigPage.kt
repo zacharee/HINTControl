@@ -121,8 +121,9 @@ fun WifiConfigPage(
         bottomBarContents = {
             Button(
                 onClick = {
-                    if ((tempState?.twoGig?.isRadioEnabled == false && tempState?.twoGig?.isRadioEnabled != data?.twoGig?.isRadioEnabled) ||
-                        (tempState?.fiveGig?.isRadioEnabled == false && tempState?.fiveGig?.isRadioEnabled != data?.fiveGig?.isRadioEnabled)
+                    if (((tempState?.twoGig?.isRadioEnabled == false && tempState?.twoGig?.isRadioEnabled != data?.twoGig?.isRadioEnabled) ||
+                        (tempState?.fiveGig?.isRadioEnabled == false && tempState?.fiveGig?.isRadioEnabled != data?.fiveGig?.isRadioEnabled)) &&
+                        tempState?.sixGig == null
                     ) {
                         showingRadioWarning = true
                     } else {

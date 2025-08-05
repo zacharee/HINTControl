@@ -14,6 +14,8 @@ data class ClientsData(
     val twoGig: List<WirelessClientData>? = null,
     @SerialName("5.0ghz")
     val fiveGig: List<WirelessClientData>? = null,
+    @SerialName("6.0ghz")
+    val sixGig: List<WirelessClientData>? = null,
     val ethernet: List<WiredClientData>? = null,
     val wireless: List<WirelessClientData>? = null,
 )

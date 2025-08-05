@@ -78,5 +78,33 @@ fun ChannelConfigLayout(
             },
             modifier = Modifier.fillMaxWidth(),
         )
+
+        if (tempState?.sixGig != null) {
+            ChannelSelector(
+                whichBand = WiFiBand.SixGig,
+                currentValue = tempState?.sixGig?.channel ?: "Auto",
+                onValueChange = {
+                    tempState = tempState?.copy(
+                        fiveGig = tempState?.sixGig?.copy(
+                            channel = it,
+                        ),
+                    )
+                },
+                modifier = Modifier.fillMaxWidth(),
+            )
+
+            BandwidthSelector(
+                whichBand = WiFiBand.SixGig,
+                currentValue = tempState?.sixGig?.channelBandwidth ?: "Auto",
+                onValueChange = {
+                    tempState = tempState?.copy(
+                        fiveGig = tempState?.sixGig?.copy(
+                            channelBandwidth = it,
+                        ),
+                    )
+                },
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
     }
 }

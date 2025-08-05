@@ -39,7 +39,7 @@ fun ClientListPage(
 ) {
     val data by MainModel.currentClientData.collectAsState()
 
-    val items: List<ClientListItem> = remember(data) {
+    val items: List<ClientListItem?> = remember(data) {
         listOf(
             ClientListItem(
                 title = MR.strings.twoGig,
@@ -49,6 +49,12 @@ fun ClientListPage(
                 title = MR.strings.fiveGig,
                 datas = data?.clients?.fiveGig,
             ),
+            data?.clients?.sixGig?.let { sixGig ->
+                ClientListItem(
+                    title = MR.strings.sixGig,
+                    datas = sixGig,
+                )
+            },
             ClientListItem(
                 title = MR.strings.wired,
                 datas = data?.clients?.ethernet,
@@ -57,7 +63,7 @@ fun ClientListPage(
     }
 
     PageGrid(
-        items = items,
+        items = items.filterNotNull(),
         modifier = modifier,
         renderItemTitle = {
             Text(

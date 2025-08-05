@@ -47,6 +47,7 @@
     <string name="name">Name</string>
     <string name="twoGig">2.4GHz</string>
     <string name="fiveGig">5GHz</string>
+    <string name="sixGig">6GHz</string>
     <string name="wired">Wired</string>
 
     <string name="band_mgmnt">Band Management</string>

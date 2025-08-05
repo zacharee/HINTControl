@@ -9,6 +9,8 @@ data class WifiConfig(
     val twoGig: BandConfig? = null,
     @SerialName("5.0ghz")
     val fiveGig: BandConfig? = null,
+    @SerialName("6.0ghz")
+    val sixGig: BandConfig? = null,
     val bandSteering: BandSteeringConfig? = null,
     val ssids: List<SSIDConfig>? = null,
     val canAddAndRemove: Boolean = true,
@@ -38,6 +40,8 @@ data class SSIDConfig(
     val twoGigSsid: Boolean? = null,
     @SerialName("5.0ghzSsid")
     val fiveGigSsid: Boolean? = null,
+    @SerialName("6.0ghzSsid")
+    val sixGigSsid: Boolean? = null,
     val encryptionMode: String? = null,
     val encryptionVersion: String? = null,
     val guest: Boolean? = null,

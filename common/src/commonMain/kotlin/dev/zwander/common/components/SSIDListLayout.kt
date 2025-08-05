@@ -121,6 +121,10 @@ fun SSIDListLayout(
                         list.add(MR.strings.fiveGig)
                     }
 
+                    if (item.data?.sixGigSsid == true) {
+                        list.add(MR.strings.sixGig)
+                    }
+
                     list
                 }
 
@@ -179,6 +183,7 @@ fun SSIDListLayout(
                     editingConfig = null to SSIDConfig(
                         twoGigSsid = true,
                         fiveGigSsid = true,
+                        sixGigSsid = if (data?.sixGig != null) true else null,
                         encryptionMode = "AES",
                         encryptionVersion = EncryptionVersions.wpa2Wpa3,
                         guest = false,
@@ -392,6 +397,20 @@ fun SSIDListLayout(
                         },
                         enabled = editingState?.twoGigSsid == true,
                     )
+
+                    if (editingState?.sixGigSsid != null) {
+                        Spacer(modifier = Modifier.size(8.dp))
+
+                        TextSwitch(
+                            text = stringResource(MR.strings.sixGig),
+                            checked = editingState?.sixGigSsid == true,
+                            onCheckedChange = {
+                                editingState = editingState?.copy(
+                                    sixGigSsid = it,
+                                )
+                            },
+                        )
+                    }
                 }
             }
         },
