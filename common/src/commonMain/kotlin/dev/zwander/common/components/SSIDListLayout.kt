@@ -150,7 +150,7 @@ fun SSIDListLayout(
                     }
                 } else if (item.data?.enabled != null) {
                     Checkbox(
-                        checked = item.data.enabled == true,
+                        checked = item.data.enabled,
                         onCheckedChange = {
                             updateSsidConfig(
                                 item.data,
@@ -381,7 +381,7 @@ fun SSIDListLayout(
                                 fiveGigSsid = if (!it) true else editingState?.fiveGigSsid,
                             )
                         },
-                        enabled = editingState?.fiveGigSsid == true,
+                        enabled = editingState?.fiveGigSsid == true || editingState?.sixGigSsid == true,
                     )
 
                     Spacer(modifier = Modifier.size(8.dp))
@@ -395,7 +395,7 @@ fun SSIDListLayout(
                                 twoGigSsid = if (!it) true else editingState?.twoGigSsid,
                             )
                         },
-                        enabled = editingState?.twoGigSsid == true,
+                        enabled = editingState?.twoGigSsid == true || editingState?.sixGigSsid == true,
                     )
 
                     if (editingState?.sixGigSsid != null) {
@@ -409,6 +409,7 @@ fun SSIDListLayout(
                                     sixGigSsid = it,
                                 )
                             },
+                            enabled = editingState?.twoGigSsid == true || editingState?.fiveGigSsid == true,
                         )
                     }
                 }
