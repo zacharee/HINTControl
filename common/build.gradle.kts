@@ -116,7 +116,7 @@ kotlin {
                 api(libs.kotlinx.datetime)
                 api(libs.semver)
                 api(libs.filekit.core)
-                api(libs.filekit.compose)
+                api(libs.filekit.dialogs)
                 api(libs.composedialog)
                 api(libs.zwander.materialyou)
                 api(libs.material.icons.core)

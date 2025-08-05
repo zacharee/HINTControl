@@ -30,7 +30,8 @@ import dev.zwander.common.model.SettingsModel
 import dev.zwander.common.ui.LocalOrientation
 import dev.zwander.common.ui.Orientation
 import dev.zwander.common.widget.ConnectionStatusWidgetReceiver
-import io.github.vinceglb.filekit.core.FileKit
+import io.github.vinceglb.filekit.FileKit
+import io.github.vinceglb.filekit.dialogs.init
 
 class MainActivity : AppCompatActivity() {
     private val appWidgetManager by lazy { getSystemService(Context.APPWIDGET_SERVICE) as AppWidgetManager }
