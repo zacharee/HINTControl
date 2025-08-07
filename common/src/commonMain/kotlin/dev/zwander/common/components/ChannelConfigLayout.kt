@@ -53,6 +53,8 @@ fun ChannelConfigLayout(
             modifier = Modifier.fillMaxWidth(),
         )
 
+        NarrowHorizontalDivider()
+
         ChannelSelector(
             whichBand = WiFiBand.FiveGig,
             currentValue = tempState?.fiveGig?.channel ?: "Auto",
@@ -80,6 +82,8 @@ fun ChannelConfigLayout(
         )
 
         if (tempState?.sixGig != null) {
+            NarrowHorizontalDivider()
+
             ChannelSelector(
                 whichBand = WiFiBand.SixGig,
                 currentValue = tempState?.sixGig?.channel ?: "Auto",

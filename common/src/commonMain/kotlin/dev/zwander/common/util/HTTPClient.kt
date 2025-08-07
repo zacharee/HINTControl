@@ -103,6 +103,8 @@ private object CommonClients {
     }
 }
 
+private val includeSixGigInMockData = true
+
 private object ASClients {
     val mockEngine = MockEngine { request ->
         respond(
@@ -222,6 +224,21 @@ private object ASClients {
                                 "mode": "auto",
                                 "transmissionPower": "100%"
                               },
+                              ${if (includeSixGigInMockData) {
+                                  """
+                                  "6.0ghz": {
+                                    "airtimeFairness": true,
+                                    "channel": "Auto",
+                                    "channelBandwidth": "80MHz",
+                                    "isMUMIMOEnabled": true,
+                                    "isRadioEnabled": false,
+                                    "isWMMEnabled": true,
+                                    "maxClients": 128,
+                                    "mode": "auto",
+                                    "transmissionPower": "100%"
+                                  },
+                                  """.trimIndent()
+                              } else { "" }}
                               "bandSteering": {
                                 "isEnabled": true
                               },
@@ -229,6 +246,11 @@ private object ASClients {
                                 {
                                   "2.4ghzSsid": true,
                                   "5.0ghzSsid": true,
+                                  ${if (includeSixGigInMockData) {
+                                      """
+                                      "6.0ghzSsid": true,
+                                      """.trimIndent()
+                                  } else { "" }}
                                   "encryptionMode": "AES",
                                   "encryptionVersion": "WPA2/WPA3",
                                   "guest": false,
@@ -247,6 +269,11 @@ private object ASClients {
                               "clients": {
                                 "2.4ghz": [],
                                 "5.0ghz": [],
+                                ${if (includeSixGigInMockData) {
+                                    """
+                                    "6.0ghz": [],
+                                    """.trimIndent()
+                                } else { "" }}
                                 "ethernet": [
                                   {
                                     "connected": true,

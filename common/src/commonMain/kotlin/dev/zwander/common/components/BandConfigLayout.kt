@@ -47,7 +47,7 @@ fun BandConfigLayout(
                 tempState = tempState?.copy(
                     twoGig = tempState?.twoGig?.copy(
                         isRadioEnabled = checked,
-                    )
+                    ),
                 )
             },
         )
@@ -71,6 +71,8 @@ fun BandConfigLayout(
             )
         }
 
+        NarrowHorizontalDivider()
+
         TextSwitch(
             text = stringResource(MR.strings.fiveGig_radio),
             checked = (tempState?.fiveGig?.isRadioEnabled ?: false),
@@ -81,7 +83,7 @@ fun BandConfigLayout(
                     tempState = tempState?.copy(
                         fiveGig = tempState?.fiveGig?.copy(
                             isRadioEnabled = checked,
-                        )
+                        ),
                     )
                 }
             },
@@ -106,13 +108,48 @@ fun BandConfigLayout(
             )
         }
 
+        tempState?.sixGig?.let { sixGig ->
+            NarrowHorizontalDivider()
+
+            TextSwitch(
+                text = stringResource(MR.strings.sixGig_radio),
+                checked = (tempState?.sixGig?.isRadioEnabled ?: false),
+                onCheckedChange = { checked ->
+                    tempState = tempState?.copy(
+                        sixGig = tempState?.sixGig?.copy(
+                            isRadioEnabled = checked,
+                        ),
+                    )
+                },
+            )
+
+            sixGig.transmissionPower?.let { transmissionPower ->
+                SliderWithTitle(
+                    title = stringResource(MR.strings.sixGig_transmission_power),
+                    minValue = 50,
+                    maxValue = 100,
+                    currentValue = transmissionPower.replace("%", "").toIntOrNull() ?: 100,
+                    onValueChange = {
+                        tempState = tempState?.copy(
+                            sixGig = tempState?.sixGig?.copy(
+                                transmissionPower = "${it.toInt()}%",
+                            ),
+                        )
+                    },
+                    unit = "%",
+                    modifier = Modifier.fillMaxWidth()
+                        .padding(horizontal = 8.dp),
+                )
+            }
+        }
+
         TextSwitch(
             text = stringResource(MR.strings.band_steering),
             checked = tempState?.bandSteering?.isEnabled ?: false,
             onCheckedChange = { checked ->
                 tempState = tempState?.copy(
                     bandSteering = tempState?.bandSteering?.copy(
-                        isEnabled = checked
+                        isEnabled = checked,
                     )
                 )
             },
