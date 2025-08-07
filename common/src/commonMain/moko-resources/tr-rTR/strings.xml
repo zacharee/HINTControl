@@ -48,11 +48,13 @@
     <string name="channel_mgmnt">Channel Management</string>
     <string name="twoGig_radio">2.4GHz Radio</string>
     <string name="fiveGig_radio">5GHz Radio</string>
+    <string name="sixGig_radio">6GHz Radio</string>
     <string name="band_steering">Band Steering</string>
     <string name="save">Save</string>
     <string name="advanced">Advanced</string>
     <string name="twoGig_transmission_power">2.4GHz Power</string>
     <string name="fiveGig_transmission_power">5GHz Power</string>
+    <string name="sixGig_transmission_power">6GHz Power</string>
     <string name="bandwidth">Bandwidth</string>
     <string name="bandwidth_format">%s Bandwidth</string>
     <string name="mcc">MCC</string>
