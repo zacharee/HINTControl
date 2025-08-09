@@ -579,7 +579,7 @@ interface HTTPClient {
     }
 
     suspend fun waitForLive(condition: (suspend () -> Boolean)? = null): Boolean {
-        for (i in 0..100) {
+        repeat(100) {
             try {
                 if (condition == null) {
                     val response = httpClient.get(testUrl)
