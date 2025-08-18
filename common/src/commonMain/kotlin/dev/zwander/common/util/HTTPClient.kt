@@ -104,7 +104,7 @@ private object CommonClients {
 }
 
 private const val includeSixGigInMockData = true
-private const val includeLteInMockData = false
+private const val includeLteInMockData = true
 
 private object ASClients {
     val mockEngine = MockEngine { request ->
