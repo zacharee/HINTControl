@@ -104,6 +104,7 @@ private object CommonClients {
 }
 
 private const val includeSixGigInMockData = true
+private const val includeLteInMockData = false
 
 private object ASClients {
     val mockEngine = MockEngine { request ->
@@ -156,18 +157,22 @@ private object ASClients {
                                 "updateState": "latest"
                               },
                               "signal": {
-                                "4g": {
-                                  "bands": [
-                                    "b2"
-                                  ],
-                                  "bars": ${bars},
-                                  "cid": 12,
-                                  "eNBID": 310463,
-                                  "rsrp": ${rsrp4g},
-                                  "rsrq": ${rsrq4g},
-                                  "rssi": ${rssi4g},
-                                  "sinr": $sinr4g
-                                },
+                                "4g": ${if (includeLteInMockData) {
+                                """
+                                {
+                                    "bands": [
+                                        "b2"
+                                        ],
+                                    "bars": ${bars},
+                                    "cid": 12,
+                                    "eNBID": 310463,
+                                    "rsrp": ${rsrp4g},
+                                    "rsrq": ${rsrq4g},
+                                    "rssi": ${rssi4g},
+                                    "sinr": $sinr4g
+                                }
+                                """.trimIndent()
+                                } else "null"},
                                 "5g": {
                                   "bands": [
                                     "n41"
@@ -294,40 +299,44 @@ private object ASClients {
                             """
                             {
                               "cell": {
-                                "4g": {
-                                  "bandwidth": "15M",
-                                  "cqi": 9,
-                                  "earfcn": "875",
-                                  "ecgi": "31026079478540",
-                                  "mcc": "310",
-                                  "mnc": "260",
-                                  "pci": "63",
-                                  "plmn": "310260",
-                                  "sector": {
-                                    "bands": [
-                                      "b2"
-                                    ],
-                                    "bars": 2.0,
-                                    "cid": 12,
-                                    "eNBID": 310463,
-                                    "rsrp": ${rsrp4g},
-                                    "rsrq": ${rsrq4g},
-                                    "rssi": ${rssi4g},
-                                    "sinr": $sinr4g
-                                  },
-                                  "status": true,
-                                  "supportedBands": [
-                                    "b2",
-                                    "b4",
-                                    "b5",
-                                    "b12",
-                                    "b41",
-                                    "b46",
-                                    "b66",
-                                    "b71"
-                                  ],
-                                  "tac": "22233"
-                                },
+                                "4g": ${if (includeLteInMockData) {
+                                    """
+                                    {
+                                      "bandwidth": "15M",
+                                      "cqi": 9,
+                                      "earfcn": "875",
+                                      "ecgi": "31026079478540",
+                                      "mcc": "310",
+                                      "mnc": "260",
+                                      "pci": "63",
+                                      "plmn": "310260",
+                                      "sector": {
+                                        "bands": [
+                                          "b2"
+                                        ],
+                                        "bars": 2.0,
+                                        "cid": 12,
+                                        "eNBID": 310463,
+                                        "rsrp": ${rsrp4g},
+                                        "rsrq": ${rsrq4g},
+                                        "rssi": ${rssi4g},
+                                        "sinr": $sinr4g
+                                      },
+                                      "status": true,
+                                      "supportedBands": [
+                                        "b2",
+                                        "b4",
+                                        "b5",
+                                        "b12",
+                                        "b41",
+                                        "b46",
+                                        "b66",
+                                        "b71"
+                                      ],
+                                      "tac": "22233"
+                                    }
+                                    """.trimIndent()
+                                } else "null"},
                                 "5g": {
                                   "bandwidth": "100M",
                                   "cqi": 12,

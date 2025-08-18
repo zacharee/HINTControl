@@ -103,7 +103,7 @@ fun CellDataLayout(
                 fontWeight = FontWeight.Normal,
             )
         },
-        isEmpty = basicItems.isEmpty(),
+        isEmpty = basicItems.values.filterNotNull().isEmpty(),
         modifier = modifier,
     )
 }
