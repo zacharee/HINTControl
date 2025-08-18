@@ -8,7 +8,7 @@ Pod::Spec.new do |spec|
     spec.summary                  = 'HINTControl'
     spec.vendored_frameworks      = 'build/cocoapods/framework/common.framework'
     spec.libraries                = 'c++'
-    spec.ios.deployment_target    = '14.0'
+    spec.ios.deployment_target    = '15.0'
     spec.osx.deployment_target    = '10.13'
                 
                 
