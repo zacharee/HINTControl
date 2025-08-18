@@ -1,5 +1,5 @@
 @file:OptIn(ExperimentalObjCRefinement::class)
-@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE", "EXPOSED_PARAMETER_TYPE")
+@file:Suppress("INVISIBLE_MEMBER")
 
 package dev.zwander.common
 
@@ -73,7 +73,6 @@ import dev.zwander.common.model.SettingsModel
 import dev.zwander.common.model.UserModel
 import dev.zwander.common.ui.LayoutMode
 import dev.zwander.common.ui.LocalLayoutMode
-import dev.zwander.common.ui.LocalOrientation
 import dev.zwander.common.ui.Theme
 import dev.zwander.common.util.Storage
 import dev.zwander.common.util.invoke
@@ -379,7 +378,7 @@ private fun AppView(
                     onPageChange(pages[state.targetPage])
                 }
 
-                LaunchedEffect(LocalOrientation.current, LocalWindowInfo.current.containerSize) {
+                LaunchedEffect(LocalWindowInfo.current.containerSize) {
                     state.scrollToPage(pages.indexOf(currentPage), 0f)
                 }
             }
