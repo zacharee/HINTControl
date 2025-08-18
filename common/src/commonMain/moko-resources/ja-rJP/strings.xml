@@ -42,16 +42,19 @@
     <string name="name">Name</string>
     <string name="twoGig">2.4GHz</string>
     <string name="fiveGig">5GHz</string>
+    <string name="sixGig">6GHz</string>
     <string name="wired">Wired</string>
     <string name="band_mgmnt">Band Management</string>
     <string name="channel_mgmnt">Channel Management</string>
     <string name="twoGig_radio">2.4GHz Radio</string>
     <string name="fiveGig_radio">5GHz Radio</string>
+    <string name="sixGig_radio">6GHz Radio</string>
     <string name="band_steering">Band Steering</string>
     <string name="save">Save</string>
     <string name="advanced">Advanced</string>
     <string name="twoGig_transmission_power">2.4GHz Power</string>
     <string name="fiveGig_transmission_power">5GHz Power</string>
+    <string name="sixGig_transmission_power">6GHz Power</string>
     <string name="bandwidth">Bandwidth</string>
     <string name="bandwidth_format">%s Bandwidth</string>
     <string name="mcc">MCC</string>
@@ -122,8 +125,8 @@
     <string name="help">Help</string>
     <string name="where_password">Where is my password?</string>
     <string name="login_hint">Use the password you set for logging into the T-Mobile Internet app. If you didn\'t set a password, check the label on the back of your device for the default admin credentials, usually a series of words separated by periods.\nNote: Enter the gateway administrator password, NOT your T-Mobile ID or Wi-Fi password.</string>
-    <string name="radio_warning">Disabling the 2.4GHz and 5GHz radios means your gateway will not broadcast Wi-Fi! Only turn these off if you have a wired connection to your gateway. Otherwise, you won\'t be able to access it without a manual factory reset.</string>
-    <string name="radio_disable_confirm">Are you sure you want to disable the Wi-Fi radios? You won\'t be able to connect to the gateway without a wired connection!</string>
+    <string name="radio_warning">Disabling all radios means your gateway will not broadcast Wi-Fi! Only turn these off if you have a wired connection to your gateway. Otherwise, you won\'t be able to access it without a manual factory reset.</string>
+    <string name="radio_disable_confirm">Are you sure you want to disable all the Wi-Fi radios? You won\'t be able to connect to the gateway without a wired connection!</string>
     <string name="radio_advice">To ensure the radios are fully disabled, enable the \"Hidden\" toggle for every SSID you have set up. If any SSIDs aren\'t hidden, the gateway may still broadcast a signal.</string>
     <string name="get">GET</string>
     <string name="post">POST</string>
@@ -174,7 +177,7 @@
     <!-- Label for which antenna the gateway is currently using (internal/external) -->
     <string name="antenna_used">Antenna Used</string>
     <!-- Message displayed when user attempts to disable 5GHz WiFi on the newer gateways. -->
-    <string name="disable_five_ghz_message">Disabling the 5GHz band on your gateway will cause it to hang while booting. Certain functions may continue to work, but you won\'t be able to control many settings again until the gateway is factory reset. Are you sure you want to disable 5GHz?</string>
+    <string name="disable_five_ghz_message">Disabling the 5GHz band on your gateway may cause it to hang while booting. Certain functions may continue to work, but you won\'t be able to control many settings again until the gateway is factory reset. Are you sure you want to disable 5GHz?</string>
     <!-- Title of setting to select app theme. -->
     <string name="theme">Theme</string>
     <string name="theme_desc">Select the app theme to use.</string>
