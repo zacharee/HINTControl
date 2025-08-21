@@ -23,22 +23,29 @@ fun generateInfoList(vararg dataKeys: Any?, block: MutableInfoMap.() -> Unit): I
     return mapState
 }
 
-operator fun MutableInfoMap.set(key: StringResource, value: String?) {
-    this[key] = value?.let { InfoItem.StringItem(key, it) }
+operator fun MutableInfoMap.set(key: StringResource, details: StringResource? = null, value: String?) {
+    this[key] = value?.let { InfoItem.StringItem(label = key, value = it, details = details) }
 }
 
-operator fun MutableInfoMap.set(key: StringResource, value: StringResource?) {
-    this[key] = value?.let { InfoItem.StringResourceItem(key, it) }
+operator fun MutableInfoMap.set(key: StringResource, details: StringResource? = null, value: StringResource?) {
+    this[key] = value?.let { InfoItem.StringResourceItem(label = key, value = it, details = details) }
 }
 
 // Triple: <value, min, max>
-operator fun MutableInfoMap.set(key: StringResource, value: Triple<Int?, Int, Int>) {
-    this[key] = value.first?.let { InfoItem.ColorGradientItem(key, it, value.second, value.third) }
+operator fun MutableInfoMap.set(key: StringResource, details: StringResource?, value: Triple<Int?, Int, Int>) {
+    this[key] = value.first?.let { InfoItem.ColorGradientItem(
+        label = key,
+        value = it,
+        details = details,
+        minValue = value.second,
+        maxValue = value.third,
+    ) }
 }
 
 sealed interface InfoItem<T: Any?> {
     val label: StringResource
     val value: T
+    val details: StringResource?
 
     @Composable
     fun Render(modifier: Modifier)
@@ -46,6 +53,7 @@ sealed interface InfoItem<T: Any?> {
     data class StringItem(
         override val label: StringResource,
         override val value: String,
+        override val details: StringResource?,
     ) : InfoItem<String> {
         @Composable
         override fun Render(modifier: Modifier) {
@@ -53,6 +61,7 @@ sealed interface InfoItem<T: Any?> {
                 text = stringResource(label),
                 value = value,
                 modifier = modifier,
+                detailsText = details?.let { stringResource(it) },
             )
         }
     }
@@ -60,6 +69,7 @@ sealed interface InfoItem<T: Any?> {
     data class StringResourceItem(
         override val label: StringResource,
         override val value: StringResource,
+        override val details: StringResource?,
     ) : InfoItem<StringResource> {
         @Composable
         override fun Render(modifier: Modifier) {
@@ -67,6 +77,7 @@ sealed interface InfoItem<T: Any?> {
                 text = stringResource(label),
                 value = stringResource(value),
                 modifier = modifier,
+                detailsText = details?.let { stringResource(it) },
             )
         }
     }
@@ -74,6 +85,7 @@ sealed interface InfoItem<T: Any?> {
     data class ColorGradientItem(
         override val label: StringResource,
         override val value: Int,
+        override val details: StringResource?,
         val minValue: Int,
         val maxValue: Int,
     ) : InfoItem<Int> {
@@ -106,6 +118,7 @@ sealed interface InfoItem<T: Any?> {
                 value = value.toString(),
                 modifier = modifier,
                 valueColor = colorState,
+                detailsText = details?.let { stringResource(it) },
             )
         }
     }

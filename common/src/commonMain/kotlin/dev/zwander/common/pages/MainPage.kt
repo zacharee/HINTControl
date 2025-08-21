@@ -124,7 +124,6 @@ fun MainPage(
 
                     val items = generateInfoList(simData) {
                         this[MR.strings.iccid] = simData?.sim?.iccId
-                        this[MR.strings.iccid] = simData?.sim?.iccId
                         this[MR.strings.imei] = simData?.sim?.imei
                         this[MR.strings.imsi] = simData?.sim?.imsi
                         this[MR.strings.msisdn] = simData?.sim?.msisdn

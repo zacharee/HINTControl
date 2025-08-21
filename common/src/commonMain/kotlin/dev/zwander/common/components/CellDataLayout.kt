@@ -60,29 +60,29 @@ fun CellDataLayout(
     modifier: Modifier = Modifier,
 ) {
     val basicItems = generateInfoList(data) {
-        this[MR.strings.bands] = data?.bands?.bulletedList()
-        this[MR.strings.rsrp] = Triple(data?.rsrp, -115, -77)
-        this[MR.strings.rsrq] = Triple(data?.rsrq, -25, -9)
-        this[MR.strings.rssi] = Triple(data?.rssi, -95, -65)
-        this[MR.strings.sinr] = Triple(data?.sinr, 2, 19)
-        this[MR.strings.cid] = data?.cid?.toString()
-        this[if (data is CellDataLTE?) MR.strings.enbid else MR.strings.gnbid] = data?.nbid?.toString()
+        this[MR.strings.bands, MR.strings.bands_helper_text] = data?.bands?.bulletedList()
+        this[MR.strings.rsrp, MR.strings.rsrp_helper_text] = Triple(data?.rsrp, -115, -77)
+        this[MR.strings.rsrq, MR.strings.rsrq_helper_text] = Triple(data?.rsrq, -25, -9)
+        this[MR.strings.rssi, MR.strings.rssi_helper_text] = Triple(data?.rssi, -95, -65)
+        this[MR.strings.sinr, MR.strings.snr_helper_text] = Triple(data?.sinr, 2, 19)
+        this[MR.strings.cid, MR.strings.cid_helper_text] = data?.cid?.toString()
+        this[if (data is CellDataLTE?) MR.strings.enbid else MR.strings.gnbid, MR.strings.nbid_helper_text] = data?.nbid?.toString()
         this[MR.strings.antenna_used] = data?.antennaUsed
     }
 
     val advancedItems = generateInfoList(advancedData) {
-        this[MR.strings.bandwidth] = advancedData?.bandwidth
-        this[MR.strings.mcc] = advancedData?.mcc
-        this[MR.strings.mnc] = advancedData?.mnc
-        this[MR.strings.plmn] = advancedData?.plmn
-        this[MR.strings.status] = advancedData?.status?.toString()
-        this[MR.strings.cqi] = Triple(advancedData?.cqi, 0, 12)
-        this[(if (advancedData is AdvancedDataLTE?) MR.strings.earfcn else MR.strings.nrarfcn)] = advancedData?.earfcn
-        this[(if (advancedData is AdvancedDataLTE?) MR.strings.nrarfcn else MR.strings.earfcn)] = null as? String?
-        this[MR.strings.ecgi] = advancedData?.ecgi
-        this[MR.strings.pci] = advancedData?.pci
-        this[MR.strings.tac] = advancedData?.tac
-        this[MR.strings.supportedBands] = advancedData?.supportedBands?.takeIf { it.isNotEmpty() }?.bulletedList()
+        this[MR.strings.bandwidth, MR.strings.bandwidth_helper_text] = advancedData?.bandwidth
+        this[MR.strings.mcc, MR.strings.mcc_helper_text] = advancedData?.mcc
+        this[MR.strings.mnc, MR.strings.mnc_helper_text] = advancedData?.mnc
+        this[MR.strings.plmn, MR.strings.plmn_helper_text] = advancedData?.plmn
+        this[MR.strings.status, MR.strings.status_helper_text] = advancedData?.status?.toString()
+        this[MR.strings.cqi, MR.strings.cqi_index_helper_text] = Triple(advancedData?.cqi, 0, 12)
+        this[(if (advancedData is AdvancedDataLTE?) MR.strings.earfcn else MR.strings.nrarfcn), MR.strings.arfcn_helper_text] = advancedData?.earfcn
+        this[(if (advancedData is AdvancedDataLTE?) MR.strings.nrarfcn else MR.strings.earfcn), MR.strings.arfcn_helper_text] = null as? String?
+        this[MR.strings.ecgi, MR.strings.cgi_helper_text] = advancedData?.ecgi
+        this[MR.strings.pci, MR.strings.pci_helper_text] = advancedData?.pci
+        this[MR.strings.tac, MR.strings.tac_helper_text] = advancedData?.tac
+        this[MR.strings.supportedBands, MR.strings.supported_bands_helper_text] = advancedData?.supportedBands?.takeIf { it.isNotEmpty() }?.bulletedList()
     }
 
     EmptiableContent(

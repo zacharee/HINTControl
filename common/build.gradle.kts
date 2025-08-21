@@ -110,6 +110,7 @@ kotlin {
                 api(libs.kstore.file)
                 api(libs.kmpfile)
                 api(libs.kmpfile.filekit)
+                api(libs.kmpplatform)
                 api(libs.koalaplot)
                 api(libs.kotlinx.serialization.json)
                 api(libs.kotlinx.coroutines)
@@ -123,6 +124,8 @@ kotlin {
                 api(libs.sqlite)
                 api(libs.sqlite.bundled)
                 api(libs.room.runtime)
+                api(libs.multiplatform.markdown.renderer)
+                api(libs.multiplatform.markdown.renderer.m3)
             }
         }
         val nonAppleMain by creating {
