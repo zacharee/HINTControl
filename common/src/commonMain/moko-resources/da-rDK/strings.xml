@@ -186,4 +186,24 @@
     <string name="theme_dark">Dark</string>
     <string name="theme_black">Black (OLED)</string>
     <string name="donate">Donate</string>
+    <string name="more_info">More info</string>
+    <string name="bands_helper_text">These are the bands you\'re connected to on this cell as reported by the gateway.</string>
+    <string name="supported_bands_helper_text">These are the bands the gateway is able to connect to.</string>
+    <string name="cgi_helper_text">CGI stands for Global Cell ID. This is a unique identifier for the cell.</string>
+    <string name="plmn_helper_text">PLMN stands for Public Land Mobile Network. This field shows the PLMN code, which consists of the MCC (Mobile Country Code) and the MNC (Mobile Network Code) of the cell\'s carrier.</string>
+    <string name="mcc_helper_text">MCC stands for Mobile Country Code and identifies the general area where the currently connected network operates. Multiple values can be used for the same area.</string>
+    <string name="mnc_helper_text">MNC stands for Mobile Network Code and identifies the network that the gateway is currently connected to. Mobile operators generally have multiple values registered in their name.</string>
+    <string name="cid_helper_text">CID stands for Cell ID and identifies the base transceiver station or an area that station covers.</string>
+    <string name="arfcn_helper_text">ARFCN stands for Absolute Radio-Frequency Channel Number. Different technologies prepend this to distinguish them from each other. WCDMA and TDSCDMA use UARFCN, LTE uses EARFCN, and 5G uses NRARFCN. The ARFCN can be used to infer a band or set of bands along with their upload and download frequencies.</string>
+    <string name="bandwidth_helper_text">The bandwidth of the current cell connection in KHz.</string>
+    <string name="tac_helper_text">TAC stands for Tracking Area Code and identifies a specific area within a carrier\'s network.</string>
+    <string name="pci_helper_text">PCI stands for Physical Cell ID and can be used to distinguish different cells in the same area.</string>
+    <string name="nbid_helper_text">The eNBID (LTE) or gNBID (5G) identifies the currently-connected cell module on a tower. If this number is negative, the gateway isn\'t properly reporting the value. In that case, you can [extract it from the CGI value](https://www.techplayon.com/5g-nr-cell-global-identity-planning/).</string>
+    <string name="snr_helper_text">SnR or SinR stands for Signal to Noise Ratio and represents the quality of the signal.</string>
+    <string name="rssi_helper_text">RSSI stands for Received Signal Strength Indicator and represents the signal strength in dBm.</string>
+    <string name="rsrq_helper_text">RSRQ stands for Received Signal Reference Quality and represents the quality of the signal.</string>
+    <string name="rsrp_helper_text">RSRP stands for Received Signal Reference Power and generally provides a more accurate signal strength measurement for LTE and 5G than RSSI.</string>
+    <string name="cqi_index_helper_text">CQI stands for Channel Quality Indicator. The CQI Table Index represents the index of the table found in 3GPP TS 136.213 section 7.2.3.</string>
+    <string name="rscp_helper_text">RSCP stands for Received Signal Code Power and is used as a signal strength indicator.</string>
+    <string name="status_helper_text">Denotes the current connection status of the gateway to this cell.</string>
 </resources>
