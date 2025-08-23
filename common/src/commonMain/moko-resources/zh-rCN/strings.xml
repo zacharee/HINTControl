@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="log_in">Log In</string>
-    <string name="log_out">Log Out</string>
-    <string name="username">Username</string>
-    <string name="password">Password</string>
-    <string name="ok">OK</string>
-    <string name="reboot">Reboot</string>
-    <string name="yes">Yes</string>
-    <string name="no">No</string>
-    <string name="error">Error</string>
-    <string name="show_password">Show Password</string>
+    <string name="log_in">登录</string>
+    <string name="log_out">退出登录</string>
+    <string name="username">用户名</string>
+    <string name="password">密码</string>
+    <string name="ok">确定</string>
+    <string name="reboot">重新启动</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+    <string name="error">错误</string>
+    <string name="show_password">显示密码</string>
     <string name="hide_password">Hide Password</string>
-    <string name="signals">Signals</string>
+    <string name="signals">信号</string>
     <string name="lte">LTE</string>
     <string name="five_g">5G</string>
     <string name="general">General</string>
