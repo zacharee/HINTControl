@@ -26,6 +26,7 @@ sealed class Page(
     companion object {
         const val LOG_IN_PAGE_KEY = "log_in_page"
         const val MAIN_PAGE_KEY = "main_page"
+        const val SAVED_DATA_PAGE_KEY = "saved_data_page"
         const val CLIENTS_PAGE_KEY = "clients_page"
         const val WIFI_PAGE_KEY = "wifi_page"
         const val SETTINGS_PAGE_KEY = "settings_page"
@@ -35,6 +36,7 @@ sealed class Page(
             return when (key) {
                 LOG_IN_PAGE_KEY -> Login
                 MAIN_PAGE_KEY -> Main
+                SAVED_DATA_PAGE_KEY -> SavedData
                 CLIENTS_PAGE_KEY -> Clients
                 WIFI_PAGE_KEY -> WifiConfig
                 SETTINGS_PAGE_KEY -> SettingsPage
@@ -74,6 +76,15 @@ sealed class Page(
                     MainModel.currentMainData.value == null
         },
         render = { MainPage(it) },
+    )
+    
+    data object SavedData : Page(
+        titleRes = MR.strings.saved,
+        key = SAVED_DATA_PAGE_KEY,
+        icon = { rememberVectorPainter(Icons.Default.Add) },
+        refreshAction = null,
+        needsRefresh = { false },
+        render = { SavedDataPage(it) },
     )
     data object Clients : Page(
         titleRes = MR.strings.client_data,

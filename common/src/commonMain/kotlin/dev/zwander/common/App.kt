@@ -27,6 +27,7 @@ import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -69,6 +70,7 @@ import dev.zwander.common.data.Page
 import dev.zwander.common.exceptions.TooManyAttemptsException
 import dev.zwander.common.exceptions.UnauthorizedException
 import dev.zwander.common.model.GlobalModel
+import dev.zwander.common.model.MainModel
 import dev.zwander.common.model.SettingsModel
 import dev.zwander.common.model.UserModel
 import dev.zwander.common.ui.LayoutMode
@@ -144,6 +146,7 @@ fun App(
             val pages = remember(fuzzerEnabled) {
                 listOf(
                     Page.Main,
+                    Page.SavedData,
                     Page.Clients,
                     Page.WifiConfig,
                     Page.SettingsPage,
@@ -457,7 +460,9 @@ private fun NavBar(
             pages.forEach { page ->
                 NavigationRailItem(
                     selected = currentPage == page,
-                    onClick = { onPageChange(page) },
+                    onClick = { 
+                        onPageChange(page) 
+                    },
                     label = { Text(text = stringResource(page.titleRes)) },
                     icon = { Icon(painter = page.icon(), contentDescription = null) },
                 )
@@ -488,7 +493,9 @@ private fun NavBar(
             pages.forEach { page ->
                 NavigationBarItem(
                     selected = currentPage == page,
-                    onClick = { onPageChange(page) },
+                    onClick = { 
+                        onPageChange(page) 
+                    },
                     label = {
                         Text(
                             text = stringResource(page.titleRes),

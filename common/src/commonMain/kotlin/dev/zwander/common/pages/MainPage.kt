@@ -198,6 +198,20 @@ fun MainPage(
                         text = stringResource(MR.strings.log_out),
                     )
                 }
+                
+                Button(
+                    onClick = {
+                        MainModel.saveCurrentData()
+                    },
+                    modifier = Modifier.weight(1f),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                    ),
+                ) {
+                    Text(
+                        text = stringResource(MR.strings.save),
+                    )
+                }
 
                 Button(
                     onClick = {

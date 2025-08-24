@@ -26,6 +26,7 @@ import dev.zwander.common.model.adapters.CellData5G
 import dev.zwander.common.model.adapters.CellDataLTE
 import dev.zwander.common.util.bulletedList
 import dev.zwander.common.util.deriveCidGnbidFromEcgi
+import dev.zwander.common.util.SQSICalculator
 import dev.zwander.resources.common.MR
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
@@ -94,8 +95,38 @@ fun CellDataLayout(
 
     val cidToShow = derivedCid ?: data?.cid
     val nbidToShow = derivedNbid ?: data?.nbid
+    
+    // Calculate SQSI for this RAT
+    val sqsi = data?.let {
+        val ratData = SQSICalculator.RatData(
+            rsrp = it.rsrp,
+            rsrq = it.rsrq,
+            sinr = it.sinr,
+            cqi = advancedData?.cqi,
+            bandwidth = SQSICalculator.parseBandwidth(advancedData?.bandwidth)
+        )
+        
+        // Calculate SQSI for this single RAT
+        if (data is CellDataLTE?) {
+            SQSICalculator.calculateSQSI(lteData = ratData, nrData = null)
+        } else {
+            SQSICalculator.calculateSQSI(lteData = null, nrData = ratData)
+        }
+    }
 
     val basicItems = generateInfoList(data, advancedData, mainData?.device) {
+        // Add SQSI at the top
+        sqsi?.let {
+            val sqsiInt = it.toInt()
+            val colorFraction = SQSICalculator.getSQSIColorFraction(it)
+            // Map SQSI to color gradient (1-10 scale, where 10 is best)
+            this[MR.strings.sqsi, MR.strings.sqsi_helper_text] = Triple(
+                sqsiInt,
+                1,  // Min value
+                10  // Max value
+            )
+        }
+        
         this[MR.strings.bands, MR.strings.bands_helper_text] = data?.bands?.bulletedList()
         this[MR.strings.rsrp, MR.strings.rsrp_helper_text] = Triple(data?.rsrp, -115, -77)
         this[MR.strings.rsrq, MR.strings.rsrq_helper_text] = Triple(data?.rsrq, -25, -9)
