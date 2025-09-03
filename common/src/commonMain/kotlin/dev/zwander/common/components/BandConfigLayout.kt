@@ -4,8 +4,6 @@ package dev.zwander.common.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -53,21 +51,16 @@ fun BandConfigLayout(
         )
 
         tempState?.twoGig?.transmissionPower?.let { transmissionPower ->
-            SliderWithTitle(
-                title = stringResource(MR.strings.twoGig_transmission_power),
-                minValue = 50,
-                maxValue = 100,
-                currentValue = transmissionPower.replace("%", "").toIntOrNull() ?: 100,
-                onValueChange = {
+            TransmissionPowerGroup(
+                currentPower = TransmissionPower.fromRaw(transmissionPower),
+                onPowerChange = {
                     tempState = tempState?.copy(
                         twoGig = tempState?.twoGig?.copy(
-                            transmissionPower = "${it.toInt()}%",
+                            transmissionPower = it.raw,
                         ),
                     )
                 },
-                unit = "%",
-                modifier = Modifier.fillMaxWidth()
-                    .padding(horizontal = 8.dp),
+                title = stringResource(MR.strings.twoGig_transmission_power),
             )
         }
 
@@ -90,21 +83,16 @@ fun BandConfigLayout(
         )
 
         tempState?.fiveGig?.transmissionPower?.let { transmissionPower ->
-            SliderWithTitle(
-                title = stringResource(MR.strings.fiveGig_transmission_power),
-                minValue = 50,
-                maxValue = 100,
-                currentValue = transmissionPower.replace("%", "").toIntOrNull() ?: 100,
-                onValueChange = {
+            TransmissionPowerGroup(
+                currentPower = TransmissionPower.fromRaw(transmissionPower),
+                onPowerChange = {
                     tempState = tempState?.copy(
                         fiveGig = tempState?.fiveGig?.copy(
-                            transmissionPower = "${it.toInt()}%",
+                            transmissionPower = it.raw,
                         ),
                     )
                 },
-                unit = "%",
-                modifier = Modifier.fillMaxWidth()
-                    .padding(horizontal = 8.dp),
+                title = stringResource(MR.strings.fiveGig_transmission_power),
             )
         }
 
@@ -124,24 +112,21 @@ fun BandConfigLayout(
             )
 
             sixGig.transmissionPower?.let { transmissionPower ->
-                SliderWithTitle(
-                    title = stringResource(MR.strings.sixGig_transmission_power),
-                    minValue = 50,
-                    maxValue = 100,
-                    currentValue = transmissionPower.replace("%", "").toIntOrNull() ?: 100,
-                    onValueChange = {
+                TransmissionPowerGroup(
+                    currentPower = TransmissionPower.fromRaw(transmissionPower),
+                    onPowerChange = {
                         tempState = tempState?.copy(
                             sixGig = tempState?.sixGig?.copy(
-                                transmissionPower = "${it.toInt()}%",
+                                transmissionPower = it.raw,
                             ),
                         )
                     },
-                    unit = "%",
-                    modifier = Modifier.fillMaxWidth()
-                        .padding(horizontal = 8.dp),
+                    title = stringResource(MR.strings.sixGig_transmission_power),
                 )
             }
         }
+
+        NarrowHorizontalDivider()
 
         TextSwitch(
             text = stringResource(MR.strings.band_steering),
