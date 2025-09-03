@@ -171,7 +171,6 @@ object Storage {
         encodeDefaults = true
         coerceInputValues = true
         allowTrailingComma = true
-        explicitNulls = false
     }
 
     @Deprecated("Use [snapshotsDb] instead.")
