@@ -199,11 +199,10 @@
     <string name="tac_helper_text">TAC stands for Tracking Area Code and identifies a specific area within a carrier\'s network.</string>
     <string name="pci_helper_text">PCI stands for Physical Cell ID and can be used to distinguish different cells in the same area.</string>
     <string name="nbid_helper_text">The eNBID (LTE) or gNBID (5G) identifies the currently-connected cell module on a tower. If this number is negative, the gateway isn\'t properly reporting the value. In that case, you can [extract it from the CGI value](https://www.techplayon.com/5g-nr-cell-global-identity-planning/).</string>
-    <string name="snr_helper_text">SnR or SinR stands for Signal to Noise Ratio and represents the quality of the signal.</string>
-    <string name="rssi_helper_text">RSSI stands for Received Signal Strength Indicator and represents the signal strength in dBm.</string>
-    <string name="rsrq_helper_text">RSRQ stands for Received Signal Reference Quality and represents the quality of the signal.</string>
-    <string name="rsrp_helper_text">RSRP stands for Received Signal Reference Power and generally provides a more accurate signal strength measurement for LTE and 5G than RSSI.</string>
-    <string name="cqi_index_helper_text">CQI stands for Channel Quality Indicator. The CQI Table Index represents the index of the table found in 3GPP TS 136.213 section 7.2.3.</string>
-    <string name="rscp_helper_text">RSCP stands for Received Signal Code Power and is used as a signal strength indicator.</string>
+    <string name="snr_helper_text">SnR or SinR stands for Signal to Noise Ratio and represents the quality of the signal. This value will mostly be within the range of 0-20, where 20 is best.</string>
+    <string name="rssi_helper_text">RSSI stands for Received Signal Strength Indicator and represents the signal strength in dBm. This will be a number between 0 and -110, where 0 is the strongest signal. Anything above -70 can be considered strong.</string>
+    <string name="rsrq_helper_text">RSRQ stands for Received Signal Reference Quality and represents the quality of the signal. The range for this value is generally between -20 and 0, where 0 is highest quality, and anything above -10 is considered excellent quality.</string>
+    <string name="rsrp_helper_text">RSRP stands for Received Signal Reference Power and generally provides a more accurate signal strength measurement for LTE and 5G than RSSI. This value will mostly be within the range of -144 and -44, where -44 is strongest. Anything above -110 is generally considered good.</string>
+    <string name="cqi_index_helper_text">CQI stands for Channel Quality Indicator. The CQI Table Index represents the index of the table found in 3GPP TS 136.213 section 7.2.3. The index value can range from 1-15, with 15 indicating the best quality. Note that this is different from QCI (QoS Class Indicator), which the T-Mobile gateways do not report.</string>
     <string name="status_helper_text">Denotes the current connection status of the gateway to this cell.</string>
 </resources>
