@@ -56,7 +56,7 @@ class CreatingCodec<T : @Serializable Any>(
             val retries = 3
             CrossPlatformBugsnag.notify(IllegalStateException("Unable to decode JSON from file, retrying $retries times.", e))
 
-            for (i in 0 until retries) {
+            repeat(retries) {
                 try {
                     return wrappedCodec.decode()
                 } catch (_: Throwable) {}
