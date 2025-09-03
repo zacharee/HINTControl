@@ -1,8 +1,11 @@
 package dev.zwander.common.model.adapters
 
+import kotlinx.serialization.EncodeDefault
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+@OptIn(ExperimentalSerializationApi::class)
 @Serializable
 data class WifiConfig(
     @SerialName("2.4ghz")
@@ -10,6 +13,7 @@ data class WifiConfig(
     @SerialName("5.0ghz")
     val fiveGig: BandConfig? = null,
     @SerialName("6.0ghz")
+    @EncodeDefault(EncodeDefault.Mode.NEVER)
     val sixGig: BandConfig? = null,
     val bandSteering: BandSteeringConfig? = null,
     val ssids: List<SSIDConfig>? = null,
@@ -34,6 +38,7 @@ data class BandSteeringConfig(
     val isEnabled: Boolean,
 )
 
+@OptIn(ExperimentalSerializationApi::class)
 @Serializable
 data class SSIDConfig(
     @SerialName("2.4ghzSsid")
@@ -41,6 +46,7 @@ data class SSIDConfig(
     @SerialName("5.0ghzSsid")
     val fiveGigSsid: Boolean? = null,
     @SerialName("6.0ghzSsid")
+    @EncodeDefault(EncodeDefault.Mode.NEVER)
     val sixGigSsid: Boolean? = null,
     val encryptionMode: String? = null,
     val encryptionVersion: String? = null,

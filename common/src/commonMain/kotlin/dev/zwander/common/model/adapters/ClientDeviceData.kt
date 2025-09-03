@@ -1,5 +1,7 @@
 package dev.zwander.common.model.adapters
 
+import kotlinx.serialization.EncodeDefault
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -8,6 +10,7 @@ data class ClientDeviceData(
     val clients: ClientsData? = null,
 )
 
+@OptIn(ExperimentalSerializationApi::class)
 @Serializable
 data class ClientsData(
     @SerialName("2.4ghz")
@@ -15,6 +18,7 @@ data class ClientsData(
     @SerialName("5.0ghz")
     val fiveGig: List<WirelessClientData>? = null,
     @SerialName("6.0ghz")
+    @EncodeDefault(EncodeDefault.Mode.NEVER)
     val sixGig: List<WirelessClientData>? = null,
     val ethernet: List<WiredClientData>? = null,
     val wireless: List<WirelessClientData>? = null,
