@@ -1,7 +1,9 @@
 package dev.zwander.common.util
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import androidx.core.content.FileProvider
 import dev.zwander.common.App
 import dev.zwander.common.GradleConfig
@@ -27,10 +29,10 @@ actual object UpdateUtil {
             val latestVersion = repo.latestRelease.tagName
             val currentVersion = GradleConfig.versionName
 
-            if (currentVersion.toVersion() >= latestVersion.toVersion()) {
-                return null
+            return if (currentVersion.toVersion() >= latestVersion.toVersion()) {
+                null
             } else {
-                return UpdateInfo(latestVersion)
+                UpdateInfo(latestVersion)
             }
         } catch (e: Throwable) {
             CrossPlatformBugsnag.notify(e)
@@ -38,6 +40,7 @@ actual object UpdateUtil {
         }
     }
 
+    @SuppressLint("RequestInstallPackagesPolicy")
     actual suspend fun installUpdate() {
         try {
             val github = GitHub.connectAnonymously()
@@ -79,12 +82,17 @@ actual object UpdateUtil {
     @Suppress("DEPRECATION")
     actual fun supported(): Boolean {
         val githubSha256 = "58997A7C334D76DCD57FAA918DDA90DA27EDA2E768AED4EB7F110D90C3196D67"
+        val installSource = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            App.instance.packageManager.getInstallSourceInfo(App.instance.packageName).initiatingPackageName
+        } else {
+            App.instance.packageManager.getInstallerPackageName(App.instance.packageName)
+        }
         val signatures = App.instance.packageManager
             .getPackageInfo(App.instance.packageName, PackageManager.GET_SIGNATURES).signatures
         val matchesSignature = signatures?.any { signature ->
             signature.toByteArray().sha256().hexUpper == githubSha256
         }
 
-        return matchesSignature == true || dev.zwander.common.BuildConfig.DEBUG
+        return (matchesSignature == true && installSource != "com.android.vending") || dev.zwander.common.BuildConfig.DEBUG
     }
 }
